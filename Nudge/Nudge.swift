@@ -50,7 +50,6 @@ struct Nudge: View {
                 // Username
                 HStack{
                     Text("Username: ")
-                        .foregroundColor(.black)
                     Spacer()
                     Text(self.user_name)
                         .foregroundColor(.gray)
@@ -60,7 +59,6 @@ struct Nudge: View {
                 // Serial Number
                 HStack{
                     Text("Serial Number: ")
-                        .foregroundColor(.black)
                     Spacer()
                     Text(self.serial_number)
                         .foregroundColor(.gray)
@@ -70,7 +68,6 @@ struct Nudge: View {
                 // Fully Updated
                 HStack{
                     Text("Fully Updated: ")
-                        .foregroundColor(.black)
                     Spacer()
                     Text(self.fully_updated)
                         .foregroundColor(.gray)
@@ -79,7 +76,6 @@ struct Nudge: View {
                 // Days Remaining
                 HStack{
                     Text("Days Remaining: ")
-                        .foregroundColor(.black)
                     Spacer()
                     Text(self.days_remaining)
                         .foregroundColor(.gray)
@@ -89,7 +85,6 @@ struct Nudge: View {
                 // Deferral Count
                 HStack{
                     Text("Deferral Count: ")
-                        .foregroundColor(.black)
                     Spacer()
                     Text(self.deferral_count)
                         .foregroundColor(.gray)
@@ -102,7 +97,6 @@ struct Nudge: View {
                 HStack(alignment: .top){
                     Button(action: {}, label: {
                         Text("More Info")
-                        .foregroundColor(.black)
                       }
                     )
                     // Force the button to the left with a spacer
@@ -127,7 +121,6 @@ struct Nudge: View {
                 HStack{
                     Text("macOS Update")
                         .font(.largeTitle)
-                        .foregroundColor(.black)
                 }
                 .padding(.top, 10.0)
                 .padding(.bottom, 20.0)
@@ -137,7 +130,6 @@ struct Nudge: View {
                 HStack{
                     Text("A friendly reminder from your local IT team")
                         .font(.body)
-                        .foregroundColor(.black)
                 }
                 .padding(.vertical, 0.5)
                 .padding(.leading, 15.0)
@@ -147,7 +139,6 @@ struct Nudge: View {
                     Text("A security update is required on your machine.")
                         .font(.body)
                         .fontWeight(.bold)
-                        .foregroundColor(.black)
                 }
                 .padding(.vertical, 0.5)
                 .padding(.leading, 15.0)
@@ -157,7 +148,6 @@ struct Nudge: View {
                     Text("A fully up-to-date device is required to ensure that IT can your accurately protect your computer.")
                         .font(.body)
                         .fontWeight(.regular)
-                        .foregroundColor(.black)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -166,7 +156,6 @@ struct Nudge: View {
                     Text("If you do not update your computer, you may lose access to some items necessary for your day-to-day tasks.")
                         .font(.body)
                         .fontWeight(.regular)
-                        .foregroundColor(.black)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -175,7 +164,6 @@ struct Nudge: View {
                     Text("To begin the update, simply click on the button below and follow the provided steps.")
                         .font(.body)
                         .fontWeight(.regular)
-                        .foregroundColor(.black)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -200,7 +188,6 @@ struct Nudge: View {
                 HStack(alignment: .top){
                     Button(action: {}, label: {
                         Text("Update Machine")
-                        .foregroundColor(.black)
                       }
                     )
 
@@ -208,13 +195,11 @@ struct Nudge: View {
                     Spacer()
                     Button(action: {}, label: {
                         Text("I understand")
-                        .foregroundColor(.black)
                       }
                     )
                     .padding(.trailing, 10.0)
                     Button(action: {}, label: {
                         Text("OK")
-                        .foregroundColor(.black)
                       }
                     )
                     .padding(.trailing, 20.0)
