@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-// Setup Variables for logo
-let logo_path = URL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo.png")
-let logo_data:NSData = NSData(contentsOf: logo_path)!
-let logo_image = NSImage(data: logo_data as Data)
-
 struct Nudge: View {
     
     // getting screen Frame...
@@ -37,7 +32,7 @@ struct Nudge: View {
             // Left side of Nudge
             VStack{
                 // Company Logo
-                Image(nsImage: logo_image!)
+                Image("company_logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
