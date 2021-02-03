@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct Nudge: View {
-    
+
     // getting screen Frame...
     var screen = NSScreen.main?.visibleFrame
-    
+
     // TextFields...
     @State var user_name = "erikg"
     @State var serial_number = "C00000000000"
@@ -23,10 +23,10 @@ struct Nudge: View {
     // Keep Logged
     @State var keepLogged = false
 
-    
+
     // Alert..
     @State var alert = false
-    
+
     var body: some View {
         HStack(spacing: 0){
             // Left side of Nudge
@@ -46,7 +46,7 @@ struct Nudge: View {
                         .frame(height: 1)
                 }
                 .frame(width:215)
-                
+
                 // Username
                 HStack{
                     Text("Username: ")
@@ -56,7 +56,7 @@ struct Nudge: View {
                         .foregroundColor(.gray)
                 }
                 .padding(.vertical, 1.0)
-                
+
                 // Serial Number
                 HStack{
                     Text("Serial Number: ")
@@ -66,7 +66,7 @@ struct Nudge: View {
                         .foregroundColor(.gray)
                 }
                 .padding(.vertical, 1.0)
-                
+
                 // Fully Updated
                 HStack{
                     Text("Fully Updated: ")
@@ -75,7 +75,7 @@ struct Nudge: View {
                     Text(self.fully_updated)
                         .foregroundColor(.gray)
                 }
-                
+
                 // Days Remaining
                 HStack{
                     Text("Days Remaining: ")
@@ -85,7 +85,7 @@ struct Nudge: View {
                         .foregroundColor(.gray)
                 }
                 .padding(.vertical, 1.0)
-                
+
                 // Deferral Count
                 HStack{
                     Text("Deferral Count: ")
@@ -94,10 +94,10 @@ struct Nudge: View {
                     Text(self.deferral_count)
                         .foregroundColor(.gray)
                 }
-                
+
                 // Force buttons to the bottom with a spacer
                 Spacer()
-                
+
                 // More Info
                 HStack(alignment: .top){
                     Button(action: {}, label: {
@@ -112,7 +112,7 @@ struct Nudge: View {
             }
             .padding(.horizontal, 50)
             .frame(width: 300, height: 450)
-            
+
             // Vertical Line
             VStack{
                 Rectangle()
@@ -120,7 +120,7 @@ struct Nudge: View {
                     .frame(width: 1)
             }
             .frame(height: 300)
-            
+
             // Right side of Nudge
             VStack{
                 // Title Text
@@ -132,7 +132,7 @@ struct Nudge: View {
                 .padding(.top, 10.0)
                 .padding(.bottom, 20.0)
                 .padding(.leading, 15.0)
-                
+
                 // Subtitle Text
                 HStack{
                     Text("A friendly reminder from your local IT team")
@@ -141,7 +141,7 @@ struct Nudge: View {
                 }
                 .padding(.vertical, 0.5)
                 .padding(.leading, 15.0)
-                
+
                 // Update Text
                 HStack{
                     Text("A security update is required on your machine.")
@@ -151,7 +151,7 @@ struct Nudge: View {
                 }
                 .padding(.vertical, 0.5)
                 .padding(.leading, 15.0)
-                
+
                 VStack(alignment: .leading) {
                     // Paragraph 1
                     Text("A fully up-to-date device is required to ensure that IT can your accurately protect your computer.")
@@ -179,14 +179,23 @@ struct Nudge: View {
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
+
+                // Update Button
+                // Why won't this centre nicely?
+                    Image("ProductPageIcon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                        .frame(width: 128, height: 128, alignment: .center)
+                        .padding(.leading, 175)
                 }
                 .padding(.vertical,10.0)
                 .padding(.leading, 15.0)
                 .frame(width: 520)
-                
+
                 // Force buttons to the bottom with a spacer
                 Spacer()
-                
+
                 // Bottom buttons
                 HStack(alignment: .top){
                     Button(action: {}, label: {
@@ -194,7 +203,7 @@ struct Nudge: View {
                         .foregroundColor(.black)
                       }
                     )
-                    
+
                     // Separate the buttons with a spacer
                     Spacer()
                     Button(action: {}, label: {
