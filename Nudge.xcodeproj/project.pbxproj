@@ -13,6 +13,7 @@
 		63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E925C9E9A500236281 /* Preview Assets.xcassets */; };
 		63D7D0F625C9E9A500236281 /* NudgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0F525C9E9A500236281 /* NudgeTests.swift */; };
 		63D7D10125C9E9A500236281 /* NudgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D10025C9E9A500236281 /* NudgeUITests.swift */; };
+		63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D12625C9F1EE00236281 /* Nudge.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		63D7D0FC25C9E9A500236281 /* NudgeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NudgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D10025C9E9A500236281 /* NudgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeUITests.swift; sourceTree = "<group>"; };
 		63D7D10225C9E9A500236281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63D7D12625C9F1EE00236281 /* Nudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nudge.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			children = (
 				63D7D0E225C9E9A400236281 /* NudgeApp.swift */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
+				63D7D12625C9F1EE00236281 /* Nudge.swift */,
 				63D7D0E625C9E9A500236281 /* Assets.xcassets */,
 				63D7D0EB25C9E9A500236281 /* Info.plist */,
 				63D7D0EC25C9E9A500236281 /* Nudge.entitlements */,
@@ -262,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
+				63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,7 +353,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -404,7 +408,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
