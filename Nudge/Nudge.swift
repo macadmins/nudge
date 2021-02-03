@@ -8,7 +8,7 @@
 import SwiftUI
 
 // Setup Variables for logo
-let logo_path = URL(fileURLWithPath: "/Library/nudge/Resources/company_logo.png")
+let logo_path = URL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo.png")
 let logo_data:NSData = NSData(contentsOf: logo_path)!
 let logo_image = NSImage(data: logo_data as Data)
 
