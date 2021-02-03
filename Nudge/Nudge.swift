@@ -18,14 +18,6 @@ struct Nudge: View {
     @State var fully_updated = "No"
     @State var days_remaining = "14"
     @State var deferral_count = "0"
-    @State var email = ""
-    @State var password = ""
-    // Keep Logged
-    @State var keepLogged = false
-
-
-    // Alert..
-    @State var alert = false
 
     var body: some View {
         HStack(spacing: 0){
