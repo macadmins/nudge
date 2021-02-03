@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+// Setup Variables for logo
+let logo_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo.png")
+let logo_path = logo_url_path.path
+let logo_data:NSData = NSData(contentsOf: logo_url_path as URL)!
+let logo_image = NSImage(data: logo_data as Data)
+let fileManager = FileManager.default
+
 struct Nudge: View {
 
     // getting screen Frame...
@@ -24,12 +31,21 @@ struct Nudge: View {
             // Left side of Nudge
             VStack{
                 // Company Logo
-                Image("company_logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .frame(width: 160, height: 160)
-                    .padding(.vertical, 1.0)
+                if fileManager.fileExists(atPath: logo_path!) {
+                    Image(nsImage: logo_image!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                        .frame(width: 160, height: 160)
+                        .padding(.vertical, 1.0)
+                } else {
+                    Image("company_logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                        .frame(width: 160, height: 160)
+                        .padding(.vertical, 1.0)
+                }
 
                 // Horizontal line
                 HStack{
