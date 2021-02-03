@@ -161,13 +161,15 @@ struct Nudge: View {
                         .fixedSize(horizontal: false, vertical: true)
 
                 // Update Button
-                // Why won't this centre nicely?
-                    Image("ProductPageIcon")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding()
-                        .frame(width: 128, height: 128, alignment: .center)
-                        .padding(.leading, 175)
+                    HStack{
+                        Spacer()
+                        Image("ProductPageIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding()
+                            .frame(width: 128, height: 128)
+                        Spacer()
+                        }
                 }
                 .padding(.vertical,10.0)
                 .padding(.leading, 15.0)
