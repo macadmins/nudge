@@ -7,44 +7,80 @@
 
 import SwiftUI
 
-// Setup Variables for logo
-let logo_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo.png")
-let logo_path = logo_url_path.path
-let logo_data:NSData = NSData(contentsOf: logo_url_path as URL)!
-let logo_image = NSImage(data: logo_data as Data)
+// All of this image stuff needs to be refactored.
+// Setup Variables for light logo
+let logo_light_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo_light.png")
+let logo_light_path = logo_light_url_path.path
+let logo_light_data:NSData = NSData(contentsOf: logo_light_url_path as URL)!
+let logo_light_image = NSImage(data: logo_light_data as Data)
+
+// Setup Variables for dark logo
+let logo_dark_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo_dark.png")
+let logo_dark_path = logo_dark_url_path.path
+let logo_dark_data:NSData = NSData(contentsOf: logo_dark_url_path as URL)!
+let logo_dark_image = NSImage(data: logo_dark_data as Data)
+
+// Setup Variables for company screenshot
+let company_screenshot_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_screenshot.png")
+let company_screenshot_path = company_screenshot_url_path.path
+let company_screenshot_data:NSData = NSData(contentsOf: company_screenshot_url_path as URL)!
+let company_screenshot_image = NSImage(data: company_screenshot_data as Data)
+
+// Get the default filemanager
 let fileManager = FileManager.default
 
 struct Nudge: View {
+    // Get the color scheme so we can dynamically change properties
+    @Environment(\.colorScheme) var colorScheme
 
-    // getting screen Frame...
+    // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
 
-    // TextFields...
+    // Hardcoded (for now) properties
     @State var user_name = "erikg"
     @State var serial_number = "C00000000000"
     @State var fully_updated = "No"
     @State var days_remaining = "14"
     @State var deferral_count = "0"
 
+    // Nudge UI
     var body: some View {
         HStack(spacing: 0){
             // Left side of Nudge
             VStack{
                 // Company Logo
-                if fileManager.fileExists(atPath: logo_path!) {
-                    Image(nsImage: logo_image!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding()
-                        .frame(width: 160, height: 160)
-                        .padding(.vertical, 1.0)
+                if colorScheme == .dark {
+                    if fileManager.fileExists(atPath: logo_dark_path!) {
+                        Image(nsImage: logo_dark_image!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding()
+                            .frame(width: 160, height: 160)
+                            .padding(.vertical, 1.0)
+                    } else {
+                        Image("CompanyIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding()
+                            .frame(width: 160, height: 160)
+                            .padding(.vertical, 1.0)
+                    }
                 } else {
-                    Image("company_logo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding()
-                        .frame(width: 160, height: 160)
-                        .padding(.vertical, 1.0)
+                    if fileManager.fileExists(atPath: logo_light_path!) {
+                        Image(nsImage: logo_light_image!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding()
+                            .frame(width: 160, height: 160)
+                            .padding(.vertical, 1.0)
+                    } else {
+                        Image("CompanyIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding()
+                            .frame(width: 160, height: 160)
+                            .padding(.vertical, 1.0)
+                    }
                 }
 
                 // Horizontal line
@@ -176,14 +212,22 @@ struct Nudge: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
 
-                // Update Button
+                // Company Screenshot
                     HStack{
                         Spacer()
-                        Image("ProductPageIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding()
-                            .frame(width: 128, height: 128)
+                        if fileManager.fileExists(atPath: company_screenshot_path!) {
+                            Image(nsImage: company_screenshot_image!)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding()
+                                .frame(width: 128, height: 128)
+                        } else {
+                            Image("CompanyScreenshotIcon")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding()
+                                .frame(width: 128, height: 128)
+                        }
                         Spacer()
                         }
                 }
