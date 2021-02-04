@@ -32,6 +32,7 @@ let fileManager = FileManager.default
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.openURL) var openURL
 
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
@@ -139,8 +140,9 @@ struct Nudge: View {
                 Spacer()
 
                 // More Info
+                // https://developer.apple.com/documentation/swiftui/openurlaction
                 HStack(alignment: .top){
-                    Button(action: {}, label: {
+                    Button(action: moreInfo, label: {
                         Text("More Info")
                       }
                     )
@@ -291,7 +293,15 @@ struct Nudge: View {
             .frame(width: 550, height: 450)
         }
     }
+
+    func moreInfo() {
+            guard let url = URL(string: "https://www.google.com") else {
+                return
+            }
+            openURL(url)
+        }
 }
+
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {

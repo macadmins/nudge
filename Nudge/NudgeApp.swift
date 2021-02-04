@@ -13,7 +13,7 @@ struct NudgeApp: App {
         WindowGroup {
             ContentView()
         }
-        // Hide Title Bar...
+        // Hide Title Bar
         .windowStyle(HiddenTitleBarWindowStyle())
     }
 }
