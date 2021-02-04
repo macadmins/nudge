@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		639E194A25CC7F13008F618B /* example.json in Resources */ = {isa = PBXBuildFile; fileRef = 639E194925CC7F13008F618B /* example.json */; };
 		63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* NudgeApp.swift */; };
 		63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E425C9E9A400236281 /* ContentView.swift */; };
 		63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E625C9E9A500236281 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		639E194925CC7F13008F618B /* example.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example.json; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D0E225C9E9A400236281 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
 		63D7D0E425C9E9A400236281 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				63D7D0EB25C9E9A500236281 /* Info.plist */,
 				63D7D0EC25C9E9A500236281 /* Nudge.entitlements */,
 				63D7D0E825C9E9A500236281 /* Preview Content */,
+				639E194925CC7F13008F618B /* example.json */,
 			);
 			path = Nudge;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 			files = (
 				63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
+				639E194A25CC7F13008F618B /* example.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
