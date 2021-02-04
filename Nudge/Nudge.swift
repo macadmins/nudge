@@ -42,6 +42,7 @@ struct Nudge: View {
     @State var fully_updated = "No"
     @State var days_remaining = "14"
     @State var deferral_count = "0"
+    @State var has_accepted_i_understand = false
 
     // Nudge UI
     var body: some View {
@@ -247,16 +248,42 @@ struct Nudge: View {
 
                     // Separate the buttons with a spacer
                     Spacer()
-                    Button(action: {}, label: {
-                        Text("I understand")
-                      }
-                    )
-                    .padding(.trailing, 10.0)
-                    Button(action: {}, label: {
-                        Text("OK")
-                      }
-                    )
-                    .padding(.trailing, 20.0)
+                    
+                    // I understand button
+                    if self.has_accepted_i_understand {
+                        Button(action: {}, label: {
+                            Text("I understand")
+                          }
+                        )
+                        .hidden()
+                        .padding(.trailing, 10.0)
+                    } else {
+                        Button(action: {
+                            has_accepted_i_understand = true
+                        }, label: {
+                            Text("I understand")
+                          }
+                        )
+                        .padding(.trailing, 10.0)
+                    }
+                    
+                    // OK button
+                    if self.has_accepted_i_understand {
+                        Button(action: {exit(0)}, label: {
+                            Text("OK")
+                          }
+                        )
+                        .padding(.trailing, 20.0)
+                    } else {
+                        Button(action: {
+                            has_accepted_i_understand = true
+                        }, label: {
+                            Text("OK")
+                          }
+                        )
+                        .hidden()
+                        .padding(.trailing, 20.0)
+                    }
                 }
                 .padding(.bottom, 15.0)
                 .padding(.leading, 15.0)
