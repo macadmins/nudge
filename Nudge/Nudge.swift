@@ -302,11 +302,12 @@ struct Nudge: View {
     }
 
     func moreInfo() {
-            guard let url = URL(string: "https://www.google.com") else {
-                return
-            }
-            openURL(url)
+        guard let url = URL(string: "https://www.google.com") else {
+            return
         }
+        print(url)
+        openURL(url)
+    }
 // Function stuff
 
 // Setup our json structure
