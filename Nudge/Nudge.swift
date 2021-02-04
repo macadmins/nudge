@@ -250,7 +250,7 @@ struct Nudge: View {
 
                 // Bottom buttons
                 HStack(alignment: .top){
-                    Button(action: {}, label: {
+                    Button(action: updateMachine, label: {
                         Text("Update Machine")
                       }
                     )
@@ -308,6 +308,15 @@ struct Nudge: View {
         print(url)
         openURL(url)
     }
+    
+    func updateMachine() {
+        NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
+        // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+        // NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+    }
+
+}
+
 // Function stuff
 
 // Setup our json structure
