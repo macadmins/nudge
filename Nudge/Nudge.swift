@@ -60,7 +60,7 @@ struct Nudge: View {
                             .frame(width: 160, height: 160)
                             .padding(.vertical, 1.0)
                     } else {
-                        Image("CompanyIcon")
+                        Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding()
@@ -76,7 +76,7 @@ struct Nudge: View {
                             .frame(width: 160, height: 160)
                             .padding(.vertical, 1.0)
                     } else {
-                        Image("CompanyIcon")
+                        Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding()
