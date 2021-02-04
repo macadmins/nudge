@@ -7,21 +7,27 @@
 
 import SwiftUI
 
+// JSON
+// TODO move loadnudgeprefs to it's own swift file
+// TODO: use CFPreferences to get mdm/mobileconfig logic and prioritize over json
+let nudge_prefs = loadNudgePrefs()
+
 // All of this image stuff needs to be refactored.
 // Setup Variables for light logo
-let logo_light_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo_light.png")
+let logo_light_url_path = NSURL(fileURLWithPath: nudge_prefs?.logo_light_path ?? "/Library/nudge/Resources/company_logo_light.png")
 let logo_light_path = logo_light_url_path.path
 let logo_light_data:NSData = NSData(contentsOf: logo_light_url_path as URL)!
 let logo_light_image = NSImage(data: logo_light_data as Data)
 
 // Setup Variables for dark logo
-let logo_dark_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_logo_dark.png")
+let logo_dark_url_path = NSURL(fileURLWithPath: nudge_prefs?.logo_dark_path ?? "/Library/nudge/Resources/company_logo_dark.png")
 let logo_dark_path = logo_dark_url_path.path
 let logo_dark_data:NSData = NSData(contentsOf: logo_dark_url_path as URL)!
 let logo_dark_image = NSImage(data: logo_dark_data as Data)
 
 // Setup Variables for company screenshot
-let company_screenshot_url_path = NSURL(fileURLWithPath: "/Library/nudgeplayground/Resources/company_screenshot.png")
+// TODO: Call icns from the system rather than bring in a png as an asset for default
+let company_screenshot_url_path = NSURL(fileURLWithPath: nudge_prefs?.screenshot_path ?? "/Library/nudge/Resources/company_screenshot.png")
 let company_screenshot_path = company_screenshot_url_path.path
 let company_screenshot_data:NSData = NSData(contentsOf: company_screenshot_url_path as URL)!
 let company_screenshot_image = NSImage(data: company_screenshot_data as Data)
@@ -49,6 +55,7 @@ struct Nudge: View {
     var body: some View {
         HStack(spacing: 0){
             // Left side of Nudge
+
             VStack{
                 // Company Logo
                 if colorScheme == .dark {
@@ -166,7 +173,7 @@ struct Nudge: View {
             VStack{
                 // Title Text
                 HStack{
-                    Text("macOS Update")
+                    Text(nudge_prefs?.main_title_text ?? "macOS Update")
                         .font(.largeTitle)
                 }
                 .padding(.top, 10.0)
@@ -175,7 +182,7 @@ struct Nudge: View {
 
                 // Subtitle Text
                 HStack{
-                    Text("A friendly reminder from your local IT team")
+                    Text(nudge_prefs?.main_subtitle_text ?? "A friendly reminder from your local IT team")
                         .font(.body)
                 }
                 .padding(.vertical, 0.5)
@@ -183,7 +190,7 @@ struct Nudge: View {
 
                 // Update Text
                 HStack{
-                    Text("A security update is required on your machine.")
+                    Text(nudge_prefs?.paragraph_title_text ?? "A security update is required on your machine.")
                         .font(.body)
                         .fontWeight(.bold)
                 }
@@ -192,7 +199,7 @@ struct Nudge: View {
 
                 VStack(alignment: .leading) {
                     // Paragraph 1
-                    Text("A fully up-to-date device is required to ensure that IT can your accurately protect your computer.")
+                    Text(nudge_prefs?.paragraph1_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your computer.")
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
@@ -200,7 +207,7 @@ struct Nudge: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.vertical, 5.0)
                 // Paragraph 2
-                    Text("If you do not update your computer, you may lose access to some items necessary for your day-to-day tasks.")
+                    Text(nudge_prefs?.paragraph2_text ?? "If you do not update your computer, you may lose access to some items necessary for your day-to-day tasks.")
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
@@ -208,7 +215,7 @@ struct Nudge: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.vertical, 5.0)
                 // Paragraph 3
-                    Text("To begin the update, simply click on the button below and follow the provided steps.")
+                    Text(nudge_prefs?.paragraph3_text ?? "To begin the update, simply click on the button below and follow the provided steps.")
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
@@ -300,6 +307,66 @@ struct Nudge: View {
             }
             openURL(url)
         }
+// Function stuff
+
+// Setup our json structure
+struct jsonPrefs: Codable {
+    let button_title_text: String
+    let button_sub_titletext: String
+    let cut_off_date: String
+    let cut_off_date_warning: Int
+    let days_between_notifications: Int
+    let dismissal_count_threshold: Int
+    let logo_dark_path: String
+    let logo_light_path: String
+    let main_subtitle_text: String
+    let main_title_text: String
+    let minimum_os_sub_build_version: String
+    let minimum_os_version: String
+    let more_info_url: String
+    let no_timer: Bool
+    let paragraph1_text: String
+    let paragraph2_text: String
+    let paragraph3_text: String
+    let paragraph_title_text: String
+    let path_to_app: String
+    let random_delay: Bool
+    let screenshot_path: String
+    let timer_day_1: Int
+    let timer_day_3: Int
+    let timer_elapsed: Int
+    let timer_final: Int
+    let timer_initial: Int
+    let update_minor: Bool
+    let update_minor_days: Int
+}
+
+func decode(data: Data) throws -> jsonPrefs? {
+    do {
+        let decoder = JSONDecoder()
+        let data = try decoder.decode(jsonPrefs.self, from: data)
+        return data
+    } catch let error {
+        print(error)
+        return nil
+    }
+}
+
+func loadNudgePrefs() -> jsonPrefs? {
+    guard let fileURL = Bundle.main.url(forResource: "example", withExtension: "json") else {
+        print("couldn't find the file")
+        return nil
+    }
+    
+    do {
+        let content = try Data(contentsOf: fileURL)
+        let user = try decode(data: content)
+        return user
+
+    } catch let error {
+        print(error)
+        return nil
+    }
 }
 
 
