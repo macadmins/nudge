@@ -57,6 +57,7 @@ struct screenShotZoom: View {
           }
         )
         .buttonStyle(PlainButtonStyle())
+        .help("Click to close")
     }
 }
 
@@ -258,6 +259,7 @@ struct Nudge: View {
                             }.sheet(isPresented: $showSSDetail) {
                                 screenShotZoom()
                             }
+                            .help("Click to zoom into screenshot")
                         }
                         Spacer()
                     }
