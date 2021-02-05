@@ -37,3 +37,38 @@ struct osUtils {
         
         return serialNumber ?? ""
     }
+
+    func getMajorOSVersion() -> Int {
+        return ProcessInfo().operatingSystemVersion.majorVersion
+    }
+
+    func getMinorOSVersion() -> Int {
+        return ProcessInfo().operatingSystemVersion.minorVersion
+    }
+
+    func getPatchOSVersion() -> Int {
+        return ProcessInfo().operatingSystemVersion.patchVersion
+    }
+
+    // Why is there not a combined String for this?
+    func getOSVersion() -> String {
+        return String(getMajorOSVersion()) + "." + String(getMinorOSVersion()) + "." + String(getPatchOSVersion())
+    }
+
+    // Adapted from https://stackoverflow.com/a/25453654
+    func versionEqual(current_version: String, new_version: String) -> Bool {
+        return current_version.compare(new_version, options: .numeric) == .orderedSame
+    }
+    func versionGreaterThan(current_version: String, new_version: String) -> Bool {
+        return current_version.compare(new_version, options: .numeric) == .orderedDescending
+    }
+    func versionGreaterThanOrEqual(current_version: String, new_version: String) -> Bool {
+        return current_version.compare(new_version, options: .numeric) != .orderedAscending
+    }
+    func versionLessThan(current_version: String, new_version: String) -> Bool {
+        return current_version.compare(new_version, options: .numeric) == .orderedAscending
+    }
+    func versionLessThanOrEqual(current_version: String, new_version: String) -> Bool {
+        return current_version.compare(new_version, options: .numeric) != .orderedDescending
+    }
+}

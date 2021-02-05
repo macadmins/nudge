@@ -5,10 +5,12 @@
 //  Created by Erik Gomez on 2/2/21.
 //
 
+import Foundation
 import SwiftUI
 
 // Prefs
 let nudge_prefs = nudgePrefs().loadNudgePrefs()
+let minimum_os_version = nudge_prefs?.minimum_os_version
 
 // Setup Variables for light logo
 let logo_light_path = nudge_prefs?.logo_light_path ?? "/Library/nudge/Resources/company_logo_light.png"
@@ -26,6 +28,10 @@ let company_screenshot_image = createImageData(fileImagePath: company_screenshot
 // Get the default filemanager
 let fileManager = FileManager.default
 
+// HACK
+// Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail. Turn this on to override and allow preview
+let forcePreview = true
+
 // Primary Nudge UI
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
@@ -35,10 +41,10 @@ struct Nudge: View {
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
 
-    @State var days_remaining = ""
     // State variables
     @State var user_name = osUtils().getSystemConsoleUsername()
     @State var serial_number = osUtils().getSerialNumber()
+    @State var days_remaining = 0
     @State var deferral_count = 0
     @State var has_accepted_i_understand = false
     
@@ -116,7 +122,7 @@ struct Nudge: View {
                 HStack{
                     Text("Fully Updated: ")
                     Spacer()
-                    Text("No")
+                    Text(String(fullyUpdated()).capitalized)
                         .foregroundColor(.gray)
                 }
 
@@ -124,7 +130,7 @@ struct Nudge: View {
                 HStack{
                     Text("Days Remaining: ")
                     Spacer()
-                    Text(self.days_remaining)
+                    Text(String(self.days_remaining))
                         .foregroundColor(.gray)
                 }
                 .padding(.vertical, 1.0)
@@ -298,6 +304,8 @@ struct Nudge: View {
                 .padding(.leading, 25.0)
             }
             .frame(width: 550, height: 450)
+            // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
+            .onAppear(perform: nudgeStartLogic)
         }
     }
 
@@ -336,7 +344,7 @@ struct screenShotZoom: View {
 }
 
 // Xcode preview for both light and dark mode
-struct Login_Previews: PreviewProvider {
+struct Nudge_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             Nudge()
@@ -348,6 +356,21 @@ struct Login_Previews: PreviewProvider {
 }
 
 // Functions
+func fullyUpdated() -> Bool {
+    return osUtils().versionGreaterThanOrEqual(current_version: osUtils().getOSVersion(), new_version: nudge_prefs?.minimum_os_version ?? "0.0.0")
+}
+
+// Start doing a basic check
+func nudgeStartLogic() {
+    if fullyUpdated() {
+        if forcePreview {
+            return
+        } else {
+            AppKit.NSApp.terminate(nil)
+        }
+    }
+}
+
 func createImageData(fileImagePath: String) -> NSImage {
     let urlPath = NSURL(fileURLWithPath: fileImagePath)
     let imageData:NSData = NSData(contentsOf: urlPath as URL)!
