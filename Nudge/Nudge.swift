@@ -35,6 +35,31 @@ let company_screenshot_image = NSImage(data: company_screenshot_data as Data)
 // Get the default filemanager
 let fileManager = FileManager.default
 
+// sheet view for screenshot
+struct screenShotZoom: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
+            if fileManager.fileExists(atPath: company_screenshot_path!) {
+                Image(nsImage: company_screenshot_image!)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .frame(width: 512, height: 512)
+            } else {
+                Image("CompanyScreenshotIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .frame(width: 512, height: 512)
+            }
+          }
+        )
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
@@ -50,6 +75,9 @@ struct Nudge: View {
     @State var days_remaining = "14"
     @State var deferral_count = "0"
     @State var has_accepted_i_understand = false
+    
+    // Modal view for screenshot
+    @State var showSSDetail = false
 
     // Nudge UI
     var body: some View {
@@ -176,8 +204,7 @@ struct Nudge: View {
                     Text(nudge_prefs?.main_title_text ?? "macOS Update")
                         .font(.largeTitle)
                 }
-                .padding(.top, 10.0)
-                .padding(.bottom, 20.0)
+                .padding(.top, 5.0)
                 .padding(.leading, 15.0)
 
                 // Subtitle Text
@@ -198,58 +225,64 @@ struct Nudge: View {
                 .padding(.leading, 15.0)
 
                 VStack(alignment: .leading) {
-                    // Paragraph 1
-                    Text(nudge_prefs?.paragraph1_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your computer.")
+                    // Paragraph
+                    Text(nudge_prefs?.paragraph_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your computer. \n\nIf you do not update your computer, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.")
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.vertical, 5.0)
-                // Paragraph 2
-                    Text(nudge_prefs?.paragraph2_text ?? "If you do not update your computer, you may lose access to some items necessary for your day-to-day tasks.")
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.vertical, 5.0)
-                // Paragraph 3
-                    Text(nudge_prefs?.paragraph3_text ?? "To begin the update, simply click on the button below and follow the provided steps.")
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
 
                 // Company Screenshot
                     HStack{
                         Spacer()
-                        if fileManager.fileExists(atPath: company_screenshot_path!) {
-                            Image(nsImage: company_screenshot_image!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding()
-                                .frame(width: 128, height: 128)
-                        } else {
-                            Image("CompanyScreenshotIcon")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding()
-                                .frame(width: 128, height: 128)
+                        Group{
+                            if fileManager.fileExists(atPath: company_screenshot_path!) {
+                                Image(nsImage: company_screenshot_image!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding()
+                                    .frame(width: 128, height: 128)
+                            } else {
+                                Image("CompanyScreenshotIcon")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding()
+                                    .frame(width: 128, height: 128)
+                            }
+                            Button(action: {
+                                self.showSSDetail.toggle()
+                            }) {
+                                Image(systemName: "plus.magnifyingglass")
+                            }.sheet(isPresented: $showSSDetail) {
+                                screenShotZoom()
+                            }
                         }
                         Spacer()
-                        }
+                    }
                 }
-                .padding(.vertical,10.0)
+                .padding(.vertical, 1.0)
                 .padding(.leading, 15.0)
                 .frame(width: 520)
 
                 // Force buttons to the bottom with a spacer
                 Spacer()
+                VStack(alignment: .leading) {
+                    Text(nudge_prefs?.button_title_text ?? "Ready to start the update?")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(nudge_prefs?.button_sub_titletext ?? "Click on the button below.")
+                        .font(.body)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.leading, 15.0)
+                .frame(width: 520)
 
                 // Bottom buttons
                 HStack(alignment: .top){
+                    // Update Machine button
                     Button(action: updateMachine, label: {
                         Text("Update Machine")
                       }
@@ -295,7 +328,7 @@ struct Nudge: View {
                     }
                 }
                 .padding(.bottom, 15.0)
-                .padding(.leading, 15.0)
+                .padding(.leading, 25.0)
             }
             .frame(width: 550, height: 450)
         }
@@ -335,9 +368,7 @@ struct jsonPrefs: Codable {
     let minimum_os_version: String
     let more_info_url: String
     let no_timer: Bool
-    let paragraph1_text: String
-    let paragraph2_text: String
-    let paragraph3_text: String
+    let paragraph_text: String
     let paragraph_title_text: String
     let path_to_app: String
     let random_delay: Bool
