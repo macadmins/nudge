@@ -142,12 +142,12 @@ struct Nudge: View {
                     .padding(.vertical, 1.0)
 
                     // Fully Updated
-                    HStack{
-                        Text("Fully Updated: ")
-                        Spacer()
-                        Text(String(fullyUpdated()).capitalized)
-                            .foregroundColor(.gray)
-                    }.padding(.vertical, 1.0)
+//                    HStack{
+//                        Text("Fully Updated: ")
+//                        Spacer()
+//                        Text(String(fullyUpdated()).capitalized)
+//                            .foregroundColor(.gray)
+//                    }.padding(.vertical, 1.0)
 
                     // Days Remaining
                     HStack{
