@@ -26,32 +26,7 @@ let company_screenshot_image = createImageData(fileImagePath: company_screenshot
 // Get the default filemanager
 let fileManager = FileManager.default
 
-// sheet view for screenshot
-struct screenShotZoom: View {
-    @Environment(\.presentationMode) var presentationMode
-    
-    var body: some View {
-        Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-            if fileManager.fileExists(atPath: company_screenshot_path!) {
-                Image(nsImage: company_screenshot_image!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .frame(width: 512, height: 512)
-            } else {
-                Image("CompanyScreenshotIcon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .frame(width: 512, height: 512)
-            }
-          }
-        )
-        .buttonStyle(PlainButtonStyle())
-        .help("Click to close")
-    }
-}
-
+// Primary Nudge UI
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
@@ -331,18 +306,37 @@ struct Nudge: View {
         guard let url = URL(string: "https://www.google.com") else {
             return
         }
-        print(url)
         openURL(url)
     }
-    
-    func updateDevice() {
-        NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
-        // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
-        // NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
-    }
-
 }
 
+// Sheet view for Screenshot zoom
+struct screenShotZoom: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
+            if fileManager.fileExists(atPath: company_screenshot_path) {
+                Image(nsImage: company_screenshot_image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .frame(width: 512, height: 512)
+            } else {
+                Image("CompanyScreenshotIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .frame(width: 512, height: 512)
+            }
+          }
+        )
+        .buttonStyle(PlainButtonStyle())
+        .help("Click to close")
+    }
+}
+
+// Xcode preview for both light and dark mode
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -359,4 +353,10 @@ func createImageData(fileImagePath: String) -> NSImage {
     let urlPath = NSURL(fileURLWithPath: fileImagePath)
     let imageData:NSData = NSData(contentsOf: urlPath as URL)!
     return NSImage(data: imageData as Data)!
+}
+
+func updateDevice() {
+    NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
+    // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+    // NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
 }
