@@ -280,7 +280,7 @@ struct Nudge: View {
                     
                     // OK button
                     if self.has_accepted_i_understand {
-                        Button(action: {exit(0)}, label: {
+                        Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                             Text("OK")
                           }
                         )
