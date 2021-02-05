@@ -7,8 +7,19 @@
 
 import SwiftUI
 
+// Thanks you ftiff
+// Create an AppDelegate so the close button will terminate Nudge
+// Technically not needed because we are now hiding those buttons
+
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
+    }
+}
+
 @main
 struct NudgeApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
             ContentView()
