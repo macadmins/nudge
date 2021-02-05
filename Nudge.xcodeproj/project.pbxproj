@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		639E194A25CC7F13008F618B /* example.json in Resources */ = {isa = PBXBuildFile; fileRef = 639E194925CC7F13008F618B /* example.json */; };
+		639E198225CD885D008F618B /* nudgePrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* nudgePrefs.swift */; };
 		63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* NudgeApp.swift */; };
 		63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E425C9E9A400236281 /* ContentView.swift */; };
 		63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E625C9E9A500236281 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		639E194925CC7F13008F618B /* example.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example.json; sourceTree = "<group>"; };
+		639E198125CD885D008F618B /* nudgePrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nudgePrefs.swift; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D0E225C9E9A400236281 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
 		63D7D0E425C9E9A400236281 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				63D7D0EC25C9E9A500236281 /* Nudge.entitlements */,
 				63D7D0E825C9E9A500236281 /* Preview Content */,
 				639E194925CC7F13008F618B /* example.json */,
+				639E198125CD885D008F618B /* nudgePrefs.swift */,
 			);
 			path = Nudge;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			files = (
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
 				63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */,
+				639E198225CD885D008F618B /* nudgePrefs.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
