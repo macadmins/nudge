@@ -28,10 +28,6 @@ let company_screenshot_image = createImageData(fileImagePath: company_screenshot
 // Get the default filemanager
 let fileManager = FileManager.default
 
-// HACK
-// Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail. Turn this on to override and allow preview
-let forcePreview = true
-
 // Primary Nudge UI
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
@@ -343,6 +339,8 @@ struct screenShotZoom: View {
     }
 }
 
+
+#if DEBUG
 // Xcode preview for both light and dark mode
 struct Nudge_Previews: PreviewProvider {
     static var previews: some View {
@@ -354,6 +352,7 @@ struct Nudge_Previews: PreviewProvider {
         }
     }
 }
+#endif
 
 // Functions
 func fullyUpdated() -> Bool {
@@ -363,7 +362,9 @@ func fullyUpdated() -> Bool {
 // Start doing a basic check
 func nudgeStartLogic() {
     if fullyUpdated() {
-        if forcePreview {
+        // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
+        // https://zacwhite.com/2020/detecting-swiftui-previews/
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
             AppKit.NSApp.terminate(nil)
