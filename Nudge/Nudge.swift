@@ -14,16 +14,16 @@ let minimum_os_version = nudge_prefs?.minimum_os_version ?? "0.0.0"
 let current_os_version = osUtils().getOSVersion()
 
 // Setup Variables for light logo
-let logo_light_path = nudge_prefs?.logo_light_path ?? "/Library/nudge/Resources/company_logo_light.png"
+let logo_light_path = nudge_prefs?.logo_light_path ?? ""
 let logo_light_image = createImageData(fileImagePath: logo_light_path)
 
 // Setup Variables for dark logo
-let logo_dark_path = nudge_prefs?.logo_dark_path ?? "/Library/nudge/Resources/company_logo_dark.png"
+let logo_dark_path = nudge_prefs?.logo_dark_path ?? ""
 let logo_dark_image = createImageData(fileImagePath: logo_dark_path)
 
 // Setup Variables for company screenshot
 // TODO: Call icns from the system rather than bring in a png as an asset for default
-let company_screenshot_path = nudge_prefs?.screenshot_path ?? "/Library/nudge/Resources/company_screenshot.png"
+let company_screenshot_path = nudge_prefs?.screenshot_path ?? ""
 let company_screenshot_image = createImageData(fileImagePath: company_screenshot_path)
 
 // More Info URL
@@ -69,6 +69,7 @@ struct Nudge: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 128, height: 128)
+                            .padding(.bottom, 10.0)
                     }
                 } else {
                     if fileManager.fileExists(atPath: logo_light_path) {
@@ -81,6 +82,7 @@ struct Nudge: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 128, height: 128)
+                            .padding(.bottom, 10.0)
                     }
                 }
 
