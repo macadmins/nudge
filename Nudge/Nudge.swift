@@ -10,25 +10,18 @@ import SwiftUI
 // Prefs
 let nudge_prefs = nudgePrefs().loadNudgePrefs()
 
-// All of this image stuff needs to be refactored.
 // Setup Variables for light logo
-let logo_light_url_path = NSURL(fileURLWithPath: nudge_prefs?.logo_light_path ?? "/Library/nudge/Resources/company_logo_light.png")
-let logo_light_path = logo_light_url_path.path
-let logo_light_data:NSData = NSData(contentsOf: logo_light_url_path as URL)!
-let logo_light_image = NSImage(data: logo_light_data as Data)
+let logo_light_path = nudge_prefs?.logo_light_path ?? "/Library/nudge/Resources/company_logo_light.png"
+let logo_light_image = createImageData(fileImagePath: logo_light_path)
 
 // Setup Variables for dark logo
-let logo_dark_url_path = NSURL(fileURLWithPath: nudge_prefs?.logo_dark_path ?? "/Library/nudge/Resources/company_logo_dark.png")
-let logo_dark_path = logo_dark_url_path.path
-let logo_dark_data:NSData = NSData(contentsOf: logo_dark_url_path as URL)!
-let logo_dark_image = NSImage(data: logo_dark_data as Data)
+let logo_dark_path = nudge_prefs?.logo_dark_path ?? "/Library/nudge/Resources/company_logo_dark.png"
+let logo_dark_image = createImageData(fileImagePath: logo_dark_path)
 
 // Setup Variables for company screenshot
 // TODO: Call icns from the system rather than bring in a png as an asset for default
-let company_screenshot_url_path = NSURL(fileURLWithPath: nudge_prefs?.screenshot_path ?? "/Library/nudge/Resources/company_screenshot.png")
-let company_screenshot_path = company_screenshot_url_path.path
-let company_screenshot_data:NSData = NSData(contentsOf: company_screenshot_url_path as URL)!
-let company_screenshot_image = NSImage(data: company_screenshot_data as Data)
+let company_screenshot_path = nudge_prefs?.screenshot_path ?? "/Library/nudge/Resources/company_screenshot.png"
+let company_screenshot_image = createImageData(fileImagePath: company_screenshot_path)
 
 // Get the default filemanager
 let fileManager = FileManager.default
@@ -86,8 +79,8 @@ struct Nudge: View {
             VStack{
                 // Company Logo
                 if colorScheme == .dark {
-                    if fileManager.fileExists(atPath: logo_dark_path!) {
-                        Image(nsImage: logo_dark_image!)
+                    if fileManager.fileExists(atPath: logo_dark_path) {
+                        Image(nsImage: logo_dark_image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding()
@@ -102,8 +95,8 @@ struct Nudge: View {
                             .padding(.vertical, 1.0)
                     }
                 } else {
-                    if fileManager.fileExists(atPath: logo_light_path!) {
-                        Image(nsImage: logo_light_image!)
+                    if fileManager.fileExists(atPath: logo_light_path) {
+                        Image(nsImage: logo_light_image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding()
@@ -237,8 +230,8 @@ struct Nudge: View {
                     HStack{
                         Spacer()
                         Group{
-                            if fileManager.fileExists(atPath: company_screenshot_path!) {
-                                Image(nsImage: company_screenshot_image!)
+                            if fileManager.fileExists(atPath: company_screenshot_path) {
+                                Image(nsImage: company_screenshot_image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .padding()
@@ -359,4 +352,11 @@ struct Login_Previews: PreviewProvider {
                 .preferredColorScheme(.dark)
         }
     }
+}
+
+// Functions
+func createImageData(fileImagePath: String) -> NSImage {
+    let urlPath = NSURL(fileURLWithPath: fileImagePath)
+    let imageData:NSData = NSData(contentsOf: urlPath as URL)!
+    return NSImage(data: imageData as Data)!
 }
