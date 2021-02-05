@@ -56,7 +56,6 @@ struct Nudge: View {
     var body: some View {
         HStack(spacing: 0){
             // Left side of Nudge
-
             VStack{
                 // Company Logo
                 if colorScheme == .dark {
@@ -64,32 +63,24 @@ struct Nudge: View {
                         Image(nsImage: logo_dark_image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding()
-                            .frame(width: 160, height: 160)
-                            .padding(.vertical, 1.0)
+                            .frame(width: 128, height: 128)
                     } else {
                         Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding()
-                            .frame(width: 160, height: 160)
-                            .padding(.vertical, 1.0)
+                            .frame(width: 128, height: 128)
                     }
                 } else {
                     if fileManager.fileExists(atPath: logo_light_path) {
                         Image(nsImage: logo_light_image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding()
-                            .frame(width: 160, height: 160)
-                            .padding(.vertical, 1.0)
+                            .frame(width: 128, height: 128)
                     } else {
                         Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .padding()
-                            .frame(width: 160, height: 160)
-                            .padding(.vertical, 1.0)
+                            .frame(width: 128, height: 128)
                     }
                 }
 
