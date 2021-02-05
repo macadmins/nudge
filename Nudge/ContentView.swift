@@ -17,6 +17,7 @@ struct ContentView: View {
             window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
             window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
             window?.center() // center
+            window?.isMovable = false // not movable
             NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
         }
         Nudge()
