@@ -415,6 +415,11 @@ func loadNudgePrefs() -> jsonPrefs? {
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Nudge()
+        Group {
+            Nudge()
+                .preferredColorScheme(.light)
+            Nudge()
+                .preferredColorScheme(.dark)
+        }
     }
 }
