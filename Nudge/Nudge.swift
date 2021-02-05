@@ -10,7 +10,8 @@ import SwiftUI
 
 // Prefs
 let nudge_prefs = nudgePrefs().loadNudgePrefs()
-let minimum_os_version = nudge_prefs?.minimum_os_version
+let minimum_os_version = nudge_prefs?.minimum_os_version ?? "0.0.0"
+let current_os_version = osUtils().getOSVersion()
 
 // Setup Variables for light logo
 let logo_light_path = nudge_prefs?.logo_light_path ?? "/Library/nudge/Resources/company_logo_light.png"
@@ -24,6 +25,9 @@ let logo_dark_image = createImageData(fileImagePath: logo_dark_path)
 // TODO: Call icns from the system rather than bring in a png as an asset for default
 let company_screenshot_path = nudge_prefs?.screenshot_path ?? "/Library/nudge/Resources/company_screenshot.png"
 let company_screenshot_image = createImageData(fileImagePath: company_screenshot_path)
+
+// More Info URL
+let more_info_url = nudge_prefs?.more_info_url ?? ""
 
 // Get the default filemanager
 let fileManager = FileManager.default
@@ -96,57 +100,78 @@ struct Nudge: View {
                         .frame(height: 1)
                 }
                 .frame(width:215)
+                
+                // Can only have 10 objects per stack unless you hack it and use groups
+                Group {
+                    // Required OS Version
+                    HStack{
+                        Text("Required OS Version: ")
+                            .fontWeight(.bold)
+                        Spacer()
+                        Text(String(minimum_os_version).capitalized)
+                            .foregroundColor(.gray)
+                            .fontWeight(.bold)
+                    }.padding(.vertical, 1.0)
+                    
+                    // Current OS Version
+                    HStack{
+                        Text("Current OS Verion: ")
+                        Spacer()
+                        Text(String(current_os_version).capitalized)
+                            .foregroundColor(.gray)
+                    }.padding(.vertical, 1.0)
+                    
+                    // Username
+                    HStack{
+                        Text("Username: ")
+                        Spacer()
+                        Text(self.user_name)
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.vertical, 1.0)
 
-                // Username
-                HStack{
-                    Text("Username: ")
-                    Spacer()
-                    Text(self.user_name)
-                        .foregroundColor(.gray)
-                }
-                .padding(.vertical, 1.0)
+                    // Serial Number
+                    HStack{
+                        Text("Serial Number: ")
+                        Spacer()
+                        Text(self.serial_number)
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.vertical, 1.0)
 
-                // Serial Number
-                HStack{
-                    Text("Serial Number: ")
-                    Spacer()
-                    Text(self.serial_number)
-                        .foregroundColor(.gray)
-                }
-                .padding(.vertical, 1.0)
+                    // Architecture
+                    HStack{
+                        Text("Architecture: ")
+                        Spacer()
+                        Text(self.cpu_type)
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.vertical, 1.0)
 
-                // Architecture
-                HStack{
-                    Text("Architecture: ")
-                    Spacer()
-                    Text(self.cpu_type)
-                        .foregroundColor(.gray)
-                }
-                .padding(.vertical, 1.0)
+                    // Fully Updated
+                    HStack{
+                        Text("Fully Updated: ")
+                        Spacer()
+                        Text(String(fullyUpdated()).capitalized)
+                            .foregroundColor(.gray)
+                    }.padding(.vertical, 1.0)
 
-                // Fully Updated
-                HStack{
-                    Text("Fully Updated: ")
-                    Spacer()
-                    Text(String(fullyUpdated()).capitalized)
-                        .foregroundColor(.gray)
-                }
+                    // Days Remaining
+                    HStack{
+                        Text("Days Remaining: ")
+                        Spacer()
+                        Text(String(self.days_remaining))
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.vertical, 1.0)
 
-                // Days Remaining
-                HStack{
-                    Text("Days Remaining: ")
-                    Spacer()
-                    Text(String(self.days_remaining))
-                        .foregroundColor(.gray)
-                }
-                .padding(.vertical, 1.0)
-
-                // Deferral Count
-                HStack{
-                    Text("Deferral Count: ")
-                    Spacer()
-                    Text(String(self.deferral_count))
-                        .foregroundColor(.gray)
+                    // Deferral Count
+                    HStack{
+                        Text("Deferral Count: ")
+                        Spacer()
+                        Text(String(self.deferral_count))
+                            .foregroundColor(.gray)
+                    }
                 }
 
                 // Force buttons to the bottom with a spacer
@@ -154,11 +179,13 @@ struct Nudge: View {
 
                 // More Info
                 // https://developer.apple.com/documentation/swiftui/openurlaction
-                HStack(alignment: .top){
-                    Button(action: moreInfo, label: {
-                        Text("More Info")
-                      }
-                    )
+                HStack(alignment: .top) {
+                    if more_info_url != "" {
+                        Button(action: moreInfo, label: {
+                            Text("More Info")
+                          }
+                        )
+                    }
                     // Force the button to the left with a spacer
                     Spacer()
                 }
@@ -316,9 +343,11 @@ struct Nudge: View {
     }
 
     func moreInfo() {
-        guard let url = URL(string: "https://www.google.com") else {
+        let url_info = more_info_url
+        guard let url = URL(string: url_info) else {
             return
         }
+        print(url)
         openURL(url)
     }
 }
@@ -366,7 +395,7 @@ struct Nudge_Previews: PreviewProvider {
 
 // Functions
 func fullyUpdated() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: osUtils().getOSVersion(), new_version: nudge_prefs?.minimum_os_version ?? "0.0.0")
+    return osUtils().versionGreaterThanOrEqual(current_version: current_os_version, new_version: minimum_os_version)
 }
 
 // Start doing a basic check

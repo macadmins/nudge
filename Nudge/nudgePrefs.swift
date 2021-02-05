@@ -50,7 +50,6 @@ struct jsonPrefs: Codable {
     let logo_light_path: String
     let main_subtitle_text: String
     let main_title_text: String
-    let minimum_os_sub_build_version: String
     let minimum_os_version: String
     let more_info_url: String
     let no_timer: Bool
