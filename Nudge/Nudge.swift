@@ -176,8 +176,7 @@ struct Nudge: View {
                     Text(nudge_prefs?.main_title_text ?? "macOS Update")
                         .font(.largeTitle)
                 }
-                .padding(.top, 10.0)
-                .padding(.bottom, 20.0)
+                .padding(.top, 5.0)
                 .padding(.leading, 15.0)
 
                 // Subtitle Text
@@ -198,29 +197,14 @@ struct Nudge: View {
                 .padding(.leading, 15.0)
 
                 VStack(alignment: .leading) {
-                    // Paragraph 1
-                    Text(nudge_prefs?.paragraph1_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your computer.")
+                    // Paragraph
+                    Text(nudge_prefs?.paragraph_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your computer. \n\nIf you do not update your computer, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.")
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.vertical, 5.0)
-                // Paragraph 2
-                    Text(nudge_prefs?.paragraph2_text ?? "If you do not update your computer, you may lose access to some items necessary for your day-to-day tasks.")
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.vertical, 5.0)
-                // Paragraph 3
-                    Text(nudge_prefs?.paragraph3_text ?? "To begin the update, simply click on the button below and follow the provided steps.")
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
 
                 // Company Screenshot
                     HStack{
@@ -335,9 +319,7 @@ struct jsonPrefs: Codable {
     let minimum_os_version: String
     let more_info_url: String
     let no_timer: Bool
-    let paragraph1_text: String
-    let paragraph2_text: String
-    let paragraph3_text: String
+    let paragraph_text: String
     let paragraph_title_text: String
     let path_to_app: String
     let random_delay: Bool
