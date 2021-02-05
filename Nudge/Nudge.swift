@@ -37,10 +37,10 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // Hardcoded (for now) properties
-    @State var deferral_count = "0"
     @State var user_name = getSystemConsoleUsername()
     @State var serial_number = getSerialNumber()
     @State var days_remaining = ""
+    @State var deferral_count = 0
     @State var has_accepted_i_understand = false
     
     // Modal view for screenshot
@@ -134,7 +134,7 @@ struct Nudge: View {
                 HStack{
                     Text("Deferral Count: ")
                     Spacer()
-                    Text(self.deferral_count)
+                    Text(String(self.deferral_count))
                         .foregroundColor(.gray)
                 }
 
