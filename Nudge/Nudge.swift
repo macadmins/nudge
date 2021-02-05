@@ -37,10 +37,10 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // Hardcoded (for now) properties
-    @State var days_remaining = "14"
     @State var deferral_count = "0"
     @State var user_name = getSystemConsoleUsername()
     @State var serial_number = getSerialNumber()
+    @State var days_remaining = ""
     @State var has_accepted_i_understand = false
     
     // Modal view for screenshot
