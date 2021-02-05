@@ -37,11 +37,11 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // Hardcoded (for now) properties
-    @State var serial_number = "C00000000000"
     @State var fully_updated = "No"
     @State var days_remaining = "14"
     @State var deferral_count = "0"
     @State var user_name = getSystemConsoleUsername()
+    @State var serial_number = getSerialNumber()
     @State var has_accepted_i_understand = false
     
     // Modal view for screenshot
@@ -367,4 +367,25 @@ func getSystemConsoleUsername() -> String {
     var uid: uid_t = 0
     var gid: gid_t = 0
     return SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
+}
+
+// https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
+func getSerialNumber() -> String {
+    var serialNumber: String? {
+        let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice") )
+        
+        guard platformExpert > 0 else {
+            return nil
+        }
+        
+        guard let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
+            return nil
+        }
+        
+        IOObjectRelease(platformExpert)
+
+        return serialNumber
+    }
+    
+    return serialNumber ?? ""
 }
