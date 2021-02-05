@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SystemConfiguration
 
 // Prefs
 let nudge_prefs = nudgePrefs().loadNudgePrefs()
@@ -36,11 +37,11 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // Hardcoded (for now) properties
-    @State var user_name = "erikg"
     @State var serial_number = "C00000000000"
     @State var fully_updated = "No"
     @State var days_remaining = "14"
     @State var deferral_count = "0"
+    @State var user_name = getSystemConsoleUsername()
     @State var has_accepted_i_understand = false
     
     // Modal view for screenshot
@@ -359,4 +360,11 @@ func updateDevice() {
     NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
     // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
     // NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+}
+
+// https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
+func getSystemConsoleUsername() -> String {
+    var uid: uid_t = 0
+    var gid: gid_t = 0
+    return SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
 }
