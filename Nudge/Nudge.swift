@@ -37,7 +37,6 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // Hardcoded (for now) properties
-    @State var fully_updated = "No"
     @State var days_remaining = "14"
     @State var deferral_count = "0"
     @State var user_name = getSystemConsoleUsername()
@@ -118,7 +117,7 @@ struct Nudge: View {
                 HStack{
                     Text("Fully Updated: ")
                     Spacer()
-                    Text(self.fully_updated)
+                    Text("No")
                         .foregroundColor(.gray)
                 }
 
