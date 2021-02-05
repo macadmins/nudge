@@ -71,4 +71,44 @@ struct osUtils {
     func versionLessThanOrEqual(current_version: String, new_version: String) -> Bool {
         return current_version.compare(new_version, options: .numeric) != .orderedDescending
     }
+    
+    // https://stackoverflow.com/a/63539782
+    func getCPUTypeInt() -> Int {
+        var cputype = UInt32(0)
+        var size = cputype.byteWidth
+        let result = sysctlbyname("hw.cputype", &cputype, &size, nil, 0)
+        if result == -1 {
+            if (errno == ENOENT){
+                return 0
+            }
+            return -1
+        }
+        return Int(cputype)
+    }
+
+    func getCPUTypeString() -> String {
+        let type: Int = getCPUTypeInt()
+        if type == -1 {
+            return "error in CPU type"
+        }
+        
+        let cpu_arch = type & 0xff // mask for architecture bits
+        if cpu_arch == cpu_type_t(7){
+            return "Intel"
+        }
+        if cpu_arch == cpu_type_t(12){
+            return "Apple Silicon"
+        }
+        return "unknown"
+    }
+}
+
+// https://stackoverflow.com/a/63539782
+extension FixedWidthInteger {
+    var byteWidth:Int {
+        return self.bitWidth/UInt8.bitWidth
+    }
+    static var byteWidth:Int {
+        return Self.bitWidth/UInt8.bitWidth
+    }
 }

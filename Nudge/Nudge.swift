@@ -40,6 +40,7 @@ struct Nudge: View {
     // State variables
     @State var user_name = osUtils().getSystemConsoleUsername()
     @State var serial_number = osUtils().getSerialNumber()
+    @State var cpu_type = osUtils().getCPUTypeString()
     @State var days_remaining = 0
     @State var deferral_count = 0
     @State var has_accepted_i_understand = false
@@ -110,6 +111,15 @@ struct Nudge: View {
                     Text("Serial Number: ")
                     Spacer()
                     Text(self.serial_number)
+                        .foregroundColor(.gray)
+                }
+                .padding(.vertical, 1.0)
+
+                // Architecture
+                HStack{
+                    Text("Architecture: ")
+                    Spacer()
+                    Text(self.cpu_type)
                         .foregroundColor(.gray)
                 }
                 .padding(.vertical, 1.0)
