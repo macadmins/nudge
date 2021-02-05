@@ -108,7 +108,7 @@ struct Nudge: View {
                     
                     // Current OS Version
                     HStack{
-                        Text("Current OS Verion: ")
+                        Text("Current OS Version: ")
                         Spacer()
                         Text(String(current_os_version).capitalized)
                             .foregroundColor(.gray)
