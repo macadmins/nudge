@@ -218,7 +218,7 @@ struct Nudge: View {
 
                 // Update Text
                 HStack{
-                    Text(nudge_prefs?.paragraph_title_text ?? "A security update is required on your machine.")
+                    Text(nudge_prefs?.paragraph_title_text ?? "A security update is required on your device.")
                         .font(.body)
                         .fontWeight(.bold)
                 }
@@ -227,7 +227,7 @@ struct Nudge: View {
 
                 VStack(alignment: .leading) {
                     // Paragraph
-                    Text(nudge_prefs?.paragraph_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your computer. \n\nIf you do not update your computer, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.")
+                    Text(nudge_prefs?.paragraph_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.")
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
@@ -284,9 +284,9 @@ struct Nudge: View {
 
                 // Bottom buttons
                 HStack(alignment: .top){
-                    // Update Machine button
-                    Button(action: updateMachine, label: {
-                        Text("Update Machine")
+                    // Update Device button
+                    Button(action: updateDevice, label: {
+                        Text("Update Device")
                       }
                     )
 
@@ -344,7 +344,7 @@ struct Nudge: View {
         openURL(url)
     }
     
-    func updateMachine() {
+    func updateDevice() {
         NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
         // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         // NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
