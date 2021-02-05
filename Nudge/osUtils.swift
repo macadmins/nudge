@@ -72,6 +72,12 @@ struct osUtils {
         return current_version.compare(new_version, options: .numeric) != .orderedDescending
     }
     
+    // Bring it front
+    func bringNudgeToFront() {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.mainWindow?.makeKeyAndOrderFront(self)
+    }
+    
     // https://stackoverflow.com/a/63539782
     func getCPUTypeInt() -> Int {
         var cputype = UInt32(0)
