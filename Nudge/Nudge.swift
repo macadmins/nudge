@@ -263,7 +263,9 @@ struct Nudge: View {
                                 self.showSSDetail.toggle()
                             }) {
                                 Image(systemName: "plus.magnifyingglass")
-                            }.sheet(isPresented: $showSSDetail) {
+                            }
+                            .padding(.leading, -15.0)
+                            .sheet(isPresented: $showSSDetail) {
                                 screenShotZoom()
                             }
                             .help("Click to zoom into screenshot")
