@@ -405,9 +405,9 @@ struct screenShotZoom: View {
 struct Nudge_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Nudge()
+            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
                 .preferredColorScheme(.light)
-            Nudge()
+            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
                 .preferredColorScheme(.dark)
         }
     }
