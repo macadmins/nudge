@@ -16,14 +16,20 @@ struct osUtils {
     
     func getCutOffDate() -> Date {
         let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd-hh:mm:ss"
+        dateFormatterGet.dateFormat = "yyyy-MM-dd-HH:mm:ss"
         let nudge_prefs = nudgePrefs().loadNudgePrefs()
         let cutOffString = nudge_prefs?.cut_off_date!
         return dateFormatterGet.date(from: cutOffString!)!
     }
     
     func pastCutOffDate() -> Bool {
-        return getCutOffDate() > getCurrentDate()
+        return getCurrentDate() > getCutOffDate()
+    }
+    
+    func requireDualCloseButtons() -> Bool {
+        let nudge_prefs = nudgePrefs().loadNudgePrefs()
+        let cutOffStringWarning = nudge_prefs?.dual_close_trigger_threshold!
+        return cutOffStringWarning! >= numberOfDaysBetween()
     }
     
     func numberOfDaysBetween() -> Int {

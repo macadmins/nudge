@@ -48,6 +48,7 @@ struct Nudge: View {
     @State var serial_number = osUtils().getSerialNumber()
     @State var cpu_type = osUtils().getCPUTypeString()
     @State var days_remaining = osUtils().numberOfDaysBetween()
+    @State var require_dual_close_buttons = osUtils().requireDualCloseButtons()
     @State var deferral_count = 0
     @State var past_cut_off_date = osUtils().pastCutOffDate()
     @State var has_accepted_i_understand = false
@@ -294,44 +295,63 @@ struct Nudge: View {
                         Text("Update Device")
                       }
                     )
-
+                    
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    // I understand button
-                    if self.has_accepted_i_understand {
-                        Button(action: {}, label: {
-                            Text("I understand")
-                          }
-                        )
-                        .hidden()
-                        .padding(.trailing, 10.0)
-                    } else {
-                        Button(action: {
-                            has_accepted_i_understand = true
-                        }, label: {
-                            Text("I understand")
-                          }
-                        )
-                        .padding(.trailing, 10.0)
-                    }
+                    if !past_cut_off_date {
+                        // I understand button
+                        if require_dual_close_buttons {
+                            if self.has_accepted_i_understand {
+                                Button(action: {}, label: {
+                                    Text("I understand")
+                                  }
+                                )
+                                .hidden()
+                                .padding(.trailing, 10.0)
+                            } else {
+                                Button(action: {
+                                    has_accepted_i_understand = true
+                                }, label: {
+                                    Text("I understand")
+                                  }
+                                )
+                                .padding(.trailing, 10.0)
+                            }
+                        } else {
+                            Button(action: {}, label: {
+                                Text("I understand")
+                              }
+                            )
+                            .hidden()
+                            .padding(.trailing, 10.0)
+                        }
                     
-                    // OK button
-                    if self.has_accepted_i_understand {
-                        Button(action: {AppKit.NSApp.terminate(nil)}, label: {
-                            Text("OK")
-                          }
-                        )
-                        .padding(.trailing, 20.0)
-                    } else {
-                        Button(action: {
-                            has_accepted_i_understand = true
-                        }, label: {
-                            Text("OK")
-                          }
-                        )
-                        .hidden()
-                        .padding(.trailing, 20.0)
+                        // OK button
+                        if require_dual_close_buttons {
+                            if self.has_accepted_i_understand {
+                                Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                    Text("OK")
+                                  }
+                                )
+                                .padding(.trailing, 20.0)
+                            } else {
+                                Button(action: {
+                                    has_accepted_i_understand = true
+                                }, label: {
+                                    Text("OK")
+                                  }
+                                )
+                                .hidden()
+                                .padding(.trailing, 20.0)
+                            }
+                        } else {
+                            Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                Text("OK")
+                              }
+                            )
+                            .padding(.trailing, 20.0)
+                        }
                     }
                 }
                 .padding(.bottom, 15.0)

@@ -1,10 +1,10 @@
 {
     "button_title_text": "Ready to start the update?",
     "button_sub_titletext": "Click on the button below.",
-    "cut_off_date": "2021-01-01-00:00:00",
-    "cut_off_date_warning": 14,
+    "cut_off_date": "2021-03-01-00:00:00",
     "days_between_notifications": 0,
     "dismissal_count_threshold": 9999999,
+    "dual_close_trigger_threshold": 14,
     "logo_dark_path_disabled": "/Library/nudgeplayground/Resources/company_logo_dark.png",
     "logo_light_path_disabled": "/Library/nudgeplayground/Resources/company_logo_light.png",
     "main_subtitle_text": "A friendly reminder from your local IT team",
