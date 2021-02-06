@@ -11,6 +11,7 @@ import SwiftUI
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
 struct ContentView: View {
+    @EnvironmentObject var manager: PolicyManager
     var body: some View {
         HostingWindowFinder {window in
             window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
@@ -26,7 +27,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
     }
 }
 
