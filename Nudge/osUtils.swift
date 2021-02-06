@@ -1,5 +1,5 @@
 //
-//  osVersion.swift
+//  osUtils.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/5/21.
@@ -10,6 +10,30 @@ import Foundation
 import SystemConfiguration
 
 struct osUtils {
+    func getCurrentDate() -> Date {
+        Date()
+    }
+    
+    func getCutOffDate() -> Date {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd-hh:mm:ss"
+        let nudge_prefs = nudgePrefs().loadNudgePrefs()
+        let cutOffString = nudge_prefs?.cut_off_date!
+        return dateFormatterGet.date(from: cutOffString!)!
+    }
+    
+    func pastCutOffDate() -> Bool {
+        return getCutOffDate() > getCurrentDate()
+    }
+    
+    func numberOfDaysBetween() -> Int {
+       let currentCal = Calendar.current
+       let fromDate = currentCal.startOfDay(for: getCurrentDate())
+       let toDate = currentCal.startOfDay(for: getCutOffDate())
+       let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
+       return numberOfDays.day!
+   }
+
     // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
     func getSystemConsoleUsername() -> String {
         var uid: uid_t = 0

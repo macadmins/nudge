@@ -47,8 +47,9 @@ struct Nudge: View {
     @State var user_name = osUtils().getSystemConsoleUsername()
     @State var serial_number = osUtils().getSerialNumber()
     @State var cpu_type = osUtils().getCPUTypeString()
-    @State var days_remaining = 0
+    @State var days_remaining = osUtils().numberOfDaysBetween()
     @State var deferral_count = 0
+    @State var past_cut_off_date = osUtils().pastCutOffDate()
     @State var has_accepted_i_understand = false
     
     // Modal view for screenshot
@@ -155,8 +156,13 @@ struct Nudge: View {
                     HStack{
                         Text("Days Remaining: ")
                         Spacer()
-                        Text(String(self.days_remaining))
-                            .foregroundColor(.gray)
+                        if self.days_remaining <= 0 {
+                            Text(String(0))
+                                .foregroundColor(.gray)
+                        } else {
+                            Text(String(self.days_remaining))
+                                .foregroundColor(.gray)
+                        }
                     }
                     .padding(.vertical, 1.0)
 
