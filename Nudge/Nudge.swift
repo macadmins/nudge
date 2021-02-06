@@ -12,6 +12,8 @@ import SwiftUI
 let nudge_prefs = nudgePrefs().loadNudgePrefs()
 let minimum_os_version = nudge_prefs?.minimum_os_version ?? "0.0.0"
 let current_os_version = osUtils().getOSVersion()
+let current_major_os_version = String(osUtils().getMajorOSVersion())
+let minimum_major_os_version = osUtils().getMajorRequiredNudgeOSVersion()
 
 // Setup Variables for light logo
 let logo_light_path = nudge_prefs?.logo_light_path ?? ""
@@ -423,6 +425,10 @@ func fullyUpdated() -> Bool {
     return osUtils().versionGreaterThanOrEqual(current_version: current_os_version, new_version: minimum_os_version)
 }
 
+func requireMajorUpgrade() -> Bool {
+    return osUtils().versionGreaterThanOrEqual(current_version: current_major_os_version, new_version: minimum_os_version)
+}
+
 // Start doing a basic check
 func nudgeStartLogic() {
     if fullyUpdated() {
@@ -443,7 +449,10 @@ func createImageData(fileImagePath: String) -> NSImage {
 }
 
 func updateDevice() {
-    NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
-    // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
-    // NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+    if requireMajorUpgrade() {
+        NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
+    } else {
+        NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+//        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+    }
 }

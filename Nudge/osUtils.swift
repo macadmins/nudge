@@ -79,6 +79,12 @@ struct osUtils {
     func getPatchOSVersion() -> Int {
         return ProcessInfo().operatingSystemVersion.patchVersion
     }
+    
+    func getMajorRequiredNudgeOSVersion() -> Int {
+        let nudge_prefs = nudgePrefs().loadNudgePrefs()
+        let parts = nudge_prefs?.minimum_os_version!.split(separator: ".", omittingEmptySubsequences: false)
+        return Int(parts![0])!
+    }
 
     // Why is there not a combined String for this?
     func getOSVersion() -> String {
