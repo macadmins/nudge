@@ -15,6 +15,9 @@ let current_os_version = osUtils().getOSVersion()
 let current_major_os_version = String(osUtils().getMajorOSVersion())
 let minimum_major_os_version = osUtils().getMajorRequiredNudgeOSVersion()
 
+// TODO: Move this to Groob's new stuff
+let timer_initial = Double((nudge_prefs?.timer_initial!)!)
+
 // Setup Variables for light logo
 let logo_light_path = nudge_prefs?.logo_light_path ?? ""
 let logo_light_image = createImageData(fileImagePath: logo_light_path)
@@ -57,6 +60,8 @@ struct Nudge: View {
     
     // Modal view for screenshot
     @State var showSSDetail = false
+    
+    let timer = Timer.publish(every: timer_initial, on: .main, in: .common).autoconnect()
 
     // Nudge UI
     var body: some View {
@@ -174,6 +179,11 @@ struct Nudge: View {
                         Text("Deferral Count: ")
                         Spacer()
                         Text(String(self.deferral_count))
+                            .onReceive(timer) { _ in
+                                if needToActivateNudge() {
+                                    self.deferral_count += 1
+                                }
+                            }
                             .foregroundColor(.gray)
                     }
                 }
@@ -455,4 +465,12 @@ func updateDevice() {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
 //        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
     }
+}
+
+func needToActivateNudge() -> Bool {
+    if !NSApplication.shared.isActive {
+        NSApp.activate(ignoringOtherApps: true)
+        return true
+    }
+    return false
 }
