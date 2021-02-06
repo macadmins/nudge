@@ -14,6 +14,7 @@ let minimum_os_version = nudge_prefs?.minimum_os_version ?? "0.0.0"
 let current_os_version = osUtils().getOSVersion()
 let current_major_os_version = String(osUtils().getMajorOSVersion())
 let minimum_major_os_version = osUtils().getMajorRequiredNudgeOSVersion()
+let path_to_app = nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"
 
 // TODO: Move this to Groob's new stuff
 let timer_initial = Double((nudge_prefs?.timer_initial!)!)
@@ -460,7 +461,7 @@ func createImageData(fileImagePath: String) -> NSImage {
 
 func updateDevice() {
     if requireMajorUpgrade() {
-        NSWorkspace.shared.open(URL(fileURLWithPath: nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"))
+        NSWorkspace.shared.open(URL(fileURLWithPath: path_to_app))
     } else {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
 //        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
@@ -468,7 +469,25 @@ func updateDevice() {
 }
 
 func needToActivateNudge() -> Bool {
-    if !NSApplication.shared.isActive {
+    let currentlyActive = NSApplication.shared.isActive
+    let frontmostApplication = NSWorkspace.shared.frontmostApplication
+    let acceptableApps = [
+        "com.apple.loginwindow",
+        "com.apple.systempreferences"
+    ]
+    
+    // Don't nudge if major upgrade is frontmostApplication
+    if NSURL.fileURL(withPath: path_to_app) == frontmostApplication?.bundleURL {
+        return false
+    }
+    
+    // Don't nudge if acceptable apps are frontmostApplication
+    if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
+        return false
+    }
+    
+    // If we get here, Nudge if not frontmostApplication
+    if !currentlyActive {
         NSApp.activate(ignoringOtherApps: true)
         return true
     }
