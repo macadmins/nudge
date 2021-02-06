@@ -20,9 +20,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct NudgeApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    let manager = PolicyManager()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(manager)
         }
         // Hide Title Bar
         .windowStyle(HiddenTitleBarWindowStyle())
