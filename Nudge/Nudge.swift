@@ -175,6 +175,7 @@ struct Nudge: View {
                             .foregroundColor(.gray)
                     }
                 }
+                .padding(.horizontal, 20.0)
 
                 // Force buttons to the bottom with a spacer
                 Spacer()
@@ -191,11 +192,11 @@ struct Nudge: View {
                     // Force the button to the left with a spacer
                     Spacer()
                 }
-                .padding(.bottom, 15.0)
             }
-            .padding(.horizontal, 50)
+            .padding(.bottom, 7.5)
+            .padding(.leading, -20.0)
             .frame(width: 300, height: 450)
-
+            
             // Vertical Line
             VStack{
                 Rectangle()
@@ -332,32 +333,33 @@ struct Nudge: View {
                             if self.has_accepted_i_understand {
                                 Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                                     Text("OK")
+                                        .frame(minWidth: 35.0)
                                   }
                                 )
-                                .padding(.trailing, 20.0)
                             } else {
                                 Button(action: {
                                     has_accepted_i_understand = true
                                 }, label: {
                                     Text("OK")
+                                        .frame(minWidth: 35.0)
                                   }
                                 )
                                 .hidden()
-                                .padding(.trailing, 20.0)
                             }
                         } else {
                             Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                                 Text("OK")
+                                    .frame(minWidth: 35.0)
                               }
                             )
-                            .padding(.trailing, 20.0)
                         }
                     }
                 }
-                .padding(.bottom, 15.0)
                 .padding(.leading, 25.0)
+                .padding(.trailing, -20.0)
             }
             .frame(width: 550, height: 450)
+            .padding(.bottom, 15.0)
             // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
             .onAppear(perform: nudgeStartLogic)
         }
