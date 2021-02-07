@@ -44,7 +44,7 @@ struct jsonPrefs: Codable {
     let button_sub_titletext: String?
     let cut_off_date: String?
     let days_between_notifications: Int?
-    let dismissal_count_threshold: Int?
+    let deferral_count_threshold: Int?
     let dual_close_trigger_threshold: Int?
     let logo_dark_path: String?
     let logo_light_path: String?

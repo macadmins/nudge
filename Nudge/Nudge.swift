@@ -18,6 +18,7 @@ let path_to_app = nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big S
 
 // TODO: Move this to Groob's new stuff
 let timer_initial = Double((nudge_prefs?.timer_initial!)!)
+let deferral_count_threshold = nudge_prefs?.deferral_count_threshold!
 
 // Setup Variables for light logo
 let logo_light_path = nudge_prefs?.logo_light_path ?? ""
@@ -55,9 +56,9 @@ struct Nudge: View {
     @State var cpu_type = osUtils().getCPUTypeString()
     @State var days_remaining = osUtils().numberOfDaysBetween()
     @State var require_dual_close_buttons = osUtils().requireDualCloseButtons()
-    @State var deferral_count = 0
     @State var past_cut_off_date = osUtils().pastCutOffDate()
     @State var has_accepted_i_understand = false
+    @State var deferral_count = 0
     
     // Modal view for screenshot
     @State var showSSDetail = false
@@ -181,7 +182,7 @@ struct Nudge: View {
                         Spacer()
                         Text(String(self.deferral_count))
                             .onReceive(timer) { _ in
-                                if needToActivateNudge() {
+                                if needToActivateNudge(deferral_count: self.deferral_count) {
                                     self.deferral_count += 1
                                 }
                             }
@@ -468,7 +469,7 @@ func updateDevice() {
     }
 }
 
-func needToActivateNudge() -> Bool {
+func needToActivateNudge(deferral_count: Int) -> Bool {
     let currentlyActive = NSApplication.shared.isActive
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let acceptableApps = [
@@ -478,18 +479,31 @@ func needToActivateNudge() -> Bool {
     
     // Don't nudge if major upgrade is frontmostApplication
     if NSURL.fileURL(withPath: path_to_app) == frontmostApplication?.bundleURL {
+        print("Upgrade app is currently frontmostApplication")
         return false
     }
     
     // Don't nudge if acceptable apps are frontmostApplication
     if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
+        print("An acceptable app is currently frontmostApplication")
         return false
     }
     
     // If we get here, Nudge if not frontmostApplication
     if !currentlyActive {
-        NSApp.activate(ignoringOtherApps: true)
+        // TODO: this needs to be rethought out. It's one integer behind
+        _ = deferral_count + 1
+        activateNudge()
+        if deferral_count > deferral_count_threshold!  {
+            print("Nudge deferral count over threshold")
+            updateDevice()
+        }
         return true
     }
     return false
+}
+
+func activateNudge() {
+    print("Re-activating Nudge")
+    NSApp.activate(ignoringOtherApps: true)
 }
