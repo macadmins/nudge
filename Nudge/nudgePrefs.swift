@@ -22,11 +22,25 @@ struct nudgePrefs{
     }
 
     func loadNudgePrefs() -> jsonPrefs? {
-        guard let fileURL = Bundle.main.url(forResource: "example", withExtension: "json") else {
-            print("couldn't find the file")
+        let local_url = "file:///Users/Shared/nudge.json" // Temp path for now
+        
+        var fileURL: URL
+
+        guard let fileLocalURL = URL(string: local_url) else {
+            print("Could not find the bundled json")
             return nil
         }
         
+        guard let fileBundleURL = Bundle.main.url(forResource: "example", withExtension: "json") else {
+            print("Could not find the bundled json")
+            return nil
+        }
+        
+        if FileManager.default.fileExists(atPath: fileLocalURL.path) {
+            fileURL = fileLocalURL
+        } else {
+            fileURL = fileBundleURL
+        }
         do {
             let content = try Data(contentsOf: fileURL)
             let user = try decode(data: content)
