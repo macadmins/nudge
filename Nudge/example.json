@@ -3,7 +3,7 @@
     "button_sub_titletext": "Click on the button below.",
     "cut_off_date": "2021-03-01-00:00:00",
     "days_between_notifications": 0,
-    "deferral_count_threshold": 5,
+    "deferral_count_threshold": 1,
     "dual_close_trigger_threshold": 14,
     "logo_dark_path_disabled": "/Library/nudgeplayground/Resources/company_logo_dark.png",
     "logo_light_path_disabled": "/Library/nudgeplayground/Resources/company_logo_light.png",

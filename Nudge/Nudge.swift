@@ -316,7 +316,7 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if !past_cut_off_date {
+                    if !past_cut_off_date && deferral_count_threshold! > self.deferral_count {
                         // I understand button
                         if require_dual_close_buttons {
                             if self.has_accepted_i_understand {
