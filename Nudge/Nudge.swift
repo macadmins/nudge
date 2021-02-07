@@ -427,6 +427,9 @@ struct Nudge_Previews: PreviewProvider {
                 .preferredColorScheme(.light)
             Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
                 .preferredColorScheme(.dark)
+            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
+                .preferredColorScheme(.dark)
+                .environment(\.locale, .init(identifier: "fr"))
         }
     }
 }
