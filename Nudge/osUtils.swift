@@ -10,32 +10,42 @@ import Foundation
 import SystemConfiguration
 
 struct osUtils {
+    let nudgePreferences = nudgePrefs().loadNudgePrefs()
+    
     func getCurrentDate() -> Date {
         Date()
     }
     
-    func getCutOffDate() -> Date {
-        let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd-HH:mm:ss"
-        let nudge_prefs = nudgePrefs().loadNudgePrefs()
-        let cutOffString = nudge_prefs?.cut_off_date!
-        return dateFormatterGet.date(from: cutOffString!)!
+    func getRequiredMinimumOSVersion() -> String? {
+        // TODO: Need to make this dynamic instead of hardcoded to the first value
+        return nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion
     }
     
-    func pastCutOffDate() -> Bool {
-        return getCurrentDate() > getCutOffDate()
+    func getMajorUpgradeAppPath() -> String? {
+        // TODO: Need to make this dynamic instead of hardcoded to the first value
+        return nudgePreferences!.osVersionRequirements[0].majorUpgradeAppPath
+    }
+    
+    func getRequiredInstallationDate() -> Date {
+        
+        // TODO: Need to make this dynamic instead of hardcoded to the first value
+        return nudgePreferences!.osVersionRequirements[0].requiredInstallationDate
+    }
+    
+    func pastRequiredInstallationDate() -> Bool {
+        return getCurrentDate() > getRequiredInstallationDate()
     }
     
     func requireDualCloseButtons() -> Bool {
-        let nudge_prefs = nudgePrefs().loadNudgePrefs()
-        let cutOffStringWarning = nudge_prefs?.dual_close_trigger_threshold!
-        return cutOffStringWarning! >= numberOfDaysBetween()
+        let nudgePreferences = nudgePrefs().loadNudgePrefs()
+        let approachingWindowTime = nudgePreferences!.userExperience.approachingWindowTime
+        return (approachingWindowTime / 24) >= numberOfDaysBetween()
     }
     
     func numberOfDaysBetween() -> Int {
        let currentCal = Calendar.current
        let fromDate = currentCal.startOfDay(for: getCurrentDate())
-       let toDate = currentCal.startOfDay(for: getCutOffDate())
+       let toDate = currentCal.startOfDay(for: getRequiredInstallationDate())
        let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
        return numberOfDays.day!
    }
@@ -81,9 +91,10 @@ struct osUtils {
     }
     
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let nudge_prefs = nudgePrefs().loadNudgePrefs()
-        let parts = nudge_prefs?.minimum_os_version!.split(separator: ".", omittingEmptySubsequences: false)
-        return Int(parts![0])!
+        let nudgePreferences = nudgePrefs().loadNudgePrefs()
+        // TODO: Need to make this dynamic instead of hardcoded to the first value
+        let parts = nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        return Int(parts[0])!
     }
 
     // Why is there not a combined String for this?

@@ -9,32 +9,33 @@ import Foundation
 import SwiftUI
 
 // Prefs
-let nudge_prefs = nudgePrefs().loadNudgePrefs()
-let minimum_os_version = nudge_prefs?.minimum_os_version ?? "0.0.0"
-let current_os_version = osUtils().getOSVersion()
-let current_major_os_version = String(osUtils().getMajorOSVersion())
-let minimum_major_os_version = osUtils().getMajorRequiredNudgeOSVersion()
-let path_to_app = nudge_prefs?.path_to_app ?? "/Applications/Install macOS Big Sur.app"
+let nudgePreferences = nudgePrefs().loadNudgePrefs()
+
+let minimumOSVersion = osUtils().getRequiredMinimumOSVersion()!
+let minimumMajorOSVersion = osUtils().getMajorRequiredNudgeOSVersion()
+
+let currentOSVersion = osUtils().getOSVersion()
+let currentMajorOSVersion = String(osUtils().getMajorOSVersion())
+let majorUpgradeAppPath = osUtils().getMajorUpgradeAppPath()!
 
 // TODO: Move this to Groob's new stuff
-let timer_initial = Double((nudge_prefs?.timer_initial!)!)
-let deferral_count_threshold = nudge_prefs?.deferral_count_threshold!
+let nudgeRefreshCycle = Double((nudgePreferences!.userExperience.nudgeRefreshCycle))
+let allowedDeferrals = nudgePreferences!.optionalFeatures.allowedDeferrals
 
-// Setup Variables for light logo
-let logo_light_path = nudge_prefs?.logo_light_path ?? ""
-let logo_light_image = createImageData(fileImagePath: logo_light_path)
+// Setup Variables for light icon
+let iconLightPath = nudgePreferences!.optionalFeatures.iconLightPath
+let iconLightImage = createImageData(fileImagePath: iconLightPath)
 
-// Setup Variables for dark logo
-let logo_dark_path = nudge_prefs?.logo_dark_path ?? ""
-let logo_dark_image = createImageData(fileImagePath: logo_dark_path)
+// Setup Variables for dark icon
+let iconDarkPath = nudgePreferences!.optionalFeatures.iconDarkPath
+let iconDarkImage = createImageData(fileImagePath: iconDarkPath)
 
 // Setup Variables for company screenshot
-// TODO: Call icns from the system rather than bring in a png as an asset for default
-let company_screenshot_path = nudge_prefs?.screenshot_path ?? ""
-let company_screenshot_image = createImageData(fileImagePath: company_screenshot_path)
+let screenShotPath = nudgePreferences!.optionalFeatures.screenShotPath
+let screenShotImage = createImageData(fileImagePath: screenShotPath)
 
 // More Info URL
-let more_info_url = nudge_prefs?.more_info_url ?? ""
+let informationButtonPath = nudgePreferences!.optionalFeatures.informationButtonPath
 
 // Get the default filemanager
 let fileManager = FileManager.default
@@ -51,19 +52,19 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // State variables
-    @State var user_name = osUtils().getSystemConsoleUsername()
-    @State var serial_number = osUtils().getSerialNumber()
-    @State var cpu_type = osUtils().getCPUTypeString()
-    @State var days_remaining = osUtils().numberOfDaysBetween()
-    @State var require_dual_close_buttons = osUtils().requireDualCloseButtons()
-    @State var past_cut_off_date = osUtils().pastCutOffDate()
-    @State var has_accepted_i_understand = false
-    @State var deferral_count = 0
+    @State var systemConsoleUsername = osUtils().getSystemConsoleUsername()
+    @State var serialNumber = osUtils().getSerialNumber()
+    @State var cpuType = osUtils().getCPUTypeString()
+    @State var daysRemaining = osUtils().numberOfDaysBetween()
+    @State var requireDualCloseButtons = osUtils().requireDualCloseButtons()
+    @State var pastRequiredInstallationDate = osUtils().pastRequiredInstallationDate()
+    @State var hasAcceptedIUnderstand = false
+    @State var deferralCount = 0
     
     // Modal view for screenshot
     @State var showSSDetail = false
     
-    let timer = Timer.publish(every: timer_initial, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: nudgeRefreshCycle, on: .main, in: .common).autoconnect()
 
     // Nudge UI
     var body: some View {
@@ -72,8 +73,8 @@ struct Nudge: View {
             VStack{
                 // Company Logo
                 if colorScheme == .dark {
-                    if fileManager.fileExists(atPath: logo_dark_path) {
-                        Image(nsImage: logo_dark_image)
+                    if fileManager.fileExists(atPath: iconDarkPath) {
+                        Image(nsImage: iconDarkImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 128, height: 128)
@@ -85,8 +86,8 @@ struct Nudge: View {
                             .padding(.bottom, 10.0)
                     }
                 } else {
-                    if fileManager.fileExists(atPath: logo_light_path) {
-                        Image(nsImage: logo_light_image)
+                    if fileManager.fileExists(atPath: iconLightPath) {
+                        Image(nsImage: iconLightImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 128, height: 128)
@@ -114,7 +115,7 @@ struct Nudge: View {
                         Text("Required OS Version: ")
                             .fontWeight(.bold)
                         Spacer()
-                        Text(String(minimum_os_version).capitalized)
+                        Text(String(minimumOSVersion).capitalized)
                             .foregroundColor(.gray)
                             .fontWeight(.bold)
                     }.padding(.vertical, 1.0)
@@ -131,7 +132,7 @@ struct Nudge: View {
                     HStack{
                         Text("Username: ")
                         Spacer()
-                        Text(self.user_name)
+                        Text(self.systemConsoleUsername)
                             .foregroundColor(.gray)
                     }
                     .padding(.vertical, 1.0)
@@ -140,7 +141,7 @@ struct Nudge: View {
                     HStack{
                         Text("Serial Number: ")
                         Spacer()
-                        Text(self.serial_number)
+                        Text(self.serialNumber)
                             .foregroundColor(.gray)
                     }
                     .padding(.vertical, 1.0)
@@ -149,7 +150,7 @@ struct Nudge: View {
                     HStack{
                         Text("Architecture: ")
                         Spacer()
-                        Text(self.cpu_type)
+                        Text(self.cpuType)
                             .foregroundColor(.gray)
                     }
                     .padding(.vertical, 1.0)
@@ -166,11 +167,11 @@ struct Nudge: View {
                     HStack{
                         Text("Days Remaining: ")
                         Spacer()
-                        if self.days_remaining <= 0 {
+                        if self.daysRemaining <= 0 {
                             Text(String(0))
                                 .foregroundColor(.gray)
                         } else {
-                            Text(String(self.days_remaining))
+                            Text(String(self.daysRemaining))
                                 .foregroundColor(.gray)
                         }
                     }
@@ -180,10 +181,10 @@ struct Nudge: View {
                     HStack{
                         Text("Deferral Count: ")
                         Spacer()
-                        Text(String(self.deferral_count))
+                        Text(String(self.deferralCount))
                             .onReceive(timer) { _ in
-                                if needToActivateNudge(deferral_count: self.deferral_count) {
-                                    self.deferral_count += 1
+                                if needToActivateNudge(deferralCount: self.deferralCount) {
+                                    self.deferralCount += 1
                                 }
                             }
                             .foregroundColor(.gray)
@@ -197,7 +198,7 @@ struct Nudge: View {
                 // More Info
                 // https://developer.apple.com/documentation/swiftui/openurlaction
                 HStack(alignment: .top) {
-                    if more_info_url != "" {
+                    if informationButtonPath != "" {
                         Button(action: moreInfo, label: {
                             Text("More Info")
                           }
@@ -221,25 +222,25 @@ struct Nudge: View {
 
             // Right side of Nudge
             VStack{
-                // Title Text
+                // mainHeader Text
                 HStack{
-                    Text(nudge_prefs?.main_title_text ?? "macOS Update")
+                    Text(nudgePreferences!.userInterface.updateElements.mainHeader)
                         .font(.largeTitle)
                 }
                 .padding(.top, 5.0)
                 .padding(.leading, 15.0)
 
-                // Subtitle Text
+                // subHeader Text
                 HStack{
-                    Text(nudge_prefs?.main_subtitle_text ?? "A friendly reminder from your local IT team")
+                    Text(nudgePreferences!.userInterface.updateElements.subHeader)
                         .font(.body)
                 }
                 .padding(.vertical, 0.5)
                 .padding(.leading, 15.0)
 
-                // Update Text
+                // mainContent Header
                 HStack{
-                    Text(nudge_prefs?.paragraph_title_text ?? "A security update is required on your device.")
+                    Text(nudgePreferences!.userInterface.updateElements.mainContentHeader)
                         .font(.body)
                         .fontWeight(.bold)
                 }
@@ -247,8 +248,8 @@ struct Nudge: View {
                 .padding(.leading, 15.0)
 
                 VStack(alignment: .leading) {
-                    // Paragraph
-                    Text(nudge_prefs?.paragraph_text ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.")
+                    // mainContent Text
+                    Text(nudgePreferences!.userInterface.updateElements.mainContentText)
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
@@ -260,8 +261,8 @@ struct Nudge: View {
                     HStack{
                         Spacer()
                         Group{
-                            if fileManager.fileExists(atPath: company_screenshot_path) {
-                                Image(nsImage: company_screenshot_image)
+                            if fileManager.fileExists(atPath: screenShotPath) {
+                                Image(nsImage: screenShotImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .padding()
@@ -294,11 +295,13 @@ struct Nudge: View {
                 // Force buttons to the bottom with a spacer
                 Spacer()
                 VStack(alignment: .leading) {
-                    Text(nudge_prefs?.button_title_text ?? "Ready to start the update?")
+                    // lowerHeader Text
+                    Text(nudgePreferences!.userInterface.updateElements.lowerHeader)
                         .font(.body)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(nudge_prefs?.button_sub_titletext ?? "Click on the button below.")
+                    // lowerSubHeader Text
+                    Text(nudgePreferences!.userInterface.updateElements.lowerSubHeader)
                         .font(.body)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -316,10 +319,10 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if !past_cut_off_date && deferral_count_threshold! > self.deferral_count {
+                    if !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
                         // I understand button
-                        if require_dual_close_buttons {
-                            if self.has_accepted_i_understand {
+                        if requireDualCloseButtons {
+                            if self.hasAcceptedIUnderstand {
                                 Button(action: {}, label: {
                                     Text("I understand")
                                   }
@@ -328,7 +331,7 @@ struct Nudge: View {
                                 .padding(.trailing, 10.0)
                             } else {
                                 Button(action: {
-                                    has_accepted_i_understand = true
+                                    hasAcceptedIUnderstand = true
                                 }, label: {
                                     Text("I understand")
                                   }
@@ -345,8 +348,8 @@ struct Nudge: View {
                         }
                     
                         // OK button
-                        if require_dual_close_buttons {
-                            if self.has_accepted_i_understand {
+                        if requireDualCloseButtons {
+                            if self.hasAcceptedIUnderstand {
                                 Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                                     Text("OK")
                                         .frame(minWidth: 35.0)
@@ -354,7 +357,7 @@ struct Nudge: View {
                                 )
                             } else {
                                 Button(action: {
-                                    has_accepted_i_understand = true
+                                    hasAcceptedIUnderstand = true
                                 }, label: {
                                     Text("OK")
                                         .frame(minWidth: 35.0)
@@ -382,7 +385,7 @@ struct Nudge: View {
     }
 
     func moreInfo() {
-        let url_info = more_info_url
+        let url_info = informationButtonPath
         guard let url = URL(string: url_info) else {
             return
         }
@@ -397,8 +400,8 @@ struct screenShotZoom: View {
     
     var body: some View {
         Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-            if fileManager.fileExists(atPath: company_screenshot_path) {
-                Image(nsImage: company_screenshot_image)
+            if fileManager.fileExists(atPath: screenShotPath) {
+                Image(nsImage: screenShotImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
@@ -437,11 +440,11 @@ struct Nudge_Previews: PreviewProvider {
 
 // Functions
 func fullyUpdated() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: current_os_version, new_version: minimum_os_version)
+    return osUtils().versionGreaterThanOrEqual(current_version: currentOSVersion, new_version: minimumOSVersion)
 }
 
 func requireMajorUpgrade() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: current_major_os_version, new_version: minimum_os_version)
+    return osUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: minimumOSVersion)
 }
 
 // Start doing a basic check
@@ -465,14 +468,14 @@ func createImageData(fileImagePath: String) -> NSImage {
 
 func updateDevice() {
     if requireMajorUpgrade() {
-        NSWorkspace.shared.open(URL(fileURLWithPath: path_to_app))
+        NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
     } else {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
 //        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
     }
 }
 
-func needToActivateNudge(deferral_count: Int) -> Bool {
+func needToActivateNudge(deferralCount: Int) -> Bool {
     let currentlyActive = NSApplication.shared.isActive
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let acceptableApps = [
@@ -481,7 +484,7 @@ func needToActivateNudge(deferral_count: Int) -> Bool {
     ]
     
     // Don't nudge if major upgrade is frontmostApplication
-    if NSURL.fileURL(withPath: path_to_app) == frontmostApplication?.bundleURL {
+    if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
         print("Upgrade app is currently frontmostApplication")
         return false
     }
@@ -495,9 +498,9 @@ func needToActivateNudge(deferral_count: Int) -> Bool {
     // If we get here, Nudge if not frontmostApplication
     if !currentlyActive {
         // TODO: this needs to be rethought out. It's one integer behind
-        _ = deferral_count + 1
+        _ = deferralCount + 1
         activateNudge()
-        if deferral_count > deferral_count_threshold!  {
+        if deferralCount > allowedDeferrals  {
             print("Nudge deferral count over threshold")
             updateDevice()
         }

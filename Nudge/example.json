@@ -1,28 +1,99 @@
 {
-    "button_title_text": "Ready to start the update?",
-    "button_sub_titletext": "Click on the button below.",
-    "cut_off_date": "2021-03-01-00:00:00",
-    "days_between_notifications": 0,
-    "deferral_count_threshold": 5,
-    "dual_close_trigger_threshold": 14,
-    "logo_dark_path_disabled": "/Library/nudgeplayground/Resources/company_logo_dark.png",
-    "logo_light_path_disabled": "/Library/nudgeplayground/Resources/company_logo_light.png",
-    "main_subtitle_text": "A friendly reminder from your local IT team",
-    "main_title_text": "macOS Update",
-    "minimum_os_version": "11.3.0",
-    "more_info_url": "https://github.com/erikng/NudgeSwift",
-    "no_timer": false,
-    "paragraph_text": "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.",
-    "paragraph_title_text": "A security update is required on your device.",
-    "path_to_app": "/Applications/Install macOS Big Sur.app",
-    "random_delay": false,
-    "screenshot_path": "/Applications/Install macOS Big Sur.app/Contents/Resources/ProductPageIcon.icns",
-    "timer_day_1": 600,
-    "timer_day_3": 900,
-    "timer_elapsed": 300,
-    "timer_final": 300,
-    "timer_initial_original": 1800,
-    "timer_initial": 5,
-    "update_minor": true,
-    "update_minor_days": 14
+    "optionalFeatures": {
+        "allowedDeferrals": 1000000,
+        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
+        "attemptToFetchMajorUpgrade": true,
+        "enforceMinorUpdates": true,
+        "iconDarkPath": "/Library/nudgeplayground/Resources/company_logo_dark.png",
+        "iconLightPath": "/Library/nudgeplayground/Resources/company_logo_light.png",
+        "informationButtonPath": "https://github.com/erikng/NudgeSwift",
+        "mdmFeatures": {
+            "alwaysShowManulEnrollment": false,
+            "depScreenShotPath": "/Library/nudgeplayground/Resources/dep_screenshot.jpg",
+            "disableManualEnrollmentForDEP": false,
+            "enforceMDMInstallation": false,
+            "informationButtonPath": "https://github.com/macadmins/umad",
+            "manualEnrollmentPath": "https://apple.com",
+            "mdmProfileIdentifier": "com.example.mdm.profile",
+            "requiredInstallationDate": "2021-02-28T00:00:00Z",
+            "uamdmScreenShotPath": "/Library/nudgeplayground/Resources/uamdm_screenshot.jpg"
+        },
+        "noTimers": false,
+        "randomDelay": false,
+        "screenShotPath": "/Library/nudgeplayground/Resources/update_screenshot.jpg"
+    },
+    "osVersionRequirements": [
+        {
+            "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
+            "requiredInstallationDate": "2021-02-28T00:00:00Z",
+            "requiredMinimumOSVersion": "11.3.0",
+            "requiredMinimumOSVersionBuild": "20E5172i",
+            "targetedOSVersions": [
+                "11.0",
+                "11.0.1",
+                "11.1",
+                "11.2"
+            ]
+        },
+        {
+            "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
+            "requiredInstallationDate": "2021-02-28T00:00:00Z",
+            "requiredMinimumOSVersion": "11.2.0",
+            "requiredMinimumOSVersionBuild": "20D64",
+            "targetedOSVersions": [
+                "10.15.0",
+                "10.15.1",
+                "10.15.2",
+                "10.15.3",
+                "10.15.4",
+                "10.15.5",
+                "10.15.6",
+                "10.15.7"
+            ]
+        }
+    ],
+    "userExperience": {
+        "approachingRefreshCycle": 6000,
+        "approachingWindowTime": 72,
+        "elapsedRefreshCycle": 300,
+        "imminentRefeshCycle": 600,
+        "imminentWindowTime": 24,
+        "initialRefreshCycle": 18000,
+        "nudgeRefreshCycle": 60
+    },
+    "userInterface": {
+        "mdmElements": {
+            "actionButtonManualText": "Manually Enroll",
+            "actionButtonText": "Update Device",
+            "actionButtonUAMDMText": "Open System Preferences",
+            "informationButtonText": "More Info",
+            "lowerHeader": "Ready to enroll?",
+            "lowerHeaderDEPFailure": "Not getting this notification?",
+            "lowerHeaderManual": "Manual enrollment required",
+            "lowerHeaderUAMDM": "Manual intervention required",
+            "lowerSubHeader": "Click on the 'Update Device' button below.",
+            "lowerSubHeaderDEPFailure": "You can also enroll manually below",
+            "lowerSubHeaderManual": "Click on the Manually Enroll button below.",
+            "lowerSubHeaderUAMDM": "Open System Preferences and approve Device Management.",
+            "mainContentHeader": "MDM Enrollment is required (No Restart Required)",
+            "mainContentText": "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password.",
+            "mainContentUAMDMText": "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button.",
+            "mainHeader": "MDM Enrollment",
+            "primaryQuitButtonText": "Okay",
+            "secondaryQuitButtonText": "I understand",
+            "subHeader": "A friendly reminder from your local IT team"
+        },
+        "updateElements": {
+            "actionButtonText": "Update Device",
+            "informationButtonText": "More Info",
+            "lowerHeader": "Ready to start the update?",
+            "lowerSubHeader": "Click on the 'Update Device' button below.",
+            "mainContentHeader": "A security update is required on your machine.",
+            "mainContentText": "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.",
+            "mainHeader": "macOS Update Available",
+            "primaryQuitButtonText": "Okay",
+            "secondaryQuitButtonText": "I understand",
+            "subHeader": "A friendly reminder from your local IT team"
+        }
+    }
 }
