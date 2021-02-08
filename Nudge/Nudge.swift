@@ -375,7 +375,7 @@ struct Nudge: View {
         guard let url = URL(string: url_info) else {
             return
         }
-        print(url)
+        print("User clicked moreInfo button.")
         openURL(url)
     }
 }
@@ -449,7 +449,6 @@ func nudgeStartLogic() {
                 print("Device in demo mode")
             } else {
                 print("Device fully up-to-date.")
-                print(minimumOSVersion)
                 AppKit.NSApp.terminate(nil)
             }
         }
