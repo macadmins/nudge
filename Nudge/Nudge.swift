@@ -434,7 +434,7 @@ func requireMajorUpgrade() -> Bool {
 }
 
 func inDemoMode() -> Bool {
-    return minimumOSVersion == "0.0"
+    return OSUtils().demoModeEnabled()
 }
 
 // Start doing a basic check

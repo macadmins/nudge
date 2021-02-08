@@ -11,6 +11,10 @@ import SystemConfiguration
 
 struct OSUtils {
     
+    func demoModeEnabled() -> Bool {
+        return CommandLine.arguments.contains("-demo")
+    }
+    
     func getCurrentDate() -> Date {
         Date()
     }

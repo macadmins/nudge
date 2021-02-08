@@ -17,6 +17,10 @@ struct nudgePrefs{
             return nil
         }
         
+        if OSUtils().demoModeEnabled() {
+            return nil
+        }
+        
         if FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 let content = try Data(contentsOf: fileURL)
