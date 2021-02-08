@@ -12,33 +12,25 @@ import Foundation
 
 struct nudgePrefs{
     func loadNudgePrefs() -> NudgePreferences? {
-        let local_url = "file:///Users/Shared/nudge.json" // Temp path for now
-        var fileURL: URL
+        let local_url = "file:///Library/Application%20Support/NudgeSwift/preferences.json"
 
-        guard let fileLocalURL = URL(string: local_url) else {
-            print("Could not find the bundled json")
+        guard let fileURL = URL(string: local_url) else {
+            print("Could not find on-disk json")
             return nil
         }
         
-        guard let fileBundleURL = Bundle.main.url(forResource: "example", withExtension: "json") else {
-            print("Could not find the bundled json")
-            return nil
-        }
-        
-        if FileManager.default.fileExists(atPath: fileLocalURL.path) {
-            fileURL = fileLocalURL
-        } else {
-            fileURL = fileBundleURL
-        }
-        do {
-            let content = try Data(contentsOf: fileURL)
-            let decodedData = try NudgePreferences(data: content)
-            return decodedData
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                let content = try Data(contentsOf: fileURL)
+                let decodedData = try NudgePreferences(data: content)
+                return decodedData
 
-        } catch let error {
-            print(error)
-            return nil
+            } catch let error {
+                print(error)
+                return nil
+            }
         }
+        return nil
     }
 }
 
@@ -162,9 +154,9 @@ struct MdmFeatures: Codable {
     let alwaysShowManulEnrollment: Bool
     let depScreenShotPath: String
     let disableManualEnrollmentForDEP, enforceMDMInstallation: Bool
-    let informationButtonPath, manualEnrollmentPath: String
+    let mdmInformationButtonPath, manualEnrollmentPath: String
     let mdmProfileIdentifier: String
-    let requiredInstallationDate: Date
+    let mdmRequiredInstallationDate: Date
     let uamdmScreenShotPath: String
 }
 
@@ -191,10 +183,10 @@ extension MdmFeatures {
         depScreenShotPath: String? = nil,
         disableManualEnrollmentForDEP: Bool? = nil,
         enforceMDMInstallation: Bool? = nil,
-        informationButtonPath: String? = nil,
+        mdmInformationButtonPath: String? = nil,
         manualEnrollmentPath: String? = nil,
         mdmProfileIdentifier: String? = nil,
-        requiredInstallationDate: Date? = nil,
+        mdmRequiredInstallationDate: Date? = nil,
         uamdmScreenShotPath: String? = nil
     ) -> MdmFeatures {
         return MdmFeatures(
@@ -202,10 +194,10 @@ extension MdmFeatures {
             depScreenShotPath: depScreenShotPath ?? self.depScreenShotPath,
             disableManualEnrollmentForDEP: disableManualEnrollmentForDEP ?? self.disableManualEnrollmentForDEP,
             enforceMDMInstallation: enforceMDMInstallation ?? self.enforceMDMInstallation,
-            informationButtonPath: informationButtonPath ?? self.informationButtonPath,
+            mdmInformationButtonPath: mdmInformationButtonPath ?? self.mdmInformationButtonPath,
             manualEnrollmentPath: manualEnrollmentPath ?? self.manualEnrollmentPath,
             mdmProfileIdentifier: mdmProfileIdentifier ?? self.mdmProfileIdentifier,
-            requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
+            mdmRequiredInstallationDate: mdmRequiredInstallationDate ?? self.mdmRequiredInstallationDate,
             uamdmScreenShotPath: uamdmScreenShotPath ?? self.uamdmScreenShotPath
         )
     }
@@ -370,8 +362,8 @@ extension UserInterface {
 // MARK: - MdmElements
 struct MdmElements: Codable {
     let actionButtonManualText, actionButtonText, actionButtonUAMDMText, informationButtonText: String
-    let lowerHeader, lowerHeaderDEPFailure, lowerHeaderManual, lowerHeaderUAMDM: String
-    let lowerSubHeader, lowerSubHeaderDEPFailure, lowerSubHeaderManual, lowerSubHeaderUAMDM: String
+    let lowerHeader, lowerHeaderDEPFailure, lowerHeaderManual, lowerHeaderUAMDMFailure: String
+    let lowerSubHeader, lowerSubHeaderDEPFailure, lowerSubHeaderManual, lowerSubHeaderUAMDMFailure: String
     let mainContentHeader, mainContentText, mainContentUAMDMText, mainHeader: String
     let primaryQuitButtonText, secondaryQuitButtonText, subHeader: String
 }
@@ -402,11 +394,11 @@ extension MdmElements {
         lowerHeader: String? = nil,
         lowerHeaderDEPFailure: String? = nil,
         lowerHeaderManual: String? = nil,
-        lowerHeaderUAMDM: String? = nil,
+        lowerHeaderUAMDMFailure: String? = nil,
         lowerSubHeader: String? = nil,
         lowerSubHeaderDEPFailure: String? = nil,
         lowerSubHeaderManual: String? = nil,
-        lowerSubHeaderUAMDM: String? = nil,
+        lowerSubHeaderUAMDMFailure: String? = nil,
         mainContentHeader: String? = nil,
         mainContentText: String? = nil,
         mainContentUAMDMText: String? = nil,
@@ -423,11 +415,11 @@ extension MdmElements {
             lowerHeader: lowerHeader ?? self.lowerHeader,
             lowerHeaderDEPFailure: lowerHeaderDEPFailure ?? self.lowerHeaderDEPFailure,
             lowerHeaderManual: lowerHeaderManual ?? self.lowerHeaderManual,
-            lowerHeaderUAMDM: lowerHeaderUAMDM ?? self.lowerHeaderUAMDM,
+            lowerHeaderUAMDMFailure: lowerHeaderUAMDMFailure ?? self.lowerHeaderUAMDMFailure,
             lowerSubHeader: lowerSubHeader ?? self.lowerSubHeader,
             lowerSubHeaderDEPFailure: lowerSubHeaderDEPFailure ?? self.lowerSubHeaderDEPFailure,
             lowerSubHeaderManual: lowerSubHeaderManual ?? self.lowerSubHeaderManual,
-            lowerSubHeaderUAMDM: lowerSubHeaderUAMDM ?? self.lowerSubHeaderUAMDM,
+            lowerSubHeaderUAMDMFailure: lowerSubHeaderUAMDMFailure ?? self.lowerSubHeaderUAMDMFailure,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentText: mainContentText ?? self.mainContentText,
             mainContentUAMDMText: mainContentUAMDMText ?? self.mainContentUAMDMText,

@@ -9,43 +9,25 @@ import AppKit
 import Foundation
 import SystemConfiguration
 
-struct osUtils {
-    let nudgePreferences = nudgePrefs().loadNudgePrefs()
+struct OSUtils {
     
     func getCurrentDate() -> Date {
         Date()
     }
     
-    func getRequiredMinimumOSVersion() -> String? {
-        // TODO: Need to make this dynamic instead of hardcoded to the first value
-        return nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion
-    }
-    
-    func getMajorUpgradeAppPath() -> String? {
-        // TODO: Need to make this dynamic instead of hardcoded to the first value
-        return nudgePreferences!.osVersionRequirements[0].majorUpgradeAppPath
-    }
-    
-    func getRequiredInstallationDate() -> Date {
-        
-        // TODO: Need to make this dynamic instead of hardcoded to the first value
-        return nudgePreferences!.osVersionRequirements[0].requiredInstallationDate
-    }
-    
     func pastRequiredInstallationDate() -> Bool {
-        return getCurrentDate() > getRequiredInstallationDate()
+        return getCurrentDate() > requiredInstallationDate
     }
     
     func requireDualCloseButtons() -> Bool {
-        let nudgePreferences = nudgePrefs().loadNudgePrefs()
-        let approachingWindowTime = nudgePreferences!.userExperience.approachingWindowTime
-        return (approachingWindowTime / 24) >= numberOfDaysBetween()
+        // return (nudgePreferences!.userExperience.approachingWindowTime / 24) >= numberOfDaysBetween()
+        return false
     }
     
     func numberOfDaysBetween() -> Int {
        let currentCal = Calendar.current
        let fromDate = currentCal.startOfDay(for: getCurrentDate())
-       let toDate = currentCal.startOfDay(for: getRequiredInstallationDate())
+       let toDate = currentCal.startOfDay(for: requiredInstallationDate)
        let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
        return numberOfDays.day!
    }
@@ -94,12 +76,7 @@ struct osUtils {
         let nudgePreferences = nudgePrefs().loadNudgePrefs()
         // TODO: Need to make this dynamic instead of hardcoded to the first value
         let parts = nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
-        return Int(parts[0])!
-    }
-
-    // Why is there not a combined String for this?
-    func getOSVersion() -> String {
-        return String(getMajorOSVersion()) + "." + String(getMinorOSVersion()) + "." + String(getPatchOSVersion())
+        return Int((parts[0]))!
     }
 
     // Adapted from https://stackoverflow.com/a/25453654
