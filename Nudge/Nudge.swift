@@ -445,7 +445,7 @@ func nudgeStartLogic() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            if inDemoteMode() {
+            if inDemoMode() {
                 print("Device in demo mode")
             } else {
                 print("Device fully up-to-date.")
