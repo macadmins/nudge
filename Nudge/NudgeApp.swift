@@ -20,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct NudgeApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    let manager = PolicyManager()
+    let manager = try! PolicyManager() // TODO: handle errors
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(manager)
