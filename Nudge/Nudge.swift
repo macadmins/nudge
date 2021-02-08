@@ -305,7 +305,7 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if inDemoteMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
+                    if inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
                         // I understand button
                         if requireDualCloseButtons {
                             if self.hasAcceptedIUnderstand {
@@ -433,7 +433,7 @@ func requireMajorUpgrade() -> Bool {
     return OSUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: minimumOSVersion)
 }
 
-func inDemoteMode() -> Bool {
+func inDemoMode() -> Bool {
     return minimumOSVersion == "0.0"
 }
 
