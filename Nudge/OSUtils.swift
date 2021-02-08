@@ -24,8 +24,7 @@ struct OSUtils {
     }
     
     func requireDualCloseButtons() -> Bool {
-        // return (nudgePreferences!.userExperience.approachingWindowTime / 24) >= numberOfDaysBetween()
-        return false
+        return (approachingWindowTime / 24) >= numberOfDaysBetween()
     }
     
     func numberOfDaysBetween() -> Int {
@@ -77,9 +76,7 @@ struct OSUtils {
     }
     
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let nudgePreferences = nudgePrefs().loadNudgePrefs()
-        // TODO: Need to make this dynamic instead of hardcoded to the first value
-        let parts = nudgePreferences!.osVersionRequirements![0].requiredMinimumOSVersion!.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         return Int((parts[0]))!
     }
 
