@@ -75,7 +75,7 @@ struct OSUtils {
     func getMajorRequiredNudgeOSVersion() -> Int {
         let nudgePreferences = nudgePrefs().loadNudgePrefs()
         // TODO: Need to make this dynamic instead of hardcoded to the first value
-        let parts = nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = nudgePreferences!.osVersionRequirements![0].requiredMinimumOSVersion!.split(separator: ".", omittingEmptySubsequences: false)
         return Int((parts[0]))!
     }
 

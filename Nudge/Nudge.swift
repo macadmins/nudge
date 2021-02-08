@@ -50,7 +50,7 @@ struct Nudge: View {
     // Modal view for screenshot
     @State var showSSDetail = false
     
-    let timer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
+    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
     // Nudge UI
     var body: some View {
@@ -168,7 +168,7 @@ struct Nudge: View {
                         Text("Deferral Count: ")
                         Spacer()
                         Text(String(self.deferralCount))
-                            .onReceive(timer) { _ in
+                            .onReceive(nudgeRefreshCycleTimer) { _ in
                                 if needToActivateNudge(deferralCount: self.deferralCount) {
                                     self.deferralCount += 1
                                 }

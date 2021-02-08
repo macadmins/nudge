@@ -8,8 +8,6 @@
 import Foundation
 
 // TODO: use CFPreferences to get mdm/mobileconfig logic and prioritize over json
-
-
 struct nudgePrefs{
     func loadNudgePrefs() -> NudgePreferences? {
         let local_url = "file:///Library/Application%20Support/NudgeSwift/preferences.json"
@@ -36,10 +34,10 @@ struct nudgePrefs{
 
 // MARK: - NudgePreferences
 struct NudgePreferences: Codable {
-    let optionalFeatures: OptionalFeatures
-    let osVersionRequirements: [OSVersionRequirement]
-    let userExperience: UserExperience
-    let userInterface: UserInterface
+    var optionalFeatures: OptionalFeatures?
+    var osVersionRequirements: [OSVersionRequirement]?
+    var userExperience: UserExperience?
+    var userInterface: UserInterface?
 }
 
 // MARK: NudgePreferences convenience initializers and mutators
@@ -61,10 +59,10 @@ extension NudgePreferences {
     }
 
     func with(
-        optionalFeatures: OptionalFeatures? = nil,
-        osVersionRequirements: [OSVersionRequirement]? = nil,
-        userExperience: UserExperience? = nil,
-        userInterface: UserInterface? = nil
+        optionalFeatures: OptionalFeatures?? = nil,
+        osVersionRequirements: [OSVersionRequirement]?? = nil,
+        userExperience: UserExperience?? = nil,
+        userInterface: UserInterface?? = nil
     ) -> NudgePreferences {
         return NudgePreferences(
             optionalFeatures: optionalFeatures ?? self.optionalFeatures,
@@ -85,13 +83,13 @@ extension NudgePreferences {
 
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
-    let allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton: Int
-    let attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool
-    let iconDarkPath, iconLightPath: String
-    let informationButtonPath: String
-    let mdmFeatures: MdmFeatures
-    let noTimers, randomDelay: Bool
-    let screenShotPath: String
+    var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton: Int?
+    var attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool?
+    var iconDarkPath, iconLightPath: String?
+    var informationButtonPath: String?
+    var mdmFeatures: MdmFeatures?
+    var noTimers, randomDelay: Bool?
+    var screenShotPath: String?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -113,17 +111,17 @@ extension OptionalFeatures {
     }
 
     func with(
-        allowedDeferrals: Int? = nil,
-        allowedDeferralsUntilForcedSecondaryQuitButton: Int? = nil,
-        attemptToFetchMajorUpgrade: Bool? = nil,
-        enforceMinorUpdates: Bool? = nil,
-        iconDarkPath: String? = nil,
-        iconLightPath: String? = nil,
-        informationButtonPath: String? = nil,
-        mdmFeatures: MdmFeatures? = nil,
-        noTimers: Bool? = nil,
-        randomDelay: Bool? = nil,
-        screenShotPath: String? = nil
+        allowedDeferrals: Int?? = nil,
+        allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
+        attemptToFetchMajorUpgrade: Bool?? = nil,
+        enforceMinorUpdates: Bool?? = nil,
+        iconDarkPath: String?? = nil,
+        iconLightPath: String?? = nil,
+        informationButtonPath: String?? = nil,
+        mdmFeatures: MdmFeatures?? = nil,
+        noTimers: Bool?? = nil,
+        randomDelay: Bool?? = nil,
+        screenShotPath: String?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
@@ -151,13 +149,13 @@ extension OptionalFeatures {
 
 // MARK: - MdmFeatures
 struct MdmFeatures: Codable {
-    let alwaysShowManulEnrollment: Bool
-    let depScreenShotPath: String
-    let disableManualEnrollmentForDEP, enforceMDMInstallation: Bool
-    let mdmInformationButtonPath, manualEnrollmentPath: String
-    let mdmProfileIdentifier: String
-    let mdmRequiredInstallationDate: Date
-    let uamdmScreenShotPath: String
+    var alwaysShowManulEnrollment: Bool?
+    var depScreenShotPath: String?
+    var disableManualEnrollmentForDEP, enforceMDMInstallation: Bool?
+    var mdmInformationButtonPath, manualEnrollmentPath: String?
+    var mdmProfileIdentifier: String?
+    var mdmRequiredInstallationDate: Date?
+    var uamdmScreenShotPath: String?
 }
 
 // MARK: MdmFeatures convenience initializers and mutators
@@ -179,15 +177,15 @@ extension MdmFeatures {
     }
 
     func with(
-        alwaysShowManulEnrollment: Bool? = nil,
-        depScreenShotPath: String? = nil,
-        disableManualEnrollmentForDEP: Bool? = nil,
-        enforceMDMInstallation: Bool? = nil,
-        mdmInformationButtonPath: String? = nil,
-        manualEnrollmentPath: String? = nil,
-        mdmProfileIdentifier: String? = nil,
-        mdmRequiredInstallationDate: Date? = nil,
-        uamdmScreenShotPath: String? = nil
+        alwaysShowManulEnrollment: Bool?? = nil,
+        depScreenShotPath: String?? = nil,
+        disableManualEnrollmentForDEP: Bool?? = nil,
+        enforceMDMInstallation: Bool?? = nil,
+        mdmInformationButtonPath: String?? = nil,
+        manualEnrollmentPath: String?? = nil,
+        mdmProfileIdentifier: String?? = nil,
+        mdmRequiredInstallationDate: Date?? = nil,
+        uamdmScreenShotPath: String?? = nil
     ) -> MdmFeatures {
         return MdmFeatures(
             alwaysShowManulEnrollment: alwaysShowManulEnrollment ?? self.alwaysShowManulEnrollment,
@@ -213,11 +211,10 @@ extension MdmFeatures {
 
 // MARK: - OSVersionRequirement
 struct OSVersionRequirement: Codable {
-    let majorUpgradeAppPath: String
-    let requiredInstallationDate: Date
-    let requiredMinimumOSVersion: String
-    let requiredMinimumOSVersionBuild: String
-    let targetedOSVersions: [String]
+    var majorUpgradeAppPath: String?
+    var requiredInstallationDate: Date?
+    var requiredMinimumOSVersion, requiredMinimumOSVersionBuild: String?
+    var targetedOSVersions: [String]?
 }
 
 // MARK: OSVersionRequirement convenience initializers and mutators
@@ -239,11 +236,11 @@ extension OSVersionRequirement {
     }
 
     func with(
-        majorUpgradeAppPath: String? = nil,
-        requiredInstallationDate: Date? = nil,
-        requiredMinimumOSVersion: String? = nil,
-        requiredMinimumOSVersionBuild: String? = nil,
-        targetedOSVersions: [String]? = nil
+        majorUpgradeAppPath: String?? = nil,
+        requiredInstallationDate: Date?? = nil,
+        requiredMinimumOSVersion: String?? = nil,
+        requiredMinimumOSVersionBuild: String?? = nil,
+        targetedOSVersions: [String]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
@@ -265,8 +262,8 @@ extension OSVersionRequirement {
 
 // MARK: - UserExperience
 struct UserExperience: Codable {
-    let approachingRefreshCycle, approachingWindowTime, elapsedRefreshCycle, imminentRefeshCycle: Int
-    let imminentWindowTime, initialRefreshCycle, nudgeRefreshCycle: Int
+    var approachingRefreshCycle, approachingWindowTime, elapsedRefreshCycle, imminentRefeshCycle: Int?
+    var imminentWindowTime, initialRefreshCycle, nudgeRefreshCycle: Int?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -288,13 +285,13 @@ extension UserExperience {
     }
 
     func with(
-        approachingRefreshCycle: Int? = nil,
-        approachingWindowTime: Int? = nil,
-        elapsedRefreshCycle: Int? = nil,
-        imminentRefeshCycle: Int? = nil,
-        imminentWindowTime: Int? = nil,
-        initialRefreshCycle: Int? = nil,
-        nudgeRefreshCycle: Int? = nil
+        approachingRefreshCycle: Int?? = nil,
+        approachingWindowTime: Int?? = nil,
+        elapsedRefreshCycle: Int?? = nil,
+        imminentRefeshCycle: Int?? = nil,
+        imminentWindowTime: Int?? = nil,
+        initialRefreshCycle: Int?? = nil,
+        nudgeRefreshCycle: Int?? = nil
     ) -> UserExperience {
         return UserExperience(
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
@@ -318,8 +315,8 @@ extension UserExperience {
 
 // MARK: - UserInterface
 struct UserInterface: Codable {
-    let mdmElements: MdmElements
-    let updateElements: UpdateElements
+    var mdmElements: MdmElements?
+    var updateElements: UpdateElements?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -341,8 +338,8 @@ extension UserInterface {
     }
 
     func with(
-        mdmElements: MdmElements? = nil,
-        updateElements: UpdateElements? = nil
+        mdmElements: MdmElements?? = nil,
+        updateElements: UpdateElements?? = nil
     ) -> UserInterface {
         return UserInterface(
             mdmElements: mdmElements ?? self.mdmElements,
@@ -361,11 +358,11 @@ extension UserInterface {
 
 // MARK: - MdmElements
 struct MdmElements: Codable {
-    let actionButtonManualText, actionButtonText, actionButtonUAMDMText, informationButtonText: String
-    let lowerHeader, lowerHeaderDEPFailure, lowerHeaderManual, lowerHeaderUAMDMFailure: String
-    let lowerSubHeader, lowerSubHeaderDEPFailure, lowerSubHeaderManual, lowerSubHeaderUAMDMFailure: String
-    let mainContentHeader, mainContentText, mainContentUAMDMText, mainHeader: String
-    let primaryQuitButtonText, secondaryQuitButtonText, subHeader: String
+    var actionButtonManualText, actionButtonText, actionButtonUAMDMText, informationButtonText: String?
+    var lowerHeader, lowerHeaderDEPFailure, lowerHeaderManual, lowerHeaderUAMDMFailure: String?
+    var lowerSubHeader, lowerSubHeaderDEPFailure, lowerSubHeaderManual, lowerSubHeaderUAMDMFailure: String?
+    var mainContentHeader, mainContentText, mainContentUAMDMText, mainHeader: String?
+    var primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
 }
 
 // MARK: MdmElements convenience initializers and mutators
@@ -387,25 +384,25 @@ extension MdmElements {
     }
 
     func with(
-        actionButtonManualText: String? = nil,
-        actionButtonText: String? = nil,
-        actionButtonUAMDMText: String? = nil,
-        informationButtonText: String? = nil,
-        lowerHeader: String? = nil,
-        lowerHeaderDEPFailure: String? = nil,
-        lowerHeaderManual: String? = nil,
-        lowerHeaderUAMDMFailure: String? = nil,
-        lowerSubHeader: String? = nil,
-        lowerSubHeaderDEPFailure: String? = nil,
-        lowerSubHeaderManual: String? = nil,
-        lowerSubHeaderUAMDMFailure: String? = nil,
-        mainContentHeader: String? = nil,
-        mainContentText: String? = nil,
-        mainContentUAMDMText: String? = nil,
-        mainHeader: String? = nil,
-        primaryQuitButtonText: String? = nil,
-        secondaryQuitButtonText: String? = nil,
-        subHeader: String? = nil
+        actionButtonManualText: String?? = nil,
+        actionButtonText: String?? = nil,
+        actionButtonUAMDMText: String?? = nil,
+        informationButtonText: String?? = nil,
+        lowerHeader: String?? = nil,
+        lowerHeaderDEPFailure: String?? = nil,
+        lowerHeaderManual: String?? = nil,
+        lowerHeaderUAMDMFailure: String?? = nil,
+        lowerSubHeader: String?? = nil,
+        lowerSubHeaderDEPFailure: String?? = nil,
+        lowerSubHeaderManual: String?? = nil,
+        lowerSubHeaderUAMDMFailure: String?? = nil,
+        mainContentHeader: String?? = nil,
+        mainContentText: String?? = nil,
+        mainContentUAMDMText: String?? = nil,
+        mainHeader: String?? = nil,
+        primaryQuitButtonText: String?? = nil,
+        secondaryQuitButtonText: String?? = nil,
+        subHeader: String?? = nil
     ) -> MdmElements {
         return MdmElements(
             actionButtonManualText: actionButtonManualText ?? self.actionButtonManualText,
@@ -441,9 +438,9 @@ extension MdmElements {
 
 // MARK: - UpdateElements
 struct UpdateElements: Codable {
-    let actionButtonText, informationButtonText, lowerHeader, lowerSubHeader: String
-    let mainContentHeader, mainContentText, mainHeader, primaryQuitButtonText: String
-    let secondaryQuitButtonText, subHeader: String
+    var actionButtonText, informationButtonText, lowerHeader, lowerSubHeader: String?
+    var mainContentHeader, mainContentText, mainHeader, primaryQuitButtonText: String?
+    var secondaryQuitButtonText, subHeader: String?
 }
 
 // MARK: UpdateElements convenience initializers and mutators
@@ -465,16 +462,16 @@ extension UpdateElements {
     }
 
     func with(
-        actionButtonText: String? = nil,
-        informationButtonText: String? = nil,
-        lowerHeader: String? = nil,
-        lowerSubHeader: String? = nil,
-        mainContentHeader: String? = nil,
-        mainContentText: String? = nil,
-        mainHeader: String? = nil,
-        primaryQuitButtonText: String? = nil,
-        secondaryQuitButtonText: String? = nil,
-        subHeader: String? = nil
+        actionButtonText: String?? = nil,
+        informationButtonText: String?? = nil,
+        lowerHeader: String?? = nil,
+        lowerSubHeader: String?? = nil,
+        mainContentHeader: String?? = nil,
+        mainContentText: String?? = nil,
+        mainHeader: String?? = nil,
+        primaryQuitButtonText: String?? = nil,
+        secondaryQuitButtonText: String?? = nil,
+        subHeader: String?? = nil
     ) -> UpdateElements {
         return UpdateElements(
             actionButtonText: actionButtonText ?? self.actionButtonText,
