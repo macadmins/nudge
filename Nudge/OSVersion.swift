@@ -44,7 +44,11 @@ public struct OSVersion {
 
 extension OSVersion: CustomStringConvertible {
     public var description: String {
-        return "\(major).\(minor).\(patch)"
+        if patch == 0 {
+            return "\(major).\(minor)"
+        } else {
+            return "\(major).\(minor).\(patch)"
+        }
     }
 }
 

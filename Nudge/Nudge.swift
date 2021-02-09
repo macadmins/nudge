@@ -8,37 +8,26 @@
 import Foundation
 import SwiftUI
 
-// Prefs
-let nudgePreferences = nudgePrefs().loadNudgePrefs()
+let minimumOSVersion = requiredMinimumOSVersion
+let minimumMajorOSVersion = OSUtils().getMajorRequiredNudgeOSVersion()
 
-let minimumOSVersion = osUtils().getRequiredMinimumOSVersion()!
-let minimumMajorOSVersion = osUtils().getMajorRequiredNudgeOSVersion()
-
-let currentOSVersion = osUtils().getOSVersion()
-let currentMajorOSVersion = String(osUtils().getMajorOSVersion())
-let majorUpgradeAppPath = osUtils().getMajorUpgradeAppPath()!
-
-// TODO: Move this to Groob's new stuff
-let nudgeRefreshCycle = Double((nudgePreferences!.userExperience.nudgeRefreshCycle))
-let allowedDeferrals = nudgePreferences!.optionalFeatures.allowedDeferrals
+let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+let currentMajorOSVersion = String(OSUtils().getMajorOSVersion())
 
 // Setup Variables for light icon
-let iconLightPath = nudgePreferences!.optionalFeatures.iconLightPath
 let iconLightImage = createImageData(fileImagePath: iconLightPath)
 
 // Setup Variables for dark icon
-let iconDarkPath = nudgePreferences!.optionalFeatures.iconDarkPath
 let iconDarkImage = createImageData(fileImagePath: iconDarkPath)
 
 // Setup Variables for company screenshot
-let screenShotPath = nudgePreferences!.optionalFeatures.screenShotPath
 let screenShotImage = createImageData(fileImagePath: screenShotPath)
-
-// More Info URL
-let informationButtonPath = nudgePreferences!.optionalFeatures.informationButtonPath
 
 // Get the default filemanager
 let fileManager = FileManager.default
+
+var lastRefreshTime = OSUtils().returnInitialDate()
+var afterFirstRun = false
 
 // Primary Nudge UI
 struct Nudge: View {
@@ -52,19 +41,19 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // State variables
-    @State var systemConsoleUsername = osUtils().getSystemConsoleUsername()
-    @State var serialNumber = osUtils().getSerialNumber()
-    @State var cpuType = osUtils().getCPUTypeString()
-    @State var daysRemaining = osUtils().numberOfDaysBetween()
-    @State var requireDualCloseButtons = osUtils().requireDualCloseButtons()
-    @State var pastRequiredInstallationDate = osUtils().pastRequiredInstallationDate()
+    @State var systemConsoleUsername = OSUtils().getSystemConsoleUsername()
+    @State var serialNumber = OSUtils().getSerialNumber()
+    @State var cpuType = OSUtils().getCPUTypeString()
+    @State var daysRemaining = OSUtils().numberOfDaysBetween()
+    @State var requireDualCloseButtons = OSUtils().requireDualCloseButtons()
+    @State var pastRequiredInstallationDate = OSUtils().pastRequiredInstallationDate()
     @State var hasAcceptedIUnderstand = false
     @State var deferralCount = 0
     
     // Modal view for screenshot
     @State var showSSDetail = false
     
-    let timer = Timer.publish(every: nudgeRefreshCycle, on: .main, in: .common).autoconnect()
+    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
     // Nudge UI
     var body: some View {
@@ -182,8 +171,8 @@ struct Nudge: View {
                         Text("Deferral Count: ")
                         Spacer()
                         Text(String(self.deferralCount))
-                            .onReceive(timer) { _ in
-                                if needToActivateNudge(deferralCount: self.deferralCount) {
+                            .onReceive(nudgeRefreshCycleTimer) { _ in
+                                if needToActivateNudge(deferralCount: self.deferralCount, lastRefreshTimeVar: lastRefreshTime) {
                                     self.deferralCount += 1
                                 }
                             }
@@ -224,7 +213,7 @@ struct Nudge: View {
             VStack{
                 // mainHeader Text
                 HStack{
-                    Text(nudgePreferences!.userInterface.updateElements.mainHeader)
+                    Text(mainHeader)
                         .font(.largeTitle)
                 }
                 .padding(.top, 5.0)
@@ -232,7 +221,7 @@ struct Nudge: View {
 
                 // subHeader Text
                 HStack{
-                    Text(nudgePreferences!.userInterface.updateElements.subHeader)
+                    Text(subHeader)
                         .font(.body)
                 }
                 .padding(.vertical, 0.5)
@@ -240,7 +229,7 @@ struct Nudge: View {
 
                 // mainContent Header
                 HStack{
-                    Text(nudgePreferences!.userInterface.updateElements.mainContentHeader)
+                    Text(mainContentHeader)
                         .font(.body)
                         .fontWeight(.bold)
                 }
@@ -249,7 +238,7 @@ struct Nudge: View {
 
                 VStack(alignment: .leading) {
                     // mainContent Text
-                    Text(nudgePreferences!.userInterface.updateElements.mainContentText)
+                    Text(mainContentText)
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
@@ -296,12 +285,12 @@ struct Nudge: View {
                 Spacer()
                 VStack(alignment: .leading) {
                     // lowerHeader Text
-                    Text(nudgePreferences!.userInterface.updateElements.lowerHeader)
+                    Text(lowerHeader)
                         .font(.body)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     // lowerSubHeader Text
-                    Text(nudgePreferences!.userInterface.updateElements.lowerSubHeader)
+                    Text(lowerSubHeader)
                         .font(.body)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -319,7 +308,7 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
+                    if inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
                         // I understand button
                         if requireDualCloseButtons {
                             if self.hasAcceptedIUnderstand {
@@ -389,7 +378,7 @@ struct Nudge: View {
         guard let url = URL(string: url_info) else {
             return
         }
-        print(url)
+        print("User clicked moreInfo button.")
         openURL(url)
     }
 }
@@ -440,11 +429,15 @@ struct Nudge_Previews: PreviewProvider {
 
 // Functions
 func fullyUpdated() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: currentOSVersion, new_version: minimumOSVersion)
+    return OSUtils().versionGreaterThanOrEqual(current_version: currentOSVersion, new_version: minimumOSVersion)
 }
 
 func requireMajorUpgrade() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: minimumOSVersion)
+    return OSUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: minimumOSVersion)
+}
+
+func inDemoMode() -> Bool {
+    return OSUtils().demoModeEnabled()
 }
 
 // Start doing a basic check
@@ -455,7 +448,12 @@ func nudgeStartLogic() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            AppKit.NSApp.terminate(nil)
+            if inDemoMode() {
+                print("Device in demo mode")
+            } else {
+                print("Device fully up-to-date.")
+                AppKit.NSApp.terminate(nil)
+            }
         }
     }
 }
@@ -475,7 +473,22 @@ func updateDevice() {
     }
 }
 
-func needToActivateNudge(deferralCount: Int) -> Bool {
+func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
+    let currentTime = Date().timeIntervalSince1970
+    let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
+    
+    // The first time the main timer contoller hits we don't care
+    if !afterFirstRun {
+        _ = afterFirstRun = true
+        _ = lastRefreshTime = Date()
+        return false
+    }
+    
+    // TODO: turn initialRefreshCycle into conditional
+    if initialRefreshCycle > timeDiff  {
+        return false
+    }
+    
     let currentlyActive = NSApplication.shared.isActive
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let acceptableApps = [
@@ -484,9 +497,11 @@ func needToActivateNudge(deferralCount: Int) -> Bool {
     ]
     
     // Don't nudge if major upgrade is frontmostApplication
-    if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
-        print("Upgrade app is currently frontmostApplication")
-        return false
+    if fileManager.fileExists(atPath: majorUpgradeAppPath) {
+        if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
+            print("Upgrade app is currently frontmostApplication")
+            return false
+        }
     }
     
     // Don't nudge if acceptable apps are frontmostApplication
@@ -497,8 +512,8 @@ func needToActivateNudge(deferralCount: Int) -> Bool {
     
     // If we get here, Nudge if not frontmostApplication
     if !currentlyActive {
-        // TODO: this needs to be rethought out. It's one integer behind
-        _ = deferralCount + 1
+        _ = deferralCount + 1 // TODO: this needs to be rethought out. It's one integer behind
+        _ = lastRefreshTime = Date()
         activateNudge()
         if deferralCount > allowedDeferrals  {
             print("Nudge deferral count over threshold")
