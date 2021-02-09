@@ -20,6 +20,7 @@ let enforceMinorUpdates = nudgePreferences?.optionalFeatures?.enforceMinorUpdate
 let iconDarkPath = nudgePreferences?.optionalFeatures?.iconDarkPath ?? ""
 let iconLightPath = nudgePreferences?.optionalFeatures?.iconLightPath ?? ""
 let informationButtonPath = nudgePreferences?.optionalFeatures?.informationButtonPath ?? "https://github.com/erikng/NudgeSwift"
+let maxRandomDelayInSeconds = nudgePreferences?.optionalFeatures?.maxRandomDelayInSeconds ?? 1200
 let noTimers = nudgePreferences?.optionalFeatures?.noTimers ?? false
 let randomDelay = nudgePreferences?.optionalFeatures?.randomDelay ?? false
 let screenShotPath = nudgePreferences?.optionalFeatures?.screenShotPath ?? ""
