@@ -41,7 +41,6 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.mdmFeatures?.uamdm
 let majorUpgradeAppPath = getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
-let requiredMinimumOSVersionBuild = getOSVersionRequirements()?.requiredMinimumOSVersionBuild ?? "10A00"
 func getOSVersionRequirements() -> OSVersionRequirement? {
     let requirements = nudgePreferences?.osVersionRequirements
     if requirements != nil {

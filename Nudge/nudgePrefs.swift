@@ -221,7 +221,6 @@ struct OSVersionRequirement: Codable {
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
-    var requiredMinimumOSVersionBuild: String? // TODO: should be a list, in case of forked builds
     var targetedOSVersions: [String]?
 }
 
@@ -232,7 +231,6 @@ extension OSVersionRequirement {
         case majorUpgradeAppPath,
              requiredInstallationDate,
              requiredMinimumOSVersion,
-             requiredMinimumOSVersionBuild,
              targetedOSVersions
     }
     
@@ -240,7 +238,6 @@ extension OSVersionRequirement {
 //        self.majorUpgradeAppPath = try dict.nudgeDefault(Keys.majorUpgradeAppPath.rawValue)
 //        self.requiredInstallationDate = try dict.nudgeDefault(Keys.requiredInstallationDate.rawValue)
 //        self.requiredMinimumOSVersion = try dict.nudgeDefault(Keys.requiredMinimumOSVersion.rawValue)
-//        self.requiredMinimumOSVersionBuild = try dict.nudgeDefault(Keys.requiredMinimumOSVersionBuild.rawValue)
 //        self.targetedOSVersions = try dict.nudgeDefault(Keys.targetedOSVersions.rawValue)
 //    }
     
@@ -263,14 +260,12 @@ extension OSVersionRequirement {
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
-        requiredMinimumOSVersionBuild: String?? = nil,
         targetedOSVersions: [String]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
-            requiredMinimumOSVersionBuild: requiredMinimumOSVersionBuild ?? self.requiredMinimumOSVersionBuild,
             targetedOSVersions: targetedOSVersions ?? self.targetedOSVersions
         )
     }
