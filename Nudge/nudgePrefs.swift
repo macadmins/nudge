@@ -91,6 +91,7 @@ struct OptionalFeatures: Codable {
     var attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool?
     var iconDarkPath, iconLightPath: String?
     var informationButtonPath: String?
+    var maxRandomDelayInSeconds: Int?
     var mdmFeatures: MdmFeatures?
     var noTimers, randomDelay: Bool?
     var screenShotPath: String?
@@ -122,6 +123,7 @@ extension OptionalFeatures {
         iconDarkPath: String?? = nil,
         iconLightPath: String?? = nil,
         informationButtonPath: String?? = nil,
+        maxRandomDelayInSeconds: Int?? = nil,
         mdmFeatures: MdmFeatures?? = nil,
         noTimers: Bool?? = nil,
         randomDelay: Bool?? = nil,
@@ -135,6 +137,7 @@ extension OptionalFeatures {
             iconDarkPath: iconDarkPath ?? self.iconDarkPath,
             iconLightPath: iconLightPath ?? self.iconLightPath,
             informationButtonPath: informationButtonPath ?? self.informationButtonPath,
+            maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             mdmFeatures: mdmFeatures ?? self.mdmFeatures,
             noTimers: noTimers ?? self.noTimers,
             randomDelay: randomDelay ?? self.randomDelay,

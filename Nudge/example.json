@@ -18,6 +18,7 @@
             "mdmRequiredInstallationDate": "2021-02-28T00:00:00Z",
             "uamdmScreenShotPath": "/Library/Application Support/nudge/uamdmScreenShot.jpg"
         },
+        "maxRandomDelayInSeconds": 1200,
         "noTimers": false,
         "randomDelay": false,
         "screenShotPath": "/Library/Application Support/nudge/ScreenShot.jpg"

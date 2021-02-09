@@ -36,8 +36,16 @@ struct HostingWindowFinder: NSViewRepresentable {
 
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSView()
-        DispatchQueue.main.async { [weak view] in
-            self.callback(view?.window)
+        if randomDelay {
+            let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
+            print("Delaying initial run by", String(randomDelaySeconds), "seconds...")
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(randomDelaySeconds)) { [weak view] in
+                self.callback(view?.window)
+            }
+        } else {
+            DispatchQueue.main.async { [weak view] in
+                self.callback(view?.window)
+            }
         }
         return view
     }
