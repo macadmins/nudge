@@ -474,6 +474,11 @@ func updateDevice() {
 }
 
 func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
+    // If noTimers is true, just bail
+    if noTimers {
+        return false
+    }
+    
     let currentTime = Date().timeIntervalSince1970
     let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
 
