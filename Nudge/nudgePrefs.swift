@@ -225,6 +225,22 @@ struct OSVersionRequirement: Codable {
 // MARK: OSVersionRequirement convenience initializers and mutators
 
 extension OSVersionRequirement {
+    enum Keys: String {
+        case majorUpgradeAppPath,
+             requiredInstallationDate,
+             requiredMinimumOSVersion,
+             requiredMinimumOSVersionBuild,
+             targetedOSVersions
+    }
+    
+    init(_ dict: [String: Any]) throws {
+        self.majorUpgradeAppPath = try dict.nudgeDefault(Keys.majorUpgradeAppPath.rawValue)
+        self.requiredInstallationDate = try dict.nudgeDefault(Keys.requiredInstallationDate.rawValue)
+        self.requiredMinimumOSVersion = try dict.nudgeDefault(Keys.requiredMinimumOSVersion.rawValue)
+        self.requiredMinimumOSVersionBuild = try dict.nudgeDefault(Keys.requiredMinimumOSVersionBuild.rawValue)
+        self.targetedOSVersions = try dict.nudgeDefault(Keys.targetedOSVersions.rawValue)
+    }
+    
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OSVersionRequirement.self, from: data)
     }
