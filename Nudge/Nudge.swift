@@ -26,6 +26,9 @@ let screenShotImage = createImageData(fileImagePath: screenShotPath)
 // Get the default filemanager
 let fileManager = FileManager.default
 
+var lastRefreshTime = OSUtils().returnInitialDate()
+var afterFirstRun = false
+
 // Primary Nudge UI
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
@@ -169,7 +172,7 @@ struct Nudge: View {
                         Spacer()
                         Text(String(self.deferralCount))
                             .onReceive(nudgeRefreshCycleTimer) { _ in
-                                if needToActivateNudge(deferralCount: self.deferralCount) {
+                                if needToActivateNudge(deferralCount: self.deferralCount, lastRefreshTimeVar: lastRefreshTime) {
                                     self.deferralCount += 1
                                 }
                             }
@@ -470,7 +473,22 @@ func updateDevice() {
     }
 }
 
-func needToActivateNudge(deferralCount: Int) -> Bool {
+func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
+    let currentTime = Date().timeIntervalSince1970
+    let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
+    
+    // The first time the main timer contoller hits we don't care
+    if !afterFirstRun {
+        _ = afterFirstRun = true
+        _ = lastRefreshTime = Date()
+        return false
+    }
+    
+    // TODO: turn initialRefreshCycle into conditional
+    if initialRefreshCycle > timeDiff  {
+        return false
+    }
+    
     let currentlyActive = NSApplication.shared.isActive
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let acceptableApps = [
@@ -494,8 +512,8 @@ func needToActivateNudge(deferralCount: Int) -> Bool {
     
     // If we get here, Nudge if not frontmostApplication
     if !currentlyActive {
-        // TODO: this needs to be rethought out. It's one integer behind
-        _ = deferralCount + 1
+        _ = deferralCount + 1 // TODO: this needs to be rethought out. It's one integer behind
+        _ = lastRefreshTime = Date()
         activateNudge()
         if deferralCount > allowedDeferrals  {
             print("Nudge deferral count over threshold")

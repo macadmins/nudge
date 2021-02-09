@@ -15,6 +15,14 @@ struct OSUtils {
         return CommandLine.arguments.contains("-demo")
     }
     
+    func returnInitialDate() -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        return dateFormatter.date(from: "03-24-2020") ?? Date()
+    }
+    
+
+    
     func getCurrentDate() -> Date {
         Date()
     }
