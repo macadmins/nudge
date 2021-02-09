@@ -21,7 +21,17 @@ struct OSUtils {
         return dateFormatter.date(from: "03-24-2020") ?? Date()
     }
     
-
+    func returnTimerController() -> Int {
+        if 0 >= numberOfHoursBetween() {
+            return elapsedRefreshCycle
+        } else if imminentWindowTime >= numberOfHoursBetween() {
+            return imminentRefreshCycle
+        } else if approachingWindowTime >= numberOfHoursBetween() {
+            return approachingRefreshCycle
+        } else {
+            return initialRefreshCycle
+        }
+    }
     
     func getCurrentDate() -> Date {
         Date()
@@ -41,7 +51,11 @@ struct OSUtils {
        let toDate = currentCal.startOfDay(for: requiredInstallationDate)
        let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
        return numberOfDays.day!
-   }
+    }
+
+    func numberOfHoursBetween() -> Int {
+        return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
+    }
 
     // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
     func getSystemConsoleUsername() -> String {

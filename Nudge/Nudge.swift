@@ -476,7 +476,7 @@ func updateDevice() {
 func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
     let currentTime = Date().timeIntervalSince1970
     let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
-    
+
     // The first time the main timer contoller hits we don't care
     if !afterFirstRun {
         _ = afterFirstRun = true
@@ -485,7 +485,7 @@ func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
     }
     
     // TODO: turn initialRefreshCycle into conditional
-    if initialRefreshCycle > timeDiff  {
+    if OSUtils().returnTimerController() > timeDiff  {
         return false
     }
     
