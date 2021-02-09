@@ -217,7 +217,8 @@ extension MdmFeatures {
 struct OSVersionRequirement: Codable {
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
-    var requiredMinimumOSVersion, requiredMinimumOSVersionBuild: String?
+    var requiredMinimumOSVersion: String?
+    var requiredMinimumOSVersionBuild: String? // TODO: should be a list, in case of forked builds
     var targetedOSVersions: [String]?
 }
 
