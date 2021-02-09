@@ -16,7 +16,7 @@ struct osUtils {
         Date()
     }
     
-    func getRequiredMinimumOSVersion() -> String? {
+    func getRequiredMinimumOSVersion() -> OSVersion? {
         // TODO: Need to make this dynamic instead of hardcoded to the first value
         return nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion
     }
@@ -89,13 +89,15 @@ struct osUtils {
     func getPatchOSVersion() -> Int {
         return ProcessInfo().operatingSystemVersion.patchVersion
     }
-    
+  
+    /*
     func getMajorRequiredNudgeOSVersion() -> Int {
         let nudgePreferences = nudgePrefs().loadNudgePrefs()
         // TODO: Need to make this dynamic instead of hardcoded to the first value
         let parts = nudgePreferences!.osVersionRequirements[0].requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         return Int(parts[0])!
     }
+ */
 
     // Why is there not a combined String for this?
     func getOSVersion() -> String {

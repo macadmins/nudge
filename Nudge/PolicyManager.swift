@@ -24,6 +24,40 @@ class PolicyManager: ObservableObject {
         self.defaults = .standard // add something different for previews?
         self.allowedVersions = []
     }
+    
+    func evaluateStatus() throws -> Status {
+       guard
+        let best = allowedVersions.max(by: {
+            if $0.requiredMinimumOSVersion.major != $1.requiredMinimumOSVersion.major {
+                return $0.requiredMinimumOSVersion.major < $1.requiredMinimumOSVersion.major
+            }
+            return $0.requiredMinimumOSVersion.minor < $1.requiredMinimumOSVersion.minor
+        })
+       else {
+        throw NudgeError.noMatchingRequiredVersion
+       }
+        
+        if current >= best.requiredMinimumOSVersion {
+            return .noUpdateRequired
+        }
+        
+        if best.requiredMinimumOSVersion.major == current.major {
+            return .minorUpdate(version: best)
+        }
+        return .majorUpgrade(version: best)
+    }
+    
+
+    
+    enum Status {
+        case noUpdateRequired
+        case minorUpdate(version: OSVersionRequirement)
+        case majorUpgrade(version: OSVersionRequirement)
+    }
+}
+
+enum NudgeError: Error {
+    case noMatchingRequiredVersion
 }
 
 enum DefaultsError: Error {

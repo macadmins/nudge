@@ -223,7 +223,7 @@ extension MdmFeatures {
 struct OSVersionRequirement: Codable {
     let majorUpgradeAppPath: String
     let requiredInstallationDate: Date
-    let requiredMinimumOSVersion: String
+    let requiredMinimumOSVersion: OSVersion
     let requiredMinimumOSVersionBuild: String // TODO: should be a list, in case of forked builds
     let targetedOSVersions: [String]
 }
@@ -265,7 +265,7 @@ extension OSVersionRequirement {
     func with(
         majorUpgradeAppPath: String? = nil,
         requiredInstallationDate: Date? = nil,
-        requiredMinimumOSVersion: String? = nil,
+        requiredMinimumOSVersion: OSVersion? = nil,
         requiredMinimumOSVersionBuild: String? = nil,
         targetedOSVersions: [String]? = nil
     ) -> OSVersionRequirement {

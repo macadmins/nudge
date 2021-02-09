@@ -12,7 +12,7 @@ import SwiftUI
 let nudgePreferences = nudgePrefs().loadNudgePrefs()
 
 let minimumOSVersion = osUtils().getRequiredMinimumOSVersion()!
-let minimumMajorOSVersion = osUtils().getMajorRequiredNudgeOSVersion()
+let minimumMajorOSVersion = "11"
 
 let currentOSVersion = osUtils().getOSVersion()
 let currentMajorOSVersion = String(osUtils().getMajorOSVersion())
@@ -115,7 +115,7 @@ struct Nudge: View {
                         Text("Required OS Version: ")
                             .fontWeight(.bold)
                         Spacer()
-                        Text(String(minimumOSVersion).capitalized)
+                        Text(minimumOSVersion.description)
                             .foregroundColor(.gray)
                             .fontWeight(.bold)
                     }.padding(.vertical, 1.0)
@@ -311,7 +311,7 @@ struct Nudge: View {
                 // Bottom buttons
                 HStack(alignment: .top){
                     // Update Device button
-                    Button(action: updateDevice, label: {
+                    Button(action: manager.update, label: {
                         Text("Update Device")
                       }
                     )
@@ -440,11 +440,11 @@ struct Nudge_Previews: PreviewProvider {
 
 // Functions
 func fullyUpdated() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: currentOSVersion, new_version: minimumOSVersion)
+    return osUtils().versionGreaterThanOrEqual(current_version: currentOSVersion, new_version: "11.2")
 }
 
 func requireMajorUpgrade() -> Bool {
-    return osUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: minimumOSVersion)
+    return osUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: "11.2")
 }
 
 // Start doing a basic check
@@ -466,6 +466,7 @@ func createImageData(fileImagePath: String) -> NSImage {
     return NSImage(data: imageData as Data)!
 }
 
+
 func updateDevice() {
     if requireMajorUpgrade() {
         NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
@@ -473,6 +474,22 @@ func updateDevice() {
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
 //        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
     }
+}
+
+
+extension PolicyManager {
+    
+    func update() {
+        let status = try! evaluateStatus() // TODO: errors
+        switch status {
+        case .noUpdateRequired: break
+        case .minorUpdate:
+            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+        case let .majorUpgrade(major):
+            NSWorkspace.shared.open(URL(fileURLWithPath: major.majorUpgradeAppPath))
+        }
+    }
+    
 }
 
 func needToActivateNudge(deferralCount: Int) -> Bool {

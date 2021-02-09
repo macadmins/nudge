@@ -48,6 +48,10 @@ extension OSVersion: CustomStringConvertible {
     }
 }
 
+extension OSVersion: Codable {
+    // TODO: add json
+}
+
 extension OSVersion: Equatable {
     public static func == (lhs: OSVersion, rhs: OSVersion) -> Bool {
         return (lhs.major, lhs.minor, lhs.patch) == (rhs.major, rhs.minor, rhs.patch)
