@@ -8,12 +8,6 @@
 import Foundation
 import SwiftUI
 
-// These are initial variables that nudge will update within the timer controller
-// Perhaps they should be moved somewhere else, but will need to be rethought out.
-var lastRefreshTime = Utils().getInitialDate()
-var afterFirstRun = false
-var deferralCount = 0
-
 // Primary Nudge UI
 struct Nudge: View {
     // Get the color scheme so we can dynamically change properties
@@ -37,6 +31,7 @@ struct Nudge: View {
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
     
+    // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
     // Nudge UI
@@ -127,14 +122,6 @@ struct Nudge: View {
                             .foregroundColor(.gray)
                     }
                     .padding(.vertical, 1.0)
-
-                    // Fully Updated
-//                    HStack{
-//                        Text("Fully Updated: ")
-//                        Spacer()
-//                        Text(String(fullyUpdated()).capitalized)
-//                            .foregroundColor(.gray)
-//                    }.padding(.vertical, 1.0)
 
                     // Days Remaining
                     HStack{
@@ -401,73 +388,3 @@ struct Nudge_Previews: PreviewProvider {
     }
 }
 #endif
-
-// Start doing a basic check
-func nudgeStartLogic() {
-    if Utils().fullyUpdated() {
-        // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
-        // https://zacwhite.com/2020/detecting-swiftui-previews/
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            return
-        } else {
-            if Utils().demoModeEnabled() {
-                print("Device in demo mode")
-            } else {
-                print("Device fully up-to-date.")
-                AppKit.NSApp.terminate(nil)
-            }
-        }
-    }
-}
-
-func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
-    // If noTimers is true, just bail
-    if noTimers {
-        return false
-    }
-    
-    let currentTime = Date().timeIntervalSince1970
-    let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
-
-    // The first time the main timer contoller hits we don't care
-    if !afterFirstRun {
-        print("First run detected")
-        _ = afterFirstRun = true
-        _ = lastRefreshTime = Date()
-        return false
-    }
-    
-    // TODO: turn initialRefreshCycle into conditional
-    if Utils().getTimerController() > timeDiff  {
-        return false
-    }
-    
-    let frontmostApplication = NSWorkspace.shared.frontmostApplication
-    
-    // Don't nudge if major upgrade is frontmostApplication
-    if FileManager.default.fileExists(atPath: majorUpgradeAppPath) {
-        if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
-            print("Upgrade app is currently frontmostApplication")
-            return false
-        }
-    }
-    
-    // Don't nudge if acceptable apps are frontmostApplication
-    if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
-        print("An acceptable app is currently frontmostApplication")
-        return false
-    }
-    
-    // If we get here, Nudge if not frontmostApplication
-    if !NSApplication.shared.isActive {
-        deferralCount += 1
-        _ = lastRefreshTime = Date()
-        Utils().activateNudge()
-        if deferralCountVar > allowedDeferrals  {
-            print("Nudge deferral count over threshold")
-            Utils().updateDevice()
-        }
-        return true
-    }
-    return false
-}
