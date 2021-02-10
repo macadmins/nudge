@@ -10,7 +10,7 @@ import SwiftUI
 
 // These are initial variables that nudge will update within the timer controller
 // Perhaps they should be moved somewhere else, but will need to be rethought out.
-var lastRefreshTime = Utils().returnInitialDate()
+var lastRefreshTime = Utils().getInitialDate()
 var afterFirstRun = false
 var deferralCount = 0
 
@@ -25,7 +25,7 @@ struct Nudge: View {
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
     @State var serialNumber = Utils().getSerialNumber()
     @State var cpuType = Utils().getCPUTypeString()
-    @State var daysRemaining = Utils().numberOfDaysBetween()
+    @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var requireDualCloseButtons = Utils().requireDualCloseButtons()
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
     @State var hasAcceptedIUnderstand = false
@@ -172,7 +172,7 @@ struct Nudge: View {
                 // https://developer.apple.com/documentation/swiftui/openurlaction
                 HStack(alignment: .top) {
                     if informationButtonPath != "" {
-                        Button(action: Utils().moreInfo, label: {
+                        Button(action: Utils().openMoreInfo, label: {
                             Text("More Info")
                           }
                         )
@@ -292,7 +292,7 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if Utils().inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
+                    if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                         // I understand button
                         if requireDualCloseButtons {
                             if self.hasAcceptedIUnderstand {
@@ -410,7 +410,7 @@ func nudgeStartLogic() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            if Utils().inDemoMode() {
+            if Utils().demoModeEnabled() {
                 print("Device in demo mode")
             } else {
                 print("Device fully up-to-date.")
@@ -438,7 +438,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     }
     
     // TODO: turn initialRefreshCycle into conditional
-    if Utils().returnTimerController() > timeDiff  {
+    if Utils().getTimerController() > timeDiff  {
         return false
     }
     

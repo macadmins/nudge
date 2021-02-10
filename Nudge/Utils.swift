@@ -10,34 +10,14 @@ import Foundation
 import SystemConfiguration
 
 struct Utils {
-    
-    func moreInfo() {
-        guard let url = URL(string: informationButtonPath) else {
-            return
-        }
-        print("User clicked moreInfo button.")
-        NSWorkspace.shared.open(url)
-    }
-    
     func activateNudge() {
         print("Re-activating Nudge")
         NSApp.activate(ignoringOtherApps: true)
     }
-    
-    func fullyUpdated() -> Bool {
-        return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-    }
 
-    func requireMajorUpgrade() -> Bool {
-        return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-    }
-
-    func inDemoMode() -> Bool {
-        return demoModeEnabled()
-    }
-    
-    func demoModeEnabled() -> Bool {
-        return CommandLine.arguments.contains("-demo")
+    func bringNudgeToFront() {
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.mainWindow?.makeKeyAndOrderFront(self)
     }
     
     func createImageData(fileImagePath: String) -> NSImage {
@@ -45,53 +25,70 @@ struct Utils {
         let imageData:NSData = NSData(contentsOf: urlPath as URL)!
         return NSImage(data: imageData as Data)!
     }
+    
+    func demoModeEnabled() -> Bool {
+        return CommandLine.arguments.contains("-demo")
+    }
+    
+    func fullyUpdated() -> Bool {
+        return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
+    }
 
-    func updateDevice() {
-        if requireMajorUpgrade() {
-            NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
-        } else {
-            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
-//          NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+    func getCPUTypeInt() -> Int {
+        // https://stackoverflow.com/a/63539782
+        var cputype = UInt32(0)
+        var size = cputype.byteWidth
+        let result = sysctlbyname("hw.cputype", &cputype, &size, nil, 0)
+        if result == -1 {
+            if (errno == ENOENT){
+                return 0
+            }
+            return -1
         }
+        return Int(cputype)
     }
-    
-    func returnInitialDate() -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
-        return dateFormatter.date(from: "08-06-2020") ?? Date()
-    }
-    
-    func returnTimerController() -> Int {
-        let timerCycle = getTimerController()
-        // print("Timer Cycle:", String(timerCycle))
-        return timerCycle
-    }
-    
-    func getTimerController() -> Int {
-        if 0 >= numberOfHoursBetween() {
-            return elapsedRefreshCycle
-        } else if imminentWindowTime >= numberOfHoursBetween() {
-            return imminentRefreshCycle
-        } else if approachingWindowTime >= numberOfHoursBetween() {
-            return approachingRefreshCycle
-        } else {
-            return initialRefreshCycle
+
+    func getCPUTypeString() -> String {
+        // https://stackoverflow.com/a/63539782
+        let type: Int = getCPUTypeInt()
+        if type == -1 {
+            return "error in CPU type"
         }
+        
+        let cpu_arch = type & 0xff // mask for architecture bits
+        if cpu_arch == cpu_type_t(7){
+            return "Intel"
+        }
+        if cpu_arch == cpu_type_t(12){
+            return "Apple Silicon"
+        }
+        return "unknown"
     }
     
     func getCurrentDate() -> Date {
         Date()
     }
     
-    func pastRequiredInstallationDate() -> Bool {
-        return getCurrentDate() > requiredInstallationDate
+    func getInitialDate() -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        return dateFormatter.date(from: "08-06-2020") ?? Date()
     }
     
-    func requireDualCloseButtons() -> Bool {
-        return (approachingWindowTime / 24) >= numberOfDaysBetween()
+    func getMajorOSVersion() -> Int {
+        return ProcessInfo().operatingSystemVersion.majorVersion
     }
     
-    func numberOfDaysBetween() -> Int {
+    func getMajorRequiredNudgeOSVersion() -> Int {
+        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        return Int((parts[0]))!
+    }
+    
+    func getMinorOSVersion() -> Int {
+        return ProcessInfo().operatingSystemVersion.minorVersion
+    }
+
+    func getNumberOfDaysBetween() -> Int {
        let currentCal = Calendar.current
        let fromDate = currentCal.startOfDay(for: getCurrentDate())
        let toDate = currentCal.startOfDay(for: requiredInstallationDate)
@@ -99,19 +96,16 @@ struct Utils {
        return numberOfDays.day!
     }
 
-    func numberOfHoursBetween() -> Int {
+    func getNumberOfHoursBetween() -> Int {
         return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
     }
-
-    // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
-    func getSystemConsoleUsername() -> String {
-        var uid: uid_t = 0
-        var gid: gid_t = 0
-        return SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
+    
+    func getPatchOSVersion() -> Int {
+        return ProcessInfo().operatingSystemVersion.patchVersion
     }
-
-    // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
+    
     func getSerialNumber() -> String {
+        // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
         var serialNumber: String? {
             let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice") )
             
@@ -130,80 +124,89 @@ struct Utils {
         
         return serialNumber ?? ""
     }
-
-    func getMajorOSVersion() -> Int {
-        return ProcessInfo().operatingSystemVersion.majorVersion
-    }
-
-    func getMinorOSVersion() -> Int {
-        return ProcessInfo().operatingSystemVersion.minorVersion
-    }
-
-    func getPatchOSVersion() -> Int {
-        return ProcessInfo().operatingSystemVersion.patchVersion
+    
+    func getSystemConsoleUsername() -> String {
+        // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
+        var uid: uid_t = 0
+        var gid: gid_t = 0
+        return SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
     }
     
-    func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
-        return Int((parts[0]))!
+    func getTimerController() -> Int {
+        let timerCycle = getTimerControllerInt()
+        // print("Timer Cycle:", String(timerCycle)) // Easy way to debug the timerController logic
+        return timerCycle
+    }
+    
+    func getTimerControllerInt() -> Int {
+        if 0 >= getNumberOfHoursBetween() {
+            return elapsedRefreshCycle
+        } else if imminentWindowTime >= getNumberOfHoursBetween() {
+            return imminentRefreshCycle
+        } else if approachingWindowTime >= getNumberOfHoursBetween() {
+            return approachingRefreshCycle
+        } else {
+            return initialRefreshCycle
+        }
     }
 
-    // Adapted from https://stackoverflow.com/a/25453654
+    func openMoreInfo() {
+        guard let url = URL(string: informationButtonPath) else {
+            return
+        }
+        print("User clicked moreInfo button.")
+        NSWorkspace.shared.open(url)
+    }
+    
+    func pastRequiredInstallationDate() -> Bool {
+        return getCurrentDate() > requiredInstallationDate
+    }
+    
+    func requireDualCloseButtons() -> Bool {
+        return (approachingWindowTime / 24) >= getNumberOfDaysBetween()
+    }
+
+    func requireMajorUpgrade() -> Bool {
+        return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
+    }
+
+    func updateDevice() {
+        if requireMajorUpgrade() {
+            NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+        } else {
+            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+            // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+        }
+    }
+
     func versionEqual(current_version: String, new_version: String) -> Bool {
+        // Adapted from https://stackoverflow.com/a/25453654
         return current_version.compare(new_version, options: .numeric) == .orderedSame
     }
+
     func versionGreaterThan(current_version: String, new_version: String) -> Bool {
+        // Adapted from https://stackoverflow.com/a/25453654
         return current_version.compare(new_version, options: .numeric) == .orderedDescending
     }
+
     func versionGreaterThanOrEqual(current_version: String, new_version: String) -> Bool {
+        // Adapted from https://stackoverflow.com/a/25453654
         return current_version.compare(new_version, options: .numeric) != .orderedAscending
     }
+
     func versionLessThan(current_version: String, new_version: String) -> Bool {
+        // Adapted from https://stackoverflow.com/a/25453654
         return current_version.compare(new_version, options: .numeric) == .orderedAscending
     }
-    func versionLessThanOrEqual(current_version: String, new_version: String) -> Bool {
-        return current_version.compare(new_version, options: .numeric) != .orderedDescending
-    }
-    
-    // Bring it front
-    func bringNudgeToFront() {
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.mainWindow?.makeKeyAndOrderFront(self)
-    }
-    
-    // https://stackoverflow.com/a/63539782
-    func getCPUTypeInt() -> Int {
-        var cputype = UInt32(0)
-        var size = cputype.byteWidth
-        let result = sysctlbyname("hw.cputype", &cputype, &size, nil, 0)
-        if result == -1 {
-            if (errno == ENOENT){
-                return 0
-            }
-            return -1
-        }
-        return Int(cputype)
-    }
 
-    func getCPUTypeString() -> String {
-        let type: Int = getCPUTypeInt()
-        if type == -1 {
-            return "error in CPU type"
-        }
-        
-        let cpu_arch = type & 0xff // mask for architecture bits
-        if cpu_arch == cpu_type_t(7){
-            return "Intel"
-        }
-        if cpu_arch == cpu_type_t(12){
-            return "Apple Silicon"
-        }
-        return "unknown"
+    func versionLessThanOrEqual(current_version: String, new_version: String) -> Bool {
+        // Adapted from https://stackoverflow.com/a/25453654
+        return current_version.compare(new_version, options: .numeric) != .orderedDescending
     }
 }
 
-// https://stackoverflow.com/a/63539782
 extension FixedWidthInteger {
+    // https://stackoverflow.com/a/63539782
     var byteWidth:Int {
         return self.bitWidth/UInt8.bitWidth
     }
