@@ -18,7 +18,7 @@ struct nudgePrefs{
             return nil
         }
         
-        if OSUtils().demoModeEnabled() {
+        if Utils().demoModeEnabled() {
             return nil
         }
         

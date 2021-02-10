@@ -8,25 +8,10 @@
 import Foundation
 import SwiftUI
 
-let minimumOSVersion = requiredMinimumOSVersion
-let minimumMajorOSVersion = OSUtils().getMajorRequiredNudgeOSVersion()
-
-let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
-let currentMajorOSVersion = String(OSUtils().getMajorOSVersion())
-
-// Setup Variables for light icon
-let iconLightImage = createImageData(fileImagePath: iconLightPath)
-
-// Setup Variables for dark icon
-let iconDarkImage = createImageData(fileImagePath: iconDarkPath)
-
-// Setup Variables for company screenshot
-let screenShotImage = createImageData(fileImagePath: screenShotPath)
-
 // Get the default filemanager
 let fileManager = FileManager.default
 
-var lastRefreshTime = OSUtils().returnInitialDate()
+var lastRefreshTime = Utils().returnInitialDate()
 var afterFirstRun = false
 
 // Primary Nudge UI
@@ -41,12 +26,12 @@ struct Nudge: View {
     var screen = NSScreen.main?.visibleFrame
 
     // State variables
-    @State var systemConsoleUsername = OSUtils().getSystemConsoleUsername()
-    @State var serialNumber = OSUtils().getSerialNumber()
-    @State var cpuType = OSUtils().getCPUTypeString()
-    @State var daysRemaining = OSUtils().numberOfDaysBetween()
-    @State var requireDualCloseButtons = OSUtils().requireDualCloseButtons()
-    @State var pastRequiredInstallationDate = OSUtils().pastRequiredInstallationDate()
+    @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
+    @State var serialNumber = Utils().getSerialNumber()
+    @State var cpuType = Utils().getCPUTypeString()
+    @State var daysRemaining = Utils().numberOfDaysBetween()
+    @State var requireDualCloseButtons = Utils().requireDualCloseButtons()
+    @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
     @State var hasAcceptedIUnderstand = false
     @State var deferralCount = 0
     
@@ -63,7 +48,7 @@ struct Nudge: View {
                 // Company Logo
                 if colorScheme == .dark {
                     if fileManager.fileExists(atPath: iconDarkPath) {
-                        Image(nsImage: iconDarkImage)
+                        Image(nsImage: Utils().createImageData(fileImagePath: iconDarkPath))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 128, height: 128)
@@ -76,7 +61,7 @@ struct Nudge: View {
                     }
                 } else {
                     if fileManager.fileExists(atPath: iconLightPath) {
-                        Image(nsImage: iconLightImage)
+                        Image(nsImage: Utils().createImageData(fileImagePath: iconLightPath))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 128, height: 128)
@@ -104,7 +89,7 @@ struct Nudge: View {
                         Text("Required OS Version: ")
                             .fontWeight(.bold)
                         Spacer()
-                        Text(String(minimumOSVersion).capitalized)
+                        Text(String(requiredMinimumOSVersion).capitalized)
                             .foregroundColor(.gray)
                             .fontWeight(.bold)
                     }.padding(.vertical, 1.0)
@@ -251,7 +236,7 @@ struct Nudge: View {
                         Spacer()
                         Group{
                             if fileManager.fileExists(atPath: screenShotPath) {
-                                Image(nsImage: screenShotImage)
+                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .padding()
@@ -300,7 +285,7 @@ struct Nudge: View {
                 // Bottom buttons
                 HStack(alignment: .top){
                     // Update Device button
-                    Button(action: updateDevice, label: {
+                    Button(action: Utils().updateDevice, label: {
                         Text("Update Device")
                       }
                     )
@@ -308,7 +293,7 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
+                    if Utils().inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
                         // I understand button
                         if requireDualCloseButtons {
                             if self.hasAcceptedIUnderstand {
@@ -390,7 +375,7 @@ struct screenShotZoom: View {
     var body: some View {
         Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
             if fileManager.fileExists(atPath: screenShotPath) {
-                Image(nsImage: screenShotImage)
+                Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
@@ -427,49 +412,21 @@ struct Nudge_Previews: PreviewProvider {
 }
 #endif
 
-// Functions
-func fullyUpdated() -> Bool {
-    return OSUtils().versionGreaterThanOrEqual(current_version: currentOSVersion, new_version: minimumOSVersion)
-}
-
-func requireMajorUpgrade() -> Bool {
-    return OSUtils().versionGreaterThanOrEqual(current_version: currentMajorOSVersion, new_version: minimumOSVersion)
-}
-
-func inDemoMode() -> Bool {
-    return OSUtils().demoModeEnabled()
-}
-
 // Start doing a basic check
 func nudgeStartLogic() {
-    if fullyUpdated() {
+    if Utils().fullyUpdated() {
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         // https://zacwhite.com/2020/detecting-swiftui-previews/
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            if inDemoMode() {
+            if Utils().inDemoMode() {
                 print("Device in demo mode")
             } else {
                 print("Device fully up-to-date.")
                 AppKit.NSApp.terminate(nil)
             }
         }
-    }
-}
-
-func createImageData(fileImagePath: String) -> NSImage {
-    let urlPath = NSURL(fileURLWithPath: fileImagePath)
-    let imageData:NSData = NSData(contentsOf: urlPath as URL)!
-    return NSImage(data: imageData as Data)!
-}
-
-func updateDevice() {
-    if requireMajorUpgrade() {
-        NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
-    } else {
-        NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
-//        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
     }
 }
 
@@ -490,16 +447,11 @@ func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
     }
     
     // TODO: turn initialRefreshCycle into conditional
-    if OSUtils().returnTimerController() > timeDiff  {
+    if Utils().returnTimerController() > timeDiff  {
         return false
     }
     
-    let currentlyActive = NSApplication.shared.isActive
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
-    let acceptableApps = [
-        "com.apple.loginwindow",
-        "com.apple.systempreferences"
-    ]
     
     // Don't nudge if major upgrade is frontmostApplication
     if fileManager.fileExists(atPath: majorUpgradeAppPath) {
@@ -516,20 +468,15 @@ func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
     }
     
     // If we get here, Nudge if not frontmostApplication
-    if !currentlyActive {
+    if !NSApplication.shared.isActive {
         _ = deferralCount + 1 // TODO: this needs to be rethought out. It's one integer behind
         _ = lastRefreshTime = Date()
-        activateNudge()
+        Utils().activateNudge()
         if deferralCount > allowedDeferrals  {
             print("Nudge deferral count over threshold")
-            updateDevice()
+            Utils().updateDevice()
         }
         return true
     }
     return false
-}
-
-func activateNudge() {
-    print("Re-activating Nudge")
-    NSApp.activate(ignoringOtherApps: true)
 }

@@ -11,10 +11,10 @@
 		0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972625CE26CE0019FC8F /* PolicyManager.swift */; };
 		0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
-		636C4B4A25D1BECE0004A791 /* defaultUIPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* defaultUIPreferences.swift */; };
+		636C4B4A25D1BECE0004A791 /* defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* defaults.swift */; };
 		639E194A25CC7F13008F618B /* example.json in Resources */ = {isa = PBXBuildFile; fileRef = 639E194925CC7F13008F618B /* example.json */; };
 		639E198225CD885D008F618B /* nudgePrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* nudgePrefs.swift */; };
-		639E198A25CD9E21008F618B /* OSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198925CD9E21008F618B /* OSUtils.swift */; };
+		639E198A25CD9E21008F618B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198925CD9E21008F618B /* Utils.swift */; };
 		63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* NudgeApp.swift */; };
 		63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E425C9E9A400236281 /* ContentView.swift */; };
 		63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E625C9E9A500236281 /* Assets.xcassets */; };
@@ -47,10 +47,10 @@
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5870FF6825CFE5FA0036D203 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		636C4B4925D1BECE0004A791 /* defaultUIPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = defaultUIPreferences.swift; sourceTree = "<group>"; };
+		636C4B4925D1BECE0004A791 /* defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = defaults.swift; sourceTree = "<group>"; };
 		639E194925CC7F13008F618B /* example.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = example.json; sourceTree = "<group>"; };
 		639E198125CD885D008F618B /* nudgePrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nudgePrefs.swift; sourceTree = "<group>"; };
-		639E198925CD9E21008F618B /* OSUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSUtils.swift; sourceTree = "<group>"; };
+		639E198925CD9E21008F618B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D0E225C9E9A400236281 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
 		63D7D0E425C9E9A400236281 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -125,8 +125,8 @@
 				63D7D0E825C9E9A500236281 /* Preview Content */,
 				639E194925CC7F13008F618B /* example.json */,
 				639E198125CD885D008F618B /* nudgePrefs.swift */,
-				636C4B4925D1BECE0004A791 /* defaultUIPreferences.swift */,
-				639E198925CD9E21008F618B /* OSUtils.swift */,
+				636C4B4925D1BECE0004A791 /* defaults.swift */,
+				639E198925CD9E21008F618B /* Utils.swift */,
 				0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */,
 				0BC9972625CE26CE0019FC8F /* PolicyManager.swift */,
 			);
@@ -293,8 +293,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
-				639E198A25CD9E21008F618B /* OSUtils.swift in Sources */,
-				636C4B4A25D1BECE0004A791 /* defaultUIPreferences.swift in Sources */,
+				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
+				636C4B4A25D1BECE0004A791 /* defaults.swift in Sources */,
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
 				63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */,
 				639E198225CD885D008F618B /* nudgePrefs.swift in Sources */,

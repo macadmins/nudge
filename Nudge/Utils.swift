@@ -1,5 +1,5 @@
 //
-//  osUtils.swift
+//  Utils.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/5/21.
@@ -9,10 +9,42 @@ import AppKit
 import Foundation
 import SystemConfiguration
 
-struct OSUtils {
+struct Utils {
+    
+    func activateNudge() {
+        print("Re-activating Nudge")
+        NSApp.activate(ignoringOtherApps: true)
+    }
+    
+    func fullyUpdated() -> Bool {
+        return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
+    }
+
+    func requireMajorUpgrade() -> Bool {
+        return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
+    }
+
+    func inDemoMode() -> Bool {
+        return demoModeEnabled()
+    }
     
     func demoModeEnabled() -> Bool {
         return CommandLine.arguments.contains("-demo")
+    }
+    
+    func createImageData(fileImagePath: String) -> NSImage {
+        let urlPath = NSURL(fileURLWithPath: fileImagePath)
+        let imageData:NSData = NSData(contentsOf: urlPath as URL)!
+        return NSImage(data: imageData as Data)!
+    }
+
+    func updateDevice() {
+        if requireMajorUpgrade() {
+            NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+        } else {
+            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+    //        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+        }
     }
     
     func returnInitialDate() -> Date {

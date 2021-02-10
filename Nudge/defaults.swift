@@ -1,5 +1,5 @@
 //
-//  defaultUIPreferences.swift
+//  defaults.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/8/21.
@@ -93,3 +93,9 @@ let mdmMainHeader = nudgePreferences?.userInterface?.mdmElements?.mainHeader ?? 
 let mdmPrimaryQuitButtonText = nudgePreferences?.userInterface?.mdmElements?.primaryQuitButtonText ?? "Okay"
 let mdmSecondaryQuitButtonText = nudgePreferences?.userInterface?.mdmElements?.secondaryQuitButtonText ?? "I understand"
 let mdmSubHeader = nudgePreferences?.userInterface?.mdmElements?.subHeader ?? "A friendly reminder from your local IT team"
+
+// Other important defaults
+let acceptableApps = [
+    "com.apple.loginwindow",
+    "com.apple.systempreferences"
+]
