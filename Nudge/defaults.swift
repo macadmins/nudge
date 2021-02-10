@@ -23,7 +23,8 @@ let informationButtonPath = nudgePreferences?.optionalFeatures?.informationButto
 let maxRandomDelayInSeconds = nudgePreferences?.optionalFeatures?.maxRandomDelayInSeconds ?? 1200
 let noTimers = nudgePreferences?.optionalFeatures?.noTimers ?? false
 let randomDelay = nudgePreferences?.optionalFeatures?.randomDelay ?? false
-let screenShotPath = nudgePreferences?.optionalFeatures?.screenShotPath ?? ""
+let screenShotDarkPath = nudgePreferences?.optionalFeatures?.screenShotDarkPath ?? ""
+let screenShotLightPath = nudgePreferences?.optionalFeatures?.screenShotLightPath ?? ""
 
 // optionalFeatures - MDM
 let alwaysShowManualEnrllment = nudgePreferences?.optionalFeatures?.mdmFeatures?.alwaysShowManulEnrollment ?? false

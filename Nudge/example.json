@@ -21,7 +21,8 @@
         "maxRandomDelayInSeconds": 1200,
         "noTimers": false,
         "randomDelay": false,
-        "screenShotPath": "/Library/Application Support/nudge/ScreenShot.jpg"
+        "screenShotDarkPath": "/Library/Application Support/nudge/screenShotDark.jpg",
+        "screenShotLightPath": "/Library/Application Support/nudge/screenShotLight.jpg"
     },
     "osVersionRequirements": [
         {

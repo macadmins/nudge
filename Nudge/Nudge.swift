@@ -221,8 +221,13 @@ struct Nudge: View {
                     HStack{
                         Spacer()
                         Group{
-                            if FileManager.default.fileExists(atPath: screenShotPath) {
-                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                            if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
+                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
+                                    .resizable().scaledToFit()
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding()
+                            } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
+                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
                                     .resizable().scaledToFit()
                                     .aspectRatio(contentMode: .fit)
                                     .padding()
@@ -346,15 +351,20 @@ struct Nudge: View {
 // Sheet view for Screenshot zoom
 struct screenShotZoom: View {
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-            if FileManager.default.fileExists(atPath: screenShotPath) {
-                Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                    .resizable()
+            if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
+                Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
+                    .resizable().scaledToFit()
                     .aspectRatio(contentMode: .fit)
                     .padding()
-                    .frame(width: 512, height: 512)
+            } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
+                Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                    .resizable().scaledToFit()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
             } else {
                 Image("CompanyScreenshotIcon")
                     .resizable()
