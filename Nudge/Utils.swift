@@ -51,17 +51,23 @@ struct Utils {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
-    //        NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
+//          NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
     }
     
     func returnInitialDate() -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        return dateFormatter.date(from: "03-24-2020") ?? Date()
+        return dateFormatter.date(from: "08-06-2020") ?? Date()
     }
     
     func returnTimerController() -> Int {
+        let timerCycle = getTimerController()
+        // print("Timer Cycle:", String(timerCycle))
+        return timerCycle
+    }
+    
+    func getTimerController() -> Int {
         if 0 >= numberOfHoursBetween() {
             return elapsedRefreshCycle
         } else if imminentWindowTime >= numberOfHoursBetween() {

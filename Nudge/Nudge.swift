@@ -12,6 +12,7 @@ import SwiftUI
 // Perhaps they should be moved somewhere else, but will need to be rethought out.
 var lastRefreshTime = Utils().returnInitialDate()
 var afterFirstRun = false
+var deferralCount = 0
 
 // Primary Nudge UI
 struct Nudge: View {
@@ -28,7 +29,7 @@ struct Nudge: View {
     @State var requireDualCloseButtons = Utils().requireDualCloseButtons()
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
     @State var hasAcceptedIUnderstand = false
-    @State var deferralCount = 0
+    @State var deferralCountUI = 0
     
     // Modal view for screenshot
     @State var showSSDetail = false
@@ -153,10 +154,10 @@ struct Nudge: View {
                     HStack{
                         Text("Deferral Count: ")
                         Spacer()
-                        Text(String(self.deferralCount))
+                        Text(String(self.deferralCountUI))
                             .onReceive(nudgeRefreshCycleTimer) { _ in
-                                if needToActivateNudge(deferralCount: self.deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                                    self.deferralCount += 1
+                                if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
+                                    self.deferralCountUI += 1
                                 }
                             }
                             .foregroundColor(.gray)
@@ -291,7 +292,7 @@ struct Nudge: View {
                     // Separate the buttons with a spacer
                     Spacer()
                     
-                    if Utils().inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCount {
+                    if Utils().inDemoMode() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                         // I understand button
                         if requireDualCloseButtons {
                             if self.hasAcceptedIUnderstand {
@@ -419,7 +420,7 @@ func nudgeStartLogic() {
     }
 }
 
-func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
+func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
     // If noTimers is true, just bail
     if noTimers {
         return false
@@ -430,6 +431,7 @@ func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
 
     // The first time the main timer contoller hits we don't care
     if !afterFirstRun {
+        print("First run detected")
         _ = afterFirstRun = true
         _ = lastRefreshTime = Date()
         return false
@@ -458,10 +460,10 @@ func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
     
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
-        _ = deferralCount + 1 // TODO: this needs to be rethought out. It's one integer behind
+        deferralCount += 1
         _ = lastRefreshTime = Date()
         Utils().activateNudge()
-        if deferralCount > allowedDeferrals  {
+        if deferralCountVar > allowedDeferrals  {
             print("Nudge deferral count over threshold")
             Utils().updateDevice()
         }
