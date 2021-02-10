@@ -385,11 +385,11 @@ struct screenShotZoom: View {
 struct Nudge_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
+            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                 .preferredColorScheme(.light)
-            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
+            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                 .preferredColorScheme(.dark)
-            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
+            Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                 .preferredColorScheme(.dark)
                 .environment(\.locale, .init(identifier: "fr"))
         }
