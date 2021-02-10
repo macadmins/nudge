@@ -223,16 +223,14 @@ struct Nudge: View {
                         Group{
                             if FileManager.default.fileExists(atPath: screenShotPath) {
                                 Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                                    .resizable()
+                                    .resizable().scaledToFit()
                                     .aspectRatio(contentMode: .fit)
                                     .padding()
-                                    .frame(width: 128, height: 128)
                             } else {
                                 Image("CompanyScreenshotIcon")
-                                    .resizable()
+                                    .resizable().scaledToFit()
                                     .aspectRatio(contentMode: .fit)
                                     .padding()
-                                    .frame(width: 128, height: 128)
                             }
                             Button(action: {
                                 self.showSSDetail.toggle()
