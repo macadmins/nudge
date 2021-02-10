@@ -8,9 +8,6 @@
 import Foundation
 import SwiftUI
 
-// Get the default filemanager
-let fileManager = FileManager.default
-
 // These are initial variables that nudge will update within the timer controller
 // Perhaps they should be moved somewhere else, but will need to be rethought out.
 var lastRefreshTime = Utils().returnInitialDate()
@@ -48,7 +45,7 @@ struct Nudge: View {
             VStack{
                 // Company Logo
                 if colorScheme == .dark {
-                    if fileManager.fileExists(atPath: iconDarkPath) {
+                    if FileManager.default.fileExists(atPath: iconDarkPath) {
                         Image(nsImage: Utils().createImageData(fileImagePath: iconDarkPath))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -61,7 +58,7 @@ struct Nudge: View {
                             .padding(.bottom, 10.0)
                     }
                 } else {
-                    if fileManager.fileExists(atPath: iconLightPath) {
+                    if FileManager.default.fileExists(atPath: iconLightPath) {
                         Image(nsImage: Utils().createImageData(fileImagePath: iconLightPath))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -236,7 +233,7 @@ struct Nudge: View {
                     HStack{
                         Spacer()
                         Group{
-                            if fileManager.fileExists(atPath: screenShotPath) {
+                            if FileManager.default.fileExists(atPath: screenShotPath) {
                                 Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -366,7 +363,7 @@ struct screenShotZoom: View {
     
     var body: some View {
         Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-            if fileManager.fileExists(atPath: screenShotPath) {
+            if FileManager.default.fileExists(atPath: screenShotPath) {
                 Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -446,7 +443,7 @@ func needToActivateNudge(deferralCount: Int, lastRefreshTimeVar: Date) -> Bool {
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     
     // Don't nudge if major upgrade is frontmostApplication
-    if fileManager.fileExists(atPath: majorUpgradeAppPath) {
+    if FileManager.default.fileExists(atPath: majorUpgradeAppPath) {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
             print("Upgrade app is currently frontmostApplication")
             return false
