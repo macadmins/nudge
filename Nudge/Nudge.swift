@@ -11,6 +11,8 @@ import SwiftUI
 // Get the default filemanager
 let fileManager = FileManager.default
 
+// These are initial variables that nudge will update within the timer controller
+// Perhaps they should be moved somewhere else, but will need to be rethought out.
 var lastRefreshTime = Utils().returnInitialDate()
 var afterFirstRun = false
 
@@ -20,10 +22,6 @@ struct Nudge: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
     @EnvironmentObject var manager: PolicyManager
-
-
-    // Get the screen frame
-    var screen = NSScreen.main?.visibleFrame
 
     // State variables
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
@@ -37,6 +35,9 @@ struct Nudge: View {
     
     // Modal view for screenshot
     @State var showSSDetail = false
+    
+    // Get the screen frame
+    var screen = NSScreen.main?.visibleFrame
     
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
@@ -173,7 +174,7 @@ struct Nudge: View {
                 // https://developer.apple.com/documentation/swiftui/openurlaction
                 HStack(alignment: .top) {
                     if informationButtonPath != "" {
-                        Button(action: moreInfo, label: {
+                        Button(action: Utils().moreInfo, label: {
                             Text("More Info")
                           }
                         )
@@ -356,15 +357,6 @@ struct Nudge: View {
             // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
             .onAppear(perform: nudgeStartLogic)
         }
-    }
-
-    func moreInfo() {
-        let url_info = informationButtonPath
-        guard let url = URL(string: url_info) else {
-            return
-        }
-        print("User clicked moreInfo button.")
-        openURL(url)
     }
 }
 
