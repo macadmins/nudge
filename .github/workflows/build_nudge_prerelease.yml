@@ -37,7 +37,6 @@ jobs:
       id: get_env_var
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
-         echo "BUILD_DATE_RELEASE=$(/bin/cat ./date_info.txt)" >> $GITHUB_ENV
 
     - name: Create Pre-Release
       id: create_pre_release
@@ -46,7 +45,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v.${{env.NUDGE_VERSION}}
-        release_name: Nudge ${{env.NUDGE_VERSION}} (${{env.BUILD_DATE_RELEASE}})
+        release_name: Nudge ${{env.NUDGE_VERSION}}
         body: |
             # Notes
             This is a pre-release version of Nudge created by GitHub Actions.
@@ -59,7 +58,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
         asset_path: ./outputs/Nudge-${{env.NUDGE_VERSION}}.pkg
         asset_name: Nudge-${{env.NUDGE_VERSION}}.pkg
         asset_content_type: application/x-newton-compatible-pkg

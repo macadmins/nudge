@@ -14,7 +14,6 @@ MP_ZIP="/tmp/munki-pkg.zip"
 XCODE_BUILD_PATH="/Applications/Xcode_12.4.app/Contents/Developer/usr/bin/xcodebuild"
 CURRENT_NUDGE_MAIN_BUILD_VERSION=$(/usr/libexec/PlistBuddy -c Print:CFBundleVersion $TOOLSDIR/Nudge/Info.plist)
 DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
-DATE_STRING=$(/bin/date -u "+%B %d %Y %H:%M:%S")
 
 # automate the build version bump
 AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$DATE"
@@ -23,7 +22,6 @@ AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$DATE"
 
 # Create files to use for build process info
 echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
-echo "$DATE_STRING" > $TOOLSDIR/date_info.txt
 
 # build nudge
 echo "Building Nudge"
