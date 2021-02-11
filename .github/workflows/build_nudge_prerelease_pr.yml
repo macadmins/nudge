@@ -1,0 +1,32 @@
+name: Build signed Nudge for pull requests (prerelease)
+
+on:
+  pull_request:
+    branches:
+    - development
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout python repo
+      uses: actions/checkout@v2
+
+    - name: Install Apple Xcode certificates
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
+        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+    - name: Install Apple Installer certificates
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        create-keychain: false # do not create a new keychain for this value
+        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
+        p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
+
+    - name: Run build package script
+      run: ./build_nudge.zsh
