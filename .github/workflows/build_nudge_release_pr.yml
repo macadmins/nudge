@@ -14,14 +14,14 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install Apple Xcode certificates
-      uses: apple-actions/import-codesign-certs@819b0c0262e521af3341e2292f17bb60368fa002
+      uses: apple-actions/import-codesign-certs@ec5be46eab73f99a486d7d54b36fab08b086a511
       with:
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
         p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
         p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
     - name: Install Apple Installer certificates
-      uses: apple-actions/import-codesign-certs@819b0c0262e521af3341e2292f17bb60368fa002
+      uses: apple-actions/import-codesign-certs@ec5be46eab73f99a486d7d54b36fab08b086a511
       with:
         create-keychain: false # do not create a new keychain for this value
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
