@@ -1,5 +1,8 @@
 name: Build signed Nudge and upload signed package
 
+env:
+  NUDGE_VERSION: "0.0.2"
+
 on:
   pull_request:
     branches:
