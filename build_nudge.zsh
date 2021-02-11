@@ -14,7 +14,7 @@ OUTPUTSDIR="$TOOLSDIR/outputs"
 MP_ZIP="/tmp/munki-pkg.zip"
 
 if [ -n "$1" ]; then
-  DATE=$4
+  DATE=$1
 else
   DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
 fi
