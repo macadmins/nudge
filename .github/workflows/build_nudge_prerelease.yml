@@ -1,0 +1,71 @@
+name: Build signed Nudge and upload signed package (prerelease)
+
+on:
+  push:
+    branches:
+    - development
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout python repo
+      uses: actions/checkout@v2
+
+    - name: Install Apple Xcode certificates
+      if: github.ref == 'refs/heads/main'
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
+        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+
+    - name: Install Apple Installer certificates
+      if: github.ref == 'refs/heads/main'
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        create-keychain: false # do not create a new keychain for this value
+        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
+        p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
+
+    - name: Run build package script
+      run: ./build_nudge.zsh "CREATE_PKG"
+
+    - name: get environment variables
+      id: get_env_var
+      run: |
+         echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
+         echo "BUILD_DATE_RELEASE=$(/bin/cat ./date_info.txt)" >> $GITHUB_ENV
+
+    - name: Create Pre-Release
+      id: create_pre_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v.${{env.NUDGE_VERSION}}
+        release_name: Nudge ${{env.NUDGE_VERSION}} (${{env.BUILD_DATE_RELEASE}})
+        body: |
+            # Notes
+            This is a pre-release version of Nudge created by GitHub Actions.
+            Nudge.app has been signed application as well as the package.
+        draft: false
+        prerelease: true
+
+    - name: Upload Signed Package Pre-Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./outputs/Nudge-${{env.NUDGE_VERSION}}.pkg
+        asset_name: Nudge-${{env.NUDGE_VERSION}}.pkg
+        asset_content_type: application/x-newton-compatible-pkg
+
+    - name: Upload packages
+      uses: actions/upload-artifact@v1
+      with:
+        name: packages
+        path: outputs/
