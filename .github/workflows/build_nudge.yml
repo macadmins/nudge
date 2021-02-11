@@ -26,7 +26,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       uses: apple-actions/import-codesign-certs@v1
       with:
-        keychain: "xcode_temp"
+        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
         p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
         p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
@@ -34,7 +34,8 @@ jobs:
       if: github.ref == 'refs/heads/main'
       uses: apple-actions/import-codesign-certs@v1
       with:
-        keychain: "munkipkg_temp"
+        create-keychain: false # do not create a new keychain for this value
+        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
         p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
 
