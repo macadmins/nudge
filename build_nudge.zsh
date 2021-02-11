@@ -21,7 +21,7 @@ fi
 
 # build nudge
 echo "Building Nudge"
-/Applications/Xcode_12.4.app/Contents/Developer/usr/bin/xcodebuild -project Nudge.xcodeproj CODE_SIGN_IDENTITY="Apple Distribution: Clever DevOps Co. (9GQZ7KUFR6)" OTHER_CODE_SIGN_FLAGS="--keychain /Users/runner/Library/Keychains/xcode_temp.keychain"
+/Applications/Xcode_12.4.app/Contents/Developer/usr/bin/xcodebuild -project Nudge.xcodeproj CODE_SIGN_IDENTITY="B8D181DFD11ABF034907847FF14E90F771683356"
 
 XCB_RESULT="$?"
 if [ "${XCB_RESULT}" != "0" ]; then

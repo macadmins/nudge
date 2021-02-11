@@ -38,6 +38,13 @@ jobs:
         p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
 
+    - name: Verify import
+      run: |
+        echo -- /usr/bin/security list-keychains --
+        /usr/bin/security list-keychains
+        echo -- security find-identity --
+        security find-identity
+
     - name: Run build package script
       run: ./build_nudge.zsh "${BUILD_DATE}"
 
