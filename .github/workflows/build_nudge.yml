@@ -1,12 +1,6 @@
 name: Build signed Nudge and upload signed package
 
-env:
-  NUDGE_VERSION: "0.0.2"
-
 on:
-  pull_request:
-    branches:
-      githubactions
   push:
     branches:
     - main
@@ -16,12 +10,6 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Set environment variables
-      id: set_env_var
-      run: |
-         echo "BUILD_DATE=$(/bin/date -u "+%m%d%Y%H%M%S")" >> $GITHUB_ENV
-         echo "BUILD_DATE_RELEASE=$(/bin/date -u "+%B %d %Y %H:%M:%S")" >> $GITHUB_ENV
-
     - name: Checkout python repo
       uses: actions/checkout@v2
 
@@ -42,15 +30,13 @@ jobs:
         p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
 
-    - name: Verify import
-      run: |
-        echo -- /usr/bin/security list-keychains --
-        /usr/bin/security list-keychains
-        echo -- security find-identity --
-        security find-identity
-
     - name: Run build package script
-      run: ./build_nudge.zsh "${BUILD_DATE}"
+      run: ./build_nudge.zsh "CREATE_PKG"
+
+    - name: get environment variables
+      id: get_env_var
+      run: |
+         echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
 
     - name: Create Release
       id: create_release
@@ -58,13 +44,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v.${{env.NUDGE_VERSION}}.${{env.BUILD_DATE}}
-        release_name: Nudge ${{env.NUDGE_VERSION}} (${{env.BUILD_DATE_RELEASE}})
+        tag_name: v.${{env.NUDGE_VERSION}}
+        release_name: Nudge ${{env.NUDGE_VERSION}}
         body: |
             # Notes
-            Automated, signed application bundle and signed package.
+            This is a version of Nudge created by GitHub Actions.
+            Nudge.app has been signed application as well as the package.
         draft: false
-        prerelease: true
+        prerelease: false
 
     - name: Upload Signed Package Release Asset
       uses: actions/upload-release-asset@v1
@@ -72,8 +59,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./outputs/Nudge-${{env.NUDGE_VERSION}}.${{env.BUILD_DATE}}.pkg
-        asset_name: Nudge-${{env.NUDGE_VERSION}}.${{env.BUILD_DATE}}.pkg
+        asset_path: ./outputs/Nudge-${{env.NUDGE_VERSION}}.pkg
+        asset_name: Nudge-${{env.NUDGE_VERSION}}.pkg
         asset_content_type: application/x-newton-compatible-pkg
 
     - name: Upload packages
