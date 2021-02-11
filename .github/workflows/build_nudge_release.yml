@@ -14,7 +14,6 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install Apple Xcode certificates
-      if: github.ref == 'refs/heads/main'
       uses: apple-actions/import-codesign-certs@v1
       with:
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
@@ -22,7 +21,6 @@ jobs:
         p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
     - name: Install Apple Installer certificates
-      if: github.ref == 'refs/heads/main'
       uses: apple-actions/import-codesign-certs@v1
       with:
         create-keychain: false # do not create a new keychain for this value
