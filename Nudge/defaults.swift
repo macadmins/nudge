@@ -66,12 +66,18 @@ let nudgeRefreshCycle = nudgePreferences?.userExperience?.nudgeRefreshCycle ?? 6
 
 // userInterface
 let actionButtonText = nudgePreferences?.userInterface?.updateElements?.actionButtonText ?? "Update Device"
+func getMainHeader() -> String {
+    if Utils().demoModeEnabled() {
+        return "macOS Update Available (Demo Mode)"
+    } else {
+        return nudgePreferences?.userInterface?.updateElements?.mainHeader ?? "macOS Update Available"
+    }
+}
 let informationButtonText = nudgePreferences?.userInterface?.updateElements?.informationButtonText ?? "More Info"
 let lowerHeader = nudgePreferences?.userInterface?.updateElements?.lowerHeader ?? "Ready to start the update?"
 let lowerSubHeader = nudgePreferences?.userInterface?.updateElements?.lowerSubHeader ?? "Click on the 'Update Device' button below."
 let mainContentHeader = nudgePreferences?.userInterface?.updateElements?.mainContentHeader ?? "A security update is required on your device."
 let mainContentText = nudgePreferences?.userInterface?.updateElements?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps."
-let mainHeader = nudgePreferences?.userInterface?.updateElements?.mainHeader ?? "macOS Update Available (Demo Mode)"
 let primaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.primaryQuitButtonText ?? "Okay"
 let secondaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.secondaryQuitButtonText ?? "I understand"
 let subHeader = nudgePreferences?.userInterface?.updateElements?.subHeader ?? "A friendly reminder from your local IT team"

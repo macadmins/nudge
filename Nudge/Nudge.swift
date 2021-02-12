@@ -286,7 +286,7 @@ struct Nudge: View {
                 VStack{
                     // mainHeader Text
                     HStack {
-                        Text(mainHeader)
+                        Text(getMainHeader())
                             .font(.largeTitle)
                     }
                     .frame(width: 550)
