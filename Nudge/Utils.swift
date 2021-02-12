@@ -151,7 +151,7 @@ struct Utils {
     }
 
     func openMoreInfo() {
-        guard let url = URL(string: informationButtonPath) else {
+        guard let url = URL(string: aboutUpdateURL) else {
             return
         }
         print("User clicked moreInfo button.")
@@ -162,7 +162,7 @@ struct Utils {
         return getCurrentDate() > requiredInstallationDate
     }
     
-    func requireDualCloseButtons() -> Bool {
+    func requireDualQuitButtons() -> Bool {
         return (approachingWindowTime / 24) >= getNumberOfDaysBetween()
     }
 
