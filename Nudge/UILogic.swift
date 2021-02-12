@@ -76,6 +76,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
         _ = deferralCount += 1
         _ = lastRefreshTime = Date()
         Utils().activateNudge()
+        // TODO: Perhaps add the logic from nudge-python to hide all of the other windows
         if deferralCountVar > allowedDeferrals  {
             print("Nudge deferral count over threshold")
             Utils().updateDevice()

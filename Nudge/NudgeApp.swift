@@ -24,6 +24,7 @@ struct NudgeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView().environmentObject(manager)
+                .frame(width: 900, height: 450)
         }
         // Hide Title Bar
         .windowStyle(HiddenTitleBarWindowStyle())
