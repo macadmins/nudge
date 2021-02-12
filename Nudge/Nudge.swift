@@ -45,26 +45,28 @@ struct Nudge: View {
                         Image(nsImage: Utils().createImageData(fileImagePath: iconDarkPath))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 128, height: 128)
+                            .scaledToFit()
+                            .frame(width: 200, height: 150)
                     } else {
                         Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 128, height: 128)
-                            .padding(.bottom, 10.0)
+                            .scaledToFit()
+                            .frame(width: 200, height: 150)
                     }
                 } else {
                     if FileManager.default.fileExists(atPath: iconLightPath) {
                         Image(nsImage: Utils().createImageData(fileImagePath: iconLightPath))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 128, height: 128)
+                            .scaledToFit()
+                            .frame(width: 200, height: 150)
                     } else {
                         Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 128, height: 128)
-                            .padding(.bottom, 10.0)
+                            .scaledToFit()
+                            .frame(width: 200, height: 150)
                     }
                 }
 
@@ -74,7 +76,7 @@ struct Nudge: View {
                         .fill(Color.gray.opacity(0.5))
                         .frame(height: 1)
                 }
-                .frame(width:215)
+                .frame(width: 300)
                 
                 // Can only have 10 objects per stack unless you hack it and use groups
                 Group {
@@ -84,44 +86,46 @@ struct Nudge: View {
                             .fontWeight(.bold)
                         Spacer()
                         Text(String(requiredMinimumOSVersion).capitalized)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                             .fontWeight(.bold)
-                    }.padding(.vertical, 1.0)
+                    }
+                    .padding(.vertical, 1)
                     
                     // Current OS Version
                     HStack{
                         Text("Current OS Version: ")
                         Spacer()
                         Text(manager.current.description)
-                            .foregroundColor(.gray)
-                    }.padding(.vertical, 1.0)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 1)
                     
                     // Username
                     HStack{
                         Text("Username: ")
                         Spacer()
                         Text(self.systemConsoleUsername)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
-                    .padding(.vertical, 1.0)
+                    .padding(.vertical, 1)
 
                     // Serial Number
                     HStack{
                         Text("Serial Number: ")
                         Spacer()
                         Text(self.serialNumber)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
-                    .padding(.vertical, 1.0)
+                    .padding(.vertical, 1)
 
                     // Architecture
                     HStack{
                         Text("Architecture: ")
                         Spacer()
                         Text(self.cpuType)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
-                    .padding(.vertical, 1.0)
+                    .padding(.vertical, 1)
 
                     // Days Remaining
                     HStack{
@@ -129,13 +133,13 @@ struct Nudge: View {
                         Spacer()
                         if self.daysRemaining <= 0 {
                             Text(String(0))
-                                .foregroundColor(.gray)
+                                .foregroundColor(.secondary)
                         } else {
                             Text(String(self.daysRemaining))
-                                .foregroundColor(.gray)
+                                .foregroundColor(.secondary)
                         }
                     }
-                    .padding(.vertical, 1.0)
+                    .padding(.vertical, 1)
 
                     // Deferral Count
                     HStack{
@@ -147,10 +151,11 @@ struct Nudge: View {
                                     self.deferralCountUI += 1
                                 }
                             }
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                     }
                 }
-                .padding(.horizontal, 20.0)
+                .padding(.leading, 20)
+                .padding(.trailing, 10)
 
                 // Force buttons to the bottom with a spacer
                 Spacer()
@@ -167,10 +172,10 @@ struct Nudge: View {
                     // Force the button to the left with a spacer
                     Spacer()
                 }
+                .padding(.leading, 20)
+                .padding(.bottom, 52.5)
             }
-            .padding(.bottom, 7.5)
-            .padding(.leading, -20.0)
-            .frame(width: 300, height: 450)
+            .frame(width: 300, height: 525)
             
             // Vertical Line
             VStack{
@@ -178,34 +183,33 @@ struct Nudge: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 1)
             }
-            .frame(height: 300)
+            .frame(height: 525)
 
             // Right side of Nudge
             VStack{
                 // mainHeader Text
-                HStack{
+                HStack {
                     Text(mainHeader)
                         .font(.largeTitle)
                 }
-                .padding(.top, 5.0)
-                .padding(.leading, 15.0)
+                .frame(width: 550)
 
                 // subHeader Text
-                HStack{
+                HStack {
                     Text(subHeader)
                         .font(.body)
                 }
                 .padding(.vertical, 0.5)
-                .padding(.leading, 15.0)
+                .frame(width: 550)
 
                 // mainContent Header
-                HStack{
+                HStack {
                     Text(mainContentHeader)
                         .font(.body)
                         .fontWeight(.bold)
                 }
                 .padding(.vertical, 0.5)
-                .padding(.leading, 15.0)
+                .frame(width: 550)
 
                 VStack(alignment: .leading) {
                     // mainContent Text
@@ -213,36 +217,33 @@ struct Nudge: View {
                         .font(.body)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        //.frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
-                        .padding(.vertical, 5.0)
+                        .padding(.vertical, 0.5)
 
                 // Company Screenshot
-                    HStack{
+                    HStack {
                         Spacer()
                         Group{
                             if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
                                 Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
                                     .resizable().scaledToFit()
                                     .aspectRatio(contentMode: .fit)
-                                    .padding()
                             } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
                                 Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
                                     .resizable().scaledToFit()
                                     .aspectRatio(contentMode: .fit)
-                                    .padding()
                             } else {
                                 Image("CompanyScreenshotIcon")
                                     .resizable().scaledToFit()
                                     .aspectRatio(contentMode: .fit)
-                                    .padding()
                             }
                             Button(action: {
                                 self.showSSDetail.toggle()
                             }) {
                                 Image(systemName: "plus.magnifyingglass")
                             }
-                            .padding(.leading, -15.0)
+                            .padding(.leading, -15)
                             .sheet(isPresented: $showSSDetail) {
                                 screenShotZoom()
                             }
@@ -251,28 +252,32 @@ struct Nudge: View {
                         Spacer()
                     }
                 }
-                .padding(.vertical, 1.0)
-                .padding(.leading, 15.0)
-                .frame(width: 520)
+                .padding(.vertical, 0.5)
+                .frame(width: 550)
 
                 // Force buttons to the bottom with a spacer
                 Spacer()
+                
+                // lowerHeader
                 VStack(alignment: .leading) {
                     // lowerHeader Text
-                    Text(lowerHeader)
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    // lowerSubHeader Text
-                    Text(lowerSubHeader)
-                        .font(.body)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        Text(lowerHeader)
+                            .font(.body)
+                            .fontWeight(.bold)
+                        Spacer()
+                    }
+                    HStack {
+                        // lowerSubHeader Text
+                        Text(lowerSubHeader)
+                            .font(.body)
+                        Spacer()
+                    }
                 }
-                .padding(.leading, 15.0)
-                .frame(width: 520)
+                .frame(width: 550)
 
                 // Bottom buttons
-                HStack(alignment: .top){
+                HStack {
                     // Update Device button
                     Button(action: Utils().updateDevice, label: {
                         Text("Update Device")
@@ -291,7 +296,6 @@ struct Nudge: View {
                                   }
                                 )
                                 .hidden()
-                                .padding(.trailing, 10.0)
                             } else {
                                 Button(action: {
                                     hasAcceptedIUnderstand = true
@@ -299,7 +303,6 @@ struct Nudge: View {
                                     Text("I understand")
                                   }
                                 )
-                                .padding(.trailing, 10.0)
                             }
                         } else {
                             Button(action: {}, label: {
@@ -307,7 +310,6 @@ struct Nudge: View {
                               }
                             )
                             .hidden()
-                            .padding(.trailing, 10.0)
                         }
                     
                         // OK button
@@ -315,7 +317,7 @@ struct Nudge: View {
                             if self.hasAcceptedIUnderstand {
                                 Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                                     Text("OK")
-                                        .frame(minWidth: 35.0)
+                                        .frame(minWidth: 35)
                                   }
                                 )
                             } else {
@@ -323,7 +325,7 @@ struct Nudge: View {
                                     hasAcceptedIUnderstand = true
                                 }, label: {
                                     Text("OK")
-                                        .frame(minWidth: 35.0)
+                                        .frame(minWidth: 35)
                                   }
                                 )
                                 .hidden()
@@ -331,20 +333,20 @@ struct Nudge: View {
                         } else {
                             Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                                 Text("OK")
-                                    .frame(minWidth: 35.0)
+                                    .frame(minWidth: 35)
                               }
                             )
                         }
                     }
                 }
-                .padding(.leading, 25.0)
-                .padding(.trailing, -20.0)
+                .frame(width: 550)
             }
-            .frame(width: 550, height: 450)
-            .padding(.bottom, 15.0)
+            .frame(width: 600)
+            .padding(.bottom, 15)
             // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
             .onAppear(perform: nudgeStartLogic)
         }
+        .frame(width: 900, height: 450)
     }
 }
 

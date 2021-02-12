@@ -3,7 +3,7 @@ name: Build signed Nudge and upload signed package
 on:
   push:
     branches:
-    - main
+    - maindisabledfornow
 
 jobs:
   build:
