@@ -27,7 +27,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.1") ))
+        ContentView().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
     }
 }
 
