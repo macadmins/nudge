@@ -532,6 +532,7 @@ struct deviceInfo: View {
             // Additional Device Information
             HStack{
                 Text("Additional Device Information")
+                    .fontWeight(.bold)
             }
             .padding(.vertical, 1)
 
