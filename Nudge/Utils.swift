@@ -162,7 +162,7 @@ struct Utils {
         return getCurrentDate() > requiredInstallationDate
     }
     
-    func requireDualCloseButtons() -> Bool {
+    func requireDualQuitButtons() -> Bool {
         return (approachingWindowTime / 24) >= getNumberOfDaysBetween()
     }
 

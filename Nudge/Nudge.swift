@@ -20,9 +20,9 @@ struct Nudge: View {
     @State var serialNumber = Utils().getSerialNumber()
     @State var cpuType = Utils().getCPUTypeString()
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var requireDualCloseButtons = Utils().requireDualCloseButtons()
+    @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
-    @State var hasAcceptedIUnderstand = false
+    @State var hasClickedSecondaryQuitButton = false
     @State var deferralCountUI = 0
     
     // Modal view for screenshot
@@ -96,18 +96,18 @@ struct Nudge: View {
                 }
                 .padding(.vertical, 2)
                 
-                // Update Device button
+                // actionButton
                 Button(action: Utils().updateDevice, label: {
-                    Text("Update Device")
+                    Text(actionButtonText)
                         .frame(minWidth: 100)
                   }
                 )
                 .keyboardShortcut(.defaultAction)
                 .padding(.vertical, 2)
 
-                // OK button
+                // primaryQuitButton
                 Button(action: {AppKit.NSApp.terminate(nil)}, label: {
-                    Text("OK")
+                    Text(primaryQuitButtonText)
                         .frame(minWidth: 100)
                     }
                 )
@@ -118,9 +118,10 @@ struct Nudge: View {
                 HStack {
                     // Force the button to the right with a spacer
                     Spacer()
+                    // informationButton
                     if informationButtonPath != "" {
                         Button(action: Utils().openMoreInfo, label: {
-                            Text("More Info")
+                            Text(informationButtonText)
                           }
                         )
                         .buttonStyle(BorderlessButtonStyle())
@@ -225,7 +226,7 @@ struct Nudge: View {
 
                         // Days Remaining
                         HStack{
-                            Text("Days Remaining: ")
+                            Text("Days remaining to update: ")
                             Spacer()
                             if self.daysRemaining <= 0 {
                                 Text(String(0))
@@ -259,9 +260,10 @@ struct Nudge: View {
                     // More Info
                     // https://developer.apple.com/documentation/swiftui/openurlaction
                     HStack(alignment: .top) {
+                        // informationButton
                         if informationButtonPath != "" {
                             Button(action: Utils().openMoreInfo, label: {
-                                Text("More Info")
+                                Text(informationButtonText)
                               }
                             )
                             .buttonStyle(BorderlessButtonStyle())
@@ -375,9 +377,9 @@ struct Nudge: View {
 
                     // Bottom buttons
                     HStack {
-                        // Update Device button
+                        // actionButton
                         Button(action: Utils().updateDevice, label: {
-                            Text("Update Device")
+                            Text(actionButtonText)
                           }
                         )
                         .keyboardShortcut(.defaultAction)
@@ -386,43 +388,43 @@ struct Nudge: View {
                         Spacer()
                         
                         if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
-                            // I understand button
-                            if requireDualCloseButtons {
-                                if self.hasAcceptedIUnderstand {
+                            // secondaryQuitButton
+                            if requireDualQuitButtons {
+                                if self.hasClickedSecondaryQuitButton {
                                     Button(action: {}, label: {
-                                        Text("I understand")
+                                        Text(secondaryQuitButtonText)
                                       }
                                     )
                                     .hidden()
                                 } else {
                                     Button(action: {
-                                        hasAcceptedIUnderstand = true
+                                        hasClickedSecondaryQuitButton = true
                                     }, label: {
-                                        Text("I understand")
+                                        Text(secondaryQuitButtonText)
                                       }
                                     )
                                 }
                             } else {
                                 Button(action: {}, label: {
-                                    Text("I understand")
+                                    Text(secondaryQuitButtonText)
                                   }
                                 )
                                 .hidden()
                             }
                         
-                            // OK button
-                            if requireDualCloseButtons {
-                                if self.hasAcceptedIUnderstand {
+                            // primaryQuitButton
+                            if requireDualQuitButtons {
+                                if self.hasClickedSecondaryQuitButton {
                                     Button(action: {AppKit.NSApp.terminate(nil)}, label: {
-                                        Text("OK")
+                                        Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
                                       }
                                     )
                                 } else {
                                     Button(action: {
-                                        hasAcceptedIUnderstand = true
+                                        hasClickedSecondaryQuitButton = true
                                     }, label: {
-                                        Text("OK")
+                                        Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
                                       }
                                     )
@@ -430,7 +432,7 @@ struct Nudge: View {
                                 }
                             } else {
                                 Button(action: {AppKit.NSApp.terminate(nil)}, label: {
-                                    Text("OK")
+                                    Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
                                   }
                                 )
