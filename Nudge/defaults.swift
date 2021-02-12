@@ -19,7 +19,6 @@ let attemptToFetchMajorUpgrade = nudgePreferences?.optionalFeatures?.attemptToFe
 let enforceMinorUpdates = nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 let iconDarkPath = nudgePreferences?.optionalFeatures?.iconDarkPath ?? ""
 let iconLightPath = nudgePreferences?.optionalFeatures?.iconLightPath ?? ""
-let informationButtonPath = nudgePreferences?.optionalFeatures?.informationButtonPath ?? "https://github.com/erikng/NudgeSwift"
 let maxRandomDelayInSeconds = nudgePreferences?.optionalFeatures?.maxRandomDelayInSeconds ?? 1200
 let noTimers = nudgePreferences?.optionalFeatures?.noTimers ?? false
 let randomDelay = nudgePreferences?.optionalFeatures?.randomDelay ?? false
@@ -43,6 +42,7 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.mdmFeatures?.uamdm
 let majorUpgradeAppPath = getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
+let aboutUpdateURL = getOSVersionRequirements()?.aboutUpdateURL ?? "https://support.apple.com/en-us/HT201541"
 func getOSVersionRequirements() -> OSVersionRequirement? {
     let requirements = nudgePreferences?.osVersionRequirements
     if requirements != nil {
@@ -68,17 +68,17 @@ let nudgeRefreshCycle = nudgePreferences?.userExperience?.nudgeRefreshCycle ?? 6
 let actionButtonText = nudgePreferences?.userInterface?.updateElements?.actionButtonText ?? "Update Device"
 func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
-        return "macOS Update Available (Demo Mode)"
+        return "Your device requires a security update (Demo Mode)"
     } else {
-        return nudgePreferences?.userInterface?.updateElements?.mainHeader ?? "macOS Update Available"
+        return nudgePreferences?.userInterface?.updateElements?.mainHeader ?? "Your device requires a security update"
     }
 }
 let informationButtonText = nudgePreferences?.userInterface?.updateElements?.informationButtonText ?? "More Info"
-let lowerHeader = nudgePreferences?.userInterface?.updateElements?.lowerHeader ?? "Ready to start the update?"
-let lowerSubHeader = nudgePreferences?.userInterface?.updateElements?.lowerSubHeader ?? "Click on the 'Update Device' button below."
-let mainContentHeader = nudgePreferences?.userInterface?.updateElements?.mainContentHeader ?? "A security update is required on your device."
+let mainContentHeader = nudgePreferences?.userInterface?.updateElements?.mainContentHeader ?? "Your device will restart during this update"
+let mainContentNote = nudgePreferences?.userInterface?.updateElements?.mainContentNote ?? "Important Notes"
+let mainContentSubHeader = nudgePreferences?.userInterface?.updateElements?.mainContentSubHeader ?? "Updates can take up to 30 minutes to complete"
 let mainContentText = nudgePreferences?.userInterface?.updateElements?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps."
-let primaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.primaryQuitButtonText ?? "Okay"
+let primaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.primaryQuitButtonText ?? "Defer"
 let secondaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.secondaryQuitButtonText ?? "I understand"
 let subHeader = nudgePreferences?.userInterface?.updateElements?.subHeader ?? "A friendly reminder from your local IT team"
 

@@ -151,7 +151,7 @@ struct Utils {
     }
 
     func openMoreInfo() {
-        guard let url = URL(string: informationButtonPath) else {
+        guard let url = URL(string: aboutUpdateURL) else {
             return
         }
         print("User clicked moreInfo button.")

@@ -25,8 +25,9 @@ struct Nudge: View {
     @State var hasClickedSecondaryQuitButton = false
     @State var deferralCountUI = 0
     
-    // Modal view for screenshot
+    // Modal view for screenshot and device info
     @State var showSSDetail = false
+    @State var showDeviceInfo = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
@@ -72,9 +73,9 @@ struct Nudge: View {
                     }
                 }
 
-                // mainContent Header
+                // mainHeader
                 HStack {
-                    Text(mainContentHeader)
+                    Text(getMainHeader())
                         .font(.title)
                         .fontWeight(.bold)
                 }
@@ -119,9 +120,10 @@ struct Nudge: View {
                     // Force the button to the right with a spacer
                     Spacer()
                     // informationButton
-                    if informationButtonPath != "" {
+                    if aboutUpdateURL != "" {
                         Button(action: Utils().openMoreInfo, label: {
                             Text(informationButtonText)
+                                .foregroundColor(.secondary)
                           }
                         )
                         .buttonStyle(BorderlessButtonStyle())
@@ -135,7 +137,21 @@ struct Nudge: View {
         } else {
             HStack(spacing: 0){
                 // Left side of Nudge
+                // Additional Device Information
                 VStack{
+                    Button(action: {
+                        self.showDeviceInfo.toggle()
+                    }) {
+                        Image(systemName: "questionmark.circle")
+                    }
+                    .padding(.leading, -140)
+                    .padding(.top, -25.0)
+                    .buttonStyle(BorderlessButtonStyle())
+                    .sheet(isPresented: $showDeviceInfo) {
+                        deviceInfo()
+                    }
+                    .help("Click for additional device information")
+
                     // Company Logo
                     if colorScheme == .dark {
                         if FileManager.default.fileExists(atPath: iconDarkPath) {
@@ -173,7 +189,10 @@ struct Nudge: View {
                             .fill(Color.gray.opacity(0.5))
                             .frame(height: 1)
                     }
-                    .frame(width: 300)
+                    .padding(.top, 20)
+                    .padding(.bottom, 20)
+                    .frame(width: 230)
+                    
                     
                     // Can only have 10 objects per stack unless you hack it and use groups
                     Group {
@@ -182,11 +201,10 @@ struct Nudge: View {
                             Text("Required OS Version: ")
                                 .fontWeight(.bold)
                             Spacer()
-                            Text(String(requiredMinimumOSVersion).capitalized)
+                            Text(String(requiredMinimumOSVersion))
                                 .foregroundColor(.secondary)
                                 .fontWeight(.bold)
                         }
-                        .padding(.vertical, 1)
                         
                         // Current OS Version
                         HStack{
@@ -195,34 +213,6 @@ struct Nudge: View {
                             Text(manager.current.description)
                                 .foregroundColor(.secondary)
                         }
-                        .padding(.vertical, 1)
-                        
-                        // Username
-                        HStack{
-                            Text("Username: ")
-                            Spacer()
-                            Text(self.systemConsoleUsername)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding(.vertical, 1)
-
-                        // Serial Number
-                        HStack{
-                            Text("Serial Number: ")
-                            Spacer()
-                            Text(self.serialNumber)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding(.vertical, 1)
-
-                        // Architecture
-                        HStack{
-                            Text("Architecture: ")
-                            Spacer()
-                            Text(self.cpuType)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding(.vertical, 1)
 
                         // Days Remaining
                         HStack{
@@ -236,7 +226,6 @@ struct Nudge: View {
                                     .foregroundColor(.secondary)
                             }
                         }
-                        .padding(.vertical, 1)
 
                         // Deferral Count
                         HStack{
@@ -251,8 +240,8 @@ struct Nudge: View {
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .padding(.leading, 20)
-                    .padding(.trailing, 10)
+                    .frame(width: 250)
+                    .padding(.vertical, 0.5)
 
                     // Force buttons to the bottom with a spacer
                     Spacer()
@@ -261,20 +250,22 @@ struct Nudge: View {
                     // https://developer.apple.com/documentation/swiftui/openurlaction
                     HStack(alignment: .top) {
                         // informationButton
-                        if informationButtonPath != "" {
+                        if aboutUpdateURL != "" {
                             Button(action: Utils().openMoreInfo, label: {
                                 Text(informationButtonText)
+                                    .foregroundColor(.secondary)
                               }
                             )
                             .buttonStyle(BorderlessButtonStyle())
+                            
                         }
                         // Force the button to the left with a spacer
                         Spacer()
                     }
-                    .padding(.leading, 20)
-                    .padding(.bottom, 55)
+                    .frame(width: 250)
+                    .padding(.bottom, 17.5)
                 }
-                .frame(width: 300, height: 525)
+                .frame(width: 300, height: 450)
                 
                 // Vertical Line
                 VStack{
@@ -286,159 +277,183 @@ struct Nudge: View {
 
                 // Right side of Nudge
                 VStack{
-                    // mainHeader Text
-                    HStack {
-                        Text(getMainHeader())
-                            .font(.largeTitle)
-                    }
-                    .frame(width: 550)
-
-                    // subHeader Text
-                    HStack {
-                        Text(subHeader)
-                            .font(.body)
-                    }
-                    .padding(.vertical, 0.5)
-                    .frame(width: 550)
-
-                    // mainContent Header
-                    HStack {
-                        Text(mainContentHeader)
-                            .font(.body)
-                            .fontWeight(.bold)
-                    }
-                    .padding(.vertical, 0.5)
-                    .frame(width: 550)
-
-                    VStack(alignment: .leading) {
-                        // mainContent Text
-                        Text(mainContentText)
-                            .font(.body)
-                            .fontWeight(.regular)
-                            .multilineTextAlignment(.leading)
-                            //.frame(maxWidth: .infinity, alignment: .leading)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.vertical, 0.5)
-
-                    // Company Screenshot
+                    Group {
+                        // mainHeader
                         HStack {
-                            Spacer()
-                            Group{
-                                if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                                        .resizable().scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
-                                } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
-                                        .resizable().scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
-                                } else {
-                                    Image("CompanyScreenshotIcon")
-                                        .resizable().scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
-                                }
-                                Button(action: {
-                                    self.showSSDetail.toggle()
-                                }) {
-                                    Image(systemName: "plus.magnifyingglass")
-                                }
-                                .padding(.leading, -15)
-                                .sheet(isPresented: $showSSDetail) {
-                                    screenShotZoom()
-                                }
-                                .help("Click to zoom into screenshot")
-                            }
+                            Text(getMainHeader())
+                                .font(.largeTitle)
+                                .multilineTextAlignment(.leading)
+                                .minimumScaleFactor(0.5)
+                                .lineLimit(1)
                             Spacer()
                         }
-                    }
-                    .padding(.vertical, 0.5)
-                    .frame(width: 550)
-
-                    // Force buttons to the bottom with a spacer
-                    Spacer()
-                    
-                    // lowerHeader
-                    VStack(alignment: .leading) {
-                        // lowerHeader Text
+                        // subHeader
                         HStack {
-                            Text(lowerHeader)
+                            Text(subHeader)
                                 .font(.body)
                                 .fontWeight(.bold)
                             Spacer()
                         }
-                        HStack {
-                            // lowerSubHeader Text
-                            Text(lowerSubHeader)
-                                .font(.body)
-                            Spacer()
-                        }
                     }
-                    .frame(width: 550)
+                    .padding(.vertical, 0.5)
+                    .frame(width: 500)
+                    
+                    // I'm kind of impressed with myself
+                    Group {
+                        VStack(alignment: .leading) {
+                            // mainContentHeader / mainContentSubHeader
+                            HStack {
+                                Group {
+                                    VStack {
+                                        HStack {
+                                            Text(mainContentHeader)
+                                                .font(.callout)
+                                                .fontWeight(.bold)
+                                            Spacer()
+                                        }
+                                        HStack {
+                                            Text(mainContentSubHeader)
+                                                .font(.callout)
+                                            Spacer()
+                                        }
+                                    }
+                                }
+                                Spacer()
+                                // actionButton
+                                Button(action: Utils().updateDevice, label: {
+                                    Text(actionButtonText)
+                                  }
+                                )
+                                .keyboardShortcut(.defaultAction)
+                            }
+                            .padding(.top, 20.0)
+                            .padding(.leading, 20.0)
+                            .padding(.trailing, 20.0)
+                            
+                            // Horizontal line
+                            HStack{
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.5))
+                                    .frame(height: 1)
+                            }
+                            .padding(.leading, 20.0)
+                            .padding(.top, 10)
+                            .padding(.bottom, 10)
+                            .frame(width: 525)
+                            
+                            // mainContentNote
+                            HStack {
+                                Text(mainContentNote)
+                                    .font(.callout)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color.red)
+                                Spacer()
+                            }
+                            .padding(.leading, 20.0)
+                            
+                            // mainContentText
+                            Text(mainContentText)
+                                .font(.callout)
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .multilineTextAlignment(.leading)
+                                //.frame(maxWidth: .infinity, alignment: .leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.leading, 20.0)
 
-                    // Bottom buttons
-                    HStack {
-                        // actionButton
-                        Button(action: Utils().updateDevice, label: {
-                            Text(actionButtonText)
-                          }
-                        )
-                        .keyboardShortcut(.defaultAction)
-                        
-                        // Separate the buttons with a spacer
-                        Spacer()
-                        
-                        if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
-                            // secondaryQuitButton
-                            if requireDualQuitButtons {
-                                if self.hasClickedSecondaryQuitButton {
+                        // Company Screenshot
+                            HStack {
+                                Spacer()
+                                Group{
+                                    if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
+                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
+                                            .resizable().scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                    } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
+                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                                            .resizable().scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                    } else {
+                                        Image("CompanyScreenshotIcon")
+                                            .resizable().scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                    }
+                                    Button(action: {
+                                        self.showSSDetail.toggle()
+                                    }) {
+                                        Image(systemName: "plus.magnifyingglass")
+                                    }
+                                    .padding(.leading, -10)
+                                    .sheet(isPresented: $showSSDetail) {
+                                        screenShotZoom()
+                                    }
+                                    .help("Click to zoom into screenshot")
+                                }
+                                Spacer()
+                            }
+                        }
+                        .background(Color.secondary.opacity(0.1))
+                        .cornerRadius(5)
+
+                        // Bottom buttons
+                        HStack {
+                            // Separate the buttons with a spacer
+                            Spacer()
+                            
+                            if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
+                                // secondaryQuitButton
+                                if requireDualQuitButtons {
+                                    if self.hasClickedSecondaryQuitButton {
+                                        Button(action: {}, label: {
+                                            Text(secondaryQuitButtonText)
+                                          }
+                                        )
+                                        .hidden()
+                                    } else {
+                                        Button(action: {
+                                            hasClickedSecondaryQuitButton = true
+                                        }, label: {
+                                            Text(secondaryQuitButtonText)
+                                          }
+                                        )
+                                    }
+                                } else {
                                     Button(action: {}, label: {
                                         Text(secondaryQuitButtonText)
                                       }
                                     )
                                     .hidden()
-                                } else {
-                                    Button(action: {
-                                        hasClickedSecondaryQuitButton = true
-                                    }, label: {
-                                        Text(secondaryQuitButtonText)
-                                      }
-                                    )
                                 }
-                            } else {
-                                Button(action: {}, label: {
-                                    Text(secondaryQuitButtonText)
-                                  }
-                                )
-                                .hidden()
-                            }
-                        
-                            // primaryQuitButton
-                            if requireDualQuitButtons {
-                                if self.hasClickedSecondaryQuitButton {
+                            
+                                // primaryQuitButton
+                                if requireDualQuitButtons {
+                                    if self.hasClickedSecondaryQuitButton {
+                                        Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                            Text(primaryQuitButtonText)
+                                                .frame(minWidth: 35)
+                                          }
+                                        )
+                                    } else {
+                                        Button(action: {
+                                            hasClickedSecondaryQuitButton = true
+                                        }, label: {
+                                            Text(primaryQuitButtonText)
+                                                .frame(minWidth: 35)
+                                          }
+                                        )
+                                        .hidden()
+                                    }
+                                } else {
                                     Button(action: {AppKit.NSApp.terminate(nil)}, label: {
                                         Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
                                       }
                                     )
-                                } else {
-                                    Button(action: {
-                                        hasClickedSecondaryQuitButton = true
-                                    }, label: {
-                                        Text(primaryQuitButtonText)
-                                            .frame(minWidth: 35)
-                                      }
-                                    )
-                                    .hidden()
                                 }
-                            } else {
-                                Button(action: {AppKit.NSApp.terminate(nil)}, label: {
-                                    Text(primaryQuitButtonText)
-                                        .frame(minWidth: 35)
-                                  }
-                                )
                             }
                         }
                     }
+                    .padding(.vertical, 0.5)
                     .frame(width: 550)
                 }
                 .frame(width: 600)
@@ -479,6 +494,73 @@ struct screenShotZoom: View {
         )
         .buttonStyle(PlainButtonStyle())
         .help("Click to close")
+    }
+}
+
+
+// Sheet view for Device Information
+struct deviceInfo: View {
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme) var colorScheme
+    
+    // State variables
+    @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
+    @State var serialNumber = Utils().getSerialNumber()
+    @State var cpuType = Utils().getCPUTypeString()
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Button(
+                    action: {
+                        self.presentationMode.wrappedValue.dismiss()})
+                {
+                    Image(systemName: "xmark.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.red)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .help("Click to close")
+                .frame(width: 35, height: 35)
+                
+                Spacer()
+            }
+            
+            // Additional Device Information
+            HStack{
+                Text("Additional Device Information")
+            }
+            .padding(.vertical, 1)
+
+            // Username
+            HStack{
+                Text("Username: ")
+                Text(self.systemConsoleUsername)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 1)
+
+            // Serial Number
+            HStack{
+                Text("Serial Number: ")
+                Text(self.serialNumber)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 1)
+
+            // Architecture
+            HStack{
+                Text("Architecture: ")
+                Text(self.cpuType)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+        .frame(width: 350, height: 175)
     }
 }
 
