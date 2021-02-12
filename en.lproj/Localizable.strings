@@ -18,7 +18,7 @@
 
 "Current OS Version: " = "Current OS Version: ";
 
-"Days Remaining: " = "Days Remaining: ";
+"Days remaining to update: " = "Days remaining to update: ";
 
 "Deferral Count: " = "Deferral Count: ";
 
@@ -30,7 +30,7 @@
 
 "More Info" = "More Info";
 
-"OK" = "OK";
+"Defer" = "Defer";
 
 "Ready to start the update?" = "Ready to start the update?";
 

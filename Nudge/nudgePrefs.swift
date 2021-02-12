@@ -96,6 +96,7 @@ struct OptionalFeatures: Codable {
     var mdmFeatures: MdmFeatures?
     var noTimers, randomDelay: Bool?
     var screenShotDarkPath, screenShotLightPath: String?
+    var simpleMode: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -129,7 +130,8 @@ extension OptionalFeatures {
         noTimers: Bool?? = nil,
         randomDelay: Bool?? = nil,
         screenShotDarkPath: String?? = nil,
-        screenShotLightPath: String?? = nil
+        screenShotLightPath: String?? = nil,
+        simpleMode: Bool?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
@@ -144,7 +146,8 @@ extension OptionalFeatures {
             noTimers: noTimers ?? self.noTimers,
             randomDelay: randomDelay ?? self.randomDelay,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
-            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath
+            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
+            simpleMode: simpleMode ?? self.simpleMode
         )
     }
 
@@ -221,6 +224,7 @@ extension MdmFeatures {
 
 // MARK: - OSVersionRequirement
 struct OSVersionRequirement: Codable {
+    var aboutUpdateURL: String?
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
@@ -231,7 +235,8 @@ struct OSVersionRequirement: Codable {
 
 extension OSVersionRequirement {
     enum Keys: String {
-        case majorUpgradeAppPath,
+        case aboutUpdateURL,
+             majorUpgradeAppPath,
              requiredInstallationDate,
              requiredMinimumOSVersion,
              targetedOSVersions
@@ -260,12 +265,14 @@ extension OSVersionRequirement {
     }
 
     func with(
+        aboutUpdateURL: String?? = nil,
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
         targetedOSVersions: [String]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
+            aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
@@ -460,8 +467,8 @@ extension MdmElements {
 
 // MARK: - UpdateElements
 struct UpdateElements: Codable {
-    var actionButtonText, informationButtonText, lowerHeader, lowerSubHeader: String?
-    var mainContentHeader, mainContentText, mainHeader, primaryQuitButtonText: String?
+    var actionButtonText, informationButtonText, mainContentHeader, mainContentNote: String?
+    var mainContentSubHeader, mainContentText, mainHeader, primaryQuitButtonText: String?
     var secondaryQuitButtonText, subHeader: String?
 }
 
@@ -486,9 +493,9 @@ extension UpdateElements {
     func with(
         actionButtonText: String?? = nil,
         informationButtonText: String?? = nil,
-        lowerHeader: String?? = nil,
-        lowerSubHeader: String?? = nil,
         mainContentHeader: String?? = nil,
+        mainContentNote: String?? = nil,
+        mainContentSubHeader: String?? = nil,
         mainContentText: String?? = nil,
         mainHeader: String?? = nil,
         primaryQuitButtonText: String?? = nil,
@@ -498,9 +505,9 @@ extension UpdateElements {
         return UpdateElements(
             actionButtonText: actionButtonText ?? self.actionButtonText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
-            lowerHeader: lowerHeader ?? self.lowerHeader,
-            lowerSubHeader: lowerSubHeader ?? self.lowerSubHeader,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
+            mainContentNote: mainContentNote ?? self.mainContentNote,
+            mainContentSubHeader: mainContentSubHeader ?? self.mainContentSubHeader,
             mainContentText: mainContentText ?? self.mainContentText,
             mainHeader: mainHeader ?? self.mainHeader,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
