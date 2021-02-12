@@ -22,7 +22,8 @@
         "noTimers": false,
         "randomDelay": false,
         "screenShotDarkPath": "/Library/Application Support/nudge/screenShotDark.jpg",
-        "screenShotLightPath": "/Library/Application Support/nudge/screenShotLight.jpg"
+        "screenShotLightPath": "/Library/Application Support/nudge/screenShotLight.jpg",
+        "simpleMode": false
     },
     "osVersionRequirements": [
         {

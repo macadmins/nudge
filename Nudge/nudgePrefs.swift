@@ -96,6 +96,7 @@ struct OptionalFeatures: Codable {
     var mdmFeatures: MdmFeatures?
     var noTimers, randomDelay: Bool?
     var screenShotDarkPath, screenShotLightPath: String?
+    var simpleMode: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -129,7 +130,8 @@ extension OptionalFeatures {
         noTimers: Bool?? = nil,
         randomDelay: Bool?? = nil,
         screenShotDarkPath: String?? = nil,
-        screenShotLightPath: String?? = nil
+        screenShotLightPath: String?? = nil,
+        simpleMode: Bool?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
@@ -144,7 +146,8 @@ extension OptionalFeatures {
             noTimers: noTimers ?? self.noTimers,
             randomDelay: randomDelay ?? self.randomDelay,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
-            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath
+            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
+            simpleMode: simpleMode ?? self.simpleMode
         )
     }
 
