@@ -76,9 +76,9 @@ func getMainHeader() -> String {
 let informationButtonText = nudgePreferences?.userInterface?.updateElements?.informationButtonText ?? "More Info"
 let mainContentHeader = nudgePreferences?.userInterface?.updateElements?.mainContentHeader ?? "Your device will restart during this update"
 let mainContentNote = nudgePreferences?.userInterface?.updateElements?.mainContentNote ?? "Important Notes"
-let mainContentSubHeader = nudgePreferences?.userInterface?.updateElements?.mainContentSubHeader ?? "Updates can take up to 30 minutes to complete"
+let mainContentSubHeader = nudgePreferences?.userInterface?.updateElements?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
 let mainContentText = nudgePreferences?.userInterface?.updateElements?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps."
-let primaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.primaryQuitButtonText ?? "Defer"
+let primaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.primaryQuitButtonText ?? "Later"
 let secondaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.secondaryQuitButtonText ?? "I understand"
 let subHeader = nudgePreferences?.userInterface?.updateElements?.subHeader ?? "A friendly reminder from your local IT team"
 
