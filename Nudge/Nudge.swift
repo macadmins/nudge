@@ -576,7 +576,7 @@ struct deviceInfo: View {
 struct Nudge_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "fr"], id: \.self) { id in
+            ForEach(["en", "es", "fr"], id: \.self) { id in
                 Nudge().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))

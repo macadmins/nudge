@@ -2,8 +2,27 @@
   Localizable.strings
   Nudge
 
-  Created by Rory Murdock on 7/2/21.
+  Created by Erik Gomez on 2/12/21.
   
 */
 
 "Language:" = "Language:";
+
+//// Additional Device Information
+"Additional Device Information" = "Additional Device Information";
+// Username
+"Username:" = "Username:";
+// Serial Number
+"Serial Number:" = "Serial Number:";
+// Architecture
+"Architecture:" = "Architecture:";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "Current OS Version:";
+// Required OS Version
+"Required OS Version:" = "Required OS Version:";
+// Days remaining to update
+"Days remaining to update: " = "Days remaining to update:";
+// Ignored Count
+"Ignored Count:" = "Ignored Count:";
