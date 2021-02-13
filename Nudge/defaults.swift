@@ -65,22 +65,34 @@ let initialRefreshCycle = nudgePreferences?.userExperience?.initialRefreshCycle 
 let nudgeRefreshCycle = nudgePreferences?.userExperience?.nudgeRefreshCycle ?? 60
 
 // userInterface
-let actionButtonText = nudgePreferences?.userInterface?.updateElements?.actionButtonText ?? "Update Device"
+let language = NSLocale.current.languageCode!
+func getuserInterface() -> UpdateElement? {
+    let updateElements = nudgePreferences?.userInterface?.updateElements
+    if updateElements != nil {
+        for (_ , subPreferences) in updateElements!.enumerated() {
+            if subPreferences.language == language {
+                return subPreferences
+            }
+        }
+    }
+    return nil
+}
+let actionButtonText = getuserInterface()?.actionButtonText ?? "Update Device"
 func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)"
     } else {
-        return nudgePreferences?.userInterface?.updateElements?.mainHeader ?? "Your device requires a security update"
+        return getuserInterface()?.mainHeader ?? "Your device requires a security update"
     }
 }
-let informationButtonText = nudgePreferences?.userInterface?.updateElements?.informationButtonText ?? "More Info"
-let mainContentHeader = nudgePreferences?.userInterface?.updateElements?.mainContentHeader ?? "Your device will restart during this update"
-let mainContentNote = nudgePreferences?.userInterface?.updateElements?.mainContentNote ?? "Important Notes"
-let mainContentSubHeader = nudgePreferences?.userInterface?.updateElements?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
-let mainContentText = nudgePreferences?.userInterface?.updateElements?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps."
-let primaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.primaryQuitButtonText ?? "Later"
-let secondaryQuitButtonText = nudgePreferences?.userInterface?.updateElements?.secondaryQuitButtonText ?? "I understand"
-let subHeader = nudgePreferences?.userInterface?.updateElements?.subHeader ?? "A friendly reminder from your local IT team"
+let informationButtonText = getuserInterface()?.informationButtonText ?? "More Info"
+let mainContentHeader = getuserInterface()?.mainContentHeader ?? "Your device will restart during this update"
+let mainContentNote = getuserInterface()?.mainContentNote ?? "Important Notes"
+let mainContentSubHeader = getuserInterface()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
+let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps."
+let primaryQuitButtonText = getuserInterface()?.primaryQuitButtonText ?? "Later"
+let secondaryQuitButtonText = getuserInterface()?.secondaryQuitButtonText ?? "I understand"
+let subHeader = getuserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
 
 // userInterface - MDM
 let mdmActionButtonManualText = nudgePreferences?.userInterface?.mdmElements?.actionButtonManualText ?? "Manually Enroll"

@@ -2,33 +2,14 @@
   Localizable.strings
   Nudge
 
-  Created by Rory Murdock on 7/2/21.
+  Created by Erik Gomez on 2/12/21.
   
 */
 
-//// userInterface -> updateElements
-// actionButtonText
-"Update Device" = "Update Device";
-// informationButtonText
-"More Info" = "More Info";
-// mainContentHeader
-"Your device will restart during this update" = "Your device will restart during this update";
-// mainContentNote
-"Important Notes" = "Important Notes";
-// mainContentSubHeader
-"Updates can take around 30 minutes to complete" = "Updates can take around 30 minutes to complete";
-// mainContentText
-"A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps." = "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps.";
-// mainHeader
-"Your device requires a security update" = "Your device requires a security update";
-// primaryQuitButtonText
-"Later" = "Later";
-// secondaryQuitButtonText
-"I understand" = "I understand";
-// subHeader
-"A friendly reminder from your local IT team" = "A friendly reminder from your local IT team";
+"Language:" = "Language:";
 
 //// Additional Device Information
+"Additional Device Information" = "Additional Device Information";
 // Username
 "Username:" = "Username:";
 // Serial Number
@@ -40,13 +21,8 @@
 // Current OS Version
 "Current OS Version:" = "Current OS Version:";
 // Required OS Version
-"Required OS Version:" = "Required OS Version";
+"Required OS Version:" = "Required OS Version:";
 // Days remaining to update
 "Days remaining to update:" = "Days remaining to update:";
 // Ignored Count
 "Ignored Count:" = "Ignored Count:";
-
-
-
-
-

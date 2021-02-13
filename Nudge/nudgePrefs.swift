@@ -91,7 +91,6 @@ struct OptionalFeatures: Codable {
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton: Int?
     var attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool?
     var iconDarkPath, iconLightPath: String?
-    var informationButtonPath: String?
     var maxRandomDelayInSeconds: Int?
     var mdmFeatures: MdmFeatures?
     var noTimers, randomDelay: Bool?
@@ -124,7 +123,6 @@ extension OptionalFeatures {
         enforceMinorUpdates: Bool?? = nil,
         iconDarkPath: String?? = nil,
         iconLightPath: String?? = nil,
-        informationButtonPath: String?? = nil,
         maxRandomDelayInSeconds: Int?? = nil,
         mdmFeatures: MdmFeatures?? = nil,
         noTimers: Bool?? = nil,
@@ -140,7 +138,6 @@ extension OptionalFeatures {
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
             iconDarkPath: iconDarkPath ?? self.iconDarkPath,
             iconLightPath: iconLightPath ?? self.iconLightPath,
-            informationButtonPath: informationButtonPath ?? self.informationButtonPath,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             mdmFeatures: mdmFeatures ?? self.mdmFeatures,
             noTimers: noTimers ?? self.noTimers,
@@ -234,21 +231,6 @@ struct OSVersionRequirement: Codable {
 // MARK: OSVersionRequirement convenience initializers and mutators
 
 extension OSVersionRequirement {
-    enum Keys: String {
-        case aboutUpdateURL,
-             majorUpgradeAppPath,
-             requiredInstallationDate,
-             requiredMinimumOSVersion,
-             targetedOSVersions
-    }
-    
-//    init(_ dict: [String: Any]) throws {
-//        self.majorUpgradeAppPath = try dict.nudgeDefault(Keys.majorUpgradeAppPath.rawValue)
-//        self.requiredInstallationDate = try dict.nudgeDefault(Keys.requiredInstallationDate.rawValue)
-//        self.requiredMinimumOSVersion = try dict.nudgeDefault(Keys.requiredMinimumOSVersion.rawValue)
-//        self.targetedOSVersions = try dict.nudgeDefault(Keys.targetedOSVersions.rawValue)
-//    }
-    
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OSVersionRequirement.self, from: data)
     }
@@ -345,7 +327,7 @@ extension UserExperience {
 // MARK: - UserInterface
 struct UserInterface: Codable {
     var mdmElements: MdmElements?
-    var updateElements: UpdateElements?
+    var updateElements: [UpdateElement]?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -368,7 +350,7 @@ extension UserInterface {
 
     func with(
         mdmElements: MdmElements?? = nil,
-        updateElements: UpdateElements?? = nil
+        updateElements: [UpdateElement]?? = nil
     ) -> UserInterface {
         return UserInterface(
             mdmElements: mdmElements ?? self.mdmElements,
@@ -465,18 +447,23 @@ extension MdmElements {
     }
 }
 
-// MARK: - UpdateElements
-struct UpdateElements: Codable {
-    var actionButtonText, informationButtonText, mainContentHeader, mainContentNote: String?
-    var mainContentSubHeader, mainContentText, mainHeader, primaryQuitButtonText: String?
-    var secondaryQuitButtonText, subHeader: String?
+// MARK: - UpdateElement
+struct UpdateElement: Codable {
+    var language, actionButtonText, informationButtonText, mainContentHeader: String?
+    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
+    var primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+
+    enum CodingKeys: String, CodingKey {
+        case language = "_language"
+        case actionButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+    }
 }
 
-// MARK: UpdateElements convenience initializers and mutators
+// MARK: UpdateElement convenience initializers and mutators
 
-extension UpdateElements {
+extension UpdateElement {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(UpdateElements.self, from: data)
+        self = try newJSONDecoder().decode(UpdateElement.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -491,6 +478,7 @@ extension UpdateElements {
     }
 
     func with(
+        language: String?? = nil,
         actionButtonText: String?? = nil,
         informationButtonText: String?? = nil,
         mainContentHeader: String?? = nil,
@@ -501,8 +489,9 @@ extension UpdateElements {
         primaryQuitButtonText: String?? = nil,
         secondaryQuitButtonText: String?? = nil,
         subHeader: String?? = nil
-    ) -> UpdateElements {
-        return UpdateElements(
+    ) -> UpdateElement {
+        return UpdateElement(
+            language: language ?? self.language,
             actionButtonText: actionButtonText ?? self.actionButtonText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
