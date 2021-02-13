@@ -10,9 +10,21 @@ import Foundation
 // TODO: use CFPreferences to get mdm/mobileconfig logic and prioritize over json
 struct nudgePrefs{
     func loadNudgePrefs() -> NudgePreferences? {
-        let local_url = Utils().getJSONUrl()
+        let url = Utils().getJSONUrl()
 
-        guard let fileURL = URL(string: local_url) else {
+        if url.contains("https://") || url.contains("http://") {
+            if let data = try? Data(contentsOf: URL(string: url)) {
+                do {
+                    let decodedData = try NudgePreferences(data: data)
+                    return decodedData
+                } catch {
+                    print(error)
+                    return nil
+                }
+            }
+        }
+
+        guard let fileURL = URL(string: url) else {
             print("Could not find on-disk json")
             return nil
         }
