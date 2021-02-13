@@ -94,6 +94,21 @@ struct Nudge: View {
                 }
                 .padding(.vertical, 2)
                 
+                // Ignored Count
+                HStack{
+                    Text("Ignored Count:")
+                        .font(.title2)
+                    Text(String(self.deferralCountUI))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .onReceive(nudgeRefreshCycleTimer) { _ in
+                            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
+                                self.deferralCountUI += 1
+                            }
+                        }
+                }
+                .padding(.vertical, 2)
+                
                 // actionButton
                 Button(action: Utils().updateDevice, label: {
                     Text(actionButtonText)

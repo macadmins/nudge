@@ -50,12 +50,12 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
         return false
     }
     
-    // TODO: turn initialRefreshCycle into conditional
     if Utils().getTimerController() > timeDiff  {
         return false
     }
     
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
+    let runningApplications = NSWorkspace.shared.runningApplications
     
     // Don't nudge if major upgrade is frontmostApplication
     if FileManager.default.fileExists(atPath: majorUpgradeAppPath) {
@@ -76,9 +76,23 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
         _ = deferralCount += 1
         _ = lastRefreshTime = Date()
         Utils().activateNudge()
-        // TODO: Perhaps add the logic from nudge-python to hide all of the other windows
         if deferralCountVar > allowedDeferrals  {
             print("Nudge deferral count over threshold")
+            // Loop through all the running applications and hide them
+            for runningApplication in runningApplications {
+                let appName = runningApplication.bundleIdentifier ?? ""
+                let appBundle = runningApplication.bundleURL
+                if acceptableApps.contains(appName) {
+                    continue
+                }
+                if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
+                    continue
+                }
+                // Taken from nudge-python as there was a race condition with NSWorkspace
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
+                    runningApplication.hide()
+                })
+            }
             Utils().updateDevice()
         }
         return true
