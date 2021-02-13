@@ -97,25 +97,16 @@ struct Nudge: View {
                 // actionButton
                 Button(action: Utils().updateDevice, label: {
                     Text(actionButtonText)
-                        .frame(minWidth: 100)
+                        .frame(minWidth: 120)
                   }
                 )
                 .keyboardShortcut(.defaultAction)
                 .padding(.vertical, 2)
-
-                // primaryQuitButton
-                Button(action: {AppKit.NSApp.terminate(nil)}, label: {
-                    Text(primaryQuitButtonText)
-                        .frame(minWidth: 100)
-                    }
-                )
-                .padding(.vertical, 2)
                 
-                // More Info
-                // https://developer.apple.com/documentation/swiftui/openurlaction
+                Spacer()
+                
+                // Bottom buttons
                 HStack {
-                    // Force the button to the right with a spacer
-                    Spacer()
                     // informationButton
                     if aboutUpdateURL != "" {
                         Button(action: Utils().openMoreInfo, label: {
@@ -124,10 +115,67 @@ struct Nudge: View {
                           }
                         )
                         .buttonStyle(BorderlessButtonStyle())
-                        .padding(.trailing, 20)
+                        .padding(.leading, 20)
+                    }
+
+                    // Separate the buttons with a spacer
+                    Spacer()
+                    
+                    if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
+                        // secondaryQuitButton
+                        if requireDualQuitButtons {
+                            if self.hasClickedSecondaryQuitButton {
+                                Button(action: {}, label: {
+                                    Text(secondaryQuitButtonText)
+                                  }
+                                )
+                                .hidden()
+                            } else {
+                                Button(action: {
+                                    hasClickedSecondaryQuitButton = true
+                                }, label: {
+                                    Text(secondaryQuitButtonText)
+                                  }
+                                )
+                            }
+                        } else {
+                            Button(action: {}, label: {
+                                Text(secondaryQuitButtonText)
+                              }
+                            )
+                            .hidden()
+                        }
+                    
+                        // primaryQuitButton
+                        if requireDualQuitButtons {
+                            if self.hasClickedSecondaryQuitButton {
+                                Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: 35)
+                                  }
+                                )
+                            } else {
+                                Button(action: {
+                                    hasClickedSecondaryQuitButton = true
+                                }, label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: 35)
+                                  }
+                                )
+                                .hidden()
+                            }
+                        } else {
+                            Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                Text(primaryQuitButtonText)
+                                    .frame(minWidth: 35)
+                              }
+                            )
+                        }
                     }
                 }
                 // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
+                .padding(.trailing, 20)
+                .padding(.bottom, 15)
                 .onAppear(perform: nudgeStartLogic)
             }
             .frame(width: 900, height: 450)
