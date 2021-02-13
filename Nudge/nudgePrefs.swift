@@ -13,13 +13,15 @@ struct nudgePrefs{
         let url = Utils().getJSONUrl()
 
         if url.contains("https://") || url.contains("http://") {
-            if let data = try? Data(contentsOf: URL(string: url)) {
-                do {
-                    let decodedData = try NudgePreferences(data: data)
-                    return decodedData
-                } catch {
-                    print(error)
-                    return nil
+            if let json_url = URL(string: url) {
+                if let data = try? Data(contentsOf: json_url) {
+                    do {
+                        let decodedData = try NudgePreferences(data: data)
+                        return decodedData
+                    } catch {
+                        print(error)
+                        return nil
+                    }
                 }
             }
         }
