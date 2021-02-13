@@ -16,9 +16,6 @@ struct Nudge: View {
     @EnvironmentObject var manager: PolicyManager
 
     // State variables
-    @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
-    @State var serialNumber = Utils().getSerialNumber()
-    @State var cpuType = Utils().getCPUTypeString()
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
