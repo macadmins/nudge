@@ -8,7 +8,7 @@
 import AppKit
 import Foundation
 import SystemConfiguration
-    
+
 struct Utils {
     func activateNudge() {
         print("Re-activating Nudge")
