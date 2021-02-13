@@ -10,8 +10,7 @@ import Foundation
 // TODO: use CFPreferences to get mdm/mobileconfig logic and prioritize over json
 struct nudgePrefs{
     func loadNudgePrefs() -> NudgePreferences? {
-        // For Greg Neagle
-        let local_url = "file:///Library/Preferences/com.github.macadmins.Nudge.json"
+        let local_url = Utils().getJSONUrl()
 
         guard let fileURL = URL(string: local_url) else {
             print("Could not find on-disk json")
