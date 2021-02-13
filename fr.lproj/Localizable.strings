@@ -6,38 +6,50 @@
   
 */
 
+/*
+  Localizable.strings
+  Nudge
+
+  Created by Rory Murdock on 7/2/21.
+  
+*/
+
+//// userInterface -> updateElements
+// actionButtonText
+"Update Device" = "Mettre à jour l'appareil";
+// informationButtonText
+"More Info" = "Plus d'informations";
+// mainContentHeader
+"Your device will restart during this update" = "Votre appareil redémarrera pendant cette mise à jour";
+// mainContentNote
+"Important Notes" = "Notes Importantes";
+// mainContentSubHeader
+"Updates can take around 30 minutes to complete" = "Les mises à jour peuvent prendre environ 30 minutes.";
+// mainContentText
+"A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps." = "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision. \n \ nSi vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes. \n \ nPour commencer la mise à jour, cliquez simplement sur le bouton ci-dessous et suivez les étapes fournies.";
+// mainHeader
+"Your device requires a security update" = "Votre appareil nécessite une mise à jour de sécurité";
+// primaryQuitButtonText
+"Later" = "Plus tard";
+// secondaryQuitButtonText
+"I understand" = "Je comprends";
+// subHeader
 "A friendly reminder from your local IT team" = "Un rappel amical de votre équipe informatique locale";
 
-"A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps." = "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision. \n \ nSi vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes. \n \ nPour commencer la mise à jour, cliquez simplement sur le bouton ci-dessous et suivez les étapes fournies.";
+//// Additional Device Information
+// Username
+"Username:" = "Nom d'utilisateur:";
+// Serial Number
+"Serial Number:" = "Numéro de série:";
+// Architecture
+"Architecture:" = "Architecture:";
 
-"A security update is required on your device." = "Une mise à jour de sécurité est requise sur votre appareil.";
-
-"Architecture: " = "Architecture: ";
-
-"Click on the button below." = "Cliquez sur le bouton ci-dessous.";
-
-"Current OS Version: " = "Version actuelle du système d'exploitation: ";
-
-"Days remaining to update: " = "Jours restant: ";
-
-"Deferral Count: " = "Jours restant: ";
-
-"Fully Updated: " = "Nombre de report: ";
-
-"I understand" = "Je comprends";
-
-"macOS Update" = "Mise à jour MacOS";
-
-"More Info" = "Plus d'informations";
-
-"Defer" = "Différer";
-
-"Ready to start the update?" = "Prêt à démarrer la mise à jour??";
-
-"Required OS Version: " = "Version du système d'exploitation requise: ";
-
-"Serial Number: " = "Numéro de série: ";
-
-"Update Device" = "Mettre à jour l'appareil";
-
-"Username: " = "Nom d'utilisateur: ";
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "Version actuelle du système d'exploitation:";
+// Required OS Version
+"Required OS Version:" = "Version du système d'exploitation requise:";
+// Days remaining to update
+"Days remaining to update: " = "Jours restant:";
+// Ignored Count
+"Ignored Count:" = "Compte ignoré:";

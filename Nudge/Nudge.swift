@@ -16,9 +16,6 @@ struct Nudge: View {
     @EnvironmentObject var manager: PolicyManager
 
     // State variables
-    @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
-    @State var serialNumber = Utils().getSerialNumber()
-    @State var cpuType = Utils().getCPUTypeString()
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
@@ -198,7 +195,7 @@ struct Nudge: View {
                     Group {
                         // Required OS Version
                         HStack{
-                            Text("Required OS Version: ")
+                            Text("Required OS Version:")
                                 .fontWeight(.bold)
                             Spacer()
                             Text(String(requiredMinimumOSVersion))
@@ -208,7 +205,7 @@ struct Nudge: View {
                         
                         // Current OS Version
                         HStack{
-                            Text("Current OS Version: ")
+                            Text("Current OS Version:")
                             Spacer()
                             Text(manager.current.description)
                                 .foregroundColor(.secondary)
@@ -216,7 +213,7 @@ struct Nudge: View {
 
                         // Days Remaining
                         HStack{
-                            Text("Days remaining to update: ")
+                            Text("Days remaining to update:")
                             Spacer()
                             if self.daysRemaining <= 0 {
                                 Text(String(0))
@@ -227,9 +224,9 @@ struct Nudge: View {
                             }
                         }
 
-                        // Deferral Count
+                        // Ignored Count
                         HStack{
-                            Text("Deferral Count: ")
+                            Text("Ignored Count:")
                             Spacer()
                             Text(String(self.deferralCountUI))
                                 .onReceive(nudgeRefreshCycleTimer) { _ in
@@ -538,7 +535,7 @@ struct deviceInfo: View {
 
             // Username
             HStack{
-                Text("Username: ")
+                Text("Username:")
                 Text(self.systemConsoleUsername)
                     .foregroundColor(.secondary)
             }
@@ -546,7 +543,7 @@ struct deviceInfo: View {
 
             // Serial Number
             HStack{
-                Text("Serial Number: ")
+                Text("Serial Number:")
                 Text(self.serialNumber)
                     .foregroundColor(.secondary)
             }
@@ -554,7 +551,7 @@ struct deviceInfo: View {
 
             // Architecture
             HStack{
-                Text("Architecture: ")
+                Text("Architecture:")
                 Text(self.cpuType)
                     .foregroundColor(.secondary)
             }
