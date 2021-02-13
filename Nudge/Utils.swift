@@ -27,7 +27,7 @@ struct Utils {
     }
     
     func demoModeEnabled() -> Bool {
-        return CommandLine.arguments.contains("-demo")
+        return CommandLine.arguments.contains("-demo-mode")
     }
     
     func fullyUpdated() -> Bool {
@@ -69,10 +69,16 @@ struct Utils {
         Date()
     }
     
+    func getJSONUrl() -> String {
+        // let jsonURL = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
+        let jsonURL = UserDefaults.standard.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
+        return jsonURL
+    }
+    
     func getInitialDate() -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
-        return dateFormatter.date(from: "08-06-2020") ?? Date()
+        return dateFormatter.date(from: "08-06-2020") ?? Date() // <3
     }
     
     func getMajorOSVersion() -> Int {
