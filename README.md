@@ -51,7 +51,8 @@ Device fully up-to-date.
 In order to trigger Nudge in demo mode, simply pass the `-demo-mode` argument
 
 ```
-/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -demo-mode
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
+-demo-mode
 ```
 
 This will open Nudge in the English localization and allow you to test the buttons, as well as Light/Dark mode.
@@ -59,14 +60,17 @@ This will open Nudge in the English localization and allow you to test the butto
 If you'd like to trigger `simpleMode` in Demo mode, chain the both `-demo-mode` and `-simple-mode` arguments
 
 ```
-/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -demo-mode -simple-mode
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
+-demo-mode \
+-simple-mode
 ```
 
 ### Simple Mode
 If you'd like to force simple mode (and don't want to use the built in preferences configuration), simply pass the `-simple-mode` argument
 
 ```
-/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -simple-mode
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
+-simple-mode
 ```
 
 ## JSON Support
@@ -78,13 +82,17 @@ By default, Nudge will look for a JSON located at `/Library/Preferences/com.gith
 In order to download a JSON from a website, simple pass the `-json-url` argument.
 
 ```
-/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -json-url "https://raw.githubusercontent.com/macadmins/nudge/Example%20Assets/com.github.macadmins.Nudge.json"
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
+-json-url \
+"https://raw.githubusercontent.com/macadmins/nudge/Example%20Assets/com.github.macadmins.Nudge.json"
 ```
 
 While the `-json-url` argument is mainly designed for web urls, you can actually pass it a file path as well if you don't want to deploy a json to `/Library/Preferences` or simply want to test another json file.
 
 ```
-/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -json-url "file:///path/to/your.json"`
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
+-json-url \
+"file:///path/to/your.json"`
 ```
 
 
