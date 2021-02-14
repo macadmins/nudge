@@ -1,0 +1,48 @@
+#!/bin/zsh
+#
+# Copyright 2021-Present Erik Gomez.
+#
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# If you change your agent file name, update the following line
+launch_agent_plist_name='com.github.macadmins.Nudge.plist'
+
+# Base paths
+launch_agent_base_path='Library/LaunchAgents/'
+
+# Load agent if installing to a running system
+if [[ $3 == "/" ]] ; then
+  # Fail the install if the admin forgets to change their paths and they don't exist.
+  if [ ! -e "$3/${launch_agent_base_path}${launch_agent_plist_name}" ]; then
+    echo "LaunchAgent missing, exiting"
+    exit 1
+  fi
+
+  # Current console user information
+  console_user=$(/usr/bin/stat -f "%Su" /dev/console)
+  console_user_uid=$(/usr/bin/id -u "$console_user")
+
+  # Only enable the LaunchAgent if there is a user logged in, otherwise rely on built in LaunchAgent behavior
+  if [[ -z "$console_user" ]]; then
+    echo "Did not detect user"
+  elif [[ "$console_user" == "loginwindow" ]]; then
+    echo "Detected Loginwindow Environment"
+  elif [[ "$console_user" == "_mbsetupuser" ]]; then
+    echo "Detect SetupAssistant Environment"
+  else
+    # Unload the agent so it can be triggered on re-install
+    /bin/launchctl asuser "${console_user_uid}" /bin/launchctl unload -w "$3${launch_agent_base_path}${launch_agent_plist_name}"
+    # Load the launch agent
+    /bin/launchctl asuser "${console_user_uid}" /bin/launchctl load -w "$3${launch_agent_base_path}${launch_agent_plist_name}"
+  fi
+fi
