@@ -95,6 +95,9 @@ While the `-json-url` argument is mainly designed for web urls, you can actually
 "file:///path/to/your.json"`
 ```
 
+## Scheduling Nudge to run
+TODO: Mention LaunchAgent pkg
+
 ## Configuration
 Nudge offers significant customization and can be overwhelming, but fear not, you don't have to customize everything :smile:
 
