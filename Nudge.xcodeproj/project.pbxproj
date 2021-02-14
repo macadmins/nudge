@@ -95,9 +95,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		031B0F2125D8AE3200E68A28 /* Example Assets */ = {
+			isa = PBXGroup;
+			children = (
+				035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */,
+			);
+			path = "Example Assets";
+			sourceTree = "<group>";
+		};
 		63D7D0D625C9E9A400236281 = {
 			isa = PBXGroup;
 			children = (
+				031B0F2125D8AE3200E68A28 /* Example Assets */,
 				5870FF6425CFE5EC0036D203 /* Localizable.strings */,
 				63D7D0E125C9E9A400236281 /* Nudge */,
 				63D7D0F425C9E9A500236281 /* NudgeTests */,
@@ -126,7 +135,6 @@
 				63D7D0EB25C9E9A500236281 /* Info.plist */,
 				63D7D0EC25C9E9A500236281 /* Nudge.entitlements */,
 				63D7D0E825C9E9A500236281 /* Preview Content */,
-				035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */,
 				639E198125CD885D008F618B /* nudgePrefs.swift */,
 				636C4B4925D1BECE0004A791 /* defaults.swift */,
 				639E198925CD9E21008F618B /* Utils.swift */,
