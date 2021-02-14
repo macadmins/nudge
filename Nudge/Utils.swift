@@ -111,6 +111,9 @@ struct Utils {
     }
     
     func getSerialNumber() -> String {
+        if Utils().demoModeEnabled() {
+                return "C00000000000"
+        }
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
         var serialNumber: String? {
             let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice") )
