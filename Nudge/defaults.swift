@@ -79,6 +79,13 @@ func getMainHeader() -> String {
         return getuserInterface()?.mainHeader ?? "Your device requires a security update"
     }
 }
+func forceIconMode() -> Bool {
+    if Utils().forceIconModeEnabled() {
+        return true
+    } else {
+        return nudgePreferences?.userInterface?.forceIcon ?? false
+    }
+}
 let iconDarkPath = nudgePreferences?.userInterface?.iconDarkPath ?? ""
 let iconLightPath = nudgePreferences?.userInterface?.iconLightPath ?? ""
 let informationButtonText = getuserInterface()?.informationButtonText ?? "More Info"

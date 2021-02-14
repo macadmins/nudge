@@ -488,7 +488,7 @@ struct Nudge: View {
                                         }
                                     }
                                 } else {
-                                    if Utils().forceIconModeEnabled() {
+                                    if forceIconMode() {
                                         Button {
                                             self.showSSDetail.toggle()
                                         } label: {
