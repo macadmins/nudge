@@ -45,8 +45,10 @@ fi
 # move the app to the payload folder
 echo "Moving Nudge.app to payload folder"
 /bin/mkdir -p "$TOOLSDIR/NudgePkg/payload/Applications/Utilities"
+/bin/mkdir -p "$TOOLSDIR/NudgePkg/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$TOOLSDIR/NudgePkg"
 /bin/mv "${BUILDSDIR}/Release/Nudge.app" "$TOOLSDIR/NudgePkg/payload/Applications/Utilities/Nudge.app"
+/bin/cp "${TOOLSDIR}/build_assets/preinstall" "$TOOLSDIR/NudgePkg/scripts"
 
 # Download specific version of munki-pkg
 echo "Downloading munki-pkg tool from github..."
@@ -100,7 +102,7 @@ echo "Moving LaunchAgent to payload folder"
 /bin/mkdir -p "$TOOLSDIR/NudgePkgLA/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$TOOLSDIR/NudgePkgLA"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$TOOLSDIR/NudgePkgLA/payload/Library/LaunchAgents"
-/bin/co "${TOOLSDIR}/build_assets/postinstall" "$TOOLSDIR/NudgePkgLA/scripts"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall" "$TOOLSDIR/NudgePkgLA/scripts"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
 /bin/cat << SIGNED_JSONFILE > "$TOOLSDIR/NudgePkgLA/build-info.json"
