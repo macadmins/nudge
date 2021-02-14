@@ -16,7 +16,6 @@ let nudgePreferences = nudgePrefs().loadNudgePrefs()
 let allowedDeferrals = nudgePreferences?.optionalFeatures?.allowedDeferrals ?? 1000000
 let allowedDeferralsUntilForcedSecondaryQuitButton = nudgePreferences?.optionalFeatures?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let attemptToFetchMajorUpgrade = nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
-let enforceMinorUpdates = nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 let iconDarkPath = nudgePreferences?.optionalFeatures?.iconDarkPath ?? ""
 let iconLightPath = nudgePreferences?.optionalFeatures?.iconLightPath ?? ""
 let maxRandomDelayInSeconds = nudgePreferences?.optionalFeatures?.maxRandomDelayInSeconds ?? 1200

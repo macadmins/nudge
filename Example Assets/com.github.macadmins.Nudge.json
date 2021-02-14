@@ -3,7 +3,6 @@
         "allowedDeferrals": 1000000,
         "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
         "attemptToFetchMajorUpgrade": true,
-        "enforceMinorUpdates": true,
         "iconDarkPath": "/somewhere/logoDark.png",
         "iconLightPath": "/somewhere/logoLight.png",
         "maxRandomDelayInSeconds": 1200,
