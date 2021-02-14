@@ -43,7 +43,7 @@
         "randomDelay": false
     },
     "userInterface": {
-        "forceIcon": false,
+        "forceScreenShotIcon": false,
         "iconDarkPath": "/somewhere/logoDark.png",
         "iconLightPath": "/somewhere/logoLight.png",
         "screenShotDarkPath": "/somewhere/screenShotDark.jpg",

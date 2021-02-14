@@ -79,11 +79,11 @@ func getMainHeader() -> String {
         return getuserInterface()?.mainHeader ?? "Your device requires a security update"
     }
 }
-func forceIconMode() -> Bool {
-    if Utils().forceIconModeEnabled() {
+func forceScreenShotIconMode() -> Bool {
+    if Utils().forceScreenShotIconModeEnabled() {
         return true
     } else {
-        return nudgePreferences?.userInterface?.forceIcon ?? false
+        return nudgePreferences?.userInterface?.forceScreenShotIcon ?? false
     }
 }
 let iconDarkPath = nudgePreferences?.userInterface?.iconDarkPath ?? ""

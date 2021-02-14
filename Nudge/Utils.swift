@@ -30,8 +30,8 @@ struct Utils {
         return CommandLine.arguments.contains("-demo-mode")
     }
 
-    func forceIconModeEnabled() -> Bool {
-        return CommandLine.arguments.contains("-force-icon")
+    func forceScreenShotIconModeEnabled() -> Bool {
+        return CommandLine.arguments.contains("-force-screenshot-icon")
     }
     
     func fullyUpdated() -> Bool {

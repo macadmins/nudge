@@ -35,7 +35,9 @@ After installing Nudge through the package, you can attempt to open Nudge throug
 
 This is because Nudge has not been configured! Please read on to learn how to engage with Nudge through the command line.
 
-## Command Line
+## Command Line Arguments
+[For a full listing of the available command line arguments, please see the wiki](https://github.com/macadmins/nudge/wiki/Command-Line-Arguments)
+
 To open Nudge through the command-line application, open `Terminal` and run the following command:
 
 ```
@@ -67,12 +69,12 @@ If you'd like to trigger `simpleMode` in Demo mode, chain the both `-demo-mode` 
 -simple-mode
 ```
 
-If you'd like to force the icon in Demo mode, chain the both `-demo-mode` and `-force-icon` arguments
+If you'd like to force the icon in Demo mode, chain the both `-demo-mode` and `-force-screenshot-icon` arguments
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
 -demo-mode \
--force-icon
+-force-screenshot-icon
 ```
 
 ### Simple Mode
@@ -196,7 +198,7 @@ The following example would add support for the French (fr) locale.
 ## Configuration
 Nudge offers significant customization, which might be overwhelming. But don't worry, you don't have to customize everything. :smile:
 
-[For a full listing of the available preferences, please see the wiki](https://github.com/macadmins/nudge/wiki)
+[For a full listing of the available preferences, please see the wiki](https://github.com/macadmins/nudge/wiki/Preferences)
 
 ### Small Example
 In this example, Nudge will do the following:
@@ -262,7 +264,7 @@ In this example, Nudge will do the following:
         "randomDelay": false
     },
     "userInterface": {
-        "forceIcon": false,
+        "forceScreenShotIcon": false,
         "iconDarkPath": "/somewhere/logoDark.png",
         "iconLightPath": "/somewhere/logoLight.png",
         "screenShotDarkPath": "/somewhere/screenShotDark.jpg",

@@ -327,7 +327,7 @@ extension UserExperience {
 
 // MARK: - UserInterface
 struct UserInterface: Codable {
-    var forceIcon: Bool?
+    var forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var simpleMode: Bool?
     var umadElements, updateElements: [Element]?
@@ -352,7 +352,7 @@ extension UserInterface {
     }
 
     func with(
-        forceIcon: Bool?? = nil,
+        forceScreenShotIcon: Bool?? = nil,
         iconDarkPath: String?? = nil,
         iconLightPath: String?? = nil,
         screenShotDarkPath: String?? = nil,
@@ -362,7 +362,7 @@ extension UserInterface {
         updateElements: [Element]?? = nil
     ) -> UserInterface {
         return UserInterface(
-            forceIcon: forceIcon ?? self.forceIcon,
+            forceScreenShotIcon: forceScreenShotIcon ?? self.forceScreenShotIcon,
             iconDarkPath: iconDarkPath ?? self.iconDarkPath,
             iconLightPath: iconLightPath ?? self.iconLightPath,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
