@@ -129,7 +129,15 @@ struct Nudge: View {
                                 .foregroundColor(.secondary)
                           }
                         )
-                        .buttonStyle(BorderlessButtonStyle())
+                        .buttonStyle(PlainButtonStyle())
+                        .help("Click for more information about the security update")
+                        .onHover { inside in
+                            if inside {
+                                NSCursor.pointingHand.push()
+                            } else {
+                                NSCursor.pop()
+                            }
+                        }
                         .padding(.leading, 20)
                     }
 
@@ -204,11 +212,19 @@ struct Nudge: View {
                     }
                     .padding(.leading, -140)
                     .padding(.top, -25.0)
-                    .buttonStyle(BorderlessButtonStyle())
+                    .buttonStyle(PlainButtonStyle())
+                    // TODO: This is broken because of the padding
+                    .help("Click for additional device information")
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
                     .sheet(isPresented: $showDeviceInfo) {
                         deviceInfo()
                     }
-                    .help("Click for additional device information")
 
                     // Company Logo
                     if colorScheme == .dark {
@@ -314,7 +330,15 @@ struct Nudge: View {
                                     .foregroundColor(.secondary)
                               }
                             )
-                            .buttonStyle(BorderlessButtonStyle())
+                            .buttonStyle(PlainButtonStyle())
+                            .help("Click for more information about the security update")
+                            .onHover { inside in
+                                if inside {
+                                    NSCursor.pointingHand.push()
+                                } else {
+                                    NSCursor.pop()
+                                }
+                            }
                             
                         }
                         // Force the button to the left with a spacer
@@ -413,7 +437,6 @@ struct Nudge: View {
                                 .font(.body)
                                 .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
-                                //.frame(maxWidth: .infinity, alignment: .leading)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.leading, 20.0)
 
@@ -421,29 +444,71 @@ struct Nudge: View {
                                 Spacer()
                                 // screenShot
                                 if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                                        .resizable().scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
+                                    Button {
+                                        self.showSSDetail.toggle()
+                                    } label: {
+                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
+                                            .resizable()
+                                            .scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxHeight: 128)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .help("Click to zoom into screenshot")
+                                    .sheet(isPresented: $showSSDetail) {
+                                        screenShotZoom()
+                                    }
+                                    .onHover { inside in
+                                        if inside {
+                                            NSCursor.pointingHand.push()
+                                        } else {
+                                            NSCursor.pop()
+                                        }
+                                    }
                                 } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
-                                        .resizable().scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
+                                    Button {
+                                        self.showSSDetail.toggle()
+                                    } label: {
+                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                                            .resizable()
+                                            .scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxHeight: 128)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .help("Click to zoom into screenshot")
+                                    .sheet(isPresented: $showSSDetail) {
+                                        screenShotZoom()
+                                    }
+                                    .onHover { inside in
+                                        if inside {
+                                            NSCursor.pointingHand.push()
+                                        } else {
+                                            NSCursor.pop()
+                                        }
+                                    }
                                 } else {
-                                    Image("CompanyScreenshotIcon")
-                                        .resizable().scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
-                                }
-                                // Zoom button
-                                Button {
-                                    self.showSSDetail.toggle()
-                                } label: {
-                                    Image(systemName: "plus.magnifyingglass")
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
-                                .help("Click to zoom into screenshot")
-                                .padding(.leading, -10)
-                                .sheet(isPresented: $showSSDetail) {
-                                    screenShotZoom()
+                                    Button {
+                                        self.showSSDetail.toggle()
+                                    } label: {
+                                        Image("CompanyScreenshotIcon")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxHeight: 128)
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .help("Click to zoom into screenshot")
+                                    .sheet(isPresented: $showSSDetail) {
+                                        screenShotZoom()
+                                    }
+                                    .onHover { inside in
+                                        if inside {
+                                            NSCursor.pointingHand.push()
+                                        } else {
+                                            NSCursor.pop()
+                                        }
+                                    }
                                 }
 
                                 Spacer()
@@ -527,28 +592,67 @@ struct screenShotZoom: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-            if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                    .resizable().scaledToFit()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-            } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
-                    .resizable().scaledToFit()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-            } else {
-                Image("CompanyScreenshotIcon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .frame(width: 512, height: 512)
+        VStack {
+            HStack {
+                Button(
+                    action: {
+                        self.presentationMode.wrappedValue.dismiss()})
+                {
+                    Image(systemName: "xmark.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.red)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .help("Click to close")
+                .onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
+                .frame(width: 35, height: 35)
+                Spacer()
             }
-          }
-        )
-        .buttonStyle(PlainButtonStyle())
-        .help("Click to close")
+        
+            HStack {
+                Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
+                    if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
+                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
+                            .resizable()
+                            .scaledToFit()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 512)
+                    } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
+                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                            .resizable()
+                            .scaledToFit()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 512)
+                    } else {
+                        Image("CompanyScreenshotIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding()
+                            .frame(maxHeight: 512)
+                    }
+                  }
+                )
+                .padding(.top, -75)
+                .buttonStyle(PlainButtonStyle())
+                .help("Click to close")
+                .onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -579,6 +683,13 @@ struct deviceInfo: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 .help("Click to close")
+                .onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
                 .frame(width: 35, height: 35)
                 
                 Spacer()
