@@ -102,7 +102,7 @@ extension NudgePreferences {
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton: Int?
-    var attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool?
+    var attemptToFetchMajorUpgrade: Bool?
     var iconDarkPath, iconLightPath: String?
     var maxRandomDelayInSeconds: Int?
     var mdmFeatures: MdmFeatures?
@@ -133,7 +133,6 @@ extension OptionalFeatures {
         allowedDeferrals: Int?? = nil,
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
-        enforceMinorUpdates: Bool?? = nil,
         iconDarkPath: String?? = nil,
         iconLightPath: String?? = nil,
         maxRandomDelayInSeconds: Int?? = nil,
@@ -148,7 +147,6 @@ extension OptionalFeatures {
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
-            enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
             iconDarkPath: iconDarkPath ?? self.iconDarkPath,
             iconLightPath: iconLightPath ?? self.iconLightPath,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,

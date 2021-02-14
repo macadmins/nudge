@@ -111,6 +111,9 @@ struct Utils {
     }
     
     func getSerialNumber() -> String {
+        if Utils().demoModeEnabled() {
+                return "C00000000000"
+        }
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
         var serialNumber: String? {
             let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice") )
@@ -174,6 +177,10 @@ struct Utils {
 
     func requireMajorUpgrade() -> Bool {
         return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
+    }
+    
+    func simpleModeEnabled() -> Bool {
+        return CommandLine.arguments.contains("-simple-mode")
     }
 
     func updateDevice() {
