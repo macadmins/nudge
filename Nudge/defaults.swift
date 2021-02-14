@@ -13,34 +13,18 @@ import Foundation
 let nudgePreferences = nudgePrefs().loadNudgePrefs()
 
 // optionalFeatures
-let allowedDeferrals = nudgePreferences?.optionalFeatures?.allowedDeferrals ?? 1000000
-let allowedDeferralsUntilForcedSecondaryQuitButton = nudgePreferences?.optionalFeatures?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let attemptToFetchMajorUpgrade = nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
-let iconDarkPath = nudgePreferences?.optionalFeatures?.iconDarkPath ?? ""
-let iconLightPath = nudgePreferences?.optionalFeatures?.iconLightPath ?? ""
-let maxRandomDelayInSeconds = nudgePreferences?.optionalFeatures?.maxRandomDelayInSeconds ?? 1200
-let noTimers = nudgePreferences?.optionalFeatures?.noTimers ?? false
-let randomDelay = nudgePreferences?.optionalFeatures?.randomDelay ?? false
-let screenShotDarkPath = nudgePreferences?.optionalFeatures?.screenShotDarkPath ?? ""
-let screenShotLightPath = nudgePreferences?.optionalFeatures?.screenShotLightPath ?? ""
-func simpleMode() -> Bool {
-    if Utils().simpleModeEnabled() {
-        return true
-    } else {
-        return nudgePreferences?.optionalFeatures?.simpleMode ?? false
-    }
-}
 
 // optionalFeatures - MDM
-let alwaysShowManualEnrllment = nudgePreferences?.optionalFeatures?.mdmFeatures?.alwaysShowManulEnrollment ?? false
-let depScreenShotPath = nudgePreferences?.optionalFeatures?.mdmFeatures?.depScreenShotPath ?? ""
-let disableManualEnrollmentForDEP = nudgePreferences?.optionalFeatures?.mdmFeatures?.disableManualEnrollmentForDEP ?? false
-let enforceMDMInstallation = nudgePreferences?.optionalFeatures?.mdmFeatures?.enforceMDMInstallation ?? false
-let mdmInformationButtonPath = nudgePreferences?.optionalFeatures?.mdmFeatures?.mdmInformationButtonPath ??  "https://github.com/macadmins/umage"
-let manulEnrollmentPath = nudgePreferences?.optionalFeatures?.mdmFeatures?.manualEnrollmentPath ?? "https://apple.com"
-let mdmProfileIdentifier = nudgePreferences?.optionalFeatures?.mdmFeatures?.mdmProfileIdentifier ?? "com.example.mdm.profile"
-let mdmRequiredInstallationDate = nudgePreferences?.optionalFeatures?.mdmFeatures?.mdmRequiredInstallationDate ?? Date(timeIntervalSince1970: 0)
-let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.mdmFeatures?.uamdmScreenShotPath ?? ""
+let alwaysShowManualEnerllment = nudgePreferences?.optionalFeatures?.umadFeatures?.alwaysShowManulEnrollment ?? false
+let depScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.depScreenShotPath ?? ""
+let disableManualEnrollmentForDEP = nudgePreferences?.optionalFeatures?.umadFeatures?.disableManualEnrollmentForDEP ?? false
+let enforceMDMInstallation = nudgePreferences?.optionalFeatures?.umadFeatures?.enforceMDMInstallation ?? false
+let manulEnrollmentPath = nudgePreferences?.optionalFeatures?.umadFeatures?.manualEnrollmentPath ?? "https://apple.com"
+let mdmInformationButtonPath = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmInformationButtonPath ??  "https://github.com/macadmins/umad"
+let mdmProfileIdentifier = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmProfileIdentifier ?? "com.example.mdm.profile"
+let mdmRequiredInstallationDate = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmRequiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamdmScreenShotPath ?? ""
 
 // osVersionRequirements
 // This is in a list that could expand so we need to treat it differently
@@ -61,17 +45,22 @@ func getOSVersionRequirements() -> OSVersionRequirement? {
 }
 
 // userExperience
+let allowedDeferrals = nudgePreferences?.userExperience?.allowedDeferrals ?? 1000000
+let allowedDeferralsUntilForcedSecondaryQuitButton = nudgePreferences?.userExperience?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let approachingRefreshCycle = nudgePreferences?.userExperience?.approachingRefreshCycle ?? 6000
 let approachingWindowTime = nudgePreferences?.userExperience?.approachingWindowTime ?? 72
 let elapsedRefreshCycle = nudgePreferences?.userExperience?.elapsedRefreshCycle ?? 300
 let imminentRefreshCycle = nudgePreferences?.userExperience?.imminentRefeshCycle ?? 600
 let imminentWindowTime = nudgePreferences?.userExperience?.imminentWindowTime ?? 24
 let initialRefreshCycle = nudgePreferences?.userExperience?.initialRefreshCycle ?? 18000
+let maxRandomDelayInSeconds = nudgePreferences?.userExperience?.maxRandomDelayInSeconds ?? 1200
+let noTimers = nudgePreferences?.userExperience?.noTimers ?? false
 let nudgeRefreshCycle = nudgePreferences?.userExperience?.nudgeRefreshCycle ?? 60
+let randomDelay = nudgePreferences?.userExperience?.randomDelay ?? false
 
 // userInterface
 let language = NSLocale.current.languageCode!
-func getuserInterface() -> UpdateElement? {
+func getuserInterface() -> Element? {
     let updateElements = nudgePreferences?.userInterface?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
@@ -90,34 +79,50 @@ func getMainHeader() -> String {
         return getuserInterface()?.mainHeader ?? "Your device requires a security update"
     }
 }
+let iconDarkPath = nudgePreferences?.userInterface?.iconDarkPath ?? ""
+let iconLightPath = nudgePreferences?.userInterface?.iconLightPath ?? ""
 let informationButtonText = getuserInterface()?.informationButtonText ?? "More Info"
 let mainContentHeader = getuserInterface()?.mainContentHeader ?? "Your device will restart during this update"
 let mainContentNote = getuserInterface()?.mainContentNote ?? "Important Notes"
 let mainContentSubHeader = getuserInterface()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
 let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can your accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the button below and follow the provided steps."
 let primaryQuitButtonText = getuserInterface()?.primaryQuitButtonText ?? "Later"
+let screenShotDarkPath = nudgePreferences?.userInterface?.screenShotDarkPath ?? ""
+let screenShotLightPath = nudgePreferences?.userInterface?.screenShotLightPath ?? ""
 let secondaryQuitButtonText = getuserInterface()?.secondaryQuitButtonText ?? "I understand"
+func simpleMode() -> Bool {
+    if Utils().simpleModeEnabled() {
+        return true
+    } else {
+        return nudgePreferences?.userInterface?.simpleMode ?? false
+    }
+}
 let subHeader = getuserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
 
 // userInterface - MDM
-let mdmActionButtonManualText = nudgePreferences?.userInterface?.mdmElements?.actionButtonManualText ?? "Manually Enroll"
-let mdmActionButtonUAMDMText = nudgePreferences?.userInterface?.mdmElements?.actionButtonUAMDMText ?? "Open System Preferences"
-let mdmActionButtonText = nudgePreferences?.userInterface?.mdmElements?.actionButtonText ?? ""
-let mdmInformationButtonText = nudgePreferences?.userInterface?.mdmElements?.informationButtonText ?? "More Info"
-let mdmLowerHeader = nudgePreferences?.userInterface?.mdmElements?.lowerHeader ?? "Ready to enroll?"
-let mdmLowerHeaderDEPFailure = nudgePreferences?.userInterface?.mdmElements?.lowerHeaderDEPFailure ?? "Manual enrollment required"
-let mdmLowerHeaderUAMDMFailure = nudgePreferences?.userInterface?.mdmElements?.lowerHeaderUAMDMFailure ?? "Manual intervention required"
-let mdmLowerSubHeader = nudgePreferences?.userInterface?.mdmElements?.lowerSubHeader ?? ""
-let mdmLowerSubHeaderDEPFailure = nudgePreferences?.userInterface?.mdmElements?.lowerSubHeaderDEPFailure ?? "You can also enroll manually below"
-let mdmLowerSubHeaderManual = nudgePreferences?.userInterface?.mdmElements?.lowerSubHeaderManual ?? "Click on the Manually Enroll button below."
-let mdmLowerSubHeaderUAMDMFailure = nudgePreferences?.userInterface?.mdmElements?.lowerSubHeaderUAMDMFailure ?? "Open System Preferences and approve Device Management."
-let mdmMainContentHeader = nudgePreferences?.userInterface?.mdmElements?.mainContentHeader ?? "MDM Enrollment is required (No Restart Required)"
-let mdmMainContentText = nudgePreferences?.userInterface?.mdmElements?.mainContentText ?? "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password."
-let mdmMainContentUAMDMText = nudgePreferences?.userInterface?.mdmElements?.mainContentUAMDMText ?? "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button."
-let mdmMainHeader = nudgePreferences?.userInterface?.mdmElements?.mainHeader ?? "MDM Enrollment"
-let mdmPrimaryQuitButtonText = nudgePreferences?.userInterface?.mdmElements?.primaryQuitButtonText ?? "Okay"
-let mdmSecondaryQuitButtonText = nudgePreferences?.userInterface?.mdmElements?.secondaryQuitButtonText ?? "I understand"
-let mdmSubHeader = nudgePreferences?.userInterface?.mdmElements?.subHeader ?? "A friendly reminder from your local IT team"
+func getMDMUserInterface() -> Element? {
+    let updateElements = nudgePreferences?.userInterface?.umadElements
+    if updateElements != nil {
+        for (_ , subPreferences) in updateElements!.enumerated() {
+            if subPreferences.language == language {
+                return subPreferences
+            }
+        }
+    }
+    return nil
+}
+let mdmActionButtonManualText = getMDMUserInterface()?.actionButtonManualText ?? "Manually Enroll"
+let mdmActionButtonText = getMDMUserInterface()?.actionButtonText ?? ""
+let mdmActionButtonUAMDMText = getMDMUserInterface()?.actionButtonUAMDMText ?? "Open System Preferences"
+let mdmInformationButtonText = getMDMUserInterface()?.informationButtonText ?? "More Info"
+let mdmMainContentHeader = getMDMUserInterface()?.mainContentHeader ?? "This process does not require a restart"
+let mdmMainContentNote = getMDMUserInterface()?.mainContentNote ?? "Important Notes"
+let mdmMainContentText = getMDMUserInterface()?.mainContentText ?? "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password."
+let mdmMainContentUAMDMText = getMDMUserInterface()?.mainContentUAMDMText ?? "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button."
+let mdmMainHeader = getMDMUserInterface()?.mainHeader ?? "Your device requires management"
+let mdmPrimaryQuitButtonText = getMDMUserInterface()?.primaryQuitButtonText ?? "Later"
+let mdmSecondaryQuitButtonText = getMDMUserInterface()?.secondaryQuitButtonText ?? "I understand"
+let mdmSubHeader = getMDMUserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
 
 // Other important defaults
 let acceptableApps = [

@@ -7,8 +7,8 @@
             "depScreenShotPath": "/somewhere/depScreenShot.jpg",
             "disableManualEnrollmentForDEP": false,
             "enforceMDMInstallation": false,
-            "mdmInformationButtonPath": "https://github.com/macadmins/umad",
             "manualEnrollmentPath": "https://apple.com",
+            "mdmInformationButtonPath": "https://github.com/macadmins/umad",
             "mdmProfileIdentifier": "com.example.mdm.profile",
             "mdmRequiredInstallationDate": "2021-02-28T00:00:00Z",
             "uamdmScreenShotPath": "/somewhere/uamdmScreenShot.jpg"
@@ -45,24 +45,26 @@
     "userInterface": {
         "iconDarkPath": "/somewhere/logoDark.png",
         "iconLightPath": "/somewhere/logoLight.png",
-        "umadElements": {
-            "_language": "en",
-            "actionButtonManualText": "Manually Enroll",
-            "actionButtonText": "",
-            "actionButtonUAMDMText": "Open System Preferences",
-            "informationButtonText": "More Info",
-            "mainContentHeader": "This process does not require a restart",
-            "mainContentNote": "Important Notes",
-            "mainContentText": "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password.",
-            "mainContentUAMDMText": "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button.",
-            "mainHeader": "Your device requires a management",
-            "primaryQuitButtonText": "Later",
-            "secondaryQuitButtonText": "I understand",
-            "subHeader": "A friendly reminder from your local IT team"
-        },
         "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
         "screenShotLightPath": "/somewhere/screenShotLight.jpg",
         "simpleMode": false,
+        "umadElements": [
+            {
+                "_language": "en",
+                "actionButtonManualText": "Manually Enroll",
+                "actionButtonText": "",
+                "actionButtonUAMDMText": "Open System Preferences",
+                "informationButtonText": "More Info",
+                "mainContentHeader": "This process does not require a restart",
+                "mainContentNote": "Important Notes",
+                "mainContentText": "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password.",
+                "mainContentUAMDMText": "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button.",
+                "mainHeader": "Your device requires management",
+                "primaryQuitButtonText": "Later",
+                "secondaryQuitButtonText": "I understand",
+                "subHeader": "A friendly reminder from your local IT team"
+            }
+        ],
         "updateElements": [
             {
                 "_language": "en",

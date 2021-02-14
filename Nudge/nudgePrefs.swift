@@ -149,7 +149,7 @@ struct UmadFeatures: Codable {
     var alwaysShowManulEnrollment: Bool?
     var depScreenShotPath: String?
     var disableManualEnrollmentForDEP, enforceMDMInstallation: Bool?
-    var mdmInformationButtonPath, manualEnrollmentPath: String?
+    var manualEnrollmentPath, mdmInformationButtonPath: String?
     var mdmProfileIdentifier: String?
     var mdmRequiredInstallationDate: Date?
     var uamdmScreenShotPath: String?
@@ -178,8 +178,8 @@ extension UmadFeatures {
         depScreenShotPath: String?? = nil,
         disableManualEnrollmentForDEP: Bool?? = nil,
         enforceMDMInstallation: Bool?? = nil,
-        mdmInformationButtonPath: String?? = nil,
         manualEnrollmentPath: String?? = nil,
+        mdmInformationButtonPath: String?? = nil,
         mdmProfileIdentifier: String?? = nil,
         mdmRequiredInstallationDate: Date?? = nil,
         uamdmScreenShotPath: String?? = nil
@@ -189,8 +189,8 @@ extension UmadFeatures {
             depScreenShotPath: depScreenShotPath ?? self.depScreenShotPath,
             disableManualEnrollmentForDEP: disableManualEnrollmentForDEP ?? self.disableManualEnrollmentForDEP,
             enforceMDMInstallation: enforceMDMInstallation ?? self.enforceMDMInstallation,
-            mdmInformationButtonPath: mdmInformationButtonPath ?? self.mdmInformationButtonPath,
             manualEnrollmentPath: manualEnrollmentPath ?? self.manualEnrollmentPath,
+            mdmInformationButtonPath: mdmInformationButtonPath ?? self.mdmInformationButtonPath,
             mdmProfileIdentifier: mdmProfileIdentifier ?? self.mdmProfileIdentifier,
             mdmRequiredInstallationDate: mdmRequiredInstallationDate ?? self.mdmRequiredInstallationDate,
             uamdmScreenShotPath: uamdmScreenShotPath ?? self.uamdmScreenShotPath
@@ -327,11 +327,9 @@ extension UserExperience {
 
 // MARK: - UserInterface
 struct UserInterface: Codable {
-    var iconDarkPath, iconLightPath: String?
-    var umadElements: UmadElements?
-    var screenShotDarkPath, screenShotLightPath: String?
+    var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var simpleMode: Bool?
-    var updateElements: [UmadElements]?
+    var umadElements, updateElements: [Element]?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -355,19 +353,19 @@ extension UserInterface {
     func with(
         iconDarkPath: String?? = nil,
         iconLightPath: String?? = nil,
-        umadElements: UmadElements?? = nil,
         screenShotDarkPath: String?? = nil,
         screenShotLightPath: String?? = nil,
         simpleMode: Bool?? = nil,
-        updateElements: [UmadElements]?? = nil
+        umadElements: [Element]?? = nil,
+        updateElements: [Element]?? = nil
     ) -> UserInterface {
         return UserInterface(
             iconDarkPath: iconDarkPath ?? self.iconDarkPath,
             iconLightPath: iconLightPath ?? self.iconLightPath,
-            umadElements: umadElements ?? self.umadElements,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
             simpleMode: simpleMode ?? self.simpleMode,
+            umadElements: umadElements ?? self.umadElements,
             updateElements: updateElements ?? self.updateElements
         )
     }
@@ -381,8 +379,8 @@ extension UserInterface {
     }
 }
 
-// MARK: - UmadElements
-struct UmadElements: Codable {
+// MARK: - Element
+struct Element: Codable {
     var language, actionButtonManualText, actionButtonText, actionButtonUAMDMText: String?
     var informationButtonText, mainContentHeader, mainContentNote, mainContentText: String?
     var mainContentUAMDMText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText: String?
@@ -394,11 +392,11 @@ struct UmadElements: Codable {
     }
 }
 
-// MARK: UmadElements convenience initializers and mutators
+// MARK: Element convenience initializers and mutators
 
-extension UmadElements {
+extension Element {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(UmadElements.self, from: data)
+        self = try newJSONDecoder().decode(Element.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -427,8 +425,8 @@ extension UmadElements {
         secondaryQuitButtonText: String?? = nil,
         subHeader: String?? = nil,
         mainContentSubHeader: String?? = nil
-    ) -> UmadElements {
-        return UmadElements(
+    ) -> Element {
+        return Element(
             language: language ?? self.language,
             actionButtonManualText: actionButtonManualText ?? self.actionButtonManualText,
             actionButtonText: actionButtonText ?? self.actionButtonText,
