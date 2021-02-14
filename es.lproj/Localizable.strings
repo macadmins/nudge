@@ -7,3 +7,22 @@
 */
 
 "Language:" = "Idioma:";
+
+//// Additional Device Information
+"Additional Device Information" = "Información adicional del dispositivo";
+// Username
+"Username:" = "Nombre de usuario:";
+// Serial Number
+"Serial Number:" = "Número de serie:";
+// Architecture
+"Architecture:" = "Arquitectura:";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "Versión actual del sistema operativo:";
+// Required OS Version
+"Required OS Version:" = "Versión requerida del sistema operativo:";
+// Days remaining to update
+"Days remaining to update:" = "Días restantes para actualizar:";
+// Ignored Count
+"Ignored Count:" = "Recuento ignorado:";

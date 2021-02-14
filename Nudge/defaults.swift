@@ -16,7 +16,6 @@ let nudgePreferences = nudgePrefs().loadNudgePrefs()
 let allowedDeferrals = nudgePreferences?.optionalFeatures?.allowedDeferrals ?? 1000000
 let allowedDeferralsUntilForcedSecondaryQuitButton = nudgePreferences?.optionalFeatures?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let attemptToFetchMajorUpgrade = nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
-let enforceMinorUpdates = nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 let iconDarkPath = nudgePreferences?.optionalFeatures?.iconDarkPath ?? ""
 let iconLightPath = nudgePreferences?.optionalFeatures?.iconLightPath ?? ""
 let maxRandomDelayInSeconds = nudgePreferences?.optionalFeatures?.maxRandomDelayInSeconds ?? 1200
@@ -24,7 +23,13 @@ let noTimers = nudgePreferences?.optionalFeatures?.noTimers ?? false
 let randomDelay = nudgePreferences?.optionalFeatures?.randomDelay ?? false
 let screenShotDarkPath = nudgePreferences?.optionalFeatures?.screenShotDarkPath ?? ""
 let screenShotLightPath = nudgePreferences?.optionalFeatures?.screenShotLightPath ?? ""
-let simpleMode = nudgePreferences?.optionalFeatures?.simpleMode ?? false
+func simpleMode() -> Bool {
+    if Utils().simpleModeEnabled() {
+        return true
+    } else {
+        return nudgePreferences?.optionalFeatures?.simpleMode ?? false
+    }
+}
 
 // optionalFeatures - MDM
 let alwaysShowManualEnrllment = nudgePreferences?.optionalFeatures?.mdmFeatures?.alwaysShowManulEnrollment ?? false

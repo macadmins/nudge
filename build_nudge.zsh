@@ -42,11 +42,21 @@ if ! [ -n "$1" ]; then
   exit 0
 fi
 
+# Create outputs folder
+if [ -e $OUTPUTSDIR ]; then
+  /bin/rm -rf $OUTPUTSDIR
+fi
+/bin/mkdir -p "$OUTPUTSDIR"
+
 # move the app to the payload folder
 echo "Moving Nudge.app to payload folder"
-/bin/mkdir -p "$TOOLSDIR/NudgePkg/payload/Applications/Utilities"
-/usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$TOOLSDIR/NudgePkg"
-/bin/mv "${BUILDSDIR}/Release/Nudge.app" "$TOOLSDIR/NudgePkg/payload/Applications/Utilities/Nudge.app"
+NUDGE_PKG_PATH="$TOOLSDIR/NudgePkg"
+if [ -e $NUDGE_PKG_PATH ]; then
+  /bin/rm -rf $NUDGE_PKG_PATH
+fi
+/bin/mkdir -p "$NUDGE_PKG_PATH/payload/Applications/Utilities"
+/usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
+/bin/mv "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
 
 # Download specific version of munki-pkg
 echo "Downloading munki-pkg tool from github..."
@@ -64,8 +74,8 @@ if [ "${DL_RESULT}" != "0" ]; then
     exit 1
 fi
 
-# Create the json file for signed munkipkg
-/bin/cat << SIGNED_JSONFILE > "$TOOLSDIR/NudgePkg/build-info.json"
+# Create the json file for signed munkipkg Nudge pkg
+/bin/cat << SIGNED_JSONFILE > "$NUDGE_PKG_PATH/build-info.json"
 {
   "ownership": "recommended",
   "suppress_bundle_relocation": true,
@@ -83,13 +93,51 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$TOOLSDIR/NudgePkg"
+"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
-  # Create outputs folder
-  /bin/mkdir -p "$OUTPUTSDIR"
   # Move the signed pkg
-  /bin/mv "$TOOLSDIR/NudgePkg/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
+  /bin/mv "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
+fi
+
+# move the la to the payload folder
+echo "Moving LaunchAgent to payload folder"
+NUDGE_LA_PKG_PATH="$TOOLSDIR/NudgePkgLA"
+if [ -e $NUDGE_LA_PKG_PATH ]; then
+  /bin/rm -rf $NUDGE_LA_PKG_PATH
+fi
+/bin/mkdir -p "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
+/bin/mkdir -p "$NUDGE_LA_PKG_PATH/scripts"
+/usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LA_PKG_PATH"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall" "$NUDGE_LA_PKG_PATH/scripts"
+
+# Create the json file for the signed munkipkg LaunchAgent pkg
+/bin/cat << SIGNED_JSONFILE > "$NUDGE_LA_PKG_PATH/build-info.json"
+{
+    "distribution_style": true,
+    "identifier": "com.github.macadmins.Nudge.LaunchAgent",
+    "install_location": "/",
+    "name": "Nudge_LaunchAgent-1.0.0.pkg",
+    "ownership": "recommended",
+    "postinstall_action": "none",
+    "suppress_bundle_relocation": true,
+    "version": "1.0.0",
+    "signing_info": {
+        "identity": "$SIGNING_IDENTITY",
+        "timestamp": true
+    }
+}
+SIGNED_JSONFILE
+
+# Create the signed pkg
+"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LA_PKG_PATH"
+PKG_RESULT="$?"
+if [ "${PKG_RESULT}" != "0" ]; then
+  echo "Could not sign package: ${PKG_RESULT}" 1>&2
+else
+  # Move the signed pkg
+  /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.0.pkg" "$OUTPUTSDIR"
 fi
