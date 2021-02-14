@@ -361,24 +361,35 @@ struct Nudge: View {
                 VStack{
                     Group {
                         // mainHeader
-                        HStack {
-                            Text(getMainHeader())
-                                .font(.largeTitle)
-                                .multilineTextAlignment(.leading)
-                                .minimumScaleFactor(0.5)
-                                .lineLimit(1)
-                            Spacer()
-                        }
-                        // subHeader
-                        HStack {
-                            Text(subHeader)
-                                .font(.body)
-                                .fontWeight(.bold)
-                            Spacer()
+                        VStack(alignment: .leading) {
+                            HStack {
+                                VStack {
+                                    // mainHeader
+                                    HStack {
+                                        Text(getMainHeader())
+                                            .font(.largeTitle)
+                                            .minimumScaleFactor(0.5)
+                                            .frame(maxHeight: 25)
+                                            .lineLimit(1)
+                                        Spacer()
+                                    }
+                                    // subHeader
+                                    HStack {
+                                        Text(subHeader)
+                                            .font(.body)
+                                            .fontWeight(.bold)
+                                            .lineLimit(1)
+                                        Spacer()
+                                    }
+                                }
+                                Spacer()
+                            }
                         }
                     }
-                    .padding(.vertical, 0.5)
-                    .frame(width: 500)
+                    .padding(.bottom, 0.5)
+                    .padding(.leading, 20.0)
+                    .padding(.trailing, 20.0)
+                    .frame(width: 550)
                     
                     // I'm kind of impressed with myself
                     Group {
@@ -419,7 +430,7 @@ struct Nudge: View {
                             .padding(.leading, 20.0)
                             .padding(.top, 10)
                             .padding(.bottom, 10)
-                            .frame(width: 525)
+                            .frame(width: 530)
                             
                             // mainContentNote
                             HStack {
@@ -430,15 +441,24 @@ struct Nudge: View {
                                 Spacer()
                             }
                             .padding(.leading, 20.0)
+                            .padding(.trailing, 20.0)
                             
                             // mainContentText
-                            Text(mainContentText)
-                                .font(.callout)
-                                .font(.body)
-                                .fontWeight(.regular)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .padding(.leading, 20.0)
+                            HStack {
+                                VStack {
+                                    Text(mainContentText)
+                                        .font(.callout)
+                                        .font(.body)
+                                        .fontWeight(.regular)
+                                        .multilineTextAlignment(.leading)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                    Spacer()
+                                }
+                            }
+                            .frame(minHeight: 125.0)
+                            .frame(maxHeight: 125.0)
+                            .padding(.leading, 20.0)
+                            .padding(.trailing, 20.0)
 
                             HStack {
                                 Spacer()
@@ -451,7 +471,7 @@ struct Nudge: View {
                                             .resizable()
                                             .scaledToFit()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(maxHeight: 128)
+                                            .frame(maxHeight: 125)
                                     }
                                     .buttonStyle(PlainButtonStyle())
                                     .help("Click to zoom into screenshot")
@@ -473,7 +493,7 @@ struct Nudge: View {
                                             .resizable()
                                             .scaledToFit()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(maxHeight: 128)
+                                            .frame(maxHeight: 125)
                                     }
                                     .buttonStyle(PlainButtonStyle())
                                     .help("Click to zoom into screenshot")
@@ -496,7 +516,7 @@ struct Nudge: View {
                                                 .resizable()
                                                 .scaledToFit()
                                                 .aspectRatio(contentMode: .fit)
-                                                .frame(maxHeight: 128)
+                                                .frame(maxHeight: 125)
                                         }
                                         .buttonStyle(PlainButtonStyle())
                                         .help("Click to zoom into screenshot")
@@ -511,9 +531,9 @@ struct Nudge: View {
                                             }
                                         }
                                     } else {
-                                        Text("Force a 128 pixel")
+                                        Text("Force a 125 pixel")
                                             .hidden()
-                                            .frame(minHeight: 128)
+                                            .frame(minHeight: 125)
                                     }
                                 }
 
@@ -522,6 +542,7 @@ struct Nudge: View {
                         }
                         .background(Color.secondary.opacity(0.1))
                         .cornerRadius(5)
+                        .frame(width: 550)
 
                         // Bottom buttons
                         HStack {
@@ -542,6 +563,7 @@ struct Nudge: View {
                                         } label: {
                                             Text(secondaryQuitButtonText)
                                         }
+                                        .padding(.trailing, 20.0)
                                     }
                                 } else {
                                     Button {} label: {
@@ -559,6 +581,7 @@ struct Nudge: View {
                                             Text(primaryQuitButtonText)
                                                 .frame(minWidth: 35)
                                         }
+                                        .padding(.trailing, 20.0)
                                     } else {
                                         Button {
                                             hasClickedSecondaryQuitButton = true
