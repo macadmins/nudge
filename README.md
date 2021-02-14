@@ -1,5 +1,5 @@
 # Nudge (Swift Version)
-![Nudge icon](/assets/NudgeIcon.png?raw=true?s=200))
+<img src="/assets/NudgeIcon.png" width=50% height=50%>
 
 # Nudge Screenshots
 ![Demo Light 1](/assets/demo_light_1.png?raw=true | width=100))
