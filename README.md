@@ -303,10 +303,13 @@ In this example, Nudge will do the following:
 # Examples of the User Interface
 
 ## simpleMode
+
 ### English
+
 #### Light
 <img src="/assets/simple_mode/demo_simple_light_1.png" width=50% height=50%>
 <img src="/assets/simple_mode/demo_simple_light_2.png" width=50% height=50%>
+
 #### Dark
 <img src="/assets/simple_mode/demo_simple_dark_1.png" width=50% height=50%>
 <img src="/assets/simple_mode/demo_simple_dark_2.png" width=50% height=50%>
@@ -314,6 +317,7 @@ In this example, Nudge will do the following:
 ### Localized (Spanish)
 #### Light
 <img src="/assets/simple_mode/demo_simple_light_localized.png" width=50% height=50%>
+
 #### Dark
 <img src="/assets/simple_mode/demo_simple_dark_localized.png" width=50% height=50%>
 
@@ -326,6 +330,7 @@ In this example, Nudge will do the following:
 <img src="/assets/standard_mode/demo_light_2_no_icon.png" width=50% height=50%>
 <img src="/assets/standard_mode/demo_light_3.png" width=50% height=50%>
 <img src="/assets/standard_mode/demo_light_4.png" width=50% height=50%>
+
 #### Dark
 <img src="/assets/standard_mode/demo_dark_1_icon.png" width=50% height=50%>
 <img src="/assets/standard_mode/demo_dark_1_no_icon.png" width=50% height=50%>
@@ -338,6 +343,7 @@ In this example, Nudge will do the following:
 #### Light
 <img src="/assets/standard_mode/demo_light_2_icon_localized.png" width=50% height=50%>
 <img src="/assets/standard_mode/demo_light_4_localized.png" width=50% height=50%>
+
 #### Dark
 <img src="/assets/standard_mode/demo_dark_2_icon_localized.png" width=50% height=50%>
 <img src="/assets/standard_mode/demo_dark_4_localized.png" width=50% height=50%>
