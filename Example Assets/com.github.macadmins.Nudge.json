@@ -1,16 +1,6 @@
 {
     "optionalFeatures": {
-        "allowedDeferrals": 1000000,
-        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
-        "attemptToFetchMajorUpgrade": true,
-        "iconDarkPath": "/somewhere/logoDark.png",
-        "iconLightPath": "/somewhere/logoLight.png",
-        "maxRandomDelayInSeconds": 1200,
-        "noTimers": false,
-        "randomDelay": false,
-        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
-        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
-        "simpleMode": false
+        "attemptToFetchMajorUpgrade": true
     },
     "osVersionRequirements": [
         {
@@ -27,15 +17,26 @@
         }
     ],
     "userExperience": {
+        "allowedDeferrals": 1000000,
+        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
         "approachingRefreshCycle": 6000,
         "approachingWindowTime": 72,
         "elapsedRefreshCycle": 300,
         "imminentRefeshCycle": 600,
         "imminentWindowTime": 24,
         "initialRefreshCycle": 18000,
-        "nudgeRefreshCycle": 60
+        "maxRandomDelayInSeconds": 1200,
+        "noTimers": false,
+        "nudgeRefreshCycle": 60,
+        "randomDelay": false
     },
     "userInterface": {
+        "forceIcon": false,
+        "iconDarkPath": "/somewhere/logoDark.png",
+        "iconLightPath": "/somewhere/logoLight.png",
+        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
+        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
+        "simpleMode": false,
         "updateElements": [
             {
                 "_language": "en",

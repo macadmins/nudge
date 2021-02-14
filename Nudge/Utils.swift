@@ -29,6 +29,10 @@ struct Utils {
     func demoModeEnabled() -> Bool {
         return CommandLine.arguments.contains("-demo-mode")
     }
+
+    func forceIconModeEnabled() -> Bool {
+        return CommandLine.arguments.contains("-force-icon")
+    }
     
     func fullyUpdated() -> Bool {
         return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
@@ -176,6 +180,9 @@ struct Utils {
     }
 
     func requireMajorUpgrade() -> Bool {
+        if requiredMinimumOSVersion == "0.0" {
+            return false
+        }
         return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
     }
     
