@@ -49,11 +49,11 @@ jobs:
             This is a version of Nudge created by GitHub Actions.
             Nudge.app has been signed application as well as the package.
 
+            By default Nudge looks for a `com.github.macadmins.Nudge.json` file located in `/Library/Preferences`. If you would like to use an alternative path, please read the [README](https://github.com/macadmins/nudge/blob/main/README.md) or the [WIKI](https://github.com/macadmins/nudge/wiki)
+
             ## About the LaunchAgent
             This is a basic launch agent that opens Nudge twice an hour, every 30 minutes.
             If you would like to reduce the amount of times Nudge launches per day, it is recommended to create your own LaunchAgent.
-
-            By default Nudge looks for a `com.github.macadmins.Nudge.json` file located in `/Library/Preferences`. If you would like to use an alternative path, you will need to customize the LaunchAgent.
         draft: false
         prerelease: false
 
