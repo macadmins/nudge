@@ -72,7 +72,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
         asset_path: ./outputs/Nudge_LaunchAgent-1.0.0.pkg
         asset_name: Nudge_LaunchAgent-1.0.0.pkg
         asset_content_type: application/x-newton-compatible-pkg
