@@ -437,17 +437,20 @@ struct Nudge: View {
                                         Image("CompanyScreenshotIcon")
                                             .resizable().scaledToFit()
                                             .aspectRatio(contentMode: .fit)
+                                            .hidden()
                                     }
-                                    Button(action: {
-                                        self.showSSDetail.toggle()
-                                    }) {
-                                        Image(systemName: "plus.magnifyingglass")
+                                    if FileManager.default.fileExists(atPath: screenShotDarkPath) || FileManager.default.fileExists(atPath: screenShotLightPath) {
+                                        Button(action: {
+                                            self.showSSDetail.toggle()
+                                        }) {
+                                            Image(systemName: "plus.magnifyingglass")
+                                        }
+                                        .padding(.leading, -10)
+                                        .sheet(isPresented: $showSSDetail) {
+                                            screenShotZoom()
+                                        }
+                                        .help("Click to zoom into screenshot")
                                     }
-                                    .padding(.leading, -10)
-                                    .sheet(isPresented: $showSSDetail) {
-                                        screenShotZoom()
-                                    }
-                                    .help("Click to zoom into screenshot")
                                 }
                                 Spacer()
                             }
@@ -543,12 +546,6 @@ struct screenShotZoom: View {
                     .resizable().scaledToFit()
                     .aspectRatio(contentMode: .fit)
                     .padding()
-            } else {
-                Image("CompanyScreenshotIcon")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                    .frame(width: 512, height: 512)
             }
           }
         )
