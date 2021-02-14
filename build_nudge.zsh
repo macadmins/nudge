@@ -99,8 +99,8 @@ echo "Moving LaunchAgent to payload folder"
 /bin/mkdir -p "$TOOLSDIR/NudgePkgLA/payload/Library/LaunchAgents"
 /bin/mkdir -p "$TOOLSDIR/NudgePkgLA/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$TOOLSDIR/NudgePkgLA"
-/bin/mv "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$TOOLSDIR/NudgePkgLA/payload/Library/LaunchAgents/com.github.macadmins.Nudge.plist"
-/bin/mv "${TOOLSDIR}/build_assets/postinstall" "$TOOLSDIR/NudgePkgLA/scripts/postinstall"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$TOOLSDIR/NudgePkgLA/payload/Library/LaunchAgents"
+/bin/co "${TOOLSDIR}/build_assets/postinstall" "$TOOLSDIR/NudgePkgLA/scripts"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
 /bin/cat << SIGNED_JSONFILE > "$TOOLSDIR/NudgePkgLA/build-info.json"

@@ -92,5 +92,6 @@ iOSInjectionProject/
 .DS_Store
 outputs/
 NudgePkg/
+NudgePkgLA/
 build_info.txt
 date_info.txt

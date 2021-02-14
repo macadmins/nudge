@@ -10,7 +10,7 @@
 	</array>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Applications/Utilities/Nudge.app/Contents/MacOS/Nudg</string>
+		<string>/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge</string>
 		<!-- <string>-json-url</string> -->
 		<!-- <string>https://raw.githubusercontent.com/macadmins/nudge/main/Nudge/example.json</string> -->
 		<!-- <string>-demo-mode</string> -->
