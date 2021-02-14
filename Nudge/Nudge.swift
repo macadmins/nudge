@@ -488,26 +488,32 @@ struct Nudge: View {
                                         }
                                     }
                                 } else {
-                                    Button {
-                                        self.showSSDetail.toggle()
-                                    } label: {
-                                        Image("CompanyScreenshotIcon")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxHeight: 128)
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                    .help("Click to zoom into screenshot")
-                                    .sheet(isPresented: $showSSDetail) {
-                                        screenShotZoom()
-                                    }
-                                    .onHover { inside in
-                                        if inside {
-                                            NSCursor.pointingHand.push()
-                                        } else {
-                                            NSCursor.pop()
+                                    if Utils().forceIconModeEnabled() {
+                                        Button {
+                                            self.showSSDetail.toggle()
+                                        } label: {
+                                            Image("CompanyScreenshotIcon")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxHeight: 128)
                                         }
+                                        .buttonStyle(PlainButtonStyle())
+                                        .help("Click to zoom into screenshot")
+                                        .sheet(isPresented: $showSSDetail) {
+                                            screenShotZoom()
+                                        }
+                                        .onHover { inside in
+                                            if inside {
+                                                NSCursor.pointingHand.push()
+                                            } else {
+                                                NSCursor.pop()
+                                            }
+                                        }
+                                    } else {
+                                        Text("Force a 128 pixel")
+                                            .hidden()
+                                            .frame(minHeight: 128)
                                     }
                                 }
 
