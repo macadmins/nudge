@@ -140,18 +140,16 @@ struct Nudge: View {
                         // secondaryQuitButton
                         if requireDualQuitButtons {
                             if self.hasClickedSecondaryQuitButton {
-                                Button(action: {}, label: {
+                                Button {} label: {
                                     Text(secondaryQuitButtonText)
-                                  }
-                                )
+                                }
                                 .hidden()
                             } else {
-                                Button(action: {
+                                Button {
                                     hasClickedSecondaryQuitButton = true
-                                }, label: {
+                                } label: {
                                     Text(secondaryQuitButtonText)
-                                  }
-                                )
+                                }
                             }
                         } else {
                             Button(action: {}, label: {
@@ -164,19 +162,19 @@ struct Nudge: View {
                         // primaryQuitButton
                         if requireDualQuitButtons {
                             if self.hasClickedSecondaryQuitButton {
-                                Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                Button {
+                                    AppKit.NSApp.terminate(nil)
+                                } label: {
                                     Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
-                                  }
-                                )
+                                }
                             } else {
-                                Button(action: {
+                                Button {
                                     hasClickedSecondaryQuitButton = true
-                                }, label: {
+                                } label: {
                                     Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
-                                  }
-                                )
+                                }
                                 .hidden()
                             }
                         } else {
@@ -363,19 +361,17 @@ struct Nudge: View {
                         VStack(alignment: .leading) {
                             // mainContentHeader / mainContentSubHeader
                             HStack {
-                                Group {
-                                    VStack {
-                                        HStack {
-                                            Text(mainContentHeader)
-                                                .font(.callout)
-                                                .fontWeight(.bold)
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text(mainContentSubHeader)
-                                                .font(.callout)
-                                            Spacer()
-                                        }
+                                VStack {
+                                    HStack {
+                                        Text(mainContentHeader)
+                                            .font(.callout)
+                                            .fontWeight(.bold)
+                                        Spacer()
+                                    }
+                                    HStack {
+                                        Text(mainContentSubHeader)
+                                            .font(.callout)
+                                        Spacer()
                                     }
                                 }
                                 Spacer()
@@ -421,37 +417,35 @@ struct Nudge: View {
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.leading, 20.0)
 
-                        // Company Screenshot
                             HStack {
                                 Spacer()
-                                Group{
-                                    if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                                            .resizable().scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                    } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
-                                            .resizable().scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                    } else {
-                                        Image("CompanyScreenshotIcon")
-                                            .resizable().scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                            .hidden()
-                                    }
-                                    if FileManager.default.fileExists(atPath: screenShotDarkPath) || FileManager.default.fileExists(atPath: screenShotLightPath) {
-                                        Button(action: {
-                                            self.showSSDetail.toggle()
-                                        }) {
-                                            Image(systemName: "plus.magnifyingglass")
-                                        }
-                                        .padding(.leading, -10)
-                                        .sheet(isPresented: $showSSDetail) {
-                                            screenShotZoom()
-                                        }
-                                        .help("Click to zoom into screenshot")
-                                    }
+                                // screenShot
+                                if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
+                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
+                                        .resizable().scaledToFit()
+                                        .aspectRatio(contentMode: .fit)
+                                } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
+                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                                        .resizable().scaledToFit()
+                                        .aspectRatio(contentMode: .fit)
+                                } else {
+                                    Image("CompanyScreenshotIcon")
+                                        .resizable().scaledToFit()
+                                        .aspectRatio(contentMode: .fit)
                                 }
+                                // Zoom button
+                                Button {
+                                    self.showSSDetail.toggle()
+                                } label: {
+                                    Image(systemName: "plus.magnifyingglass")
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                                .help("Click to zoom into screenshot")
+                                .padding(.leading, -10)
+                                .sheet(isPresented: $showSSDetail) {
+                                    screenShotZoom()
+                                }
+
                                 Spacer()
                             }
                         }
@@ -467,51 +461,49 @@ struct Nudge: View {
                                 // secondaryQuitButton
                                 if requireDualQuitButtons {
                                     if self.hasClickedSecondaryQuitButton {
-                                        Button(action: {}, label: {
+                                        Button {} label: {
                                             Text(secondaryQuitButtonText)
-                                          }
-                                        )
+                                        }
                                         .hidden()
                                     } else {
-                                        Button(action: {
+                                        Button {
                                             hasClickedSecondaryQuitButton = true
-                                        }, label: {
+                                        } label: {
                                             Text(secondaryQuitButtonText)
-                                          }
-                                        )
+                                        }
                                     }
                                 } else {
-                                    Button(action: {}, label: {
+                                    Button {} label: {
                                         Text(secondaryQuitButtonText)
-                                      }
-                                    )
+                                    }
                                     .hidden()
                                 }
                             
                                 // primaryQuitButton
                                 if requireDualQuitButtons {
                                     if self.hasClickedSecondaryQuitButton {
-                                        Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                        Button {
+                                            AppKit.NSApp.terminate(nil)
+                                        } label: {
                                             Text(primaryQuitButtonText)
                                                 .frame(minWidth: 35)
-                                          }
-                                        )
+                                        }
                                     } else {
-                                        Button(action: {
+                                        Button {
                                             hasClickedSecondaryQuitButton = true
-                                        }, label: {
+                                        } label: {
                                             Text(primaryQuitButtonText)
                                                 .frame(minWidth: 35)
-                                          }
-                                        )
+                                        }
                                         .hidden()
                                     }
                                 } else {
-                                    Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                                    Button {
+                                        AppKit.NSApp.terminate(nil)
+                                    } label: {
                                         Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
-                                      }
-                                    )
+                                    }
                                 }
                             }
                         }
@@ -546,6 +538,12 @@ struct screenShotZoom: View {
                     .resizable().scaledToFit()
                     .aspectRatio(contentMode: .fit)
                     .padding()
+            } else {
+                Image("CompanyScreenshotIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                    .frame(width: 512, height: 512)
             }
           }
         )
