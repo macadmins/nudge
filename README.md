@@ -1,5 +1,6 @@
 # Nudge (macadmin's Slack #nudge)
 <img src="/assets/NudgeIcon.png" width=25% height=25%>
+
 Nudge is application for enforcing macOS updates, written in Swift/SwiftUI 5.2. In order to use the newest features of Swift, Nudge will only work on macOS 11.0 and higher.
 
 This is a replacement for the original Nudge, which was written in Python 2/3. If you need to enforce macOS updates for earlier versions, it is recommend to use [nudge-python](https://github.com/macadmins/nudge-python).
@@ -96,10 +97,50 @@ While the `-json-url` argument is mainly designed for web urls, you can actually
 ```
 
 ## Scheduling Nudge to run
-TODO: Mention LaunchAgent pkg
+Every release of Nudge comes with an optional LaunchAgent package.
+
+This LaunchAgent will open Nudge every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
+
+Example LaunchAgent
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.github.macadmins.Nudge</string>
+	<key>LimitLoadToSessionType</key>
+	<array>
+		<string>Aqua</string>
+	</array>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge</string>
+		<!-- <string>-json-url</string> -->
+		<!-- <string>https://raw.githubusercontent.com/macadmins/nudge/main/Nudge/example.json</string> -->
+		<!-- <string>-demo-mode</string> -->
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StartCalendarInterval</key>
+	<array>
+		<dict>
+			<key>Minute</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>Minute</key>
+			<integer>30</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
+```
 
 ## Configuration
 Nudge offers significant customization and can be overwhelming, but fear not, you don't have to customize everything :smile:
+
+[For a full listing of the available preferences, please see the wiki](https://github.com/macadmins/nudge/wiki)
 
 ### Small Example
 In this example, Nudge will do the following:
@@ -131,14 +172,12 @@ In this example, Nudge will do the following:
 ```
 
 ### Full Example
-TODO: This needs to be finished and fully documented.
 ```
 {
     "optionalFeatures": {
         "allowedDeferrals": 1000000,
         "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
         "attemptToFetchMajorUpgrade": true,
-        "enforceMinorUpdates": true,
         "iconDarkPath": "/somewhere/logoDark.png",
         "iconLightPath": "/somewhere/logoLight.png",
         "maxRandomDelayInSeconds": 1200,
