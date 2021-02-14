@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0348CD2925D8BDEB00201F3D /* com.github.macadmins.Nudge.mdm.json in Resources */ = {isa = PBXBuildFile; fileRef = 0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.mdm.json */; };
 		035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */ = {isa = PBXBuildFile; fileRef = 035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */; };
 		0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */; };
 		0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972625CE26CE0019FC8F /* PolicyManager.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.mdm.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.mdm.json; sourceTree = "<group>"; };
 		035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.json; sourceTree = "<group>"; };
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972625CE26CE0019FC8F /* PolicyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyManager.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */,
+				0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.mdm.json */,
 			);
 			path = "Example Assets";
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */,
 				5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
+				0348CD2925D8BDEB00201F3D /* com.github.macadmins.Nudge.mdm.json in Resources */,
 				035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
