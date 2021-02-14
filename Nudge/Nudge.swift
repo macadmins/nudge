@@ -34,7 +34,7 @@ struct Nudge: View {
 
     // Nudge UI
     var body: some View {
-        if simpleMode {
+        if simpleMode() {
             VStack{
                 // Company Logo
                 if colorScheme == .dark {

@@ -24,7 +24,13 @@ let noTimers = nudgePreferences?.optionalFeatures?.noTimers ?? false
 let randomDelay = nudgePreferences?.optionalFeatures?.randomDelay ?? false
 let screenShotDarkPath = nudgePreferences?.optionalFeatures?.screenShotDarkPath ?? ""
 let screenShotLightPath = nudgePreferences?.optionalFeatures?.screenShotLightPath ?? ""
-let simpleMode = nudgePreferences?.optionalFeatures?.simpleMode ?? false
+func simpleMode() -> Bool {
+    if Utils().simpleModeEnabled() {
+        return true
+    } else {
+        return nudgePreferences?.optionalFeatures?.simpleMode ?? false
+    }
+}
 
 // optionalFeatures - MDM
 let alwaysShowManualEnrllment = nudgePreferences?.optionalFeatures?.mdmFeatures?.alwaysShowManulEnrollment ?? false

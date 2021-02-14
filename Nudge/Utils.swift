@@ -175,6 +175,10 @@ struct Utils {
     func requireMajorUpgrade() -> Bool {
         return versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
     }
+    
+    func simpleModeEnabled() -> Bool {
+        return CommandLine.arguments.contains("-simple-mode")
+    }
 
     func updateDevice() {
         if requireMajorUpgrade() {
