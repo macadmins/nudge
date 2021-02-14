@@ -101,14 +101,8 @@ extension NudgePreferences {
 
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
-    var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton: Int?
-    var attemptToFetchMajorUpgrade: Bool?
-    var iconDarkPath, iconLightPath: String?
-    var maxRandomDelayInSeconds: Int?
-    var mdmFeatures: MdmFeatures?
-    var noTimers, randomDelay: Bool?
-    var screenShotDarkPath, screenShotLightPath: String?
-    var simpleMode: Bool?
+    var attemptToFetchMajorUpgrade, enableUMAD: Bool?
+    var umadFeatures: UmadFeatures?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -130,32 +124,14 @@ extension OptionalFeatures {
     }
 
     func with(
-        allowedDeferrals: Int?? = nil,
-        allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
-        iconDarkPath: String?? = nil,
-        iconLightPath: String?? = nil,
-        maxRandomDelayInSeconds: Int?? = nil,
-        mdmFeatures: MdmFeatures?? = nil,
-        noTimers: Bool?? = nil,
-        randomDelay: Bool?? = nil,
-        screenShotDarkPath: String?? = nil,
-        screenShotLightPath: String?? = nil,
-        simpleMode: Bool?? = nil
+        enableUMAD: Bool?? = nil,
+        umadFeatures: UmadFeatures?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
-            allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
-            allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
-            iconDarkPath: iconDarkPath ?? self.iconDarkPath,
-            iconLightPath: iconLightPath ?? self.iconLightPath,
-            maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
-            mdmFeatures: mdmFeatures ?? self.mdmFeatures,
-            noTimers: noTimers ?? self.noTimers,
-            randomDelay: randomDelay ?? self.randomDelay,
-            screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
-            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
-            simpleMode: simpleMode ?? self.simpleMode
+            enableUMAD: enableUMAD ?? self.enableUMAD,
+            umadFeatures: umadFeatures ?? self.umadFeatures
         )
     }
 
@@ -168,8 +144,8 @@ extension OptionalFeatures {
     }
 }
 
-// MARK: - MdmFeatures
-struct MdmFeatures: Codable {
+// MARK: - UmadFeatures
+struct UmadFeatures: Codable {
     var alwaysShowManulEnrollment: Bool?
     var depScreenShotPath: String?
     var disableManualEnrollmentForDEP, enforceMDMInstallation: Bool?
@@ -179,11 +155,11 @@ struct MdmFeatures: Codable {
     var uamdmScreenShotPath: String?
 }
 
-// MARK: MdmFeatures convenience initializers and mutators
+// MARK: UmadFeatures convenience initializers and mutators
 
-extension MdmFeatures {
+extension UmadFeatures {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(MdmFeatures.self, from: data)
+        self = try newJSONDecoder().decode(UmadFeatures.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -207,8 +183,8 @@ extension MdmFeatures {
         mdmProfileIdentifier: String?? = nil,
         mdmRequiredInstallationDate: Date?? = nil,
         uamdmScreenShotPath: String?? = nil
-    ) -> MdmFeatures {
-        return MdmFeatures(
+    ) -> UmadFeatures {
+        return UmadFeatures(
             alwaysShowManulEnrollment: alwaysShowManulEnrollment ?? self.alwaysShowManulEnrollment,
             depScreenShotPath: depScreenShotPath ?? self.depScreenShotPath,
             disableManualEnrollmentForDEP: disableManualEnrollmentForDEP ?? self.disableManualEnrollmentForDEP,
@@ -284,8 +260,12 @@ extension OSVersionRequirement {
 
 // MARK: - UserExperience
 struct UserExperience: Codable {
-    var approachingRefreshCycle, approachingWindowTime, elapsedRefreshCycle, imminentRefeshCycle: Int?
-    var imminentWindowTime, initialRefreshCycle, nudgeRefreshCycle: Int?
+    var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
+    var elapsedRefreshCycle, imminentRefeshCycle, imminentWindowTime, initialRefreshCycle: Int?
+    var maxRandomDelayInSeconds: Int?
+    var noTimers: Bool?
+    var nudgeRefreshCycle: Int?
+    var randomDelay: Bool?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -307,22 +287,32 @@ extension UserExperience {
     }
 
     func with(
+        allowedDeferrals: Int?? = nil,
+        allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
         elapsedRefreshCycle: Int?? = nil,
         imminentRefeshCycle: Int?? = nil,
         imminentWindowTime: Int?? = nil,
         initialRefreshCycle: Int?? = nil,
-        nudgeRefreshCycle: Int?? = nil
+        maxRandomDelayInSeconds: Int?? = nil,
+        noTimers: Bool?? = nil,
+        nudgeRefreshCycle: Int?? = nil,
+        randomDelay: Bool?? = nil
     ) -> UserExperience {
         return UserExperience(
+            allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
+            allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
             imminentRefeshCycle: imminentRefeshCycle ?? self.imminentRefeshCycle,
             imminentWindowTime: imminentWindowTime ?? self.imminentWindowTime,
             initialRefreshCycle: initialRefreshCycle ?? self.initialRefreshCycle,
-            nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle
+            maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
+            noTimers: noTimers ?? self.noTimers,
+            nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
+            randomDelay: randomDelay ?? self.randomDelay
         )
     }
 
@@ -337,8 +327,11 @@ extension UserExperience {
 
 // MARK: - UserInterface
 struct UserInterface: Codable {
-    var mdmElements: MdmElements?
-    var updateElements: [UpdateElement]?
+    var iconDarkPath, iconLightPath: String?
+    var umadElements: UmadElements?
+    var screenShotDarkPath, screenShotLightPath: String?
+    var simpleMode: Bool?
+    var updateElements: [UmadElements]?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -360,11 +353,21 @@ extension UserInterface {
     }
 
     func with(
-        mdmElements: MdmElements?? = nil,
-        updateElements: [UpdateElement]?? = nil
+        iconDarkPath: String?? = nil,
+        iconLightPath: String?? = nil,
+        umadElements: UmadElements?? = nil,
+        screenShotDarkPath: String?? = nil,
+        screenShotLightPath: String?? = nil,
+        simpleMode: Bool?? = nil,
+        updateElements: [UmadElements]?? = nil
     ) -> UserInterface {
         return UserInterface(
-            mdmElements: mdmElements ?? self.mdmElements,
+            iconDarkPath: iconDarkPath ?? self.iconDarkPath,
+            iconLightPath: iconLightPath ?? self.iconLightPath,
+            umadElements: umadElements ?? self.umadElements,
+            screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
+            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
+            simpleMode: simpleMode ?? self.simpleMode,
             updateElements: updateElements ?? self.updateElements
         )
     }
@@ -378,103 +381,24 @@ extension UserInterface {
     }
 }
 
-// MARK: - MdmElements
-struct MdmElements: Codable {
-    var actionButtonManualText, actionButtonText, actionButtonUAMDMText, informationButtonText: String?
-    var lowerHeader, lowerHeaderDEPFailure, lowerHeaderManual, lowerHeaderUAMDMFailure: String?
-    var lowerSubHeader, lowerSubHeaderDEPFailure, lowerSubHeaderManual, lowerSubHeaderUAMDMFailure: String?
-    var mainContentHeader, mainContentText, mainContentUAMDMText, mainHeader: String?
-    var primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
-}
-
-// MARK: MdmElements convenience initializers and mutators
-
-extension MdmElements {
-    init(data: Data) throws {
-        self = try newJSONDecoder().decode(MdmElements.self, from: data)
-    }
-
-    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
-        guard let data = json.data(using: encoding) else {
-            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
-        }
-        try self.init(data: data)
-    }
-
-    init(fromURL url: URL) throws {
-        try self.init(data: try Data(contentsOf: url))
-    }
-
-    func with(
-        actionButtonManualText: String?? = nil,
-        actionButtonText: String?? = nil,
-        actionButtonUAMDMText: String?? = nil,
-        informationButtonText: String?? = nil,
-        lowerHeader: String?? = nil,
-        lowerHeaderDEPFailure: String?? = nil,
-        lowerHeaderManual: String?? = nil,
-        lowerHeaderUAMDMFailure: String?? = nil,
-        lowerSubHeader: String?? = nil,
-        lowerSubHeaderDEPFailure: String?? = nil,
-        lowerSubHeaderManual: String?? = nil,
-        lowerSubHeaderUAMDMFailure: String?? = nil,
-        mainContentHeader: String?? = nil,
-        mainContentText: String?? = nil,
-        mainContentUAMDMText: String?? = nil,
-        mainHeader: String?? = nil,
-        primaryQuitButtonText: String?? = nil,
-        secondaryQuitButtonText: String?? = nil,
-        subHeader: String?? = nil
-    ) -> MdmElements {
-        return MdmElements(
-            actionButtonManualText: actionButtonManualText ?? self.actionButtonManualText,
-            actionButtonText: actionButtonText ?? self.actionButtonText,
-            actionButtonUAMDMText: actionButtonUAMDMText ?? self.actionButtonUAMDMText,
-            informationButtonText: informationButtonText ?? self.informationButtonText,
-            lowerHeader: lowerHeader ?? self.lowerHeader,
-            lowerHeaderDEPFailure: lowerHeaderDEPFailure ?? self.lowerHeaderDEPFailure,
-            lowerHeaderManual: lowerHeaderManual ?? self.lowerHeaderManual,
-            lowerHeaderUAMDMFailure: lowerHeaderUAMDMFailure ?? self.lowerHeaderUAMDMFailure,
-            lowerSubHeader: lowerSubHeader ?? self.lowerSubHeader,
-            lowerSubHeaderDEPFailure: lowerSubHeaderDEPFailure ?? self.lowerSubHeaderDEPFailure,
-            lowerSubHeaderManual: lowerSubHeaderManual ?? self.lowerSubHeaderManual,
-            lowerSubHeaderUAMDMFailure: lowerSubHeaderUAMDMFailure ?? self.lowerSubHeaderUAMDMFailure,
-            mainContentHeader: mainContentHeader ?? self.mainContentHeader,
-            mainContentText: mainContentText ?? self.mainContentText,
-            mainContentUAMDMText: mainContentUAMDMText ?? self.mainContentUAMDMText,
-            mainHeader: mainHeader ?? self.mainHeader,
-            primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
-            secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
-            subHeader: subHeader ?? self.subHeader
-        )
-    }
-
-    func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
-    }
-
-    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
-    }
-}
-
-// MARK: - UpdateElement
-struct UpdateElement: Codable {
-    var language, actionButtonText, informationButtonText, mainContentHeader: String?
-    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
-    var primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+// MARK: - UmadElements
+struct UmadElements: Codable {
+    var language, actionButtonManualText, actionButtonText, actionButtonUAMDMText: String?
+    var informationButtonText, mainContentHeader, mainContentNote, mainContentText: String?
+    var mainContentUAMDMText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText: String?
+    var subHeader, mainContentSubHeader: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+        case actionButtonManualText, actionButtonText, actionButtonUAMDMText, informationButtonText, mainContentHeader, mainContentNote, mainContentText, mainContentUAMDMText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText, subHeader, mainContentSubHeader
     }
 }
 
-// MARK: UpdateElement convenience initializers and mutators
+// MARK: UmadElements convenience initializers and mutators
 
-extension UpdateElement {
+extension UmadElements {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(UpdateElement.self, from: data)
+        self = try newJSONDecoder().decode(UmadElements.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -490,29 +414,35 @@ extension UpdateElement {
 
     func with(
         language: String?? = nil,
+        actionButtonManualText: String?? = nil,
         actionButtonText: String?? = nil,
+        actionButtonUAMDMText: String?? = nil,
         informationButtonText: String?? = nil,
         mainContentHeader: String?? = nil,
         mainContentNote: String?? = nil,
-        mainContentSubHeader: String?? = nil,
         mainContentText: String?? = nil,
+        mainContentUAMDMText: String?? = nil,
         mainHeader: String?? = nil,
         primaryQuitButtonText: String?? = nil,
         secondaryQuitButtonText: String?? = nil,
-        subHeader: String?? = nil
-    ) -> UpdateElement {
-        return UpdateElement(
+        subHeader: String?? = nil,
+        mainContentSubHeader: String?? = nil
+    ) -> UmadElements {
+        return UmadElements(
             language: language ?? self.language,
+            actionButtonManualText: actionButtonManualText ?? self.actionButtonManualText,
             actionButtonText: actionButtonText ?? self.actionButtonText,
+            actionButtonUAMDMText: actionButtonUAMDMText ?? self.actionButtonUAMDMText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentNote: mainContentNote ?? self.mainContentNote,
-            mainContentSubHeader: mainContentSubHeader ?? self.mainContentSubHeader,
             mainContentText: mainContentText ?? self.mainContentText,
+            mainContentUAMDMText: mainContentUAMDMText ?? self.mainContentUAMDMText,
             mainHeader: mainHeader ?? self.mainHeader,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
             secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
-            subHeader: subHeader ?? self.subHeader
+            subHeader: subHeader ?? self.subHeader,
+            mainContentSubHeader: mainContentSubHeader ?? self.mainContentSubHeader
         )
     }
 
