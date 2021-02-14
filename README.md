@@ -19,8 +19,6 @@ The following operating system and versions have been tested.
 ## Tools that work with Nudge
 Any MDM that supports the installation of packages (.pkgs) and profiles (.mobileconfig) can deploy and enforce Nudge.
 
-If you are able to host JSONs, you can optionally pass a URL to Nudge. If you are not able to host JSON files, you can deploy a local JSON to `/Library/Preferences/com.github.macadmins.Nudge.json`
-
 ## Nudge functionality overview
 - Nudge consists of the following three components
  - Nudge.app installed to `/Applications/Utilities/Nudge.app`
@@ -72,6 +70,23 @@ If you'd like to force simple mode (and don't want to use the built in preferenc
 ```
 
 ## JSON Support
+Nudge has support for both a local JSON and a remote JSON.
+
+By default, Nudge will look for a JSON located at `/Library/Preferences/com.github.macadmins.Nudge.json`
+
+### Using the -json-url argument
+In order to download a JSON from a website, simple pass the `-json-url` argument.
+
+```
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -json-url "https://raw.githubusercontent.com/macadmins/nudge/Example%20Assets/com.github.macadmins.Nudge.json"
+```
+
+While the `-json-url` argument is mainly designed for web urls, you can actually pass it a file path as well if you don't want to deploy a json to `/Library/Preferences` or simply want to test another json file.
+
+```
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -json-url "file:///path/to/your.json"`
+```
+
 
 # Nudge Screenshots
 <img src="/assets/demo_light_1.png" width=50% height=50%>
