@@ -10,7 +10,7 @@ Some enhancements to the SwiftUI version over nudge-python
 - A new UI called `simpleMode`
 - Support for localization
 - Support for Apple Silicon macs
-- Every button's text can be customized
+- Every one of the buttons can be customized
 - Every text element except for the left portion can be customized
 
 ## OS support
@@ -48,6 +48,7 @@ If you have just installed Nudge for the first time, you will likely see the fol
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge
 Device fully up-to-date.
 ```
+
 ### Demo Mode
 In order to trigger Nudge in demo mode, simply pass the `-demo-mode` argument
 
@@ -64,6 +65,14 @@ If you'd like to trigger `simpleMode` in Demo mode, chain the both `-demo-mode` 
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
 -demo-mode \
 -simple-mode
+```
+
+If you'd like to force the icon in Demo mode, chain the both `-demo-mode` and `-force-icon` arguments
+
+```
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
+-demo-mode \
+-force-icon
 ```
 
 ### Simple Mode
@@ -152,8 +161,8 @@ In this example, Nudge will do the following:
 - The `More Info` button will open up to the [Apple Big Sur release notes](https://support.apple.com/en-us/HT211896)
 ```
 {
-    "optionalFeatures": {
-        "simpleMode": true
+    "userInterface": {
+      "simpleMode": false
     },
     "osVersionRequirements": [
         {
@@ -175,17 +184,7 @@ In this example, Nudge will do the following:
 ```
 {
     "optionalFeatures": {
-        "allowedDeferrals": 1000000,
-        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
-        "attemptToFetchMajorUpgrade": true,
-        "iconDarkPath": "/somewhere/logoDark.png",
-        "iconLightPath": "/somewhere/logoLight.png",
-        "maxRandomDelayInSeconds": 1200,
-        "noTimers": false,
-        "randomDelay": false,
-        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
-        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
-        "simpleMode": false
+        "attemptToFetchMajorUpgrade": true
     },
     "osVersionRequirements": [
         {
@@ -202,15 +201,26 @@ In this example, Nudge will do the following:
         }
     ],
     "userExperience": {
+        "allowedDeferrals": 1000000,
+        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
         "approachingRefreshCycle": 6000,
         "approachingWindowTime": 72,
         "elapsedRefreshCycle": 300,
         "imminentRefeshCycle": 600,
         "imminentWindowTime": 24,
         "initialRefreshCycle": 18000,
-        "nudgeRefreshCycle": 60
+        "maxRandomDelayInSeconds": 1200,
+        "noTimers": false,
+        "nudgeRefreshCycle": 60,
+        "randomDelay": false
     },
     "userInterface": {
+        "forceIcon": false,
+        "iconDarkPath": "/somewhere/logoDark.png",
+        "iconLightPath": "/somewhere/logoLight.png",
+        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
+        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
+        "simpleMode": false,
         "updateElements": [
             {
                 "_language": "en",
@@ -244,7 +254,37 @@ In this example, Nudge will do the following:
 ```
 
 ## Localization
-TODO: Need to write
+By default, Nudge only supports the English (en) locale. If you need additional localizations, you will need the following:
+
+- Localization.strings for locale of the left side of Nudge and the `Additional Machine Details` view
+- Preferences file
+
+The following example would add support for the French (fr) locale.
+
+** Note: **There is already a French localization string to fill the rest of the UI
+
+```
+{
+    "userInterface": {
+        "updateElements": [
+            {
+                "_language": "fr",
+                "actionButtonText": "Mettre à jour l'appareil",
+                "informationButtonText": "Plus d'informations",
+                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
+                "mainContentNote": "Notes Importantes",
+                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
+                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton ci-dessous et suivez les étapes fournies.",
+                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
+                "primaryQuitButtonText": "Plus tard",
+                "secondaryQuitButtonText": "Je comprends",
+                "subHeader": "Un rappel amical de votre équipe informatique locale"
+            }
+        ]
+    }
+}
+```
+
 
 # Nudge Screenshots
 TODO: Need to update
