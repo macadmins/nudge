@@ -19,6 +19,9 @@ func nudgeStartLogic() {
         } else {
             if Utils().demoModeEnabled() {
                 print("Device in demo mode")
+                if Utils().simpleModeEnabled() {
+                    print("Device in simple mode")
+                }
             } else {
                 print("Device fully up-to-date.")
                 AppKit.NSApp.terminate(nil)
