@@ -95,8 +95,117 @@ While the `-json-url` argument is mainly designed for web urls, you can actually
 "file:///path/to/your.json"`
 ```
 
+## Configuration
+Nudge offers significant customization and can be overwhelming, but fear not, you don't have to customize everything :smile:
+
+### Small Example
+In this example, Nudge will do the following:
+
+- Open up in `simpleMode`
+- Enforce Big Sur version `11.2.1` to the following operating systems
+  - 11.0, 11.0.1, 11.1, 11.2
+  - an enforcement date of February 28th, 2021
+- The `More Info` button will open up to the [Apple Big Sur release notes](https://support.apple.com/en-us/HT211896)
+```
+{
+    "optionalFeatures": {
+        "simpleMode": true
+    },
+    "osVersionRequirements": [
+        {
+            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "requiredInstallationDate": "2021-02-28T00:00:00Z",
+            "requiredMinimumOSVersion": "11.2.1",
+            "targetedOSVersions": [
+                "11.0",
+                "11.0.1",
+                "11.1",
+                "11.2"
+            ]
+        }
+    ],
+}
+```
+
+### Full Example
+TODO: This needs to be finished and fully documented.
+```
+{
+    "optionalFeatures": {
+        "allowedDeferrals": 1000000,
+        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
+        "attemptToFetchMajorUpgrade": true,
+        "enforceMinorUpdates": true,
+        "iconDarkPath": "/somewhere/logoDark.png",
+        "iconLightPath": "/somewhere/logoLight.png",
+        "maxRandomDelayInSeconds": 1200,
+        "noTimers": false,
+        "randomDelay": false,
+        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
+        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
+        "simpleMode": false
+    },
+    "osVersionRequirements": [
+        {
+            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
+            "requiredInstallationDate": "2021-02-28T00:00:00Z",
+            "requiredMinimumOSVersion": "11.2.1",
+            "targetedOSVersions": [
+                "11.0",
+                "11.0.1",
+                "11.1",
+                "11.2"
+            ]
+        }
+    ],
+    "userExperience": {
+        "approachingRefreshCycle": 6000,
+        "approachingWindowTime": 72,
+        "elapsedRefreshCycle": 300,
+        "imminentRefeshCycle": 600,
+        "imminentWindowTime": 24,
+        "initialRefreshCycle": 18000,
+        "nudgeRefreshCycle": 60
+    },
+    "userInterface": {
+        "updateElements": [
+            {
+                "_language": "en",
+                "actionButtonText": "Update Device",
+                "informationButtonText": "More Info",
+                "mainContentHeader": "Your device will restart during this update",
+                "mainContentNote": "Important Notes",
+                "mainContentSubHeader": "Updates can take around 30 minutes to complete",
+                "mainContentText": "A fully up-to-date device is required to ensure that IT can your accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the button below and follow the provided steps.",
+                "mainHeader": "Your device requires a security update",
+                "primaryQuitButtonText": "Later",
+                "secondaryQuitButtonText": "I understand",
+                "subHeader": "A friendly reminder from your local IT team"
+            },
+            {
+                "_language": "fr",
+                "actionButtonText": "Mettre à jour l'appareil",
+                "informationButtonText": "Plus d'informations",
+                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
+                "mainContentNote": "Notes Importantes",
+                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
+                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton ci-dessous et suivez les étapes fournies.",
+                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
+                "primaryQuitButtonText": "Plus tard",
+                "secondaryQuitButtonText": "Je comprends",
+                "subHeader": "Un rappel amical de votre équipe informatique locale"
+            }
+        ]
+    }
+}
+```
+
+## Localization
+TODO: Need to write
 
 # Nudge Screenshots
+TODO: Need to update
 <img src="/assets/demo_light_1.png" width=50% height=50%>
 <img src="/assets/demo_light_2.png" width=50% height=50%>
 <img src="/assets/demo_light_2.png" width=50% height=50%>
