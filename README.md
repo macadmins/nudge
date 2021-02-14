@@ -97,13 +97,15 @@ In order to download a JSON from a website, simple pass the `-json-url` argument
 "https://raw.githubusercontent.com/macadmins/nudge/Example%20Assets/com.github.macadmins.Nudge.json"
 ```
 
-While the `-json-url` argument is mainly designed for web urls, you can actually pass it a file path as well if you don't want to deploy a json to `/Library/Preferences` or simply want to test another json file.
+While the `-json-url` argument is mainly designed for web urls, you can actually pass it a `file://` path as well if you don't want to deploy a json to `/Library/Preferences` or simply want to test your workflow.
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
 -json-url \
-"file:///path/to/your.json"`
+"file:///Users/YOURUSERNAME/Downloads/nudge/Example%20Assets/com.github.macadmins.Nudge.json"`
 ```
+
+** Note: ** Spaces must be converted to `%20`, just as a standard url. This is required both for web and local assets
 
 ## Scheduling Nudge to run
 Every release of Nudge comes with an optional LaunchAgent package.
@@ -146,8 +148,53 @@ Example LaunchAgent
 </plist>
 ```
 
+## Localization
+By default, Nudge only supports the English (en) locale. If you need additional localizations, you will need the following:
+
+- Localization.strings for locale of the left side of Nudge and the `Additional Machine Details` view
+- Preferences file
+
+The following example would add support for the French (fr) locale.
+
+** Note: **There is already a French localization string to fill the rest of the UI
+
+```
+{
+    "userInterface": {
+        "updateElements": [
+            {
+                "_language": "es",
+                "actionButtonText": "Actualizar dispositivo",
+                "informationButtonText": "Más información",
+                "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
+                "mainContentNote": "Notas importantes",
+                "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
+                "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón de abajo y siga los pasos proporcionados.",
+                "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
+                "primaryQuitButtonText": "Más tarde",
+                "secondaryQuitButtonText": "Entiendo",
+                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
+            },
+            {
+                "_language": "fr",
+                "actionButtonText": "Mettre à jour l'appareil",
+                "informationButtonText": "Plus d'informations",
+                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
+                "mainContentNote": "Notes Importantes",
+                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
+                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton ci-dessous et suivez les étapes fournies.",
+                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
+                "primaryQuitButtonText": "Plus tard",
+                "secondaryQuitButtonText": "Je comprends",
+                "subHeader": "Un rappel amical de votre équipe informatique locale"
+            }
+        ]
+    }
+}
+```
+
 ## Configuration
-Nudge offers significant customization and can be overwhelming, but fear not, you don't have to customize everything :smile:
+Nudge offers significant customization, which might be overwhelming. But don't worry, you don't have to customize everything. :smile:
 
 [For a full listing of the available preferences, please see the wiki](https://github.com/macadmins/nudge/wiki)
 
@@ -223,17 +270,17 @@ In this example, Nudge will do the following:
         "simpleMode": false,
         "updateElements": [
             {
-                "_language": "en",
-                "actionButtonText": "Update Device",
-                "informationButtonText": "More Info",
-                "mainContentHeader": "Your device will restart during this update",
-                "mainContentNote": "Important Notes",
-                "mainContentSubHeader": "Updates can take around 30 minutes to complete",
-                "mainContentText": "A fully up-to-date device is required to ensure that IT can your accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the button below and follow the provided steps.",
-                "mainHeader": "Your device requires a security update",
-                "primaryQuitButtonText": "Later",
-                "secondaryQuitButtonText": "I understand",
-                "subHeader": "A friendly reminder from your local IT team"
+                "_language": "es",
+                "actionButtonText": "Actualizar dispositivo",
+                "informationButtonText": "Más información",
+                "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
+                "mainContentNote": "Notas importantes",
+                "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
+                "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón de abajo y siga los pasos proporcionados.",
+                "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
+                "primaryQuitButtonText": "Más tarde",
+                "secondaryQuitButtonText": "Entiendo",
+                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
             },
             {
                 "_language": "fr",
@@ -253,43 +300,44 @@ In this example, Nudge will do the following:
 }
 ```
 
-## Localization
-By default, Nudge only supports the English (en) locale. If you need additional localizations, you will need the following:
+# Examples of the User Interface
 
-- Localization.strings for locale of the left side of Nudge and the `Additional Machine Details` view
-- Preferences file
+## simpleMode
+### English
+#### Light
+<img src="/assets/simple_mode/demo_simple_light_1.png" width=50% height=50%>
+<img src="/assets/simple_mode/demo_simple_light_2.png" width=50% height=50%>
+#### Dark
+<img src="/assets/simple_mode/demo_simple_dark_1.png" width=50% height=50%>
+<img src="/assets/simple_mode/demo_simple_dark_2.png" width=50% height=50%>
 
-The following example would add support for the French (fr) locale.
+### Localized (Spanish)
+#### Light
+<img src="/assets/simple_mode/demo_simple_light_localized.png" width=50% height=50%>
+#### Dark
+<img src="/assets/simple_mode/demo_simple_dark_localized.png" width=50% height=50%>
 
-** Note: **There is already a French localization string to fill the rest of the UI
+## standardMode
+### English
+#### Light
+<img src="/assets/standard_mode/demo_light_1_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_light_1_no_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_light_2_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_light_2_no_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_light_3.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_light_4.png" width=50% height=50%>
+#### Dark
+<img src="/assets/standard_mode/demo_dark_1_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_dark_1_no_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_dark_2_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_dark_2_no_icon.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_dark_3.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_dark_4.png" width=50% height=50%>
 
-```
-{
-    "userInterface": {
-        "updateElements": [
-            {
-                "_language": "fr",
-                "actionButtonText": "Mettre à jour l'appareil",
-                "informationButtonText": "Plus d'informations",
-                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
-                "mainContentNote": "Notes Importantes",
-                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
-                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton ci-dessous et suivez les étapes fournies.",
-                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
-                "primaryQuitButtonText": "Plus tard",
-                "secondaryQuitButtonText": "Je comprends",
-                "subHeader": "Un rappel amical de votre équipe informatique locale"
-            }
-        ]
-    }
-}
-```
-
-
-# Nudge Screenshots
-TODO: Need to update
-
-<img src="/assets/demo_light_1.png" width=50% height=50%>
-<img src="/assets/demo_light_2.png" width=50% height=50%>
-<img src="/assets/demo_light_2.png" width=50% height=50%>
-<img src="/assets/demo_dark_1.png" width=50% height=50%>
+### Localized (Spanish)
+#### Light
+<img src="/assets/standard_mode/demo_light_2_icon_localized.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_light_4_localized.png" width=50% height=50%>
+#### Dark
+<img src="/assets/standard_mode/demo_dark_2_icon_localized.png" width=50% height=50%>
+<img src="/assets/standard_mode/demo_dark_4_localized.png" width=50% height=50%>

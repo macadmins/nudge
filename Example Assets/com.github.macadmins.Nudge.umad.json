@@ -81,6 +81,19 @@
                 "subHeader": "A friendly reminder from your local IT team"
             },
             {
+                "_language": "es",
+                "actionButtonText": "Actualizar dispositivo",
+                "informationButtonText": "Más información",
+                "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
+                "mainContentNote": "Notas importantes",
+                "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
+                "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón de abajo y siga los pasos proporcionados.",
+                "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
+                "primaryQuitButtonText": "Más tarde",
+                "secondaryQuitButtonText": "Entiendo",
+                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
+            },
+            {
                 "_language": "fr",
                 "actionButtonText": "Mettre à jour l'appareil",
                 "informationButtonText": "Plus d'informations",
