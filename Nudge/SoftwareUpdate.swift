@@ -10,11 +10,11 @@ import Foundation
 class SoftwareUpdate {
     func List() {
         if Utils().getCPUTypeString() == "Apple Silicon" {
-            Log.warning(message: "Apple Silicon doesn't support software update")
+            softwareupdateLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")
             return
         }
 
-        Log.info(message: "Finding software updates")
+        softwareupdateLog.info("Finding software updates., privacy: .public)")
         let task = Process()
         task.executableURL = URL(fileURLWithPath: "/usr/sbin/softwareupdate")
         task.arguments = ["-la"]
@@ -36,9 +36,9 @@ class SoftwareUpdate {
 
         let output = String(decoding: outputData, as: UTF8.self)
         let error = String(decoding: errorData, as: UTF8.self)
-
-        Log.info(message: output)
-        Log.error(message: error)
+        
+        softwareupdateLog.info("\(output, privacy: .public)")
+        softwareupdateLog.error("\(error, privacy: .public)")
     }
     
     func Download() {
@@ -47,11 +47,11 @@ class SoftwareUpdate {
         // If enforceMinorUpdates == true
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
-            Log.warning(message: "Apple Silicon doesn't support software update")
+            softwareupdateLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")
             return
         }
 
-        Log.info(message: "Starting software update download")
+        softwareupdateLog.info("Starting softwareupdate download, privacy: .public)")
         let task = Process()
         task.executableURL = URL(fileURLWithPath: "/usr/sbin/softwareupdate")
         task.arguments = ["-da"]
@@ -74,9 +74,7 @@ class SoftwareUpdate {
         let output = String(decoding: outputData, as: UTF8.self)
         let error = String(decoding: errorData, as: UTF8.self)
 
-        Log.info(message: output)
-        Log.error(message: error)
+        softwareupdateLog.info("\(output, privacy: .public)")
+        softwareupdateLog.error("\(error, privacy: .public)")
     }
 }
-
-let SU = SoftwareUpdate()

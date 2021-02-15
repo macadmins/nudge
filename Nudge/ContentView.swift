@@ -40,8 +40,8 @@ struct HostingWindowFinder: NSViewRepresentable {
         // Start downloading updates
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             // List for details as download doesn't show much
-            SU.List()
-            SU.Download()
+            SoftwareUpdate().List()
+            SoftwareUpdate().Download()
         })
         
         if randomDelay {
