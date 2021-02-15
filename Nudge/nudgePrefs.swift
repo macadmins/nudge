@@ -19,7 +19,7 @@ struct nudgePrefs{
                         let decodedData = try NudgePreferences(data: data)
                         return decodedData
                     } catch {
-                        print(error)
+                        Log.error(message: error.localizedDescription)
                         return nil
                     }
                 }
@@ -27,7 +27,7 @@ struct nudgePrefs{
         }
 
         guard let fileURL = URL(string: url) else {
-            print("Could not find on-disk json")
+            Log.error(message: "Could not find on-disk json")
             return nil
         }
         
@@ -42,7 +42,7 @@ struct nudgePrefs{
                 return decodedData
 
             } catch let error {
-                print(error)
+                Log.error(message: error.localizedDescription)
                 return nil
             }
         }
