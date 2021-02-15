@@ -315,11 +315,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
-				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* defaults.swift in Sources */,
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
+				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */,
 				63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */,
 				639E198225CD885D008F618B /* nudgePrefs.swift in Sources */,
