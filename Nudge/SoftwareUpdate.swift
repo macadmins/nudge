@@ -55,35 +55,32 @@ class SoftwareUpdate {
         
         let softwareupdateList = self.List()
         
-        if softwareupdateList.contains("No new software available") {
-            softwareupdateDownloadLog.info("No new software available., privacy: .public)")
-            return
+        if softwareupdateList.contains("restart") {
+            softwareupdateDownloadLog.info("Starting softwareupdate download, privacy: .public)")
+            let task = Process()
+            task.launchPath = "/usr/sbin/softwareupdate"
+            task.arguments = ["--download", "--all"]
+
+            let outputPipe = Pipe()
+            let errorPipe = Pipe()
+
+            task.standardOutput = outputPipe
+            task.standardError = errorPipe
+
+            do {
+                try task.run()
+            } catch {
+                softwareupdateDownloadLog.error("Error downloading software updates, privacy: .public)")
+            }
+
+            let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+            let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+
+            let output = String(decoding: outputData, as: UTF8.self)
+            let error = String(decoding: errorData, as: UTF8.self)
+
+            softwareupdateDownloadLog.info("\(output, privacy: .public)")
+            softwareupdateDownloadLog.error("\(error, privacy: .public)")
         }
-
-        softwareupdateDownloadLog.info("Starting softwareupdate download, privacy: .public)")
-        let task = Process()
-        task.launchPath = "/usr/sbin/softwareupdate"
-        task.arguments = ["--download", "--all"]
-
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
-
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
-
-        do {
-            try task.run()
-        } catch {
-            softwareupdateDownloadLog.error("Error downloading software updates, privacy: .public)")
-        }
-
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-
-        let output = String(decoding: outputData, as: UTF8.self)
-        let error = String(decoding: errorData, as: UTF8.self)
-
-        softwareupdateDownloadLog.info("\(output, privacy: .public)")
-        softwareupdateDownloadLog.error("\(error, privacy: .public)")
     }
 }
