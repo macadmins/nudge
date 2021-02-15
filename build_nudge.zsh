@@ -152,7 +152,7 @@ fi
 /bin/mkdir -p "$NUDGE_LD_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LD_PKG_PATH"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
-/bin/cp "${TOOLSDIR}/build_assets/postinstall-logger" "$NUDGE_LA_PKG_PATH/scripts/postinstall"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-logger" "$NUDGE_LD_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
 /bin/cat << SIGNED_JSONFILE > "$NUDGE_LD_PKG_PATH/build-info.json"
