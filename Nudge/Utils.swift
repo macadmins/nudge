@@ -11,38 +11,42 @@ import SystemConfiguration
 
 struct Utils {
     func activateNudge() {
-        Log.info(message: "Re-activating Nudge")
+        utilsLog.info("Re-activating Nudge, privacy: .public)")
         NSApp.activate(ignoringOtherApps: true)
     }
 
     func bringNudgeToFront() {
-        Log.info(message: "Bringing nudge to front")
+        utilsLog.info("Bringing nudge to front, privacy: .public)")
         NSApp.activate(ignoringOtherApps: true)
         NSApp.mainWindow?.makeKeyAndOrderFront(self)
     }
     
     func createImageData(fileImagePath: String) -> NSImage {
-        Log.info(message: "Creating image path for fileImagePath")
+        utilsLog.info("Creating image path for fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
         let imageData:NSData = NSData(contentsOf: urlPath as URL)!
         return NSImage(data: imageData as Data)!
     }
     
     func demoModeEnabled() -> Bool {
-        let demoModeEnable = CommandLine.arguments.contains("-demo-mode")
-        Log.info(message: "ARG: Demo mode enabled command line argument: \(demoModeEnable)")
-        return demoModeEnable
+        let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
+        if demoModeArgumentPassed {
+            uiLog.info("-demo-mode argument passed, privacy: .public)")
+        }
+        return demoModeArgumentPassed
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
-        Log.info(message: "ARG: Force screenshot icon mode: \(forceScreenShotIconMode)")
+        if forceScreenShotIconMode {
+            uiLog.info("-force-screenshot-icon argument passed, privacy: .public)")
+        }
         return forceScreenShotIconMode
     }
     
     func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-        Log.info(message: "Device is fulled updated: \(fullyUpdated)")
+        utilsLog.info("Device is fulled updated: \(fullyUpdated), privacy: .public)")
         return fullyUpdated
     }
 
@@ -69,14 +73,14 @@ struct Utils {
         
         let cpu_arch = type & 0xff // mask for architecture bits
         if cpu_arch == cpu_type_t(7){
-            Log.info(message: "CPU Type is Intel")
+            utilsLog.info("CPU Type is Intel, privacy: .public)")
             return "Intel"
         }
         if cpu_arch == cpu_type_t(12){
-            Log.info(message: "CPU Type is Apple Silicon")
+            utilsLog.info("CPU Type is Apple Silicon, privacy: .public)")
             return "Apple Silicon"
         }
-        Log.warning(message: "Unknown CPU Type")
+        utilsLog.error("Unknown CPU Type, privacy: .public)")
         return "unknown"
     }
     
@@ -87,7 +91,7 @@ struct Utils {
     func getJSONUrl() -> String {
         // let jsonURL = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
         let jsonURL = UserDefaults.standard.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
-        Log.info(message: "JSON url: \(jsonURL)")
+        utilsLog.info("JSON url: \(jsonURL, privacy: .public)")
         return jsonURL
     }
     
@@ -99,19 +103,20 @@ struct Utils {
     
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        Log.info(message: "OS Version: \(MajorOSVersion)")
+        utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
         return MajorOSVersion
     }
     
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
-        Log.info(message: "Major required OS version: \(Int((parts[0]))!)")
-        return Int((parts[0]))!
+        let majorRequiredNudgeOSVersion = Int((parts[0]))!
+        utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        return majorRequiredNudgeOSVersion
     }
     
     func getMinorOSVersion() -> Int {
         let MinorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
-        Log.info(message: "Minor OS Version: \(MinorOSVersion)")
+        utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
     }
 
@@ -129,7 +134,7 @@ struct Utils {
     
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
-        Log.info(message: "Patch OS Version: \(PatchOSVersion)")
+        utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
         return PatchOSVersion
     }
     
@@ -151,7 +156,7 @@ struct Utils {
             
             IOObjectRelease(platformExpert)
 
-            Log.info(message: "Serial is \(serialNumber)")
+            utilsLog.info("Serial Number: \(serialNumber, privacy: .public)")
             return serialNumber
         }
         
@@ -163,14 +168,14 @@ struct Utils {
         var uid: uid_t = 0
         var gid: gid_t = 0
         let SystemConsoleUsername = SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
-        Log.info(message: "System console username: \(SystemConsoleUsername)")
+        utilsLog.info("System console username: \(SystemConsoleUsername, privacy: .public)")
         return SystemConsoleUsername
     }
     
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
         // print("Timer Cycle:", String(timerCycle)) // Easy way to debug the timerController logic
-        Log.info(message: "Timer cycle: \(timerCycle)")
+        utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
         return timerCycle
     }
     
@@ -190,35 +195,37 @@ struct Utils {
         guard let url = URL(string: aboutUpdateURL) else {
             return
         }
-        Log.info(message: "User clicked moreInfo button.")
+        uiLog.info("User clicked moreInfo button, privacy: .public)")
         NSWorkspace.shared.open(url)
     }
     
     func pastRequiredInstallationDate() -> Bool {
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
-        Log.info(message: "Installation date has passed: \(pastRequiredInstallationDate)")
+        utilsLog.info("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
         return pastRequiredInstallationDate
     }
     
     func requireDualQuitButtons() -> Bool {
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
-        Log.info(message: "Require dual quit buttons: \(requireDualQuitButtons)")
+        uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
         return requireDualQuitButtons
     }
 
     func requireMajorUpgrade() -> Bool {
         if requiredMinimumOSVersion == "0.0" {
-            Log.info(message: "Required major update: false")
+            utilsLog.info("Device requireMajorUpgrade: false, privacy: .public)")
             return false
         }
         let requireMajorUpdate = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-        Log.info(message: "Require major update: \(requireMajorUpdate)")
+        utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }
     
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
-        Log.info(message: "Simple mode enabled: \(simpleModeEnabled)")
+        if simpleModeEnabled {
+            uiLog.info("-simple-mode argument passed, privacy: .public)")
+        }
         return simpleModeEnabled
     }
 

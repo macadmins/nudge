@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.github.macadmins.Nudge.logger</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/log</string>
+		<string>stream</string>
+		<string>--predicate</string>
+		<string>subsystem == "com.github.macadmins.Nudge"</string>
+		<string>--info</string>
+		<string>--style</string>
+		<string>syslog</string>
+		<string>--color</string>
+		<string>none</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>/var/log/nudge.log</string>
+</dict>
+</plist>

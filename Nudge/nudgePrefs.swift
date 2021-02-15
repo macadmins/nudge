@@ -19,7 +19,7 @@ struct nudgePrefs{
                         let decodedData = try NudgePreferences(data: data)
                         return decodedData
                     } catch {
-                        Log.error(message: error.localizedDescription)
+                        prefsLog.error("\(error.localizedDescription, privacy: .public)")
                         return nil
                     }
                 }
@@ -27,7 +27,7 @@ struct nudgePrefs{
         }
 
         guard let fileURL = URL(string: url) else {
-            Log.error(message: "Could not find on-disk json")
+            prefsLog.error("Could not find on-disk json, privacy: .public)")
             return nil
         }
         
@@ -42,7 +42,7 @@ struct nudgePrefs{
                 return decodedData
 
             } catch let error {
-                Log.error(message: error.localizedDescription)
+                prefsLog.error("\(error.localizedDescription, privacy: .public)")
                 return nil
             }
         }
