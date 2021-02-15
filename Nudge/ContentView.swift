@@ -38,9 +38,7 @@ struct HostingWindowFinder: NSViewRepresentable {
         let view = NSView()
         
         // Start downloading updates
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            // List for details as download doesn't show much
-            SoftwareUpdate().List()
+        DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
             SoftwareUpdate().Download()
         })
         

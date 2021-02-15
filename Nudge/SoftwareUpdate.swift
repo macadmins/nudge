@@ -8,16 +8,10 @@
 import Foundation
 
 class SoftwareUpdate {
-    func List() {
-        if Utils().getCPUTypeString() == "Apple Silicon" {
-            softwareupdateLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")
-            return
-        }
-
-        softwareupdateLog.info("Finding software updates., privacy: .public)")
+    func List() -> String {
         let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/sbin/softwareupdate")
-        task.arguments = ["-la"]
+        task.launchPath = "/usr/sbin/softwareupdate"
+        task.arguments = ["--list", "--all"]
 
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -28,17 +22,25 @@ class SoftwareUpdate {
         do {
             try task.run()
         } catch {
-            softwareupdateLog.error("Error listing software updates, privacy: .public)")
+            softwareupdateListLog.error("Error listing software updates, privacy: .public)")
         }
-
+        
+        task.waitUntilExit()
+        
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
         let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
 
         let output = String(decoding: outputData, as: UTF8.self)
         let error = String(decoding: errorData, as: UTF8.self)
         
-        softwareupdateLog.info("\(output, privacy: .public)")
-        softwareupdateLog.error("\(error, privacy: .public)")
+        if task.terminationStatus != 0 {
+            softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
+            return error
+        } else {
+            softwareupdateListLog.info("\(output, privacy: .public)")
+            return output
+        }
+        
     }
     
     func Download() {
@@ -47,14 +49,21 @@ class SoftwareUpdate {
         // If enforceMinorUpdates == true
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
-            softwareupdateLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")
+            softwareupdateDownloadLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")
+            return
+        }
+        
+        let softwareupdateList = self.List()
+        
+        if softwareupdateList.contains("No new software available") {
+            softwareupdateDownloadLog.info("No new software available., privacy: .public)")
             return
         }
 
-        softwareupdateLog.info("Starting softwareupdate download, privacy: .public)")
+        softwareupdateDownloadLog.info("Starting softwareupdate download, privacy: .public)")
         let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/sbin/softwareupdate")
-        task.arguments = ["-da"]
+        task.launchPath = "/usr/sbin/softwareupdate"
+        task.arguments = ["--download", "--all"]
 
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -65,7 +74,7 @@ class SoftwareUpdate {
         do {
             try task.run()
         } catch {
-            softwareupdateLog.error("Error downloading software updates, privacy: .public)")
+            softwareupdateDownloadLog.error("Error downloading software updates, privacy: .public)")
         }
 
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
@@ -74,7 +83,7 @@ class SoftwareUpdate {
         let output = String(decoding: outputData, as: UTF8.self)
         let error = String(decoding: errorData, as: UTF8.self)
 
-        softwareupdateLog.info("\(output, privacy: .public)")
-        softwareupdateLog.error("\(error, privacy: .public)")
+        softwareupdateDownloadLog.info("\(output, privacy: .public)")
+        softwareupdateDownloadLog.error("\(error, privacy: .public)")
     }
 }
