@@ -28,7 +28,7 @@ class SoftwareUpdate {
         do {
             try task.run()
         } catch {
-            print("Error launching VBoxManage")
+            softwareupdateLog.error("Error listing software updates, privacy: .public)")
         }
 
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
@@ -65,7 +65,7 @@ class SoftwareUpdate {
         do {
             try task.run()
         } catch {
-            print("Error downloading software updates")
+            softwareupdateLog.error("Error downloading software updates, privacy: .public)")
         }
 
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
