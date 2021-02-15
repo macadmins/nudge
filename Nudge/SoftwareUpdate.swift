@@ -44,9 +44,11 @@ class SoftwareUpdate {
     }
     
     func Download() {
+        softwareupdateDownloadLog.info("enforceMinorUpdates: \(enforceMinorUpdates), privacy: .public)")
 
-        // TODO Only run if
-        // If enforceMinorUpdates == true
+        if !enforceMinorUpdates {
+            return
+        }
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
             softwareupdateDownloadLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")

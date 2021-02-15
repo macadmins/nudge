@@ -14,6 +14,7 @@ let nudgePreferences = nudgePrefs().loadNudgePrefs()
 
 // optionalFeatures
 let attemptToFetchMajorUpgrade = nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
+let enforceMinorUpdates = nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 
 // optionalFeatures - MDM
 let alwaysShowManualEnerllment = nudgePreferences?.optionalFeatures?.umadFeatures?.alwaysShowManulEnrollment ?? false

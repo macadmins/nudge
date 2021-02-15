@@ -1,6 +1,7 @@
 {
     "optionalFeatures": {
-        "attemptToFetchMajorUpgrade": true
+        "attemptToFetchMajorUpgrade": true,
+        "enforceMinorUpdates": true
     },
     "osVersionRequirements": [
         {
