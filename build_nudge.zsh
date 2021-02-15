@@ -112,7 +112,7 @@ fi
 /bin/mkdir -p "$NUDGE_LA_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LA_PKG_PATH"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
-/bin/cp "${TOOLSDIR}/build_assets/postinstall" "$NUDGE_LA_PKG_PATH/scripts"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-launchagent" "$NUDGE_LA_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
 /bin/cat << SIGNED_JSONFILE > "$NUDGE_LA_PKG_PATH/build-info.json"
@@ -140,4 +140,44 @@ if [ "${PKG_RESULT}" != "0" ]; then
 else
   # Move the signed pkg
   /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.0.pkg" "$OUTPUTSDIR"
+fi
+
+# move the ld to the payload folder
+echo "Moving LaunchDaemon to logging payload folder"
+NUDGE_LD_PKG_PATH="$TOOLSDIR/NudgePkgLogger"
+if [ -e $NUDGE_LD_PKG_PATH ]; then
+  /bin/rm -rf $NUDGE_LD_PKG_PATH
+fi
+/bin/mkdir -p "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/mkdir -p "$NUDGE_LD_PKG_PATH/scripts"
+/usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LD_PKG_PATH"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-logger" "$NUDGE_LD_PKG_PATH/scripts/postinstall"
+
+# Create the json file for the signed munkipkg LaunchAgent pkg
+/bin/cat << SIGNED_JSONFILE > "$NUDGE_LD_PKG_PATH/build-info.json"
+{
+    "distribution_style": true,
+    "identifier": "com.github.macadmins.Nudge.Logger",
+    "install_location": "/",
+    "name": "Nudge_Logger-1.0.0.pkg",
+    "ownership": "recommended",
+    "postinstall_action": "none",
+    "suppress_bundle_relocation": true,
+    "version": "1.0.0",
+    "signing_info": {
+        "identity": "$SIGNING_IDENTITY",
+        "timestamp": true
+    }
+}
+SIGNED_JSONFILE
+
+# Create the signed pkg
+"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LD_PKG_PATH"
+PKG_RESULT="$?"
+if [ "${PKG_RESULT}" != "0" ]; then
+  echo "Could not sign package: ${PKG_RESULT}" 1>&2
+else
+  # Move the signed pkg
+  /bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.0.pkg" "$OUTPUTSDIR"
 fi
