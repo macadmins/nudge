@@ -25,7 +25,7 @@
 // Days remaining to update
 "Days remaining to update:" = "Jours restant:";
 // Ignored Count
-"Ignored Count:" = "Compte ignoré:";
+"Ignored Count:" = "Nombre d'omissions:";
 
 // Help buttons
 "Click to close" = "Cliquez pour fermer";
