@@ -93,5 +93,6 @@ iOSInjectionProject/
 outputs/
 NudgePkg/
 NudgePkgLA/
+NudgePkgLogger/
 build_info.txt
 date_info.txt
