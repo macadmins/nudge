@@ -31,7 +31,7 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamd
 let majorUpgradeAppPath = getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
-let aboutUpdateURL = getOSVersionRequirements()?.aboutUpdateURL ?? "https://support.apple.com/en-us/HT201541"
+let aboutUpdateURL = getUpdateURL() ?? ""
 func getOSVersionRequirements() -> OSVersionRequirement? {
     let requirements = nudgePreferences?.osVersionRequirements
     if requirements != nil {
@@ -42,6 +42,21 @@ func getOSVersionRequirements() -> OSVersionRequirement? {
         }
     }
     return nil
+}
+
+func getUpdateURL() -> String? {
+    if Utils().demoModeEnabled() {
+        return "https://support.apple.com/en-us/HT201541"
+    }
+    let updates = getOSVersionRequirements()?.aboutUpdateURLs
+    if updates != nil {
+        for (_, subUpdates) in updates!.enumerated() {
+            if subUpdates.language == language {
+                return subUpdates.aboutUpdateURL ?? ""
+            }
+        }
+    }
+    return ""
 }
 
 // userExperience
@@ -92,7 +107,7 @@ let informationButtonText = getuserInterface()?.informationButtonText ?? "More I
 let mainContentHeader = getuserInterface()?.mainContentHeader ?? "Your device will restart during this update"
 let mainContentNote = getuserInterface()?.mainContentNote ?? "Important Notes"
 let mainContentSubHeader = getuserInterface()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
-let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device. \n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks. \n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
 let primaryQuitButtonText = getuserInterface()?.primaryQuitButtonText ?? "Later"
 let screenShotDarkPath = nudgePreferences?.userInterface?.screenShotDarkPath ?? ""
 let screenShotLightPath = nudgePreferences?.userInterface?.screenShotLightPath ?? ""

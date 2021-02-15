@@ -208,7 +208,7 @@ extension UmadFeatures {
 
 // MARK: - OSVersionRequirement
 struct OSVersionRequirement: Codable {
-    var aboutUpdateURL: String?
+    var aboutUpdateURLs: [AboutUpdateURL]?
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
@@ -234,18 +234,66 @@ extension OSVersionRequirement {
     }
 
     func with(
-        aboutUpdateURL: String?? = nil,
+        aboutUpdateURLs: [AboutUpdateURL]?? = nil,
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
         targetedOSVersions: [String]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
-            aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
+            aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
             targetedOSVersions: targetedOSVersions ?? self.targetedOSVersions
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+// MARK: - AboutUpdateURL
+struct AboutUpdateURL: Codable {
+    var language: String?
+    var aboutUpdateURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case language = "_language"
+        case aboutUpdateURL
+    }
+}
+
+// MARK: AboutUpdateURL convenience initializers and mutators
+
+extension AboutUpdateURL {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(AboutUpdateURL.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        language: String?? = nil,
+        aboutUpdateURL: String?? = nil
+    ) -> AboutUpdateURL {
+        return AboutUpdateURL(
+            language: language ?? self.language,
+            aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL
         )
     }
 

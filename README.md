@@ -184,7 +184,7 @@ The following example would add support for the French (fr) locale.
                 "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
                 "mainContentNote": "Notes Importantes",
                 "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
-                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique peut protéger votre appareil avec précision.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.",
+                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil avec précision.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.",
                 "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
                 "primaryQuitButtonText": "Plus tard",
                 "secondaryQuitButtonText": "Je comprends",
@@ -207,7 +207,7 @@ In this example, Nudge will do the following:
 - Enforce Big Sur version `11.2.1` to the following operating systems
   - 11.0, 11.0.1, 11.1, 11.2
   - an enforcement date of February 28th, 2021
-- The `More Info` button will open up to the [Apple Big Sur release notes](https://support.apple.com/en-us/HT211896)
+- The `More Info` button will open up to [Apple's Big Sur 11.2.1 English release notes](https://support.apple.com/en-us/HT211896#macos1121)
 ```
 {
     "userInterface": {
@@ -215,7 +215,12 @@ In this example, Nudge will do the following:
     },
     "osVersionRequirements": [
         {
-            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "aboutUpdateURLs": [
+                {
+                    "_language": "en",
+                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
+                }
+            ],
             "requiredInstallationDate": "2021-02-28T00:00:00Z",
             "requiredMinimumOSVersion": "11.2.1",
             "targetedOSVersions": [
@@ -237,7 +242,20 @@ In this example, Nudge will do the following:
     },
     "osVersionRequirements": [
         {
-            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "aboutUpdateURLs": [
+                {
+                    "_language": "en",
+                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
+                },
+                {
+                    "_language": "es",
+                    "aboutUpdateURL": "https://support.apple.com/es-es/HT211896"
+                },
+                {
+                    "_language": "fr",
+                    "aboutUpdateURL": "https://support.apple.com/fr-fr/HT211896"
+                }
+            ],
             "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
             "requiredInstallationDate": "2021-02-28T00:00:00Z",
             "requiredMinimumOSVersion": "11.2.1",
