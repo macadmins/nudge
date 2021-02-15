@@ -12,7 +12,8 @@
 		0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */; };
 		0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972625CE26CE0019FC8F /* PolicyManager.swift */; };
 		0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */; };
-		5836862725DAD0D90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836862625DAD0D90004514C /* Logger.swift */; };
+		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
+		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
 		636C4B4A25D1BECE0004A791 /* defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* defaults.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
@@ -50,7 +51,8 @@
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972625CE26CE0019FC8F /* PolicyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyManager.swift; sourceTree = "<group>"; };
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
-		5836862625DAD0D90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		5836861325DACFE90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5870FF6825CFE5FA0036D203 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		636C4B4925D1BECE0004A791 /* defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = defaults.swift; sourceTree = "<group>"; };
@@ -146,7 +148,8 @@
 				0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */,
 				0BC9972625CE26CE0019FC8F /* PolicyManager.swift */,
 				636C4B7525D4306A0004A791 /* UILogic.swift */,
-				5836862625DAD0D90004514C /* Logger.swift */,
+				5836861325DACFE90004514C /* Logger.swift */,
+				5836861B25DAD01C0004514C /* SoftwareUpdate.swift */,
 			);
 			path = Nudge;
 			sourceTree = "<group>";
@@ -312,11 +315,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
+				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* defaults.swift in Sources */,
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
-				5836862725DAD0D90004514C /* Logger.swift in Sources */,
+				5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */,
 				63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */,
 				639E198225CD885D008F618B /* nudgePrefs.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */,

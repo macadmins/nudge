@@ -36,6 +36,14 @@ struct HostingWindowFinder: NSViewRepresentable {
 
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSView()
+        
+        // Start downloading updates
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            // List for details as download doesn't show much
+            SU.List()
+            SU.Download()
+        })
+        
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
             print("Delaying initial run by", String(randomDelaySeconds), "seconds...")
