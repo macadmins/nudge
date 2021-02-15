@@ -207,7 +207,7 @@ In this example, Nudge will do the following:
 - Enforce Big Sur version `11.2.1` to the following operating systems
   - 11.0, 11.0.1, 11.1, 11.2
   - an enforcement date of February 28th, 2021
-- The `More Info` button will open up to the [Apple Big Sur release notes](https://support.apple.com/en-us/HT211896)
+- The `More Info` button will open up to [Apple's Big Sur 11.2.1 English release notes](https://support.apple.com/en-us/HT211896#macos1121)
 ```
 {
     "userInterface": {
@@ -215,7 +215,12 @@ In this example, Nudge will do the following:
     },
     "osVersionRequirements": [
         {
-            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "aboutUpdateURLs": [
+                {
+                    "_language": "en",
+                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
+                }
+            ],
             "requiredInstallationDate": "2021-02-28T00:00:00Z",
             "requiredMinimumOSVersion": "11.2.1",
             "targetedOSVersions": [
@@ -237,7 +242,20 @@ In this example, Nudge will do the following:
     },
     "osVersionRequirements": [
         {
-            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "aboutUpdateURLs": [
+                {
+                    "_language": "en",
+                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
+                },
+                {
+                    "_language": "es",
+                    "aboutUpdateURL": "https://support.apple.com/es-es/HT211896"
+                },
+                {
+                    "_language": "fr",
+                    "aboutUpdateURL": "https://support.apple.com/fr-fr/HT211896"
+                }
+            ],
             "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
             "requiredInstallationDate": "2021-02-28T00:00:00Z",
             "requiredMinimumOSVersion": "11.2.1",

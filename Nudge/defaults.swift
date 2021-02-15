@@ -31,7 +31,7 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamd
 let majorUpgradeAppPath = getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
-let aboutUpdateURL = getOSVersionRequirements()?.aboutUpdateURL ?? "https://support.apple.com/en-us/HT201541"
+let aboutUpdateURL = getUpdateURL() ?? ""
 func getOSVersionRequirements() -> OSVersionRequirement? {
     let requirements = nudgePreferences?.osVersionRequirements
     if requirements != nil {
@@ -42,6 +42,21 @@ func getOSVersionRequirements() -> OSVersionRequirement? {
         }
     }
     return nil
+}
+
+func getUpdateURL() -> String? {
+    if Utils().demoModeEnabled() {
+        return "https://support.apple.com/en-us/HT201541"
+    }
+    let updates = getOSVersionRequirements()?.aboutUpdateURLs
+    if updates != nil {
+        for (_, subUpdates) in updates!.enumerated() {
+            if subUpdates.language == language {
+                return subUpdates.aboutUpdateURL ?? ""
+            }
+        }
+    }
+    return ""
 }
 
 // userExperience

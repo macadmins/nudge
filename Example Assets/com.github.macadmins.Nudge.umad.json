@@ -16,7 +16,20 @@
     },
     "osVersionRequirements": [
         {
-            "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+            "aboutUpdateURLs": [
+                {
+                    "_language": "en",
+                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
+                },
+                {
+                    "_language": "es",
+                    "aboutUpdateURL": "https://support.apple.com/es-es/HT211896"
+                },
+                {
+                    "_language": "fr",
+                    "aboutUpdateURL": "https://support.apple.com/fr-fr/HT211896"
+                }
+            ],
             "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
             "requiredInstallationDate": "2021-02-28T00:00:00Z",
             "requiredMinimumOSVersion": "11.2.1",
