@@ -17,7 +17,7 @@ struct Utils {
     }
 
     func bringNudgeToFront() {
-        let msg = "Bringing nudge to front"
+        let msg = "Bringing Nudge to front"
         utilsLog.info("\(msg, privacy: .public)")
         NSApp.activate(ignoringOtherApps: true)
         NSApp.mainWindow?.makeKeyAndOrderFront(self)
@@ -37,6 +37,12 @@ struct Utils {
             uiLog.info("\(msg, privacy: .public)")
         }
         return demoModeArgumentPassed
+    }
+    
+    func exitNudge() {
+        let msg = "User clicked primaryQuitButton"
+        uiLog.info("\(msg, privacy: .public)")
+        AppKit.NSApp.terminate(nil)
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {

@@ -155,6 +155,7 @@ struct Nudge: View {
                             } else {
                                 Button {
                                     hasClickedSecondaryQuitButton = true
+                                    userHasClickedSecondaryQuitButton()
                                 } label: {
                                     Text(secondaryQuitButtonText)
                                 }
@@ -171,7 +172,7 @@ struct Nudge: View {
                         if requireDualQuitButtons {
                             if self.hasClickedSecondaryQuitButton {
                                 Button {
-                                    AppKit.NSApp.terminate(nil)
+                                    Utils().exitNudge()
                                 } label: {
                                     Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
@@ -179,6 +180,7 @@ struct Nudge: View {
                             } else {
                                 Button {
                                     hasClickedSecondaryQuitButton = true
+                                    userHasClickedSecondaryQuitButton()
                                 } label: {
                                     Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
@@ -186,11 +188,12 @@ struct Nudge: View {
                                 .hidden()
                             }
                         } else {
-                            Button(action: {AppKit.NSApp.terminate(nil)}, label: {
+                            Button {
+                                Utils().exitNudge()
+                            } label: {
                                 Text(primaryQuitButtonText)
                                     .frame(minWidth: 35)
-                              }
-                            )
+                            }
                         }
                     }
                 }
@@ -560,6 +563,7 @@ struct Nudge: View {
                                     } else {
                                         Button {
                                             hasClickedSecondaryQuitButton = true
+                                            userHasClickedSecondaryQuitButton()
                                         } label: {
                                             Text(secondaryQuitButtonText)
                                         }
@@ -576,7 +580,7 @@ struct Nudge: View {
                                 if requireDualQuitButtons {
                                     if self.hasClickedSecondaryQuitButton {
                                         Button {
-                                            AppKit.NSApp.terminate(nil)
+                                            Utils().exitNudge()
                                         } label: {
                                             Text(primaryQuitButtonText)
                                                 .frame(minWidth: 35)
@@ -585,6 +589,7 @@ struct Nudge: View {
                                     } else {
                                         Button {
                                             hasClickedSecondaryQuitButton = true
+                                            userHasClickedSecondaryQuitButton()
                                         } label: {
                                             Text(primaryQuitButtonText)
                                                 .frame(minWidth: 35)
@@ -593,7 +598,7 @@ struct Nudge: View {
                                     }
                                 } else {
                                     Button {
-                                        AppKit.NSApp.terminate(nil)
+                                        Utils().exitNudge()
                                     } label: {
                                         Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
