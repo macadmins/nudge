@@ -30,6 +30,10 @@ func nudgeStartLogic() {
                 AppKit.NSApp.terminate(nil)
             }
         }
+    } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
+        let msg = "Device requires a minor update but enforceMinorUpdates is false"
+        uiLog.info("\(msg, privacy: .public)")
+        AppKit.NSApp.terminate(nil)
     }
 }
 
