@@ -46,10 +46,14 @@ struct HostingWindowFinder: NSViewRepresentable {
 
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSView()
+        if Utils().versionArgumentPassed() {
+            print(Utils().getNudgeVersion())
+            AppKit.NSApp.terminate(nil)
+        }
 
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
-            print("Delaying initial run by", String(randomDelaySeconds), "seconds...")
+            uiLog.info("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
             runSoftwareUpdate(delay: randomDelaySeconds)
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(randomDelaySeconds)) { [weak view] in
                 self.callback(view?.window)

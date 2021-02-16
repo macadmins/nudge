@@ -16,6 +16,8 @@
 "Serial Number:" = "Seriennummer:";
 // Architecture
 "Architecture:" = "Architektur:";
+// Nudge Version
+"Version:" = "Ausführung:";
 
 //// Left side of Nudge
 // Current OS Version

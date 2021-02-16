@@ -700,6 +700,7 @@ struct deviceInfo: View {
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
     @State var serialNumber = Utils().getSerialNumber()
     @State var cpuType = Utils().getCPUTypeString()
+    @State var nudgeVersion = Utils().getNudgeVersion()
 
     var body: some View {
         VStack {
@@ -766,10 +767,18 @@ struct deviceInfo: View {
                 Text(language)
                     .foregroundColor(.secondary)
             }
+            
+            // Nudge Version
+            HStack{
+                Text("Version:")
+                Text(self.nudgeVersion)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 1)
 
             Spacer()
         }
-        .frame(width: 350, height: 175)
+        .frame(width: 400, height: 200)
     }
 }
 

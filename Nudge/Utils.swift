@@ -132,6 +132,19 @@ struct Utils {
         utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
     }
+    
+    func getNudgeVersion() -> String {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
+    }
+    
+    func versionArgumentPassed() -> Bool {
+        let versionArgumentPassed = CommandLine.arguments.contains("-version")
+        if versionArgumentPassed {
+            let msg = "-version argument passed"
+            uiLog.info("\(msg, privacy: .public)")
+        }
+        return versionArgumentPassed
+    }
 
     func getNumberOfDaysBetween() -> Int {
        let currentCal = Calendar.current
