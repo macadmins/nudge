@@ -1,0 +1,34 @@
+/* 
+  Localizable.strings
+  Nudge
+
+  Created by Erik Gomez on 2/12/21.
+  
+*/
+
+"Language:" = "Sprache:";
+
+//// Additional Device Information
+"Additional Device Information" = "Weitere Geräteinformationen";
+// Username
+"Username:" = "Benutzername:";
+// Serial Number
+"Serial Number:" = "Seriennummer:";
+// Architecture
+"Architecture:" = "Architektur:";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "Aktuelle Betriebssystemversion:";
+// Required OS Version
+"Required OS Version:" = "Erforderliche Betriebssystemversion:";
+// Days remaining to update
+"Days remaining to update:" = "Verbleibende Tage zur Aktualisierung:";
+// Ignored Count
+"Ignored Count:" = "Ignorierte Aufforderungen:";
+
+// Help buttons
+"Click to close" = "Zum Beenden hier klicken";
+"Click for additional device information" = "Hier klicken, um weitere Geräteinformationen anzuzeigen";
+"Click to zoom into screenshot" = "Hier klicken, um den Screenshot zu vergrößern";
+"Click for more information about the security update" = "Hier klicken, um mehr Informationen über das Sicherheitsupdate zu erhalten";
