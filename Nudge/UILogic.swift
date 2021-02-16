@@ -54,7 +54,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     if noTimers {
         return false
     }
-    
+
     let currentTime = Date().timeIntervalSince1970
     let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
 
@@ -66,14 +66,14 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
         _ = lastRefreshTime = Date()
         return false
     }
-    
+
     if Utils().getTimerController() > timeDiff  {
         return false
     }
-    
+
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
-    
+
     // Don't nudge if major upgrade is frontmostApplication
     if FileManager.default.fileExists(atPath: majorUpgradeAppPath) {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
@@ -82,14 +82,14 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
             return false
         }
     }
-    
+
     // Don't nudge if acceptable apps are frontmostApplication
     if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
         let msg = "acceptableApp is currently the frontmostApplication"
         uiLog.info("\(msg, privacy: .public)")
         return false
     }
-    
+
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
         _ = deferralCount += 1

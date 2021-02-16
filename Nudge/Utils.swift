@@ -22,14 +22,14 @@ struct Utils {
         NSApp.activate(ignoringOtherApps: true)
         NSApp.mainWindow?.makeKeyAndOrderFront(self)
     }
-    
+
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.info("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
         let imageData:NSData = NSData(contentsOf: urlPath as URL)!
         return NSImage(data: imageData as Data)!
     }
-    
+
     func demoModeEnabled() -> Bool {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if demoModeArgumentPassed {
@@ -38,7 +38,7 @@ struct Utils {
         }
         return demoModeArgumentPassed
     }
-    
+
     func exitNudge() {
         let msg = "User clicked primaryQuitButton"
         uiLog.info("\(msg, privacy: .public)")
@@ -53,7 +53,7 @@ struct Utils {
         }
         return forceScreenShotIconMode
     }
-    
+
     func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
         utilsLog.info("Device is fully updated: \(fullyUpdated, privacy: .public)")
@@ -80,7 +80,7 @@ struct Utils {
         if type == -1 {
             return "error in CPU type"
         }
-        
+
         let cpu_arch = type & 0xff // mask for architecture bits
         if cpu_arch == cpu_type_t(7){
             let msg = "CPU Type is Intel"
@@ -96,41 +96,54 @@ struct Utils {
         utilsLog.info("\(msg, privacy: .public)")
         return "unknown"
     }
-    
+
     func getCurrentDate() -> Date {
         Date()
     }
-    
+
     func getJSONUrl() -> String {
         // let jsonURL = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
         let jsonURL = UserDefaults.standard.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
         utilsLog.info("JSON url: \(jsonURL, privacy: .public)")
         return jsonURL
     }
-    
+
     func getInitialDate() -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         return dateFormatter.date(from: "08-06-2020") ?? Date() // <3
     }
-    
+
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
         utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
         return MajorOSVersion
     }
-    
+
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
         utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
         return majorRequiredNudgeOSVersion
     }
-    
+
     func getMinorOSVersion() -> Int {
         let MinorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
         utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
+    }
+    
+    func getNudgeVersion() -> String {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
+    }
+    
+    func versionArgumentPassed() -> Bool {
+        let versionArgumentPassed = CommandLine.arguments.contains("-version")
+        if versionArgumentPassed {
+            let msg = "-version argument passed"
+            uiLog.info("\(msg, privacy: .public)")
+        }
+        return versionArgumentPassed
     }
 
     func getNumberOfDaysBetween() -> Int {
@@ -144,13 +157,13 @@ struct Utils {
     func getNumberOfHoursBetween() -> Int {
         return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
     }
-    
+
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
         utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
         return PatchOSVersion
     }
-    
+
     func getSerialNumber() -> String {
         if Utils().demoModeEnabled() {
                 return "C00000000000"
@@ -158,24 +171,24 @@ struct Utils {
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
         var serialNumber: String? {
             let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice") )
-            
+
             guard platformExpert > 0 else {
                 return nil
             }
-            
+
             guard let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
                 return nil
             }
-            
+
             IOObjectRelease(platformExpert)
 
             utilsLog.info("Serial Number: \(serialNumber, privacy: .public)")
             return serialNumber
         }
-        
+
         return serialNumber ?? ""
     }
-    
+
     func getSystemConsoleUsername() -> String {
         // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
         var uid: uid_t = 0
@@ -184,14 +197,14 @@ struct Utils {
         utilsLog.info("System console username: \(SystemConsoleUsername, privacy: .public)")
         return SystemConsoleUsername
     }
-    
+
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
         // print("Timer Cycle:", String(timerCycle)) // Easy way to debug the timerController logic
         utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
         return timerCycle
     }
-    
+
     func getTimerControllerInt() -> Int {
         if 0 >= getNumberOfHoursBetween() {
             return elapsedRefreshCycle
@@ -212,13 +225,13 @@ struct Utils {
         uiLog.info("\(msg, privacy: .public)")
         NSWorkspace.shared.open(url)
     }
-    
+
     func pastRequiredInstallationDate() -> Bool {
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
         utilsLog.info("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
         return pastRequiredInstallationDate
     }
-    
+
     func requireDualQuitButtons() -> Bool {
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
         uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
@@ -235,7 +248,7 @@ struct Utils {
         utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }
-    
+
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
         if simpleModeEnabled {

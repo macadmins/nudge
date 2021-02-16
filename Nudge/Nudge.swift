@@ -21,14 +21,14 @@ struct Nudge: View {
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
     @State var hasClickedSecondaryQuitButton = false
     @State var deferralCountUI = 0
-    
+
     // Modal view for screenshot and device info
     @State var showSSDetail = false
     @State var showDeviceInfo = false
-    
+
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
-    
+
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
@@ -93,7 +93,7 @@ struct Nudge: View {
                     }
                 }
                 .padding(.vertical, 2)
-                
+
                 // Ignored Count
                 HStack{
                     Text("Ignored Count:")
@@ -108,7 +108,7 @@ struct Nudge: View {
                         }
                 }
                 .padding(.vertical, 2)
-                
+
                 // actionButton
                 Button(action: Utils().updateDevice, label: {
                     Text(actionButtonText)
@@ -117,9 +117,9 @@ struct Nudge: View {
                 )
                 .keyboardShortcut(.defaultAction)
                 .padding(.vertical, 2)
-                
+
                 Spacer()
-                
+
                 // Bottom buttons
                 HStack {
                     // informationButton
@@ -143,7 +143,7 @@ struct Nudge: View {
 
                     // Separate the buttons with a spacer
                     Spacer()
-                    
+
                     if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                         // secondaryQuitButton
                         if requireDualQuitButtons {
@@ -167,7 +167,7 @@ struct Nudge: View {
                             )
                             .hidden()
                         }
-                    
+
                         // primaryQuitButton
                         if requireDualQuitButtons {
                             if self.hasClickedSecondaryQuitButton {
@@ -269,8 +269,8 @@ struct Nudge: View {
                     .padding(.top, 20)
                     .padding(.bottom, 20)
                     .frame(width: 230)
-                    
-                    
+
+
                     // Can only have 10 objects per stack unless you hack it and use groups
                     Group {
                         // Required OS Version
@@ -282,7 +282,7 @@ struct Nudge: View {
                                 .foregroundColor(.secondary)
                                 .fontWeight(.bold)
                         }
-                        
+
                         // Current OS Version
                         HStack{
                             Text("Current OS Version:")
@@ -342,7 +342,7 @@ struct Nudge: View {
                                     NSCursor.pop()
                                 }
                             }
-                            
+
                         }
                         // Force the button to the left with a spacer
                         Spacer()
@@ -351,7 +351,7 @@ struct Nudge: View {
                     .padding(.bottom, 17.5)
                 }
                 .frame(width: 300, height: 450)
-                
+
                 // Vertical Line
                 VStack{
                     Rectangle()
@@ -393,7 +393,7 @@ struct Nudge: View {
                     .padding(.leading, 20.0)
                     .padding(.trailing, 20.0)
                     .frame(width: 550)
-                    
+
                     // I'm kind of impressed with myself
                     Group {
                         VStack(alignment: .leading) {
@@ -423,7 +423,7 @@ struct Nudge: View {
                             .padding(.top, 20.0)
                             .padding(.leading, 20.0)
                             .padding(.trailing, 20.0)
-                            
+
                             // Horizontal line
                             HStack{
                                 Rectangle()
@@ -434,7 +434,7 @@ struct Nudge: View {
                             .padding(.top, 10)
                             .padding(.bottom, 10)
                             .frame(width: 530)
-                            
+
                             // mainContentNote
                             HStack {
                                 Text(mainContentNote)
@@ -445,7 +445,7 @@ struct Nudge: View {
                             }
                             .padding(.leading, 20.0)
                             .padding(.trailing, 20.0)
-                            
+
                             // mainContentText
                             HStack {
                                 VStack {
@@ -551,7 +551,7 @@ struct Nudge: View {
                         HStack {
                             // Separate the buttons with a spacer
                             Spacer()
-                            
+
                             if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                                 // secondaryQuitButton
                                 if requireDualQuitButtons {
@@ -575,7 +575,7 @@ struct Nudge: View {
                                     }
                                     .hidden()
                                 }
-                            
+
                                 // primaryQuitButton
                                 if requireDualQuitButtons {
                                     if self.hasClickedSecondaryQuitButton {
@@ -624,7 +624,7 @@ struct Nudge: View {
 struct screenShotZoom: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    
+
     var body: some View {
         VStack {
             HStack {
@@ -651,7 +651,7 @@ struct screenShotZoom: View {
                 .frame(width: 35, height: 35)
                 Spacer()
             }
-        
+
             HStack {
                 Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
                     if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
@@ -695,12 +695,13 @@ struct screenShotZoom: View {
 struct deviceInfo: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    
+
     // State variables
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
     @State var serialNumber = Utils().getSerialNumber()
     @State var cpuType = Utils().getCPUTypeString()
-    
+    @State var nudgeVersion = Utils().getNudgeVersion()
+
     var body: some View {
         VStack {
             HStack {
@@ -725,10 +726,10 @@ struct deviceInfo: View {
                     }
                 }
                 .frame(width: 35, height: 35)
-                
+
                 Spacer()
             }
-            
+
             // Additional Device Information
             HStack{
                 Text("Additional Device Information")
@@ -759,7 +760,7 @@ struct deviceInfo: View {
                     .foregroundColor(.secondary)
             }
             .padding(.vertical, 1)
-            
+
             // Language
             HStack{
                 Text("Language:")
@@ -767,9 +768,17 @@ struct deviceInfo: View {
                     .foregroundColor(.secondary)
             }
             
+            // Nudge Version
+            HStack{
+                Text("Version:")
+                Text(self.nudgeVersion)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 1)
+
             Spacer()
         }
-        .frame(width: 350, height: 175)
+        .frame(width: 400, height: 200)
     }
 }
 

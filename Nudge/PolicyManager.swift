@@ -19,11 +19,11 @@ class PolicyManager: ObservableObject {
 //    let current: OSVersion
 //    let defaults: UserDefaults
 //    let allowedVersions: [OSVersionRequirement]
-//    
+//
 //    init() throws {
 //        self.current = OSVersion(ProcessInfo().operatingSystemVersion)
 //        self.defaults = .standard
-//        
+//
 //        guard
 //            let versionsDict = defaults.object(forKey: "osVersionRequirement") as? [[String: Any]]
 //        else {
@@ -31,7 +31,7 @@ class PolicyManager: ObservableObject {
 //        }
 //        self.allowedVersions = try versionsDict.map(OSVersionRequirement.init)
 //    }
-//    
+//
 //    init(withVersion: OSVersion) {
 //        self.current = withVersion
 //        self.defaults = .standard // add something different for previews?
@@ -51,7 +51,7 @@ class PolicyManager: ObservableObject {
 //        guard let _v = self[key] else {
 //            throw DefaultsError.missingKey(key)
 //        }
-//        
+//
 //        guard let value = _v as? T else {
 //            throw DefaultsError.wrongKeyType("nudge defaults \(_v) is not \(T.self)")
 //        }

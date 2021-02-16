@@ -25,15 +25,15 @@ class SoftwareUpdate {
             let msg = "Error listing software updates"
             softwareupdateListLog.error("\(msg, privacy: .public)")
         }
-        
+
         task.waitUntilExit()
-        
+
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
         let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
 
         let output = String(decoding: outputData, as: UTF8.self)
         let error = String(decoding: errorData, as: UTF8.self)
-        
+
         if task.terminationStatus != 0 {
             softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
             return error
@@ -41,11 +41,11 @@ class SoftwareUpdate {
             softwareupdateListLog.info("\(output, privacy: .public)")
             return output
         }
-        
+
     }
-    
+
     func Download() {
-        
+
         softwareupdateDownloadLog.info("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
@@ -53,9 +53,9 @@ class SoftwareUpdate {
             softwareupdateListLog.info("\(msg, privacy: .public)")
             return
         }
-        
+
         let softwareupdateList = self.List()
-        
+
         if softwareupdateList.contains("restart") {
             let msg = "Starting softwareupdate download"
             softwareupdateListLog.info("\(msg, privacy: .public)")

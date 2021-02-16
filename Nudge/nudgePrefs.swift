@@ -31,11 +31,11 @@ struct nudgePrefs{
             prefsLog.error("\(msg, privacy: .public)")
             return nil
         }
-        
+
         if Utils().demoModeEnabled() {
             return nil
         }
-        
+
         if FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 let content = try Data(contentsOf: fileURL)
