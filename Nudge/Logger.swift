@@ -20,6 +20,7 @@ let softwareupdateDownloadLog = Logger(subsystem: bundleID, category: "softwareu
 class NudgeLogger {
 
     init() {
-        loggingLog.info("Starting log events, privacy: .public)")
+        let msg = "Starting log events"
+        loggingLog.info("\(msg, privacy: .public)")
     }
 }

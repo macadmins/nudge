@@ -18,15 +18,22 @@ func nudgeStartLogic() {
             return
         } else {
             if Utils().demoModeEnabled() {
-                uiLog.info("Device in demo mode, privacy: .public)")
+                let msg = "Device in demo mode"
+                uiLog.info("\(msg, privacy: .public)")
                 if Utils().simpleModeEnabled() {
-                    uiLog.info("Device in simple mode, privacy: .public)")
+                    let msg = "Device in simple mode"
+                    uiLog.info("\(msg, privacy: .public)")
                 }
             } else {
-                uiLog.info("Current operating system is greater than or equal to required operating system, privacy: .public)")
+                let msg = "Current operating system is greater than or equal to required operating system"
+                uiLog.info("\(msg, privacy: .public)")
                 AppKit.NSApp.terminate(nil)
             }
         }
+    } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
+        let msg = "Device requires a minor update but enforceMinorUpdates is false"
+        uiLog.info("\(msg, privacy: .public)")
+        AppKit.NSApp.terminate(nil)
     }
 }
 
@@ -48,7 +55,8 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
 
     // The first time the main timer contoller hits we don't care
     if !afterFirstRun {
-        uiLog.info("Initilizing nudgeRefreshCycle, privacy: .public)")
+        let msg = "Initilizing nudgeRefreshCycle"
+        uiLog.info("\(msg, privacy: .public)")
         _ = afterFirstRun = true
         _ = lastRefreshTime = Date()
         return false
@@ -64,14 +72,16 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     // Don't nudge if major upgrade is frontmostApplication
     if FileManager.default.fileExists(atPath: majorUpgradeAppPath) {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
-            uiLog.info("majorUpgradeApp is currently the frontmostApplication, privacy: .public)")
+            let msg = "majorUpgradeApp is currently the frontmostApplication"
+            uiLog.info("\(msg, privacy: .public)")
             return false
         }
     }
     
     // Don't nudge if acceptable apps are frontmostApplication
     if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
-        uiLog.info("acceptableApp is currently the frontmostApplication, privacy: .public)")
+        let msg = "acceptableApp is currently the frontmostApplication"
+        uiLog.info("\(msg, privacy: .public)")
         return false
     }
     
@@ -82,7 +92,8 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
         Utils().activateNudge()
         if deferralCountVar > allowedDeferrals  {
             if !hasLoggedDeferralCountPastThreshold {
-                uiLog.info("allowedDeferrals has been passed, privacy: .public)")
+                let msg = "allowedDeferrals has been passed"
+                uiLog.info("\(msg, privacy: .public)")
             }
             _ = hasLoggedDeferralCountPastThreshold = true
             // Loop through all the running applications and hide them

@@ -11,18 +11,20 @@ import SystemConfiguration
 
 struct Utils {
     func activateNudge() {
-        utilsLog.info("Re-activating Nudge, privacy: .public)")
+        let msg = "Re-activating Nudge"
+        utilsLog.info("\(msg, privacy: .public)")
         NSApp.activate(ignoringOtherApps: true)
     }
 
     func bringNudgeToFront() {
-        utilsLog.info("Bringing nudge to front, privacy: .public)")
+        let msg = "Bringing nudge to front"
+        utilsLog.info("\(msg, privacy: .public)")
         NSApp.activate(ignoringOtherApps: true)
         NSApp.mainWindow?.makeKeyAndOrderFront(self)
     }
     
     func createImageData(fileImagePath: String) -> NSImage {
-        utilsLog.info("Creating image path for fileImagePath, privacy: .public)")
+        utilsLog.info("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
         let imageData:NSData = NSData(contentsOf: urlPath as URL)!
         return NSImage(data: imageData as Data)!
@@ -31,7 +33,8 @@ struct Utils {
     func demoModeEnabled() -> Bool {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if demoModeArgumentPassed {
-            uiLog.info("-demo-mode argument passed, privacy: .public)")
+            let msg = "-demo-mode argument passed"
+            uiLog.info("\(msg, privacy: .public)")
         }
         return demoModeArgumentPassed
     }
@@ -39,14 +42,15 @@ struct Utils {
     func forceScreenShotIconModeEnabled() -> Bool {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
         if forceScreenShotIconMode {
-            uiLog.info("-force-screenshot-icon argument passed, privacy: .public)")
+            let msg = "-force-screenshot-icon argument passed"
+            uiLog.info("\(msg, privacy: .public)")
         }
         return forceScreenShotIconMode
     }
     
     func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-        utilsLog.info("Device is fully updated: \(fullyUpdated), privacy: .public)")
+        utilsLog.info("Device is fully updated: \(fullyUpdated, privacy: .public)")
         return fullyUpdated
     }
 
@@ -73,14 +77,17 @@ struct Utils {
         
         let cpu_arch = type & 0xff // mask for architecture bits
         if cpu_arch == cpu_type_t(7){
-            utilsLog.info("CPU Type is Intel, privacy: .public)")
+            let msg = "CPU Type is Intel"
+            utilsLog.info("\(msg, privacy: .public)")
             return "Intel"
         }
         if cpu_arch == cpu_type_t(12){
-            utilsLog.info("CPU Type is Apple Silicon, privacy: .public)")
+            let msg = "CPU Type is Apple Silicon"
+            utilsLog.info("\(msg, privacy: .public)")
             return "Apple Silicon"
         }
-        utilsLog.error("Unknown CPU Type, privacy: .public)")
+        let msg = "Unknown CPU Type"
+        utilsLog.info("\(msg, privacy: .public)")
         return "unknown"
     }
     
@@ -195,7 +202,8 @@ struct Utils {
         guard let url = URL(string: aboutUpdateURL) else {
             return
         }
-        uiLog.info("User clicked moreInfo button, privacy: .public)")
+        let msg = "User clicked moreInfo button"
+        uiLog.info("\(msg, privacy: .public)")
         NSWorkspace.shared.open(url)
     }
     
@@ -213,7 +221,8 @@ struct Utils {
 
     func requireMajorUpgrade() -> Bool {
         if requiredMinimumOSVersion == "0.0" {
-            utilsLog.info("Device requireMajorUpgrade: false, privacy: .public)")
+            let msg = "Device requireMajorUpgrade: false"
+            utilsLog.info("\(msg, privacy: .public)")
             return false
         }
         let requireMajorUpdate = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
@@ -224,7 +233,8 @@ struct Utils {
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
         if simpleModeEnabled {
-            uiLog.info("-simple-mode argument passed, privacy: .public)")
+            let msg = "-simple-mode argument passed"
+            uiLog.info("\(msg, privacy: .public)")
         }
         return simpleModeEnabled
     }

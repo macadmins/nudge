@@ -27,7 +27,8 @@ struct nudgePrefs{
         }
 
         guard let fileURL = URL(string: url) else {
-            prefsLog.error("Could not find on-disk json, privacy: .public)")
+            let msg = "Could not find on-disk json"
+            prefsLog.error("\(msg, privacy: .public)")
             return nil
         }
         

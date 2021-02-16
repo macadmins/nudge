@@ -22,7 +22,8 @@ class SoftwareUpdate {
         do {
             try task.run()
         } catch {
-            softwareupdateListLog.error("Error listing software updates, privacy: .public)")
+            let msg = "Error listing software updates"
+            softwareupdateListLog.error("\(msg, privacy: .public)")
         }
         
         task.waitUntilExit()
@@ -44,21 +45,20 @@ class SoftwareUpdate {
     }
     
     func Download() {
-        softwareupdateDownloadLog.info("enforceMinorUpdates: \(enforceMinorUpdates), privacy: .public)")
-
-        if !enforceMinorUpdates {
-            return
-        }
+        
+        softwareupdateDownloadLog.info("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
-            softwareupdateDownloadLog.info("Apple Silicon devices do not support automated softwareupdate calls. Please use MDM., privacy: .public)")
+            let msg = "Apple Silicon devices do not support automated softwareupdate calls. Please use MDM."
+            softwareupdateListLog.info("\(msg, privacy: .public)")
             return
         }
         
         let softwareupdateList = self.List()
         
         if softwareupdateList.contains("restart") {
-            softwareupdateDownloadLog.info("Starting softwareupdate download, privacy: .public)")
+            let msg = "Starting softwareupdate download"
+            softwareupdateListLog.info("\(msg, privacy: .public)")
             let task = Process()
             task.launchPath = "/usr/sbin/softwareupdate"
             task.arguments = ["--download", "--all"]
@@ -72,7 +72,8 @@ class SoftwareUpdate {
             do {
                 try task.run()
             } catch {
-                softwareupdateDownloadLog.error("Error downloading software updates, privacy: .public)")
+                let msg = "Error downloading software updates"
+                softwareupdateListLog.error("\(msg, privacy: .public)")
             }
 
             let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
@@ -83,6 +84,9 @@ class SoftwareUpdate {
 
             softwareupdateDownloadLog.info("\(output, privacy: .public)")
             softwareupdateDownloadLog.error("\(error, privacy: .public)")
+        } else {
+            let msg = "softwareupdate did not find any available updates"
+            softwareupdateListLog.info("\(msg, privacy: .public)")
         }
     }
 }
