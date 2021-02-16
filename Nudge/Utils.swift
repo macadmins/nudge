@@ -24,8 +24,7 @@ struct Utils {
     }
     
     func createImageData(fileImagePath: String) -> NSImage {
-        let msg = "Creating image path for fileImagePath"
-        utilsLog.info("\(msg, privacy: .public)")
+        utilsLog.info("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
         let imageData:NSData = NSData(contentsOf: urlPath as URL)!
         return NSImage(data: imageData as Data)!
