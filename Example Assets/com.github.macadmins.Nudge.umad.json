@@ -30,6 +30,10 @@
                 {
                     "_language": "fr",
                     "aboutUpdateURL": "https://support.apple.com/fr-fr/HT211896"
+                },
+                {
+                    "_language": "de",
+                    "aboutUpdateURL": "https://support.apple.com/de-de/HT211896"
                 }
             ],
             "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
@@ -120,6 +124,19 @@
                 "primaryQuitButtonText": "Plus tard",
                 "secondaryQuitButtonText": "Je comprends",
                 "subHeader": "Un rappel amical de votre équipe informatique locale"
+            },
+            {
+                "_language": "de",
+                "actionButtonText": "Gerät aktualisieren",
+                "informationButtonText": "Mehr Informationen",
+                "mainContentHeader": "Ihr Gerät wird während dieses Updates neu gestartet",
+                "mainContentNote": "Wichtige Hinweise",
+                "mainContentSubHeader": "Aktualisierungen können ca. 30 Minuten dauern.",
+                "mainContentText": "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.\n\nWenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.\n\nUm das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.",
+                "mainHeader": "Ihr Gerät benötigt ein Sicherheitsupdate",
+                "primaryQuitButtonText": "Später",
+                "secondaryQuitButtonText": "Ich verstehe",
+                "subHeader": "Eine freundliche Erinnerung von Ihrem IT-Team"
             }
         ]
     }

@@ -48,6 +48,7 @@
 /* Begin PBXFileReference section */
 		0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.umad.json; sourceTree = "<group>"; };
 		035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.json; sourceTree = "<group>"; };
+		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972625CE26CE0019FC8F /* PolicyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyManager.swift; sourceTree = "<group>"; };
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
@@ -267,6 +268,7 @@
 				en,
 				fr,
 				es,
+				de,
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -367,6 +369,7 @@
 				5870FF6325CFE5EC0036D203 /* en */,
 				5870FF6825CFE5FA0036D203 /* fr */,
 				63B6FDBF25D785010038E81C /* es */,
+				068D23D025DC27EA00FE05A5 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -497,11 +500,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Nudge/Nudge.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 0.0.2;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WQ28ZDJ49Y;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Nudge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -524,11 +527,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Nudge/Nudge.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 0.0.2;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WQ28ZDJ49Y;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Nudge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
