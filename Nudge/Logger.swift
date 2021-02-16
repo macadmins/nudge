@@ -14,6 +14,8 @@ let osLog = Logger(subsystem: bundleID, category: "operating-system")
 let loggingLog = Logger(subsystem: bundleID, category: "logging")
 let prefsLog = Logger(subsystem: bundleID, category: "preferences")
 let uiLog = Logger(subsystem: bundleID, category: "user-interface")
+let softwareupdateListLog = Logger(subsystem: bundleID, category: "softwareupdate-list")
+let softwareupdateDownloadLog = Logger(subsystem: bundleID, category: "softwareupdate-download")
 
 class NudgeLogger {
 

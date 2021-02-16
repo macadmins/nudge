@@ -46,7 +46,7 @@ struct Utils {
     
     func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-        utilsLog.info("Device is fulled updated: \(fullyUpdated), privacy: .public)")
+        utilsLog.info("Device is fully updated: \(fullyUpdated), privacy: .public)")
         return fullyUpdated
     }
 

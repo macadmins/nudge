@@ -101,7 +101,7 @@ extension NudgePreferences {
 
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
-    var attemptToFetchMajorUpgrade, enableUMAD: Bool?
+    var asyncronousSoftwareUpdate, attemptToFetchMajorUpgrade, enforceMinorUpdates, enableUMAD: Bool?
     var umadFeatures: UmadFeatures?
 }
 
@@ -124,12 +124,16 @@ extension OptionalFeatures {
     }
 
     func with(
+        asyncronousSoftwareUpdate: Bool?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
+        enforceMinorUpdates: Bool?? = nil,
         enableUMAD: Bool?? = nil,
         umadFeatures: UmadFeatures?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
+            asyncronousSoftwareUpdate: asyncronousSoftwareUpdate ?? self.asyncronousSoftwareUpdate,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
+            enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
             enableUMAD: enableUMAD ?? self.enableUMAD,
             umadFeatures: umadFeatures ?? self.umadFeatures
         )

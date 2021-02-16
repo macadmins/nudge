@@ -1,6 +1,8 @@
 {
     "optionalFeatures": {
+        "asyncronousSoftwareUpdate": true,
         "attemptToFetchMajorUpgrade": true,
+        "enforceMinorUpdates": true
         "enableUMAD": false,
         "umadFeatures": {
             "alwaysShowManulEnrollment": false,
