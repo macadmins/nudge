@@ -84,6 +84,9 @@ class SoftwareUpdate {
 
             softwareupdateDownloadLog.info("\(output, privacy: .public)")
             softwareupdateDownloadLog.error("\(error, privacy: .public)")
+        } else {
+            let msg = "softwareupdate did not find any available updates"
+            softwareupdateListLog.info("\(msg, privacy: .public)")
         }
     }
 }
