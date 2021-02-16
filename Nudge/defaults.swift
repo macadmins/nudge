@@ -13,6 +13,7 @@ import Foundation
 let nudgePreferences = nudgePrefs().loadNudgePrefs()
 
 // optionalFeatures
+let asyncronousSoftwareUpdate = nudgePreferences?.optionalFeatures?.asyncronousSoftwareUpdate ?? true
 let attemptToFetchMajorUpgrade = nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
 let enforceMinorUpdates = nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 
