@@ -33,7 +33,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct HostingWindowFinder: NSViewRepresentable {
     var callback: (NSWindow?) -> ()
-    
+
     func runSoftwareUpdate(delay: Int) {
         if asyncronousSoftwareUpdate {
             DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now() + Double(delay), execute: {
