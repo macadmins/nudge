@@ -44,6 +44,11 @@ var afterFirstRun = false
 var deferralCount = 0
 var hasLoggedDeferralCountPastThreshold = false
 
+func userHasClickedSecondaryQuitButton() {
+    let msg = "User clicked secondaryQuitButton"
+    uiLog.info("\(msg, privacy: .public)")
+}
+
 func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
     // If noTimers is true, just bail
     if noTimers {
