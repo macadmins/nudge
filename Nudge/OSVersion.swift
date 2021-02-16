@@ -5,32 +5,32 @@ public struct OSVersion {
     public var major: Int
     public var minor: Int
     public var patch: Int
-    
+
     public enum ParseError: Error {
         case badFormat(_ reason: String)
     }
-    
+
     // Creates an OSVersion by providing all the parts.
     public init(major: Int, minor: Int, patch: Int) {
         self.major = major
         self.minor = minor
         self.patch = patch
     }
-    
+
     // Creates an OSVersion by converting the built-in OperatingSystemVersion.
     public init(_ version: OperatingSystemVersion) {
         self.major = version.majorVersion
         self.minor = version.minorVersion
         self.patch = version.patchVersion
     }
-    
+
     // Creates an OSVersion by parsing a string like "11.2".
     public init(_ string: String) throws {
         let parts = string.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 2 || parts.count == 3 else {
             throw ParseError.badFormat("Input \(string) must have either 2 or 3 parts, got \(parts.count).")
         }
-        
+
         guard
             let major = Int(parts[0]),
             let minor = Int(parts[1]),
