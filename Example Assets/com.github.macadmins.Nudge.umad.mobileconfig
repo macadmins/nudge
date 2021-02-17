@@ -46,7 +46,7 @@
                     <key>mdmProfileIdentifier</key>
                     <string>com.example.mdm.profile</string>
                     <key>mdmRequiredInstallationDate</key>
-                    <string>2021-02-28T00:00:00Z</string>
+                    <date>2021-02-28T00:00:00Z</date>
                     <key>uamdmScreenShotPath</key>
                     <string>/somewhere/uamdmScreenShot.jpg</string>
                 </dict>
@@ -84,7 +84,7 @@
                     <key>majorUpgradeAppPath</key>
                     <string>/Applications/Install macOS Big Sur.app</string>
                     <key>requiredInstallationDate</key>
-                    <string>2021-02-28T00:00:00Z</string>
+                    <date>2021-02-28T00:00:00Z</date>
                     <key>requiredMinimumOSVersion</key>
                     <string>11.2.1</string>
                     <key>targetedOSVersions</key>
