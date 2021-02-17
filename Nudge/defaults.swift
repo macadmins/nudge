@@ -87,6 +87,7 @@ let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? n
 let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? nudgePreferences?.userExperience?.randomDelay ?? false
 
 // userInterface
+let userInterfaceProfile = nudgeDefaults.dictionary(forKey: "userInterface")
 func getuserInterface() -> Element? {
     let updateElements = nudgePreferences?.userInterface?.updateElements
     if updateElements != nil {
@@ -110,19 +111,19 @@ func forceScreenShotIconMode() -> Bool {
     if Utils().forceScreenShotIconModeEnabled() {
         return true
     } else {
-        return nudgePreferences?.userInterface?.forceScreenShotIcon ?? false
+        return userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgePreferences?.userInterface?.forceScreenShotIcon ?? false
     }
 }
-let iconDarkPath = nudgePreferences?.userInterface?.iconDarkPath ?? ""
-let iconLightPath = nudgePreferences?.userInterface?.iconLightPath ?? ""
+let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? nudgePreferences?.userInterface?.iconDarkPath ?? ""
+let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? nudgePreferences?.userInterface?.iconLightPath ?? ""
 let informationButtonText = getuserInterface()?.informationButtonText ?? "More Info"
 let mainContentHeader = getuserInterface()?.mainContentHeader ?? "Your device will restart during this update"
 let mainContentNote = getuserInterface()?.mainContentNote ?? "Important Notes"
 let mainContentSubHeader = getuserInterface()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
 let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
 let primaryQuitButtonText = getuserInterface()?.primaryQuitButtonText ?? "Later"
-let screenShotDarkPath = nudgePreferences?.userInterface?.screenShotDarkPath ?? ""
-let screenShotLightPath = nudgePreferences?.userInterface?.screenShotLightPath ?? ""
+let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? nudgePreferences?.userInterface?.screenShotDarkPath ?? ""
+let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? nudgePreferences?.userInterface?.screenShotLightPath ?? ""
 let secondaryQuitButtonText = getuserInterface()?.secondaryQuitButtonText ?? "I understand"
 func simpleMode() -> Bool {
     if Utils().simpleModeEnabled() {
