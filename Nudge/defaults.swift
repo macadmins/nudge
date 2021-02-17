@@ -56,9 +56,8 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
 }
 
 func getOSVersionRequirements() -> OSVersionRequirement? {
-    let requirements = nudgePreferences?.osVersionRequirements
-    if requirements != nil {
-        for (_ , subPreferences) in requirements!.enumerated() {
+    if let requirements = nudgePreferences?.osVersionRequirements {
+        for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersions?.contains(OSVersion(ProcessInfo().operatingSystemVersion).description) == true {
                 return subPreferences
             }
