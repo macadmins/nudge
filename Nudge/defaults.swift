@@ -14,9 +14,10 @@ let nudgePreferences = nudgePrefs().loadNudgePrefs()
 let nudgeDefaults = UserDefaults.standard
 
 // optionalFeatures
-let asyncronousSoftwareUpdate = nudgeDefaults.object(forKey: "asyncronousSoftwareUpdate") as? Bool ?? nudgePreferences?.optionalFeatures?.asyncronousSoftwareUpdate ?? true
-let attemptToFetchMajorUpgrade = nudgeDefaults.object(forKey: "attemptToFetchMajorUpgrade") as? Bool ?? nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
-let enforceMinorUpdates = nudgeDefaults.object(forKey: "enforceMinorUpdates") as? Bool ?? nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
+let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures")
+let asyncronousSoftwareUpdate = optionalFeatures?["asyncronousSoftwareUpdate"] as? Bool ?? nudgePreferences?.optionalFeatures?.asyncronousSoftwareUpdate ?? true
+let attemptToFetchMajorUpgrade = optionalFeatures?["attemptToFetchMajorUpgrade"] as? Bool ?? nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
+let enforceMinorUpdates = optionalFeatures?["enforceMinorUpdates"] as? Bool ?? nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 
 // optionalFeatures - MDM
 let alwaysShowManualEnerllment = nudgePreferences?.optionalFeatures?.umadFeatures?.alwaysShowManulEnrollment ?? false
