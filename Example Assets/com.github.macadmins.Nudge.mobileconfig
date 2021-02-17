@@ -132,9 +132,9 @@
                         <key>mainContentText</key>
                         <string>A fully up-to-date device is required to ensure that IT can accurately protect your device.
 
-        If you do not update your device, you may lose access to some items necessary for your day-to-day tasks.
+If you do not update your device, you may lose access to some items necessary for your day-to-day tasks.
 
-        To begin the update, simply click on the Update Device button and follow the provided steps.</string>
+To begin the update, simply click on the Update Device button and follow the provided steps.</string>
                         <key>mainHeader</key>
                         <string>Your device requires a security update</string>
                         <key>primaryQuitButtonText</key>
@@ -160,9 +160,9 @@
                         <key>mainContentText</key>
                         <string>Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.
 
-        Si no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.
+Si no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.
 
-        Para comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.</string>
+Para comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.</string>
                         <key>mainHeader</key>
                         <string>Tu dispositivo requiere una actualización de seguridad</string>
                         <key>primaryQuitButtonText</key>
@@ -188,9 +188,9 @@
                         <key>mainContentText</key>
                         <string>Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.
 
-        Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.
+Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.
 
-        Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.</string>
+Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.</string>
                         <key>mainHeader</key>
                         <string>Votre appareil nécessite une mise à jour de sécurité</string>
                         <key>primaryQuitButtonText</key>
@@ -216,9 +216,9 @@
                         <key>mainContentText</key>
                         <string>Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.
 
-        Wenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.
+Wenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.
 
-        Um das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.</string>
+Um das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.</string>
                         <key>mainHeader</key>
                         <string>Ihr Gerät benötigt ein Sicherheitsupdate</string>
                         <key>primaryQuitButtonText</key>
