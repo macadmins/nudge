@@ -223,6 +223,14 @@ struct OSVersionRequirement: Codable {
 // MARK: OSVersionRequirement convenience initializers and mutators
 
 extension OSVersionRequirement {
+    init(fromDictionary: [String:AnyObject]) {
+        self.aboutUpdateURLs = fromDictionary["aboutUpdateURLs"] as? [AboutUpdateURL]
+        self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
+        self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
+        self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
+        self.targetedOSVersions = fromDictionary["targetedOSVersions"] as? [String]
+    }
+
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OSVersionRequirement.self, from: data)
     }

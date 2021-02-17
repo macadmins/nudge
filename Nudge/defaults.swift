@@ -32,10 +32,28 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamd
 
 // osVersionRequirements
 // This is in a list that could expand so we need to treat it differently
-let majorUpgradeAppPath = getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
-let requiredInstallationDate = getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
-let requiredMinimumOSVersion = getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
+let majorUpgradeAppPath = getOSVersionRequirementsProfile()?.majorUpgradeAppPath ?? getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
+let requiredInstallationDate = getOSVersionRequirementsProfile()?.requiredInstallationDate ?? getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+let requiredMinimumOSVersion = getOSVersionRequirementsProfile()?.requiredMinimumOSVersion ?? getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
 let aboutUpdateURL = getUpdateURL() ?? ""
+
+func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
+    var requirements = [OSVersionRequirement]()
+    if let osRequirements = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]] {
+        for item in osRequirements {
+            requirements.append(OSVersionRequirement(fromDictionary: item))
+        }
+    }
+    if !requirements.isEmpty {
+        for (_ , subPreferences) in requirements.enumerated() {
+            if subPreferences.targetedOSVersions?.contains(OSVersion(ProcessInfo().operatingSystemVersion).description) == true {
+                return subPreferences
+            }
+        }
+    }
+    return nil
+}
+
 func getOSVersionRequirements() -> OSVersionRequirement? {
     let requirements = nudgePreferences?.osVersionRequirements
     if requirements != nil {
@@ -52,7 +70,7 @@ func getUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
-    let updates = getOSVersionRequirements()?.aboutUpdateURLs
+    let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirements()?.aboutUpdateURLs
     if updates != nil {
         for (_, subUpdates) in updates!.enumerated() {
             if subUpdates.language == language {
