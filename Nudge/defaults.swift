@@ -12,6 +12,7 @@ import Foundation
 
 let nudgePreferences = nudgePrefs().loadNudgePrefs()
 let nudgeDefaults = UserDefaults.standard
+let language = NSLocale.current.languageCode!
 
 // optionalFeatures
 let optionalFeaturesProfile = nudgeDefaults.dictionary(forKey: "optionalFeatures")
@@ -70,21 +71,21 @@ func getUpdateURL() -> String? {
 }
 
 // userExperience
-let allowedDeferrals = nudgePreferences?.userExperience?.allowedDeferrals ?? 1000000
-let allowedDeferralsUntilForcedSecondaryQuitButton = nudgePreferences?.userExperience?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
-let approachingRefreshCycle = nudgePreferences?.userExperience?.approachingRefreshCycle ?? 6000
-let approachingWindowTime = nudgePreferences?.userExperience?.approachingWindowTime ?? 72
-let elapsedRefreshCycle = nudgePreferences?.userExperience?.elapsedRefreshCycle ?? 300
-let imminentRefreshCycle = nudgePreferences?.userExperience?.imminentRefeshCycle ?? 600
-let imminentWindowTime = nudgePreferences?.userExperience?.imminentWindowTime ?? 24
-let initialRefreshCycle = nudgePreferences?.userExperience?.initialRefreshCycle ?? 18000
-let maxRandomDelayInSeconds = nudgePreferences?.userExperience?.maxRandomDelayInSeconds ?? 1200
-let noTimers = nudgePreferences?.userExperience?.noTimers ?? false
-let nudgeRefreshCycle = nudgePreferences?.userExperience?.nudgeRefreshCycle ?? 60
-let randomDelay = nudgePreferences?.userExperience?.randomDelay ?? false
+let userExperienceProfile = nudgeDefaults.dictionary(forKey: "userExperience")
+let allowedDeferrals = userExperienceProfile?["allowedDeferrals"] as? Int ?? nudgePreferences?.userExperience?.allowedDeferrals ?? 1000000
+let allowedDeferralsUntilForcedSecondaryQuitButton = userExperienceProfile?["allowedDeferralsUntilForcedSecondaryQuitButton"] as? Int ?? nudgePreferences?.userExperience?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
+let approachingRefreshCycle = userExperienceProfile?["approachingRefreshCycle"] as? Int ?? nudgePreferences?.userExperience?.approachingRefreshCycle ?? 6000
+let approachingWindowTime = userExperienceProfile?["approachingWindowTime"] as? Int ?? nudgePreferences?.userExperience?.approachingWindowTime ?? 72
+let elapsedRefreshCycle = userExperienceProfile?["elapsedRefreshCycle"] as? Int ?? nudgePreferences?.userExperience?.elapsedRefreshCycle ?? 300
+let imminentRefreshCycle = userExperienceProfile?["imminentRefreshCycle"] as? Int ?? nudgePreferences?.userExperience?.imminentRefeshCycle ?? 600
+let imminentWindowTime = userExperienceProfile?["imminentWindowTime"] as? Int ?? nudgePreferences?.userExperience?.imminentWindowTime ?? 24
+let initialRefreshCycle = userExperienceProfile?["initialRefreshCycle"] as? Int ?? nudgePreferences?.userExperience?.initialRefreshCycle ?? 18000
+let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] as? Int ?? nudgePreferences?.userExperience?.maxRandomDelayInSeconds ?? 1200
+let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? nudgePreferences?.userExperience?.noTimers ?? false
+let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? nudgePreferences?.userExperience?.nudgeRefreshCycle ?? 60
+let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? nudgePreferences?.userExperience?.randomDelay ?? false
 
 // userInterface
-let language = NSLocale.current.languageCode!
 func getuserInterface() -> Element? {
     let updateElements = nudgePreferences?.userInterface?.updateElements
     if updateElements != nil {
