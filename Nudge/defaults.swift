@@ -19,18 +19,6 @@ let asyncronousSoftwareUpdate = optionalFeaturesProfile?["asyncronousSoftwareUpd
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? nudgePreferences?.optionalFeatures?.attemptToFetchMajorUpgrade ?? false
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 
-// optionalFeatures - UMAD
-// TODO: Profile support
-let alwaysShowManualEnerllment = nudgePreferences?.optionalFeatures?.umadFeatures?.alwaysShowManulEnrollment ?? false
-let depScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.depScreenShotPath ?? ""
-let disableManualEnrollmentForDEP = nudgePreferences?.optionalFeatures?.umadFeatures?.disableManualEnrollmentForDEP ?? false
-let enforceMDMInstallation = nudgePreferences?.optionalFeatures?.umadFeatures?.enforceMDMInstallation ?? false
-let manulEnrollmentPath = nudgePreferences?.optionalFeatures?.umadFeatures?.manualEnrollmentPath ?? "https://apple.com"
-let mdmInformationButtonPath = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmInformationButtonPath ??  "https://github.com/macadmins/umad"
-let mdmProfileIdentifier = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmProfileIdentifier ?? "com.example.mdm.profile"
-let mdmRequiredInstallationDate = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmRequiredInstallationDate ?? Date(timeIntervalSince1970: 0)
-let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamdmScreenShotPath ?? ""
-
 // osVersionRequirements
 // This is in a list that could expand so we need to treat it differently
 let majorUpgradeAppPath = getOSVersionRequirementsProfile()?.majorUpgradeAppPath ?? getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
@@ -142,7 +130,27 @@ func simpleMode() -> Bool {
 }
 let subHeader = getuserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
 
-// userInterface - MDM
+// Other important defaults
+let acceptableApps = [
+    "com.apple.loginwindow",
+    "com.apple.systempreferences"
+]
+
+// UMAD
+// optionalFeatures - UMAD
+// TODO: Profile support - not needed for now
+let alwaysShowManualEnerllment = nudgePreferences?.optionalFeatures?.umadFeatures?.alwaysShowManulEnrollment ?? false
+let depScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.depScreenShotPath ?? ""
+let disableManualEnrollmentForDEP = nudgePreferences?.optionalFeatures?.umadFeatures?.disableManualEnrollmentForDEP ?? false
+let enforceMDMInstallation = nudgePreferences?.optionalFeatures?.umadFeatures?.enforceMDMInstallation ?? false
+let manulEnrollmentPath = nudgePreferences?.optionalFeatures?.umadFeatures?.manualEnrollmentPath ?? "https://apple.com"
+let mdmInformationButtonPath = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmInformationButtonPath ??  "https://github.com/macadmins/umad"
+let mdmProfileIdentifier = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmProfileIdentifier ?? "com.example.mdm.profile"
+let mdmRequiredInstallationDate = nudgePreferences?.optionalFeatures?.umadFeatures?.mdmRequiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamdmScreenShotPath ?? ""
+
+// userInterface - UMAD
+// TODO: Profile support - not needed for now
 func getMDMUserInterface() -> Element? {
     let updateElements = nudgePreferences?.userInterface?.umadElements
     if updateElements != nil {
@@ -166,9 +174,3 @@ let mdmMainHeader = getMDMUserInterface()?.mainHeader ?? "Your device requires m
 let mdmPrimaryQuitButtonText = getMDMUserInterface()?.primaryQuitButtonText ?? "Later"
 let mdmSecondaryQuitButtonText = getMDMUserInterface()?.secondaryQuitButtonText ?? "I understand"
 let mdmSubHeader = getMDMUserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
-
-// Other important defaults
-let acceptableApps = [
-    "com.apple.loginwindow",
-    "com.apple.systempreferences"
-]
