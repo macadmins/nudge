@@ -224,7 +224,16 @@ struct OSVersionRequirement: Codable {
 
 extension OSVersionRequirement {
     init(fromDictionary: [String:AnyObject]) {
-        self.aboutUpdateURLs = fromDictionary["aboutUpdateURLs"] as? [AboutUpdateURL]
+        // Thanks again mactroll
+        var generatedAboutUpdateURLs = [AboutUpdateURL]()
+        if let aboutURLs = fromDictionary["aboutUpdateURLs"] as? [[String:String]] {
+            for each in aboutURLs {
+                if let language = each["_language"], let url = each["aboutUpdateURL"] {
+                    generatedAboutUpdateURLs.append(AboutUpdateURL(language: language, aboutUpdateURL: url))
+                }
+            }
+        }
+        self.aboutUpdateURLs = generatedAboutUpdateURLs
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String

@@ -36,7 +36,7 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamd
 let majorUpgradeAppPath = getOSVersionRequirementsProfile()?.majorUpgradeAppPath ?? getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = getOSVersionRequirementsProfile()?.requiredInstallationDate ?? getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = getOSVersionRequirementsProfile()?.requiredMinimumOSVersion ?? getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
-let aboutUpdateURL = getUpdateURL() ?? "" // TODO: fix this
+let aboutUpdateURL = getUpdateURL() ?? ""
 
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     var requirements = [OSVersionRequirement]()
@@ -71,9 +71,8 @@ func getUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
-    let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirements()?.aboutUpdateURLs
-    if updates != nil {
-        for (_, subUpdates) in updates!.enumerated() {
+    if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirements()?.aboutUpdateURLs {
+        for (_, subUpdates) in updates.enumerated() {
             if subUpdates.language == language {
                 return subUpdates.aboutUpdateURL ?? ""
             }
