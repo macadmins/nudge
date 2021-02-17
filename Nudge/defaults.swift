@@ -56,6 +56,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     return nil
 }
 
+// Function to compare current language against the available updateURLs
 func getUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
