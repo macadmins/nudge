@@ -6,14 +6,14 @@
         "enableUMAD": false,
         "umadFeatures": {
             "alwaysShowManulEnrollment": false,
-            "depScreenShotPath": "/somewhere/depScreenShot.jpg",
+            "depScreenShotPath": "/somewhere/depScreenShot.png",
             "disableManualEnrollmentForDEP": false,
             "enforceMDMInstallation": false,
             "manualEnrollmentPath": "https://apple.com",
             "mdmInformationButtonPath": "https://github.com/macadmins/umad",
             "mdmProfileIdentifier": "com.example.mdm.profile",
             "mdmRequiredInstallationDate": "2021-02-28T00:00:00Z",
-            "uamdmScreenShotPath": "/somewhere/uamdmScreenShot.jpg"
+            "uamdmScreenShotPath": "/somewhere/uamdmScreenShot.png"
         }
     },
     "osVersionRequirements": [
@@ -65,8 +65,8 @@
         "forceScreenShotIcon": false,
         "iconDarkPath": "/somewhere/logoDark.png",
         "iconLightPath": "/somewhere/logoLight.png",
-        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
-        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
+        "screenShotDarkPath": "/somewhere/screenShotDark.png",
+        "screenShotLightPath": "/somewhere/screenShotLight.png",
         "simpleMode": false,
         "umadElements": [
             {

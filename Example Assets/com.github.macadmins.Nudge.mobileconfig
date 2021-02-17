@@ -109,9 +109,9 @@
                 <key>iconLightPath</key>
                 <string>/somewhere/logoLight.png</string>
                 <key>screenShotDarkPath</key>
-                <string>/somewhere/screenShotDark.jpg</string>
+                <string>/somewhere/screenShotDark.png</string>
                 <key>screenShotLightPath</key>
-                <string>/somewhere/screenShotLight.jpg</string>
+                <string>/somewhere/screenShotLight.png</string>
                 <key>simpleMode</key>
                 <false/>
                 <key>updateElements</key>

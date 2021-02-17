@@ -34,7 +34,7 @@
                     <key>alwaysShowManulEnrollment</key>
                     <false/>
                     <key>depScreenShotPath</key>
-                    <string>/somewhere/depScreenShot.jpg</string>
+                    <string>/somewhere/depScreenShot.png</string>
                     <key>disableManualEnrollmentForDEP</key>
                     <false/>
                     <key>enforceMDMInstallation</key>
@@ -48,7 +48,7 @@
                     <key>mdmRequiredInstallationDate</key>
                     <date>2021-02-28T00:00:00Z</date>
                     <key>uamdmScreenShotPath</key>
-                    <string>/somewhere/uamdmScreenShot.jpg</string>
+                    <string>/somewhere/uamdmScreenShot.png</string>
                 </dict>
             </dict>
             <key>osVersionRequirements</key>
@@ -132,9 +132,9 @@
                 <key>iconLightPath</key>
                 <string>/somewhere/logoLight.png</string>
                 <key>screenShotDarkPath</key>
-                <string>/somewhere/screenShotDark.jpg</string>
+                <string>/somewhere/screenShotDark.png</string>
                 <key>screenShotLightPath</key>
-                <string>/somewhere/screenShotLight.jpg</string>
+                <string>/somewhere/screenShotLight.png</string>
                 <key>simpleMode</key>
                 <false/>
                 <key>umadElements</key>
