@@ -20,12 +20,12 @@ let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUp
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? nudgePreferences?.optionalFeatures?.enforceMinorUpdates ?? true
 
 // osVersionRequirements
-// This is in a list that could expand so we need to treat it differently
-let majorUpgradeAppPath = getOSVersionRequirementsProfile()?.majorUpgradeAppPath ?? getOSVersionRequirements()?.majorUpgradeAppPath ?? ""
-let requiredInstallationDate = getOSVersionRequirementsProfile()?.requiredInstallationDate ?? getOSVersionRequirements()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
-let requiredMinimumOSVersion = getOSVersionRequirementsProfile()?.requiredMinimumOSVersion ?? getOSVersionRequirements()?.requiredMinimumOSVersion ?? "0.0"
+let majorUpgradeAppPath = getOSVersionRequirementsProfile()?.majorUpgradeAppPath ?? getOSVersionRequirementsJSON()?.majorUpgradeAppPath ?? ""
+let requiredInstallationDate = getOSVersionRequirementsProfile()?.requiredInstallationDate ?? getOSVersionRequirementsJSON()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+let requiredMinimumOSVersion = getOSVersionRequirementsProfile()?.requiredMinimumOSVersion ?? getOSVersionRequirementsJSON()?.requiredMinimumOSVersion ?? "0.0"
 let aboutUpdateURL = getUpdateURL() ?? ""
 
+// Function to mutate the profile into our required construct and then compare currentOS against targetedOSVersions
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     var requirements = [OSVersionRequirement]()
     if let osRequirements = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]] {
@@ -43,7 +43,8 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     return nil
 }
 
-func getOSVersionRequirements() -> OSVersionRequirement? {
+// Function to loop through JSON preferences and then compare currentOS against targetedOSVersions
+func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     if let requirements = nudgePreferences?.osVersionRequirements {
         for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersions?.contains(OSVersion(ProcessInfo().operatingSystemVersion).description) == true {
@@ -58,7 +59,7 @@ func getUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
-    if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirements()?.aboutUpdateURLs {
+    if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirementsJSON()?.aboutUpdateURLs {
         for (_, subUpdates) in updates.enumerated() {
             if subUpdates.language == language {
                 return subUpdates.aboutUpdateURL ?? ""
