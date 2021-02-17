@@ -102,8 +102,7 @@ struct Utils {
     }
 
     func getJSONUrl() -> String {
-        // let jsonURL = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
-        let jsonURL = UserDefaults.standard.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
+        let jsonURL = nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
         utilsLog.info("JSON url: \(jsonURL, privacy: .public)")
         return jsonURL
     }
