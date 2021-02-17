@@ -100,13 +100,6 @@ func getuserInterface() -> Element? {
     return nil
 }
 let actionButtonText = getuserInterface()?.actionButtonText ?? "Update Device"
-func getMainHeader() -> String {
-    if Utils().demoModeEnabled() {
-        return "Your device requires a security update (Demo Mode)"
-    } else {
-        return getuserInterface()?.mainHeader ?? "Your device requires a security update"
-    }
-}
 func forceScreenShotIconMode() -> Bool {
     if Utils().forceScreenShotIconModeEnabled() {
         return true
@@ -121,6 +114,13 @@ let mainContentHeader = getuserInterface()?.mainContentHeader ?? "Your device wi
 let mainContentNote = getuserInterface()?.mainContentNote ?? "Important Notes"
 let mainContentSubHeader = getuserInterface()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
 let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+func getMainHeader() -> String {
+    if Utils().demoModeEnabled() {
+        return "Your device requires a security update (Demo Mode)"
+    } else {
+        return getuserInterface()?.mainHeader ?? "Your device requires a security update"
+    }
+}
 let primaryQuitButtonText = getuserInterface()?.primaryQuitButtonText ?? "Later"
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? nudgePreferences?.userInterface?.screenShotDarkPath ?? ""
 let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? nudgePreferences?.userInterface?.screenShotLightPath ?? ""
