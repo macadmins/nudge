@@ -86,13 +86,14 @@
                     <key>requiredInstallationDate</key>
                     <date>2021-02-28T00:00:00Z</date>
                     <key>requiredMinimumOSVersion</key>
-                    <string>11.2.1</string>
+                    <string>11.2.2</string>
                     <key>targetedOSVersions</key>
                     <array>
                         <string>11.0</string>
                         <string>11.0.1</string>
                         <string>11.1</string>
                         <string>11.2</string>
+                        <string>11.2.1</string>
                     </array>
                 </dict>
             </array>
