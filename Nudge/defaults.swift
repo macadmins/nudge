@@ -99,7 +99,7 @@ func forceScreenShotIconMode() -> Bool {
 }
 
 // Loop through JSON userInterface -> updateElements preferences and then compare currentOS against targetedOSVersions
-func getUserInterfaceJSON() -> Element? {
+func getUserInterfaceJSON() -> UpdateElement? {
     let updateElements = nudgePreferences?.userInterface?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
@@ -162,7 +162,7 @@ let uamdmScreenShotPath = nudgePreferences?.optionalFeatures?.umadFeatures?.uamd
 
 // userInterface - UMAD
 // TODO: Profile support - not needed for now
-func getMDMUserInterface() -> Element? {
+func getMDMUserInterfaceJSON() -> UmadElement? {
     let updateElements = nudgePreferences?.userInterface?.umadElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
@@ -173,15 +173,15 @@ func getMDMUserInterface() -> Element? {
     }
     return nil
 }
-let mdmActionButtonManualText = getMDMUserInterface()?.actionButtonManualText ?? "Manually Enroll"
-let mdmActionButtonText = getMDMUserInterface()?.actionButtonText ?? ""
-let mdmActionButtonUAMDMText = getMDMUserInterface()?.actionButtonUAMDMText ?? "Open System Preferences"
-let mdmInformationButtonText = getMDMUserInterface()?.informationButtonText ?? "More Info"
-let mdmMainContentHeader = getMDMUserInterface()?.mainContentHeader ?? "This process does not require a restart"
-let mdmMainContentNote = getMDMUserInterface()?.mainContentNote ?? "Important Notes"
-let mdmMainContentText = getMDMUserInterface()?.mainContentText ?? "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password."
-let mdmMainContentUAMDMText = getMDMUserInterface()?.mainContentUAMDMText ?? "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button."
-let mdmMainHeader = getMDMUserInterface()?.mainHeader ?? "Your device requires management"
-let mdmPrimaryQuitButtonText = getMDMUserInterface()?.primaryQuitButtonText ?? "Later"
-let mdmSecondaryQuitButtonText = getMDMUserInterface()?.secondaryQuitButtonText ?? "I understand"
-let mdmSubHeader = getMDMUserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
+let mdmActionButtonManualText = getMDMUserInterfaceJSON()?.actionButtonManualText ?? "Manually Enroll"
+let mdmActionButtonText = getMDMUserInterfaceJSON()?.actionButtonText ?? ""
+let mdmActionButtonUAMDMText = getMDMUserInterfaceJSON()?.actionButtonUAMDMText ?? "Open System Preferences"
+let mdmInformationButtonText = getMDMUserInterfaceJSON()?.informationButtonText ?? "More Info"
+let mdmMainContentHeader = getMDMUserInterfaceJSON()?.mainContentHeader ?? "This process does not require a restart"
+let mdmMainContentNote = getMDMUserInterfaceJSON()?.mainContentNote ?? "Important Notes"
+let mdmMainContentText = getMDMUserInterfaceJSON()?.mainContentText ?? "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password."
+let mdmMainContentUAMDMText = getMDMUserInterfaceJSON()?.mainContentUAMDMText ?? "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button."
+let mdmMainHeader = getMDMUserInterfaceJSON()?.mainHeader ?? "Your device requires management"
+let mdmPrimaryQuitButtonText = getMDMUserInterfaceJSON()?.primaryQuitButtonText ?? "Later"
+let mdmSecondaryQuitButtonText = getMDMUserInterfaceJSON()?.secondaryQuitButtonText ?? "I understand"
+let mdmSubHeader = getMDMUserInterfaceJSON()?.subHeader ?? "A friendly reminder from your local IT team"
