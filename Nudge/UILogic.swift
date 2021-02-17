@@ -25,8 +25,6 @@ func nudgeStartLogic() {
                     uiLog.info("\(msg, privacy: .public)")
                 }
             } else {
-                let msg = "Current operating system is greater than or equal to required operating system"
-                uiLog.info("\(msg, privacy: .public)")
                 AppKit.NSApp.terminate(nil)
             }
         }

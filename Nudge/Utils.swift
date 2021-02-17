@@ -55,9 +55,15 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
-        utilsLog.info("Device is fully updated: \(fullyUpdated, privacy: .public)")
-        return fullyUpdated
+        let currentVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentVersion, newVersion: requiredMinimumOSVersion)
+        if fullyUpdated {
+            let msg = "Current operating system (\(currentVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
+            utilsLog.info("\(msg, privacy: .public)")
+            return true
+        } else {
+            return false
+        }
     }
 
     func getCPUTypeInt() -> Int {
@@ -243,7 +249,7 @@ struct Utils {
             utilsLog.info("\(msg, privacy: .public)")
             return false
         }
-        let requireMajorUpdate = versionGreaterThanOrEqual(current_version: OSVersion(ProcessInfo().operatingSystemVersion).description, new_version: requiredMinimumOSVersion)
+        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: OSVersion(ProcessInfo().operatingSystemVersion).description, newVersion: requiredMinimumOSVersion)
         utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }
@@ -266,29 +272,29 @@ struct Utils {
         }
     }
 
-    func versionEqual(current_version: String, new_version: String) -> Bool {
+    func versionEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
-        return current_version.compare(new_version, options: .numeric) == .orderedSame
+        return currentVersion.compare(newVersion, options: .numeric) == .orderedSame
     }
 
-    func versionGreaterThan(current_version: String, new_version: String) -> Bool {
+    func versionGreaterThan(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
-        return current_version.compare(new_version, options: .numeric) == .orderedDescending
+        return currentVersion.compare(newVersion, options: .numeric) == .orderedDescending
     }
 
-    func versionGreaterThanOrEqual(current_version: String, new_version: String) -> Bool {
+    func versionGreaterThanOrEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
-        return current_version.compare(new_version, options: .numeric) != .orderedAscending
+        return currentVersion.compare(newVersion, options: .numeric) != .orderedAscending
     }
 
-    func versionLessThan(current_version: String, new_version: String) -> Bool {
+    func versionLessThan(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
-        return current_version.compare(new_version, options: .numeric) == .orderedAscending
+        return currentVersion.compare(newVersion, options: .numeric) == .orderedAscending
     }
 
-    func versionLessThanOrEqual(current_version: String, new_version: String) -> Bool {
+    func versionLessThanOrEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
-        return current_version.compare(new_version, options: .numeric) != .orderedDescending
+        return currentVersion.compare(newVersion, options: .numeric) != .orderedDescending
     }
 }
 
