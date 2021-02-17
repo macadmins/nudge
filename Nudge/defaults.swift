@@ -26,7 +26,7 @@ let requiredInstallationDate = getOSVersionRequirementsProfile()?.requiredInstal
 let requiredMinimumOSVersion = getOSVersionRequirementsProfile()?.requiredMinimumOSVersion ?? getOSVersionRequirementsJSON()?.requiredMinimumOSVersion ?? "0.0"
 let aboutUpdateURL = getUpdateURL() ?? ""
 
-// Function to mutate the profile into our required construct and then compare currentOS against targetedOSVersions
+// Mutate the profile into our required construct and then compare currentOS against targetedOSVersions
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     var requirements = [OSVersionRequirement]()
     if let osRequirements = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]] {
@@ -44,7 +44,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     return nil
 }
 
-// Function to loop through JSON preferences and then compare currentOS against targetedOSVersions
+// Loop through JSON osVersionRequirements preferences and then compare currentOS against targetedOSVersions
 func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     if let requirements = nudgePreferences?.osVersionRequirements {
         for (_ , subPreferences) in requirements.enumerated() {
@@ -56,7 +56,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     return nil
 }
 
-// Function to compare current language against the available updateURLs
+// Compare current language against the available updateURLs
 func getUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
@@ -88,7 +88,18 @@ let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? nudgePrefere
 
 // userInterface
 let userInterfaceProfile = nudgeDefaults.dictionary(forKey: "userInterface")
-func getuserInterface() -> Element? {
+
+// Compare current language against the available updateURLs
+func forceScreenShotIconMode() -> Bool {
+    if Utils().forceScreenShotIconModeEnabled() {
+        return true
+    } else {
+        return userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgePreferences?.userInterface?.forceScreenShotIcon ?? false
+    }
+}
+
+// Loop through JSON userInterface -> updateElements preferences and then compare currentOS against targetedOSVersions
+func getUserInterfaceJSON() -> Element? {
     let updateElements = nudgePreferences?.userInterface?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
@@ -99,32 +110,28 @@ func getuserInterface() -> Element? {
     }
     return nil
 }
-let actionButtonText = getuserInterface()?.actionButtonText ?? "Update Device"
-func forceScreenShotIconMode() -> Bool {
-    if Utils().forceScreenShotIconModeEnabled() {
-        return true
-    } else {
-        return userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgePreferences?.userInterface?.forceScreenShotIcon ?? false
-    }
-}
-let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? nudgePreferences?.userInterface?.iconDarkPath ?? ""
-let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? nudgePreferences?.userInterface?.iconLightPath ?? ""
-let informationButtonText = getuserInterface()?.informationButtonText ?? "More Info"
-let mainContentHeader = getuserInterface()?.mainContentHeader ?? "Your device will restart during this update"
-let mainContentNote = getuserInterface()?.mainContentNote ?? "Important Notes"
-let mainContentSubHeader = getuserInterface()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
-let mainContentText = getuserInterface()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+
+// Returns the mainHeader
 func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)"
     } else {
-        return getuserInterface()?.mainHeader ?? "Your device requires a security update"
+        return getUserInterfaceJSON()?.mainHeader ?? "Your device requires a security update"
     }
 }
-let primaryQuitButtonText = getuserInterface()?.primaryQuitButtonText ?? "Later"
+
+let actionButtonText = getUserInterfaceJSON()?.actionButtonText ?? "Update Device"
+let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? nudgePreferences?.userInterface?.iconDarkPath ?? ""
+let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? nudgePreferences?.userInterface?.iconLightPath ?? ""
+let informationButtonText = getUserInterfaceJSON()?.informationButtonText ?? "More Info"
+let mainContentHeader = getUserInterfaceJSON()?.mainContentHeader ?? "Your device will restart during this update"
+let mainContentNote = getUserInterfaceJSON()?.mainContentNote ?? "Important Notes"
+let mainContentSubHeader = getUserInterfaceJSON()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
+let mainContentText = getUserInterfaceJSON()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+let primaryQuitButtonText = getUserInterfaceJSON()?.primaryQuitButtonText ?? "Later"
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? nudgePreferences?.userInterface?.screenShotDarkPath ?? ""
 let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? nudgePreferences?.userInterface?.screenShotLightPath ?? ""
-let secondaryQuitButtonText = getuserInterface()?.secondaryQuitButtonText ?? "I understand"
+let secondaryQuitButtonText = getUserInterfaceJSON()?.secondaryQuitButtonText ?? "I understand"
 func simpleMode() -> Bool {
     if Utils().simpleModeEnabled() {
         return true
@@ -132,7 +139,7 @@ func simpleMode() -> Bool {
         return nudgePreferences?.userInterface?.simpleMode ?? false
     }
 }
-let subHeader = getuserInterface()?.subHeader ?? "A friendly reminder from your local IT team"
+let subHeader = getUserInterfaceJSON()?.subHeader ?? "A friendly reminder from your local IT team"
 
 // Other important defaults
 let acceptableApps = [
