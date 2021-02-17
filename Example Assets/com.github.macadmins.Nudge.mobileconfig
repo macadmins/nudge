@@ -25,31 +25,8 @@
                 <true/>
                 <key>attemptToFetchMajorUpgrade</key>
                 <true/>
-                <key>enableUMAD</key>
-                <false/>
                 <key>enforceMinorUpdates</key>
                 <true/>
-                <key>umadFeatures</key>
-                <dict>
-                    <key>alwaysShowManulEnrollment</key>
-                    <false/>
-                    <key>depScreenShotPath</key>
-                    <string>/somewhere/depScreenShot.jpg</string>
-                    <key>disableManualEnrollmentForDEP</key>
-                    <false/>
-                    <key>enforceMDMInstallation</key>
-                    <false/>
-                    <key>manualEnrollmentPath</key>
-                    <string>https://apple.com</string>
-                    <key>mdmInformationButtonPath</key>
-                    <string>https://github.com/macadmins/umad</string>
-                    <key>mdmProfileIdentifier</key>
-                    <string>com.example.mdm.profile</string>
-                    <key>mdmRequiredInstallationDate</key>
-                    <date>2021-02-28T00:00:00Z</date>
-                    <key>uamdmScreenShotPath</key>
-                    <string>/somewhere/uamdmScreenShot.jpg</string>
-                </dict>
             </dict>
             <key>osVersionRequirements</key>
             <array>
@@ -86,14 +63,13 @@
                     <key>requiredInstallationDate</key>
                     <date>2021-02-28T00:00:00Z</date>
                     <key>requiredMinimumOSVersion</key>
-                    <string>11.2.2</string>
+                    <string>11.2.1</string>
                     <key>targetedOSVersions</key>
                     <array>
                         <string>11.0</string>
                         <string>11.0.1</string>
                         <string>11.1</string>
                         <string>11.2</string>
-                        <string>11.2.1</string>
                     </array>
                 </dict>
             </array>
@@ -138,45 +114,6 @@
                 <string>/somewhere/screenShotLight.jpg</string>
                 <key>simpleMode</key>
                 <false/>
-                <key>umadElements</key>
-                <array>
-                    <dict>
-                        <key>_language</key>
-                        <string>en</string>
-                        <key>actionButtonManualText</key>
-                        <string>Manually Enroll</string>
-                        <key>actionButtonText</key>
-                        <string></string>
-                        <key>actionButtonUAMDMText</key>
-                        <string>Open System Preferences</string>
-                        <key>informationButtonText</key>
-                        <string>More Info</string>
-                        <key>mainContentHeader</key>
-                        <string>This process does not require a restart</string>
-                        <key>mainContentNote</key>
-                        <string>Important Notes</string>
-                        <key>mainContentText</key>
-                        <string>Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.
-
-        If you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.
-
-        To enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password.</string>
-                        <key>mainContentUAMDMText</key>
-                        <string>Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.
-
-        Unfortunately, your device has been detected as only partially enrolled into our system.
-
-        Please go to System Preferences -&gt; Profiles, click on the Device Enrollment profile and click on the approve button.</string>
-                        <key>mainHeader</key>
-                        <string>Your device requires management</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Later</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>I understand</string>
-                        <key>subHeader</key>
-                        <string>A friendly reminder from your local IT team</string>
-                    </dict>
-                </array>
                 <key>updateElements</key>
                 <array>
                     <dict>
