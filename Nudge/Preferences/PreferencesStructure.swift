@@ -190,10 +190,17 @@ extension OSVersionRequirement {
                 }
             }
         }
+        // Jamf JSON Schema for mobileconfigurations do not support Date types (JSON does not support it)
+        // In order to support this, an admin would need to pass a string and then coerce it into our Date format
+        // https://docs.jamf.com/technical-papers/jamf-pro/json-schema/10.26.0/Understanding_the_Structure_of_a_JSON_Schema_Manifest.html
+        if fromDictionary["requiredInstallationDate"] is String {
+            self.requiredInstallationDate = Utils().coerceStringToDate(dateString: fromDictionary["requiredInstallationDate"] as! String)
+        } else {
+            self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
+        }
         self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.aboutUpdateURLs = generatedAboutUpdateURLs
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
-        self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
         self.targetedOSVersions = fromDictionary["targetedOSVersions"] as? [String]
     }
@@ -438,18 +445,18 @@ extension UpdateElement {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UpdateElement.self, from: data)
     }
-    
+
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-    
+
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-    
+
     func with(
         language: String?? = nil,
         actionButtonText: String?? = nil,
@@ -477,11 +484,11 @@ extension UpdateElement {
             subHeader: subHeader ?? self.subHeader
         )
     }
-    
+
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-    
+
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
