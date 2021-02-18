@@ -48,8 +48,8 @@
     "forceScreenShotIcon": false,
     "iconDarkPath": "/somewhere/logoDark.png",
     "iconLightPath": "/somewhere/logoLight.png",
-    "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
-    "screenShotLightPath": "/somewhere/screenShotLight.jpg",
+    "screenShotDarkPath": "/somewhere/screenShotDark.png",
+    "screenShotLightPath": "/somewhere/screenShotLight.png",
     "simpleMode": false,
     "updateElements": [
       {

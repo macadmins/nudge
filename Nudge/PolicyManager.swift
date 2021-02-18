@@ -17,7 +17,6 @@ class PolicyManager: ObservableObject {
 
 //class PolicyManager: ObservableObject {
 //    let current: OSVersion
-//    let defaults: UserDefaults
 //    let allowedVersions: [OSVersionRequirement]
 //
 //    init() throws {

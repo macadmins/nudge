@@ -223,6 +223,23 @@ struct OSVersionRequirement: Codable {
 // MARK: OSVersionRequirement convenience initializers and mutators
 
 extension OSVersionRequirement {
+    init(fromDictionary: [String:AnyObject]) {
+        // Thanks again mactroll
+        var generatedAboutUpdateURLs = [AboutUpdateURL]()
+        if let aboutURLs = fromDictionary["aboutUpdateURLs"] as? [[String:String]] {
+            for each in aboutURLs {
+                if let language = each["_language"], let url = each["aboutUpdateURL"] {
+                    generatedAboutUpdateURLs.append(AboutUpdateURL(language: language, aboutUpdateURL: url))
+                }
+            }
+        }
+        self.aboutUpdateURLs = generatedAboutUpdateURLs
+        self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
+        self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
+        self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
+        self.targetedOSVersions = fromDictionary["targetedOSVersions"] as? [String]
+    }
+
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OSVersionRequirement.self, from: data)
     }
@@ -383,7 +400,8 @@ struct UserInterface: Codable {
     var forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var simpleMode: Bool?
-    var umadElements, updateElements: [Element]?
+    var umadElements: [UmadElement]?
+    var updateElements: [UpdateElement]?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -411,8 +429,8 @@ extension UserInterface {
         screenShotDarkPath: String?? = nil,
         screenShotLightPath: String?? = nil,
         simpleMode: Bool?? = nil,
-        umadElements: [Element]?? = nil,
-        updateElements: [Element]?? = nil
+        umadElements: [UmadElement]?? = nil,
+        updateElements: [UpdateElement]?? = nil
     ) -> UserInterface {
         return UserInterface(
             forceScreenShotIcon: forceScreenShotIcon ?? self.forceScreenShotIcon,
@@ -435,8 +453,75 @@ extension UserInterface {
     }
 }
 
+// MARK: - UpdateElement
+struct UpdateElement: Codable {
+    var language, actionButtonText, informationButtonText, mainContentHeader: String?
+    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
+    var primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+
+    enum CodingKeys: String, CodingKey {
+        case language = "_language"
+        case actionButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+    }
+}
+
+// MARK: Element convenience initializers and mutators
+
+extension UpdateElement {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(UpdateElement.self, from: data)
+    }
+    
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+    
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+    
+    func with(
+        language: String?? = nil,
+        actionButtonText: String?? = nil,
+        informationButtonText: String?? = nil,
+        mainContentHeader: String?? = nil,
+        mainContentNote: String?? = nil,
+        mainContentSubHeader: String?? = nil,
+        mainContentText: String?? = nil,
+        mainHeader: String?? = nil,
+        primaryQuitButtonText: String?? = nil,
+        secondaryQuitButtonText: String?? = nil,
+        subHeader: String?? = nil
+    ) -> UpdateElement {
+        return UpdateElement(
+            language: language ?? self.language,
+            actionButtonText: actionButtonText ?? self.actionButtonText,
+            informationButtonText: informationButtonText ?? self.informationButtonText,
+            mainContentHeader: mainContentHeader ?? self.mainContentHeader,
+            mainContentNote: mainContentNote ?? self.mainContentNote,
+            mainContentSubHeader: mainContentSubHeader ?? self.mainContentSubHeader,
+            mainContentText: mainContentText ?? self.mainContentText,
+            mainHeader: mainHeader ?? self.mainHeader,
+            primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
+            secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
+            subHeader: subHeader ?? self.subHeader
+        )
+    }
+    
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+    
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
 // MARK: - Element
-struct Element: Codable {
+struct UmadElement: Codable {
     var language, actionButtonManualText, actionButtonText, actionButtonUAMDMText: String?
     var informationButtonText, mainContentHeader, mainContentNote, mainContentText: String?
     var mainContentUAMDMText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText: String?
@@ -450,9 +535,9 @@ struct Element: Codable {
 
 // MARK: Element convenience initializers and mutators
 
-extension Element {
+extension UmadElement {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(Element.self, from: data)
+        self = try newJSONDecoder().decode(UmadElement.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -481,8 +566,8 @@ extension Element {
         secondaryQuitButtonText: String?? = nil,
         subHeader: String?? = nil,
         mainContentSubHeader: String?? = nil
-    ) -> Element {
-        return Element(
+    ) -> UmadElement {
+        return UmadElement(
             language: language ?? self.language,
             actionButtonManualText: actionButtonManualText ?? self.actionButtonManualText,
             actionButtonText: actionButtonText ?? self.actionButtonText,
