@@ -361,8 +361,8 @@ In this example, Nudge will do the following:
 
 ### Localized (Spanish)
 #### Light
-<img src="/assets/standard_mode/demo_light_2_icon_localized.png" width=75% height=75%>
-<img src="/assets/standard_mode/demo_light_4_localized.png" width=75% height=75%>
+<img src="/assets/standard_mode/demo_light_2_localized.png" width=75% height=75%>
+<img src="/assets/standard_mode/demo_light_4_icon_localized.png" width=75% height=75%>
 
 #### Dark
 <img src="/assets/standard_mode/demo_dark_2_icon_localized.png" width=75% height=75%>
