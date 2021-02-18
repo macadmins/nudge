@@ -1,55 +1,11 @@
 //
-//  nudgePrefs.swift
+//  Preferences.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/5/21.
 //
 
 import Foundation
-
-// TODO: use CFPreferences to get mdm/mobileconfig logic and prioritize over json
-struct nudgePrefs{
-    func loadNudgePrefs() -> NudgePreferences? {
-        let url = Utils().getJSONUrl()
-
-        if url.contains("https://") || url.contains("http://") {
-            if let json_url = URL(string: url) {
-                if let data = try? Data(contentsOf: json_url) {
-                    do {
-                        let decodedData = try NudgePreferences(data: data)
-                        return decodedData
-                    } catch {
-                        prefsLog.error("\(error.localizedDescription, privacy: .public)")
-                        return nil
-                    }
-                }
-            }
-        }
-
-        guard let fileURL = URL(string: url) else {
-            let msg = "Could not find on-disk json"
-            prefsLog.error("\(msg, privacy: .public)")
-            return nil
-        }
-
-        if Utils().demoModeEnabled() {
-            return nil
-        }
-
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-            do {
-                let content = try Data(contentsOf: fileURL)
-                let decodedData = try NudgePreferences(data: content)
-                return decodedData
-
-            } catch let error {
-                prefsLog.error("\(error.localizedDescription, privacy: .public)")
-                return nil
-            }
-        }
-        return nil
-    }
-}
 
 // MARK: - NudgePreferences
 struct NudgePreferences: Codable {

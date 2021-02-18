@@ -137,18 +137,50 @@ struct Utils {
         utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
     }
+
+    func getNudgeJSONPreferences() -> NudgePreferences? {
+        let url = Utils().getJSONUrl()
+        
+        if url.contains("https://") || url.contains("http://") {
+            if let json_url = URL(string: url) {
+                if let data = try? Data(contentsOf: json_url) {
+                    do {
+                        let decodedData = try NudgePreferences(data: data)
+                        return decodedData
+                    } catch {
+                        prefsLog.error("\(error.localizedDescription, privacy: .public)")
+                        return nil
+                    }
+                }
+            }
+        }
+        
+        guard let fileURL = URL(string: url) else {
+            let msg = "Could not find on-disk json"
+            prefsLog.error("\(msg, privacy: .public)")
+            return nil
+        }
+        
+        if Utils().demoModeEnabled() {
+            return nil
+        }
+        
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                let content = try Data(contentsOf: fileURL)
+                let decodedData = try NudgePreferences(data: content)
+                return decodedData
+                
+            } catch let error {
+                prefsLog.error("\(error.localizedDescription, privacy: .public)")
+                return nil
+            }
+        }
+        return nil
+    }
     
     func getNudgeVersion() -> String {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
-    }
-    
-    func versionArgumentPassed() -> Bool {
-        let versionArgumentPassed = CommandLine.arguments.contains("-version")
-        if versionArgumentPassed {
-            let msg = "-version argument passed"
-            uiLog.info("\(msg, privacy: .public)")
-        }
-        return versionArgumentPassed
     }
 
     func getNumberOfDaysBetween() -> Int {
@@ -270,6 +302,15 @@ struct Utils {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
+    }
+    
+    func versionArgumentPassed() -> Bool {
+        let versionArgumentPassed = CommandLine.arguments.contains("-version")
+        if versionArgumentPassed {
+            let msg = "-version argument passed"
+            uiLog.info("\(msg, privacy: .public)")
+        }
+        return versionArgumentPassed
     }
 
     func versionEqual(currentVersion: String, newVersion: String) -> Bool {
