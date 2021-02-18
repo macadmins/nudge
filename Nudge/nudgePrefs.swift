@@ -468,20 +468,6 @@ struct UpdateElement: Codable {
 // MARK: Element convenience initializers and mutators
 
 extension UpdateElement {
-    init(fromDictionary: [String:AnyObject]) {
-        self.language = fromDictionary["_language"] as? String
-        self.actionButtonText = fromDictionary["actionButtonText"] as? String
-        self.informationButtonText = fromDictionary["informationButtonText"] as? String
-        self.mainContentHeader = fromDictionary["mainContentHeader"] as? String
-        self.mainContentNote = fromDictionary["mainContentNote"] as? String
-        self.mainContentSubHeader = fromDictionary["mainContentSubHeader"] as? String
-        self.mainContentText = fromDictionary["mainContentText"] as? String
-        self.mainHeader = fromDictionary["mainHeader"] as? String
-        self.primaryQuitButtonText = fromDictionary["primaryQuitButtonText"] as? String
-        self.secondaryQuitButtonText = fromDictionary["secondaryQuitButtonText"] as? String
-        self.subHeader = fromDictionary["subHeader"] as? String
-    }
-    
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UpdateElement.self, from: data)
     }
@@ -499,7 +485,6 @@ extension UpdateElement {
     
     func with(
         language: String?? = nil,
-        actionButtonManualText: String?? = nil,
         actionButtonText: String?? = nil,
         informationButtonText: String?? = nil,
         mainContentHeader: String?? = nil,
