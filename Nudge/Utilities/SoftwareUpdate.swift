@@ -45,7 +45,6 @@ class SoftwareUpdate {
     }
 
     func Download() {
-
         softwareupdateDownloadLog.info("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
