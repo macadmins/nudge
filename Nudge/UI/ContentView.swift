@@ -22,9 +22,9 @@ struct ContentView: View {
             NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
         }
         if simpleMode() {
-            NudgeSimpleMode()
+            SimpleMode()
         } else {
-            NudgeNormalMode()
+            StandardMode()
         }
     }
 }

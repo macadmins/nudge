@@ -1,5 +1,5 @@
 //
-//  Nudge.swift
+//  SimpleMode.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/2/21.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 // SimpleMode
-struct NudgeSimpleMode: View {
+struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
@@ -203,15 +203,15 @@ struct NudgeSimpleMode: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct NudgeSimpleModePreviews: PreviewProvider {
+struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                NudgeSimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            NudgeSimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                 .preferredColorScheme(.dark)
         }
     }

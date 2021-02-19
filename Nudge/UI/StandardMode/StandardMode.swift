@@ -1,5 +1,5 @@
 //
-//  Nudge.swift
+//  StandardMode.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/2/21.
@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-// Normal Mode
-struct NudgeNormalMode: View {
+// Standard Mode
+struct StandardMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
@@ -451,15 +451,15 @@ struct NudgeNormalMode: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct NudgeNormalModePreviews: PreviewProvider {
+struct StandardModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                NudgeNormalMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                StandardMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            NudgeNormalMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            StandardMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                 .preferredColorScheme(.dark)
         }
     }

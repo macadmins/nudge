@@ -32,7 +32,7 @@
 		63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E925C9E9A500236281 /* Preview Assets.xcassets */; };
 		63D7D0F625C9E9A500236281 /* NudgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0F525C9E9A500236281 /* NudgeTests.swift */; };
 		63D7D10125C9E9A500236281 /* NudgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D10025C9E9A500236281 /* NudgeUITests.swift */; };
-		63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D12625C9F1EE00236281 /* Nudge.swift */; };
+		63D7D12725C9F1EE00236281 /* StandardMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D12625C9F1EE00236281 /* StandardMode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,7 +88,7 @@
 		63D7D0FC25C9E9A500236281 /* NudgeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NudgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D10025C9E9A500236281 /* NudgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeUITests.swift; sourceTree = "<group>"; };
 		63D7D10225C9E9A500236281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		63D7D12625C9F1EE00236281 /* Nudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nudge.swift; sourceTree = "<group>"; };
+		63D7D12625C9F1EE00236281 /* StandardMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardMode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,7 +153,10 @@
 		639B6B5425DF374600E38EC1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				639B6B5625DF376300E38EC1 /* NormalMode */,
+				63D7D0E425C9E9A400236281 /* ContentView.swift */,
+				63D7D0E225C9E9A400236281 /* NudgeApp.swift */,
+				0BC9972625CE26CE0019FC8F /* PolicyManager.swift */,
+				639B6B5625DF376300E38EC1 /* StandardMode */,
 				639B6B5525DF375800E38EC1 /* SimpleMode */,
 			);
 			path = UI;
@@ -167,14 +170,14 @@
 			path = SimpleMode;
 			sourceTree = "<group>";
 		};
-		639B6B5625DF376300E38EC1 /* NormalMode */ = {
+		639B6B5625DF376300E38EC1 /* StandardMode */ = {
 			isa = PBXGroup;
 			children = (
-				63D7D12625C9F1EE00236281 /* Nudge.swift */,
+				63D7D12625C9F1EE00236281 /* StandardMode.swift */,
 				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */,
 			);
-			path = NormalMode;
+			path = StandardMode;
 			sourceTree = "<group>";
 		};
 		63D7D0D625C9E9A400236281 = {
@@ -203,9 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				639B6B5425DF374600E38EC1 /* UI */,
-				63D7D0E425C9E9A400236281 /* ContentView.swift */,
-				63D7D0E225C9E9A400236281 /* NudgeApp.swift */,
-				0BC9972625CE26CE0019FC8F /* PolicyManager.swift */,
 				639B6B3925DF1FEB00E38EC1 /* Preferences */,
 				639B6B4725DF218900E38EC1 /* Utilities */,
 				63D7D0E625C9E9A500236281 /* Assets.xcassets */,
@@ -388,7 +388,7 @@
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
 				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */,
-				63D7D12725C9F1EE00236281 /* Nudge.swift in Sources */,
+				63D7D12725C9F1EE00236281 /* StandardMode.swift in Sources */,
 				639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */,
 				639E198225CD885D008F618B /* Preferences.swift in Sources */,
 				639B6B3B25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift in Sources */,
