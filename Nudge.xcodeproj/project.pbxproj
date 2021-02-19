@@ -15,18 +15,18 @@
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
-		636C4B4A25D1BECE0004A791 /* DefaultPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferences.swift */; };
+		636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
 		639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */; };
 		639B6B1425DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */; };
-		639B6B3B25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3A25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift */; };
+		639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3A25DF200C00E38EC1 /* Preferences.swift */; };
 		639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */; };
 		639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */; };
 		639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */; };
 		639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B6D25DF3C3F00E38EC1 /* SimpleMode.swift */; };
-		639E198225CD885D008F618B /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* Preferences.swift */; };
+		639E198225CD885D008F618B /* PreferencesStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* PreferencesStructure.swift */; };
 		639E198A25CD9E21008F618B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198925CD9E21008F618B /* Utils.swift */; };
-		63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* NudgeApp.swift */; };
+		63D7D0E325C9E9A400236281 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* Main.swift */; };
 		63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E425C9E9A400236281 /* ContentView.swift */; };
 		63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E625C9E9A500236281 /* Assets.xcassets */; };
 		63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E925C9E9A500236281 /* Preview Assets.xcassets */; };
@@ -63,20 +63,20 @@
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5870FF6825CFE5FA0036D203 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		636C4B4925D1BECE0004A791 /* DefaultPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferences.swift; sourceTree = "<group>"; };
+		636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesNudge.swift; sourceTree = "<group>"; };
 		636C4B7525D4306A0004A791 /* UILogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogic.swift; sourceTree = "<group>"; };
 		639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.mobileconfig; sourceTree = "<group>"; };
 		639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.umad.mobileconfig; sourceTree = "<group>"; };
-		639B6B3A25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUtilities.swift; sourceTree = "<group>"; };
+		639B6B3A25DF200C00E38EC1 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUMAD.swift; sourceTree = "<group>"; };
 		639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotZoom.swift; sourceTree = "<group>"; };
 		639B6B6D25DF3C3F00E38EC1 /* SimpleMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMode.swift; sourceTree = "<group>"; };
-		639E198125CD885D008F618B /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		639E198125CD885D008F618B /* PreferencesStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStructure.swift; sourceTree = "<group>"; };
 		639E198925CD9E21008F618B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63B6FDBF25D785010038E81C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		63D7D0E225C9E9A400236281 /* NudgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeApp.swift; sourceTree = "<group>"; };
+		63D7D0E225C9E9A400236281 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		63D7D0E425C9E9A400236281 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		63D7D0E625C9E9A500236281 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63D7D0E925C9E9A500236281 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -130,10 +130,9 @@
 		639B6B3925DF1FEB00E38EC1 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				636C4B4925D1BECE0004A791 /* DefaultPreferences.swift */,
-				639B6B3A25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift */,
-				639E198125CD885D008F618B /* Preferences.swift */,
+				636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */,
 				639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */,
+				639E198125CD885D008F618B /* PreferencesStructure.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -143,6 +142,7 @@
 			children = (
 				5836861325DACFE90004514C /* Logger.swift */,
 				0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */,
+				639B6B3A25DF200C00E38EC1 /* Preferences.swift */,
 				5836861B25DAD01C0004514C /* SoftwareUpdate.swift */,
 				636C4B7525D4306A0004A791 /* UILogic.swift */,
 				639E198925CD9E21008F618B /* Utils.swift */,
@@ -153,8 +153,8 @@
 		639B6B5425DF374600E38EC1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				63D7D0E225C9E9A400236281 /* Main.swift */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
-				63D7D0E225C9E9A400236281 /* NudgeApp.swift */,
 				0BC9972625CE26CE0019FC8F /* PolicyManager.swift */,
 				639B6B5625DF376300E38EC1 /* StandardMode */,
 				639B6B5525DF375800E38EC1 /* SimpleMode */,
@@ -383,16 +383,16 @@
 				639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
-				636C4B4A25D1BECE0004A791 /* DefaultPreferences.swift in Sources */,
+				636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */,
 				639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */,
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
 				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */,
 				63D7D12725C9F1EE00236281 /* StandardMode.swift in Sources */,
 				639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */,
-				639E198225CD885D008F618B /* Preferences.swift in Sources */,
-				639B6B3B25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift in Sources */,
-				63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */,
+				639E198225CD885D008F618B /* PreferencesStructure.swift in Sources */,
+				639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */,
+				63D7D0E325C9E9A400236281 /* Main.swift in Sources */,
 				0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */,
 				639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */,
 			);

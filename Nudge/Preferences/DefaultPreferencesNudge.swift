@@ -1,5 +1,5 @@
 //
-//  defaults.swift
+//  DefaultPreferencesNudge.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/8/21.
