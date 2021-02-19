@@ -16,7 +16,6 @@ struct StandardModeRightSide: View {
     @EnvironmentObject var manager: PolicyManager
     
     // State variables
-    @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
     @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
     @State var hasClickedSecondaryQuitButton = false
@@ -24,13 +23,9 @@ struct StandardModeRightSide: View {
     
     // Modal view for screenshot and device info
     @State var showSSDetail = false
-    @State var showDeviceInfo = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
