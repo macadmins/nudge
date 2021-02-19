@@ -21,6 +21,8 @@
 		639B6B1425DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */; };
 		639B6B3B25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3A25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift */; };
 		639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */; };
+		639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */; };
+		639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */; };
 		639E198225CD885D008F618B /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* Preferences.swift */; };
 		639E198A25CD9E21008F618B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198925CD9E21008F618B /* Utils.swift */; };
 		63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* NudgeApp.swift */; };
@@ -66,6 +68,8 @@
 		639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.umad.mobileconfig; sourceTree = "<group>"; };
 		639B6B3A25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUtilities.swift; sourceTree = "<group>"; };
 		639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUMAD.swift; sourceTree = "<group>"; };
+		639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
+		639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotZoom.swift; sourceTree = "<group>"; };
 		639E198125CD885D008F618B /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		639E198925CD9E21008F618B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63B6FDBF25D785010038E81C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -144,6 +148,31 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		639B6B5425DF374600E38EC1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				639B6B5625DF376300E38EC1 /* NormalMode */,
+				639B6B5525DF375800E38EC1 /* SimpleMode */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		639B6B5525DF375800E38EC1 /* SimpleMode */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SimpleMode;
+			sourceTree = "<group>";
+		};
+		639B6B5625DF376300E38EC1 /* NormalMode */ = {
+			isa = PBXGroup;
+			children = (
+				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
+				639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */,
+			);
+			path = NormalMode;
+			sourceTree = "<group>";
+		};
 		63D7D0D625C9E9A400236281 = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +198,7 @@
 		63D7D0E125C9E9A400236281 /* Nudge */ = {
 			isa = PBXGroup;
 			children = (
+				639B6B5425DF374600E38EC1 /* UI */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
 				63D7D0E225C9E9A400236281 /* NudgeApp.swift */,
 				63D7D12625C9F1EE00236281 /* Nudge.swift */,
@@ -351,6 +381,7 @@
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* DefaultPreferences.swift in Sources */,
+				639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */,
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
 				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */,
@@ -359,6 +390,7 @@
 				639B6B3B25DF200C00E38EC1 /* DefaultPreferencesUtilities.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* NudgeApp.swift in Sources */,
 				0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */,
+				639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

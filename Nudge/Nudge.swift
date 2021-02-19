@@ -226,7 +226,7 @@ struct Nudge: View {
                         }
                     }
                     .sheet(isPresented: $showDeviceInfo) {
-                        deviceInfo()
+                        DeviceInfo()
                     }
 
                     // Company Logo
@@ -479,7 +479,7 @@ struct Nudge: View {
                                     .buttonStyle(PlainButtonStyle())
                                     .help("Click to zoom into screenshot")
                                     .sheet(isPresented: $showSSDetail) {
-                                        screenShotZoom()
+                                        ScreenShotZoom()
                                     }
                                     .onHover { inside in
                                         if inside {
@@ -501,7 +501,7 @@ struct Nudge: View {
                                     .buttonStyle(PlainButtonStyle())
                                     .help("Click to zoom into screenshot")
                                     .sheet(isPresented: $showSSDetail) {
-                                        screenShotZoom()
+                                        ScreenShotZoom()
                                     }
                                     .onHover { inside in
                                         if inside {
@@ -524,7 +524,7 @@ struct Nudge: View {
                                         .buttonStyle(PlainButtonStyle())
                                         .help("Click to zoom into screenshot")
                                         .sheet(isPresented: $showSSDetail) {
-                                            screenShotZoom()
+                                            ScreenShotZoom()
                                         }
                                         .onHover { inside in
                                             if inside {
@@ -619,169 +619,6 @@ struct Nudge: View {
         }
     }
 }
-
-// Sheet view for Screenshot zoom
-struct screenShotZoom: View {
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-
-    var body: some View {
-        VStack {
-            HStack {
-                Button(
-                    action: {
-                        self.presentationMode.wrappedValue.dismiss()})
-                {
-                    Image(systemName: "xmark.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .help("Click to close")
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                .frame(width: 35, height: 35)
-                Spacer()
-            }
-
-            HStack {
-                Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-                    if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
-                    } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
-                    } else {
-                        Image("CompanyScreenshotIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding()
-                            .frame(maxHeight: 512)
-                    }
-                  }
-                )
-                .padding(.top, -75)
-                .buttonStyle(PlainButtonStyle())
-                .help("Click to close")
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-// Sheet view for Device Information
-struct deviceInfo: View {
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-
-    // State variables
-    @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
-    @State var serialNumber = Utils().getSerialNumber()
-    @State var cpuType = Utils().getCPUTypeString()
-    @State var nudgeVersion = Utils().getNudgeVersion()
-
-    var body: some View {
-        VStack {
-            HStack {
-                Button(
-                    action: {
-                        self.presentationMode.wrappedValue.dismiss()})
-                {
-                    Image(systemName: "xmark.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .help("Click to close")
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                .frame(width: 35, height: 35)
-
-                Spacer()
-            }
-
-            // Additional Device Information
-            HStack{
-                Text("Additional Device Information")
-                    .fontWeight(.bold)
-            }
-            .padding(.vertical, 1)
-
-            // Username
-            HStack{
-                Text("Username:")
-                Text(self.systemConsoleUsername)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-
-            // Serial Number
-            HStack{
-                Text("Serial Number:")
-                Text(self.serialNumber)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-
-            // Architecture
-            HStack{
-                Text("Architecture:")
-                Text(self.cpuType)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-
-            // Language
-            HStack{
-                Text("Language:")
-                Text(language)
-                    .foregroundColor(.secondary)
-            }
-            
-            // Nudge Version
-            HStack{
-                Text("Version:")
-                Text(self.nudgeVersion)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-
-            Spacer()
-        }
-        .frame(width: 400, height: 200)
-    }
-}
-
 
 #if DEBUG
 // Xcode preview for both light and dark mode
