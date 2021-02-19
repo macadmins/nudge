@@ -48,10 +48,10 @@ struct StandardMode: View {
             
             // Right side of Nudge
             StandardModeRightSide()
-            // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
-            .onAppear(perform: nudgeStartLogic)
         }
         .frame(width: 900, height: 450)
+        // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
+        .onAppear(perform: nudgeStartLogic)
     }
 }
 
