@@ -1,5 +1,5 @@
 //
-//  Preferences.swift
+//  PreferencesStructure.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/5/21.

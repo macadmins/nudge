@@ -21,7 +21,11 @@ struct ContentView: View {
             window?.isMovable = false // not movable
             NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
         }
-        Nudge()
+        if simpleMode() {
+            SimpleMode()
+        } else {
+            StandardMode()
+        }
     }
 }
 

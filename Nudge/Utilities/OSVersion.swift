@@ -1,3 +1,10 @@
+//
+//  OSVersion.swift
+//  Nudge
+//
+//  Created by Erik Gomez on 2/8/21.
+//
+
 import Foundation
 
 // Version of a macOS release. Example: 11.2

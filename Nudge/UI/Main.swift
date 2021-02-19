@@ -1,5 +1,5 @@
 //
-//  NudgeApp.swift
+//  Main.swift
 //  Nudge
 //
 //  Created by Erik Gomez on 2/2/21.
@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 @main
-struct NudgeApp: App {
+struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let manager = try! PolicyManager() // TODO: handle errors
     var body: some Scene {

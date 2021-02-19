@@ -1,3 +1,10 @@
+//
+//  PolicyManager.swift
+//  Nudge
+//
+//  Created by Victor Vrantchan on 2/5/21.
+//
+
 import Foundation
 
 // PolicyManager resolves the app state, separating the UI from external actions,
