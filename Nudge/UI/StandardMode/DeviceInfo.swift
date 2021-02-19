@@ -99,3 +99,20 @@ struct DeviceInfo: View {
     }
 }
 
+#if DEBUG
+// Xcode preview for both light and dark mode
+struct DeviceInfoPreview: PreviewProvider {
+    static var previews: some View {
+        Group {
+            ForEach(["en", "es", "fr"], id: \.self) { id in
+                DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                    .preferredColorScheme(.light)
+                    .environment(\.locale, .init(identifier: id))
+            }
+            DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                .preferredColorScheme(.dark)
+        }
+    }
+}
+#endif
+
