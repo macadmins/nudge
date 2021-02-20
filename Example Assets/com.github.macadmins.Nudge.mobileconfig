@@ -22,11 +22,11 @@
         <key>optionalFeatures</key>
         <dict>
           <key>asyncronousSoftwareUpdate</key>
-          <true />
+          <true/>
           <key>attemptToFetchMajorUpgrade</key>
-          <true />
+          <true/>
           <key>enforceMinorUpdates</key>
-          <true />
+          <true/>
         </dict>
         <key>osVersionRequirements</key>
         <array>
@@ -37,8 +37,7 @@
                 <key>_language</key>
                 <string>en</string>
                 <key>aboutUpdateURL</key>
-                <string>https://support.apple.com/en-us/HT211896#macos1121
-                </string>
+                <string>https://support.apple.com/en-us/HT211896#macos1121</string>
               </dict>
               <dict>
                 <key>_language</key>
@@ -95,16 +94,16 @@
           <key>maxRandomDelayInSeconds</key>
           <integer>1200</integer>
           <key>noTimers</key>
-          <false />
+          <false/>
           <key>nudgeRefreshCycle</key>
           <integer>60</integer>
           <key>randomDelay</key>
-          <false />
+          <false/>
         </dict>
         <key>userInterface</key>
         <dict>
           <key>forceScreenShotIcon</key>
-          <false />
+          <false/>
           <key>iconDarkPath</key>
           <string>/somewhere/logoDark.png</string>
           <key>iconLightPath</key>
@@ -114,7 +113,7 @@
           <key>screenShotLightPath</key>
           <string>/somewhere/screenShotLight.png</string>
           <key>simpleMode</key>
-          <false />
+          <false/>
           <key>updateElements</key>
           <array>
             <dict>
@@ -131,14 +130,11 @@
               <key>mainContentSubHeader</key>
               <string>Updates can take around 30 minutes to complete</string>
               <key>mainContentText</key>
-              <string>A fully up-to-date device is required to ensure that IT
-                can accurately
-                protect your device. If you do not update your device, you may
-                lose access to
-                some items necessary for your day-to-day tasks. To begin the
-                update, simply
-                click on the Update Device button and follow the provided steps.
-              </string>
+              <string>A fully up-to-date device is required to ensure that IT can accurately protect your device.
+
+If you do not update your device, you may lose access to some items necessary for your day-to-day tasks.
+
+To begin the update, simply click on the Update Device button and follow the provided steps.</string>
               <key>mainHeader</key>
               <string>Your device requires a security update</string>
               <key>primaryQuitButtonText</key>
@@ -156,26 +152,19 @@
               <key>informationButtonText</key>
               <string>Más información</string>
               <key>mainContentHeader</key>
-              <string>Su dispositivo se reiniciará durante esta actualización
-              </string>
+              <string>Su dispositivo se reiniciará durante esta actualización</string>
               <key>mainContentNote</key>
               <string>Notas importantes</string>
               <key>mainContentSubHeader</key>
-              <string>Las actualizaciones pueden tardar unos 30 minutos en
-                completarse</string>
+              <string>Las actualizaciones pueden tardar unos 30 minutos en completarse</string>
               <key>mainContentText</key>
-              <string>Se requiere un dispositivo completamente actualizado para
-                garantizar que
-                IT pueda proteger su dispositivo con precisión. Si no actualiza
-                su dispositivo,
-                es posible que pierda el acceso a algunos elementos necesarios
-                para sus tareas
-                diarias. Para comenzar la actualización, simplemente haga clic
-                en el botón
-                Actualizar dispositivo y siga los pasos proporcionados.</string>
+              <string>Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.
+
+Si no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.
+
+Para comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.</string>
               <key>mainHeader</key>
-              <string>Tu dispositivo requiere una actualización de seguridad
-              </string>
+              <string>Tu dispositivo requiere una actualización de seguridad</string>
               <key>primaryQuitButtonText</key>
               <string>Más tarde</string>
               <key>secondaryQuitButtonText</key>
@@ -191,35 +180,25 @@
               <key>informationButtonText</key>
               <string>Plus d'informations</string>
               <key>mainContentHeader</key>
-              <string>Votre appareil redémarrera pendant cette mise à jour
-              </string>
+              <string>Votre appareil redémarrera pendant cette mise à jour</string>
               <key>mainContentNote</key>
               <string>Notes Importantes</string>
               <key>mainContentSubHeader</key>
-              <string>Les mises à jour peuvent prendre environ 30 minutes.
-              </string>
+              <string>Les mises à jour peuvent prendre environ 30 minutes.</string>
               <key>mainContentText</key>
-              <string>Un appareil entièrement à jour est nécessaire pour
-                garantir que le
-                service informatique puisse protéger votre appareil
-                efficacement. Si vous ne
-                mettez pas à jour votre appareil, vous risquez de perdre l'accès
-                à certains
-                outils nécessaires à vos tâches quotidiennes. Pour commencer la
-                mise à jour,
-                cliquez simplement sur le bouton Mettre à jour le périphérique
-                et suivez les
-                étapes fournies.</string>
+              <string>Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.
+
+Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.
+
+Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.</string>
               <key>mainHeader</key>
-              <string>Votre appareil nécessite une mise à jour de sécurité
-              </string>
+              <string>Votre appareil nécessite une mise à jour de sécurité</string>
               <key>primaryQuitButtonText</key>
               <string>Plus tard</string>
               <key>secondaryQuitButtonText</key>
               <string>Je comprends</string>
               <key>subHeader</key>
-              <string>Un rappel amical de votre équipe informatique locale
-              </string>
+              <string>Un rappel amical de votre équipe informatique locale</string>
             </dict>
             <dict>
               <key>_language</key>
@@ -229,23 +208,16 @@
               <key>informationButtonText</key>
               <string>Mehr Informationen</string>
               <key>mainContentHeader</key>
-              <string>Ihr Gerät wird während dieses Updates neu gestartet
-              </string>
+              <string>Ihr Gerät wird während dieses Updates neu gestartet</string>
               <key>mainContentNote</key>
               <string>Wichtige Hinweise</string>
               <key>mainContentSubHeader</key>
               <string>Aktualisierungen können ca. 30 Minuten dauern.</string>
               <key>mainContentText</key>
-              <string>Ein vollständig aktualisiertes Gerät ist erforderlich, um
-                sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv
-                schützen kann. Wenn
-                Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise
-                den Zugriff auf
-                einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.
-                Um das Update
-                zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren
-                und befolgen
-                Sie die nachfolgend angegebenen Schritte.</string>
+              <string>Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.
+Wenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.
+
+Um das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.</string>
               <key>mainHeader</key>
               <string>Ihr Gerät benötigt ein Sicherheitsupdate</string>
               <key>primaryQuitButtonText</key>
