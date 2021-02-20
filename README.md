@@ -369,7 +369,7 @@ In this example, Nudge will do the following:
         <false/>
       </dict>
     </dict>
-	</array>
+  </array>
 </dict>
 </plist>
 ```
