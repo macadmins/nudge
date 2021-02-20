@@ -48,6 +48,9 @@ func userHasClickedSecondaryQuitButton() {
 }
 
 func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
+    // Center Nudge
+    Utils().centerNudge()
+
     // If noTimers is true, just bail
     if noTimers {
         return false
