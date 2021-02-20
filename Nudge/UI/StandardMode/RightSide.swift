@@ -128,7 +128,7 @@ struct StandardModeRightSide: View {
                                 .resizable()
                                 .scaledToFit()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: 125)
+                                .frame(maxHeight: 120)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .help("Click to zoom into screenshot")
@@ -151,7 +151,7 @@ struct StandardModeRightSide: View {
                                     .resizable()
                                     .scaledToFit()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: 125)
+                                    .frame(maxHeight: 120)
                             }
                             .buttonStyle(PlainButtonStyle())
                             .help("Click to zoom into screenshot")
@@ -166,9 +166,21 @@ struct StandardModeRightSide: View {
                                 }
                             }
                         } else {
-                            Text("Force a 125 pixel")
-                                .hidden()
-                                .frame(minHeight: 125)
+                            Button {
+                                self.showSSDetail.toggle()
+                            } label: {
+                                Image("CompanyScreenshotIcon")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxHeight: 120)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .hidden()
+                            .help("Click to zoom into screenshot")
+                            .sheet(isPresented: $showSSDetail) {
+                                ScreenShotZoom()
+                            }
                         }
                     }
                     Spacer()

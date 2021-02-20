@@ -153,7 +153,7 @@ struct StandardModeLeftSide: View {
                 // Force the button to the left with a spacer
                 Spacer()
             }
-            .frame(width: 250, height: 40)
+            .frame(width: 250, height: 50)
         }
         .frame(width: 300, height: 450)
     }
