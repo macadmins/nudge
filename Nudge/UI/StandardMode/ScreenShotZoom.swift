@@ -42,14 +42,8 @@ struct ScreenShotZoom: View {
             
             HStack {
                 Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-                    if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
-                    } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                    if FileManager.default.fileExists(atPath: screenShotPath) {
+                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                             .resizable()
                             .scaledToFit()
                             .aspectRatio(contentMode: .fit)

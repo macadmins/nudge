@@ -47,6 +47,7 @@ let mainContentNote = getUserInterfaceUpdateElementsProfile()?["mainContentNote"
 let mainContentSubHeader = getUserInterfaceUpdateElementsProfile()?["mainContentSubHeader"] as? String ?? getUserInterfaceJSON()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
 let mainContentText = getUserInterfaceUpdateElementsProfile()?["mainContentText"] as? String ?? getUserInterfaceJSON()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
 let primaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["primaryQuitButtonText"] as? String ?? getUserInterfaceJSON()?.primaryQuitButtonText ?? "Later"
+let screenShotPath = Utils().getScreenShotPath()
 let secondaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["secondaryQuitButtonText"] as? String ?? getUserInterfaceJSON()?.secondaryQuitButtonText ?? "I understand"
 let subHeader = getUserInterfaceUpdateElementsProfile()?["subHeader"] as? String ?? getUserInterfaceJSON()?.subHeader ?? "A friendly reminder from your local IT team"
 
