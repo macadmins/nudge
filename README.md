@@ -17,6 +17,16 @@ Some enhancements to the SwiftUI version over nudge-python
 The following operating system and versions have been tested.
 - 11.0, 11.0.1, 11.1, 11.2, 11.2.1
 
+## Troubleshooting
+Before submitting any issues Nudge, please ensure you using the latest version. You can find the version you are using by running Nudge and clicking on the `?` button at the top left.
+
+Alternatively you can run the `-version` argument through the command line
+
+```
+/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge -version
+1.0.0.02202021152516
+```
+
 ## Tools that work with Nudge
 Any MDM that supports the installation of packages (.pkgs) and profiles (.mobileconfig) can deploy and enforce Nudge.
 
@@ -163,7 +173,8 @@ The following example would add support for the French (fr) locale.
 
 ** Note: **There is already a French localization string to fill the rest of the UI
 
-```
+JSON
+```json
 {
     "userInterface": {
         "updateElements": [
@@ -198,6 +209,83 @@ The following example would add support for the French (fr) locale.
 }
 ```
 
+Mobile Config
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+            <key>userInterface</key>
+            <dict>
+<key>updateElements</key>
+                <array>
+                    <dict>
+                        <key>_language</key>
+                        <string>es</string>
+                        <key>actionButtonText</key>
+                        <string>Actualizar dispositivo</string>
+                        <key>informationButtonText</key>
+                        <string>Más información</string>
+                        <key>mainContentHeader</key>
+                        <string>Su dispositivo se reiniciará durante esta actualización</string>
+                        <key>mainContentNote</key>
+                        <string>Notas importantes</string>
+                        <key>mainContentSubHeader</key>
+                        <string>Las actualizaciones pueden tardar unos 30 minutos en completarse</string>
+                        <key>mainContentText</key>
+                        <string>Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.
+
+Si no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.
+
+Para comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.</string>
+                        <key>mainHeader</key>
+                        <string>Tu dispositivo requiere una actualización de seguridad</string>
+                        <key>primaryQuitButtonText</key>
+                        <string>Más tarde</string>
+                        <key>secondaryQuitButtonText</key>
+                        <string>Entiendo</string>
+                        <key>subHeader</key>
+                        <string>Un recordatorio amistoso de su equipo de IT local</string>
+                    </dict>
+                    <dict>
+                        <key>_language</key>
+                        <string>fr</string>
+                        <key>actionButtonText</key>
+                        <string>Mettre à jour l'appareil</string>
+                        <key>informationButtonText</key>
+                        <string>Plus d'informations</string>
+                        <key>mainContentHeader</key>
+                        <string>Votre appareil redémarrera pendant cette mise à jour</string>
+                        <key>mainContentNote</key>
+                        <string>Notes Importantes</string>
+                        <key>mainContentSubHeader</key>
+                        <string>Les mises à jour peuvent prendre environ 30 minutes.</string>
+                        <key>mainContentText</key>
+                        <string>Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.
+
+Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.
+
+Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.</string>
+                        <key>mainHeader</key>
+                        <string>Votre appareil nécessite une mise à jour de sécurité</string>
+                        <key>primaryQuitButtonText</key>
+                        <string>Plus tard</string>
+                        <key>secondaryQuitButtonText</key>
+                        <string>Je comprends</string>
+                        <key>subHeader</key>
+                        <string>Un rappel amical de votre équipe informatique locale</string>
+                    </dict>
+                </array>
+            </dict>
+		</dict>
+	</array>
+</dict>
+</plist>
+```
+
 ## Configuration
 Nudge offers significant customization, which might be overwhelming. But don't worry, you don't have to customize everything. :smile:
 
@@ -211,7 +299,9 @@ In this example, Nudge will do the following:
   - 11.0, 11.0.1, 11.1, 11.2
   - an enforcement date of February 28th, 2021
 - The `More Info` button will open up to [Apple's Big Sur 11.2.1 English release notes](https://support.apple.com/en-us/HT211896#macos1121)
-```
+
+#### JSON
+```json
 {
     "userInterface": {
       "simpleMode": false
@@ -235,6 +325,53 @@ In this example, Nudge will do the following:
         }
     ],
 }
+```
+
+#### Mobile Config
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+            <key>osVersionRequirements</key>
+            <array>
+                <dict>
+                    <key>aboutUpdateURLs</key>
+                    <array>
+                        <dict>
+                            <key>_language</key>
+                            <string>en</string>
+                            <key>aboutUpdateURL</key>
+                            <string>https://support.apple.com/en-us/HT211896#macos1121</string>
+                        </dict>
+                    </array>
+                    <key>majorUpgradeAppPath</key>
+                    <string>/Applications/Install macOS Big Sur.app</string>
+                    <key>requiredInstallationDate</key>
+                    <date>2021-02-28T00:00:00Z</date>
+                    <key>requiredMinimumOSVersion</key>
+                    <string>11.2.1</string>
+                    <key>targetedOSVersions</key>
+                    <array>
+                        <string>11.0</string>
+                        <string>11.0.1</string>
+                        <string>11.1</string>
+                        <string>11.2</string>
+                    </array>
+                </dict>
+            </array>
+            <key>userInterface</key>
+            <dict>
+                <key>simpleMode</key>
+                <false/>
+            </dict>
+		</dict>
+	</array>
+</dict>
+</plist>
 ```
 
 ### Full Example
