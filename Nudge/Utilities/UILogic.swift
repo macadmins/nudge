@@ -39,7 +39,7 @@ func nudgeStartLogic() {
 // This type of logic is not indeal and should be redesigned.
 var lastRefreshTime = Utils().getInitialDate()
 var afterFirstRun = false
-var deferralCount = 0
+var deferralCount = 1
 var hasLoggedDeferralCountPastThreshold = false
 
 func userHasClickedSecondaryQuitButton() {
@@ -92,7 +92,6 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     if !NSApplication.shared.isActive {
         _ = deferralCount += 1
         _ = lastRefreshTime = Date()
-        Utils().activateNudge()
         if deferralCountVar > allowedDeferrals  {
             if !hasLoggedDeferralCountPastThreshold {
                 let msg = "allowedDeferrals has been passed"
@@ -114,7 +113,10 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
                     runningApplication.hide()
                 })
             }
+            Utils().activateNudge()
             Utils().updateDevice()
+        } else {
+            Utils().activateNudge()
         }
         return true
     }

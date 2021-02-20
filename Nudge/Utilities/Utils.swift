@@ -13,14 +13,11 @@ struct Utils {
     func activateNudge() {
         let msg = "Re-activating Nudge"
         utilsLog.info("\(msg, privacy: .public)")
+        // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
+        // Sheets do not count as windows though.
+        NSApp.windows[0].center()
         NSApp.activate(ignoringOtherApps: true)
-    }
-
-    func bringNudgeToFront() {
-        let msg = "Bringing Nudge to front"
-        utilsLog.info("\(msg, privacy: .public)")
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.mainWindow?.makeKeyAndOrderFront(self)
+        NSApp.windows[0].makeKeyAndOrderFront(self)
     }
 
     func createImageData(fileImagePath: String) -> NSImage {

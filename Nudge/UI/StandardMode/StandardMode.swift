@@ -29,9 +29,6 @@ struct StandardMode: View {
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
 
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
-
     // Nudge UI
     var body: some View {
         HStack(spacing: 0){
