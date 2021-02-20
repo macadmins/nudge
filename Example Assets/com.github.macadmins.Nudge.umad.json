@@ -1,143 +1,143 @@
 {
-    "optionalFeatures": {
-        "asyncronousSoftwareUpdate": true,
-        "attemptToFetchMajorUpgrade": true,
-        "enforceMinorUpdates": true,
-        "enableUMAD": false,
-        "umadFeatures": {
-            "alwaysShowManulEnrollment": false,
-            "depScreenShotPath": "/somewhere/depScreenShot.png",
-            "disableManualEnrollmentForDEP": false,
-            "enforceMDMInstallation": false,
-            "manualEnrollmentPath": "https://apple.com",
-            "mdmInformationButtonPath": "https://github.com/macadmins/umad",
-            "mdmProfileIdentifier": "com.example.mdm.profile",
-            "mdmRequiredInstallationDate": "2021-02-28T00:00:00Z",
-            "uamdmScreenShotPath": "/somewhere/uamdmScreenShot.png"
-        }
-    },
-    "osVersionRequirements": [
+  "optionalFeatures": {
+    "asyncronousSoftwareUpdate": true,
+    "attemptToFetchMajorUpgrade": true,
+    "enforceMinorUpdates": true,
+    "enableUMAD": false,
+    "umadFeatures": {
+      "alwaysShowManulEnrollment": false,
+      "depScreenShotPath": "/somewhere/depScreenShot.png",
+      "disableManualEnrollmentForDEP": false,
+      "enforceMDMInstallation": false,
+      "manualEnrollmentPath": "https://apple.com",
+      "mdmInformationButtonPath": "https://github.com/macadmins/umad",
+      "mdmProfileIdentifier": "com.example.mdm.profile",
+      "mdmRequiredInstallationDate": "2021-02-28T00:00:00Z",
+      "uamdmScreenShotPath": "/somewhere/uamdmScreenShot.png"
+    }
+  },
+  "osVersionRequirements": [
+    {
+      "aboutUpdateURLs": [
         {
-            "aboutUpdateURLs": [
-                {
-                    "_language": "en",
-                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
-                },
-                {
+          "_language": "en",
+          "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
+        },
+        {
                     "_language": "es",
                     "aboutUpdateURL": "https://support.apple.com/es-es/HT211896"
-                },
-                {
+        },
+        {
                     "_language": "fr",
                     "aboutUpdateURL": "https://support.apple.com/fr-fr/HT211896"
-                },
-                {
+        },
+        {
                     "_language": "de",
                     "aboutUpdateURL": "https://support.apple.com/de-de/HT211896"
-                }
-            ],
-            "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
-            "requiredInstallationDate": "2021-02-28T00:00:00Z",
-            "requiredMinimumOSVersion": "11.2.1",
-            "targetedOSVersions": [
-                "11.0",
-                "11.0.1",
-                "11.1",
-                "11.2"
-            ]
         }
-    ],
-    "userExperience": {
-        "allowedDeferrals": 1000000,
-        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
-        "approachingRefreshCycle": 6000,
-        "approachingWindowTime": 72,
-        "elapsedRefreshCycle": 300,
-        "imminentRefeshCycle": 600,
-        "imminentWindowTime": 24,
-        "initialRefreshCycle": 18000,
-        "maxRandomDelayInSeconds": 1200,
-        "noTimers": false,
-        "nudgeRefreshCycle": 60,
-        "randomDelay": false
-    },
-    "userInterface": {
-        "forceScreenShotIcon": false,
-        "iconDarkPath": "/somewhere/logoDark.png",
-        "iconLightPath": "/somewhere/logoLight.png",
-        "screenShotDarkPath": "/somewhere/screenShotDark.png",
-        "screenShotLightPath": "/somewhere/screenShotLight.png",
-        "simpleMode": false,
-        "umadElements": [
-            {
-                "_language": "en",
-                "actionButtonManualText": "Manually Enroll",
-                "actionButtonText": "",
-                "actionButtonUAMDMText": "Open System Preferences",
-                "informationButtonText": "More Info",
-                "mainContentHeader": "This process does not require a restart",
-                "mainContentNote": "Important Notes",
-                "mainContentText": "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password.",
-                "mainContentUAMDMText": "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button.",
-                "mainHeader": "Your device requires management",
-                "primaryQuitButtonText": "Later",
-                "secondaryQuitButtonText": "I understand",
-                "subHeader": "A friendly reminder from your local IT team"
-            }
-        ],
-        "updateElements": [
-            {
-                "_language": "en",
-                "actionButtonText": "Update Device",
-                "informationButtonText": "More Info",
-                "mainContentHeader": "Your device will restart during this update",
-                "mainContentNote": "Important Notes",
-                "mainContentSubHeader": "Updates can take around 30 minutes to complete",
-                "mainContentText": "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.",
-                "mainHeader": "Your device requires a security update",
-                "primaryQuitButtonText": "Later",
-                "secondaryQuitButtonText": "I understand",
-                "subHeader": "A friendly reminder from your local IT team"
-            },
-            {
-                "_language": "es",
-                "actionButtonText": "Actualizar dispositivo",
-                "informationButtonText": "Más información",
-                "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
-                "mainContentNote": "Notas importantes",
-                "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
-                "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.",
-                "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
-                "primaryQuitButtonText": "Más tarde",
-                "secondaryQuitButtonText": "Entiendo",
-                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
-            },
-            {
-                "_language": "fr",
-                "actionButtonText": "Mettre à jour l'appareil",
-                "informationButtonText": "Plus d'informations",
-                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
-                "mainContentNote": "Notes Importantes",
-                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
-                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.",
-                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
-                "primaryQuitButtonText": "Plus tard",
-                "secondaryQuitButtonText": "Je comprends",
-                "subHeader": "Un rappel amical de votre équipe informatique locale"
-            },
-            {
-                "_language": "de",
-                "actionButtonText": "Gerät aktualisieren",
-                "informationButtonText": "Mehr Informationen",
-                "mainContentHeader": "Ihr Gerät wird während dieses Updates neu gestartet",
-                "mainContentNote": "Wichtige Hinweise",
-                "mainContentSubHeader": "Aktualisierungen können ca. 30 Minuten dauern.",
-                "mainContentText": "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.\n\nWenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.\n\nUm das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.",
-                "mainHeader": "Ihr Gerät benötigt ein Sicherheitsupdate",
-                "primaryQuitButtonText": "Später",
-                "secondaryQuitButtonText": "Ich verstehe",
-                "subHeader": "Eine freundliche Erinnerung von Ihrem IT-Team"
-            }
-        ]
+      ],
+      "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
+      "requiredInstallationDate": "2021-02-28T00:00:00Z",
+      "requiredMinimumOSVersion": "11.2.1",
+      "targetedOSVersions": [
+        "11.0",
+        "11.0.1",
+        "11.1",
+        "11.2"
+      ]
     }
+  ],
+  "userExperience": {
+    "allowedDeferrals": 1000000,
+    "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
+    "approachingRefreshCycle": 6000,
+    "approachingWindowTime": 72,
+    "elapsedRefreshCycle": 300,
+    "imminentRefeshCycle": 600,
+    "imminentWindowTime": 24,
+    "initialRefreshCycle": 18000,
+    "maxRandomDelayInSeconds": 1200,
+    "noTimers": false,
+    "nudgeRefreshCycle": 60,
+    "randomDelay": false
+  },
+  "userInterface": {
+    "forceScreenShotIcon": false,
+    "iconDarkPath": "/somewhere/logoDark.png",
+    "iconLightPath": "/somewhere/logoLight.png",
+    "screenShotDarkPath": "/somewhere/screenShotDark.png",
+    "screenShotLightPath": "/somewhere/screenShotLight.png",
+    "simpleMode": false,
+    "umadElements": [
+      {
+        "_language": "en",
+        "actionButtonText": "",
+        "actionButtonManualText": "Manually Enroll",
+        "actionButtonUAMDMText": "Open System Preferences",
+        "informationButtonText": "More Info",
+        "mainContentHeader": "This process does not require a restart",
+        "mainContentNote": "Important Notes",
+        "mainContentText": "Enrollment into MDM is required to ensure that IT can protect your computer with basic security necessities like encryption and threat detection.\n\nIf you do not enroll into MDM you may lose access to some items necessary for your day-to-day tasks.\n\nTo enroll, just look for the below notification, and click Details. Once prompted, log in with your username and password.",
+        "mainContentUAMDMText": "Thank you for enrolling your device into MDM. We sincerely appreciate you doing this in a timely manner.\n\nUnfortunately, your device has been detected as only partially enrolled into our system.\n\nPlease go to System Preferences -> Profiles, click on the Device Enrollment profile and click on the approve button.",
+        "mainHeader": "Your device requires management",
+        "primaryQuitButtonText": "Later",
+        "secondaryQuitButtonText": "I understand",
+        "subHeader": "A friendly reminder from your local IT team"
+      }
+    ],
+    "updateElements": [
+      {
+        "_language": "en",
+        "actionButtonText": "Update Device",
+        "informationButtonText": "More Info",
+        "mainContentHeader": "Your device will restart during this update",
+        "mainContentNote": "Important Notes",
+        "mainContentSubHeader": "Updates can take around 30 minutes to complete",
+        "mainContentText": "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.",
+        "mainHeader": "Your device requires a security update",
+        "primaryQuitButtonText": "Later",
+        "secondaryQuitButtonText": "I understand",
+        "subHeader": "A friendly reminder from your local IT team"
+      },
+      {
+        "_language": "es",
+        "actionButtonText": "Actualizar dispositivo",
+        "informationButtonText": "Más información",
+        "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
+        "mainContentNote": "Notas importantes",
+        "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
+        "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.",
+        "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
+        "primaryQuitButtonText": "Más tarde",
+        "secondaryQuitButtonText": "Entiendo",
+        "subHeader": "Un recordatorio amistoso de su equipo de IT local"
+      },
+      {
+        "_language": "fr",
+        "actionButtonText": "Mettre à jour l'appareil",
+        "informationButtonText": "Plus d'informations",
+        "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
+        "mainContentNote": "Notes Importantes",
+        "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
+        "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.",
+        "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
+        "primaryQuitButtonText": "Plus tard",
+        "secondaryQuitButtonText": "Je comprends",
+        "subHeader": "Un rappel amical de votre équipe informatique locale"
+      },
+      {
+        "_language": "de",
+        "actionButtonText": "Gerät aktualisieren",
+        "informationButtonText": "Mehr Informationen",
+        "mainContentHeader": "Ihr Gerät wird während dieses Updates neu gestartet",
+        "mainContentNote": "Wichtige Hinweise",
+        "mainContentSubHeader": "Aktualisierungen können ca. 30 Minuten dauern.",
+        "mainContentText": "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.\n\nWenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.\n\nUm das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.",
+        "mainHeader": "Ihr Gerät benötigt ein Sicherheitsupdate",
+        "primaryQuitButtonText": "Später",
+        "secondaryQuitButtonText": "Ich verstehe",
+        "subHeader": "Eine freundliche Erinnerung von Ihrem IT-Team"
+      }
+    ]
+  }
 }
