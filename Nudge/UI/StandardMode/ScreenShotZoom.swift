@@ -14,7 +14,7 @@ struct ScreenShotZoom: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             HStack {
                 Button(
                     action: {
@@ -22,8 +22,6 @@ struct ScreenShotZoom: View {
                 {
                     Image(systemName: "xmark.circle")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
                         .frame(width: 20, height: 20)
                         .foregroundColor(.red)
                 }
@@ -36,7 +34,9 @@ struct ScreenShotZoom: View {
                         NSCursor.pop()
                     }
                 }
-                .frame(width: 35, height: 35)
+                .frame(width: 30, height: 30)
+                
+                // Horizontally align close button to left
                 Spacer()
             }
             
@@ -57,7 +57,6 @@ struct ScreenShotZoom: View {
                     }
                 }
                 )
-                .padding(.top, -75)
                 .buttonStyle(PlainButtonStyle())
                 .help("Click to close")
                 .onHover { inside in
@@ -68,7 +67,10 @@ struct ScreenShotZoom: View {
                     }
                 }
             }
+            // Vertically align Screenshot to center
+            Spacer()
         }
+        .frame(maxWidth: 900, maxHeight: 450)
     }
 }
 
