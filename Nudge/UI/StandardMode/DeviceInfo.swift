@@ -11,7 +11,6 @@ import SwiftUI
 // Sheet view for Device Information
 struct DeviceInfo: View {
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
     
     // State variables
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
