@@ -4,6 +4,10 @@ on:
   push:
     branches:
     - main
+    paths-ignore:
+    - 'assets/**'
+    - 'Example Assets/**'
+    - '**/README.md'
 
 jobs:
   build:
