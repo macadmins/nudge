@@ -68,6 +68,14 @@ struct Utils {
             return false
         }
     }
+    
+    func getCompanyLogoPath(darkMode: Bool) -> String {
+        if darkMode {
+            return iconDarkPath
+        } else {
+            return iconLightPath
+        }
+    }
 
     func getCPUTypeInt() -> Int {
         // https://stackoverflow.com/a/63539782

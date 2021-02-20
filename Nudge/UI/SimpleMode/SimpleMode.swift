@@ -30,39 +30,22 @@ struct SimpleMode: View {
     
     // Nudge UI
     var body: some View {
+        let darkMode = colorScheme == .dark
+        let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         VStack{
             // Company Logo
-            if colorScheme == .dark {
-                if FileManager.default.fileExists(atPath: iconDarkPath) {
-                    Image(nsImage: Utils().createImageData(fileImagePath: iconDarkPath))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 300, height: 225)
-                } else {
-                    Image(systemName: "applelogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 200, height: 150)
-                        .padding(.vertical, 50)
-                }
+            if FileManager.default.fileExists(atPath: companyLogoPath) {
+                Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .scaledToFit()
+                    .frame(width: 300, height: 225)
             } else {
-                if FileManager.default.fileExists(atPath: iconLightPath) {
-                    Image(nsImage: Utils().createImageData(fileImagePath: iconLightPath))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 300, height: 225)
-                        .padding(.vertical, 2)
-                } else {
-                    Image(systemName: "applelogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 200, height: 150)
-                        .padding(.vertical, 50)
-                }
+                Image(systemName: "applelogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .scaledToFit()
+                    .frame(width: 300, height: 225)
             }
             
             // mainHeader
