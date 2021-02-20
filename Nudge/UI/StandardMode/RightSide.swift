@@ -272,7 +272,7 @@ struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
