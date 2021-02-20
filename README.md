@@ -239,8 +239,8 @@ In this example, Nudge will do the following:
 
 ### Full Example
 For full examples please see the Example Assets folder in this repo.
-- [JSON](Example Assets/com.github.macadmins.Nudge.json)
-- [Mobile Config](Example Assets/com.github.macadmins.Nudge.mobileconfig)
+- [JSON](Example%20Assets/com.github.macadmins.Nudge.json)
+- [Mobile Config](Example%20Assets/com.github.macadmins.Nudge.mobileconfig)
 
 # Examples of the User Interface
 
