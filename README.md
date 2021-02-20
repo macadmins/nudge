@@ -131,34 +131,34 @@ Example LaunchAgent
 <plist version="1.0">
 <dict>
   <key>Label</key>
-	<string>com.github.macadmins.Nudge</string>
-	<key>LimitLoadToSessionType</key>
-	<array>
+  <string>com.github.macadmins.Nudge</string>
+  <key>LimitLoadToSessionType</key>
+  <array>
     <string>Aqua</string>
-	</array>
-	<key>ProgramArguments</key>
-	<array>
-		<string>/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge</string>
-		<!-- <string>-json-url</string> -->
-		<!-- <string>https://raw.githubusercontent.com/macadmins/nudge/main/Nudge/example.json</string> -->
-		<!-- <string>-demo-mode</string> -->
+  </array>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge</string>
+    <!-- <string>-json-url</string> -->
+    <!-- <string>https://raw.githubusercontent.com/macadmins/nudge/main/Nudge/example.json</string> -->
+    <!-- <string>-demo-mode</string> -->
     <!-- <string>-force-screenshot-icon</string> -->
     <!-- <string>-simple-mode</string> -->
     <!-- <string>-version</string> -->
-	</array>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>StartCalendarInterval</key>
-	<array>
-		<dict>
-			<key>Minute</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>Minute</key>
-			<integer>30</integer>
-		</dict>
-	</array>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict>
+      <key>Minute</key>
+      <integer>0</integer>
+    </dict>
+    <dict>
+      <key>Minute</key>
+      <integer>30</integer>
+    </dict>
+  </array>
 </dict>
 </plist>
 ```
@@ -215,9 +215,9 @@ Mobile Config
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PayloadContent</key>
-	<array>
-		<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
       <key>userInterface</key>
       <dict>
         <key>updateElements</key>
@@ -334,7 +334,7 @@ In this example, Nudge will do the following:
 <plist version="1.0">
 <dict>
   <key>PayloadContent</key>
-	<array>
+  <array>
     <dict>
       <key>osVersionRequirements</key>
       <array>
@@ -368,7 +368,7 @@ In this example, Nudge will do the following:
         <key>simpleMode</key>
         <false/>
       </dict>
-		</dict>
+    </dict>
 	</array>
 </dict>
 </plist>
