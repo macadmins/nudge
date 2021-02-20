@@ -35,19 +35,22 @@ struct SimpleMode: View {
         VStack {
             VStack(alignment: .center, spacing: 10) {
                 // Company Logo
-                if FileManager.default.fileExists(atPath: companyLogoPath) {
-                    Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 300, height: 225)
-                } else {
-                    Image(systemName: "applelogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 300, height: 225)
+                HStack {
+                    if FileManager.default.fileExists(atPath: companyLogoPath) {
+                        Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
+                            .frame(width: 200, height: 150)
+                    } else {
+                        Image(systemName: "applelogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
+                            .frame(width: 200, height: 150)
+                    }
                 }
+                .frame(width: 300, height: 225)
 
                 // mainHeader
                 HStack {
@@ -93,7 +96,7 @@ struct SimpleMode: View {
                 )
                 .keyboardShortcut(.defaultAction)
             }
-            .frame(height: 380)
+            .frame(height: 390)
             
             // Bottom buttons
             HStack {
