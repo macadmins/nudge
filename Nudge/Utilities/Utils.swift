@@ -45,6 +45,7 @@ struct Utils {
     func exitNudge() {
         let msg = "User clicked primaryQuitButton"
         uiLog.info("\(msg, privacy: .public)")
+        shouldExit = true
         AppKit.NSApp.terminate(nil)
     }
 

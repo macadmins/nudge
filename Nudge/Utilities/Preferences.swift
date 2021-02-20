@@ -10,6 +10,7 @@ import Foundation
 let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
+var shouldExit = false
 
 // optionalFeatures
 // Even if profile is installed, return nil if in demo-mode

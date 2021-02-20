@@ -7,13 +7,21 @@
 
 import SwiftUI
 
-// Thanks you ftiff
-// Create an AppDelegate so the close button will terminate Nudge
-// Technically not needed because we are now hiding those buttons
-
 class AppDelegate: NSObject, NSApplicationDelegate {
+    // Thanks you ftiff
+    // Create an AppDelegate so the close button will terminate Nudge
+    // Technically not needed because we are now hiding those buttons
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
+    }
+    
+    // Disable CMD+Q - Only exit if primaryQuitButton is clicked
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if shouldExit {
+            return NSApplication.TerminateReply.terminateNow
+        } else {
+            return NSApplication.TerminateReply.terminateCancel
+        }
     }
 }
 

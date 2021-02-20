@@ -72,3 +72,21 @@ struct HostingWindowFinder: NSViewRepresentable {
     }
     func updateNSView(_ nsView: NSView, context: Context) {}
 }
+
+// Stuff if we ever implement fullscreen
+//        let presentationOptions: NSApplication.PresentationOptions = [
+//            .hideDock, // Dock is entirely unavailable. Spotlight menu is disabled.
+//            // .autoHideMenuBar,           // Menu Bar appears when moused to.
+//            // .disableAppleMenu,          // All Apple menu items are disabled.
+//            .disableProcessSwitching      // Cmd+Tab UI is disabled. All Exposé functionality is also disabled.
+//            // .disableForceQuit,             // Cmd+Opt+Esc panel is disabled.
+//            // .disableSessionTermination,    // PowerKey panel and Restart/Shut Down/Log Out are disabled.
+//            // .disableHideApplication,       // Application "Hide" menu item is disabled.
+//            // .autoHideToolbar,
+//            // .fullScreen
+//        ]
+//        let optionsDictionary = [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions: presentationOptions]
+//        if let screen = NSScreen.main {
+//            view.enterFullScreenMode(screen, withOptions: [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions:presentationOptions.rawValue])
+//        }
+//        //view.enterFullScreenMode(NSScreen.main!, withOptions: optionsDictionary)
