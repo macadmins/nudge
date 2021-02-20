@@ -10,14 +10,6 @@ import SwiftUI
 
 // Standard Mode
 struct StandardMode: View {
-    // Get the color scheme so we can dynamically change properties
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.openURL) var openURL
-    @EnvironmentObject var manager: PolicyManager
-
-    // Get the screen frame
-    var screen = NSScreen.main?.visibleFrame
-
     // Nudge UI
     var body: some View {
         HStack(spacing: 0){
