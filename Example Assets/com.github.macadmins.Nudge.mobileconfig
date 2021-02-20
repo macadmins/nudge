@@ -1,252 +1,279 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>PayloadContent</key>
-	<array>
-		<dict>
-			<key>PayloadDescription</key>
-			<string>Configures all Nudge preferences</string>
-			<key>PayloadDisplayName</key>
-			<string>Nudge Preferences</string>
-			<key>PayloadIdentifier</key>
-			<string>com.github.macadmins.Nudge.preferences.example</string>
-			<key>PayloadOrganization</key>
-			<string></string>
-			<key>PayloadType</key>
-			<string>com.github.macadmins.Nudge</string>
-			<key>PayloadUUID</key>
-			<string>CA02957C-7472-446B-9F77-3E0414405556</string>
-			<key>PayloadVersion</key>
-			<integer>1</integer>
-            <key>optionalFeatures</key>
-            <dict>
-                <key>asyncronousSoftwareUpdate</key>
-                <true/>
-                <key>attemptToFetchMajorUpgrade</key>
-                <true/>
-                <key>enforceMinorUpdates</key>
-                <true/>
-            </dict>
-            <key>osVersionRequirements</key>
+  <dict>
+    <key>PayloadContent</key>
+    <array>
+      <dict>
+        <key>PayloadDescription</key>
+        <string>Configures all Nudge preferences</string>
+        <key>PayloadDisplayName</key>
+        <string>Nudge Preferences</string>
+        <key>PayloadIdentifier</key>
+        <string>com.github.macadmins.Nudge.preferences.example</string>
+        <key>PayloadOrganization</key>
+        <string></string>
+        <key>PayloadType</key>
+        <string>com.github.macadmins.Nudge</string>
+        <key>PayloadUUID</key>
+        <string>CA02957C-7472-446B-9F77-3E0414405556</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+        <key>optionalFeatures</key>
+        <dict>
+          <key>asyncronousSoftwareUpdate</key>
+          <true />
+          <key>attemptToFetchMajorUpgrade</key>
+          <true />
+          <key>enforceMinorUpdates</key>
+          <true />
+        </dict>
+        <key>osVersionRequirements</key>
+        <array>
+          <dict>
+            <key>aboutUpdateURLs</key>
             <array>
-                <dict>
-                    <key>aboutUpdateURLs</key>
-                    <array>
-                        <dict>
-                            <key>_language</key>
-                            <string>en</string>
-                            <key>aboutUpdateURL</key>
-                            <string>https://support.apple.com/en-us/HT211896#macos1121</string>
-                        </dict>
-                        <dict>
-                            <key>_language</key>
-                            <string>es</string>
-                            <key>aboutUpdateURL</key>
-                            <string>https://support.apple.com/es-es/HT211896</string>
-                        </dict>
-                        <dict>
-                            <key>_language</key>
-                            <string>fr</string>
-                            <key>aboutUpdateURL</key>
-                            <string>https://support.apple.com/fr-fr/HT211896</string>
-                        </dict>
-                        <dict>
-                            <key>_language</key>
-                            <string>de</string>
-                            <key>aboutUpdateURL</key>
-                            <string>https://support.apple.com/de-de/HT211896</string>
-                        </dict>
-                    </array>
-                    <key>majorUpgradeAppPath</key>
-                    <string>/Applications/Install macOS Big Sur.app</string>
-                    <key>requiredInstallationDate</key>
-                    <date>2021-02-28T00:00:00Z</date>
-                    <key>requiredMinimumOSVersion</key>
-                    <string>11.2.1</string>
-                    <key>targetedOSVersions</key>
-                    <array>
-                        <string>11.0</string>
-                        <string>11.0.1</string>
-                        <string>11.1</string>
-                        <string>11.2</string>
-                    </array>
-                </dict>
+              <dict>
+                <key>_language</key>
+                <string>en</string>
+                <key>aboutUpdateURL</key>
+                <string>https://support.apple.com/en-us/HT211896#macos1121
+                </string>
+              </dict>
+              <dict>
+                <key>_language</key>
+                <string>es</string>
+                <key>aboutUpdateURL</key>
+                <string>https://support.apple.com/es-es/HT211896</string>
+              </dict>
+              <dict>
+                <key>_language</key>
+                <string>fr</string>
+                <key>aboutUpdateURL</key>
+                <string>https://support.apple.com/fr-fr/HT211896</string>
+              </dict>
+              <dict>
+                <key>_language</key>
+                <string>de</string>
+                <key>aboutUpdateURL</key>
+                <string>https://support.apple.com/de-de/HT211896</string>
+              </dict>
             </array>
-            <key>userExperience</key>
+            <key>majorUpgradeAppPath</key>
+            <string>/Applications/Install macOS Big Sur.app</string>
+            <key>requiredInstallationDate</key>
+            <date>2021-02-28T00:00:00Z</date>
+            <key>requiredMinimumOSVersion</key>
+            <string>11.2.1</string>
+            <key>targetedOSVersions</key>
+            <array>
+              <string>11.0</string>
+              <string>11.0.1</string>
+              <string>11.1</string>
+              <string>11.2</string>
+            </array>
+          </dict>
+        </array>
+        <key>userExperience</key>
+        <dict>
+          <key>allowedDeferrals</key>
+          <integer>1000000</integer>
+          <key>allowedDeferralsUntilForcedSecondaryQuitButton</key>
+          <integer>14</integer>
+          <key>approachingRefreshCycle</key>
+          <integer>6000</integer>
+          <key>approachingWindowTime</key>
+          <integer>72</integer>
+          <key>elapsedRefreshCycle</key>
+          <integer>300</integer>
+          <key>imminentRefeshCycle</key>
+          <integer>600</integer>
+          <key>imminentWindowTime</key>
+          <integer>24</integer>
+          <key>initialRefreshCycle</key>
+          <integer>18000</integer>
+          <key>maxRandomDelayInSeconds</key>
+          <integer>1200</integer>
+          <key>noTimers</key>
+          <false />
+          <key>nudgeRefreshCycle</key>
+          <integer>60</integer>
+          <key>randomDelay</key>
+          <false />
+        </dict>
+        <key>userInterface</key>
+        <dict>
+          <key>forceScreenShotIcon</key>
+          <false />
+          <key>iconDarkPath</key>
+          <string>/somewhere/logoDark.png</string>
+          <key>iconLightPath</key>
+          <string>/somewhere/logoLight.png</string>
+          <key>screenShotDarkPath</key>
+          <string>/somewhere/screenShotDark.png</string>
+          <key>screenShotLightPath</key>
+          <string>/somewhere/screenShotLight.png</string>
+          <key>simpleMode</key>
+          <false />
+          <key>updateElements</key>
+          <array>
             <dict>
-                <key>allowedDeferrals</key>
-                <integer>1000000</integer>
-                <key>allowedDeferralsUntilForcedSecondaryQuitButton</key>
-                <integer>14</integer>
-                <key>approachingRefreshCycle</key>
-                <integer>6000</integer>
-                <key>approachingWindowTime</key>
-                <integer>72</integer>
-                <key>elapsedRefreshCycle</key>
-                <integer>300</integer>
-                <key>imminentRefeshCycle</key>
-                <integer>600</integer>
-                <key>imminentWindowTime</key>
-                <integer>24</integer>
-                <key>initialRefreshCycle</key>
-                <integer>18000</integer>
-                <key>maxRandomDelayInSeconds</key>
-                <integer>1200</integer>
-                <key>noTimers</key>
-                <false/>
-                <key>nudgeRefreshCycle</key>
-                <integer>60</integer>
-                <key>randomDelay</key>
-                <false/>
+              <key>_language</key>
+              <string>en</string>
+              <key>actionButtonText</key>
+              <string>Update Device</string>
+              <key>informationButtonText</key>
+              <string>More Info</string>
+              <key>mainContentHeader</key>
+              <string>Your device will restart during this update</string>
+              <key>mainContentNote</key>
+              <string>Important Notes</string>
+              <key>mainContentSubHeader</key>
+              <string>Updates can take around 30 minutes to complete</string>
+              <key>mainContentText</key>
+              <string>A fully up-to-date device is required to ensure that IT
+                can accurately
+                protect your device. If you do not update your device, you may
+                lose access to
+                some items necessary for your day-to-day tasks. To begin the
+                update, simply
+                click on the Update Device button and follow the provided steps.
+              </string>
+              <key>mainHeader</key>
+              <string>Your device requires a security update</string>
+              <key>primaryQuitButtonText</key>
+              <string>Later</string>
+              <key>secondaryQuitButtonText</key>
+              <string>I understand</string>
+              <key>subHeader</key>
+              <string>A friendly reminder from your local IT team</string>
             </dict>
-            <key>userInterface</key>
             <dict>
-                <key>forceScreenShotIcon</key>
-                <false/>
-                <key>iconDarkPath</key>
-                <string>/somewhere/logoDark.png</string>
-                <key>iconLightPath</key>
-                <string>/somewhere/logoLight.png</string>
-                <key>screenShotDarkPath</key>
-                <string>/somewhere/screenShotDark.png</string>
-                <key>screenShotLightPath</key>
-                <string>/somewhere/screenShotLight.png</string>
-                <key>simpleMode</key>
-                <false/>
-                <key>updateElements</key>
-                <array>
-                    <dict>
-                        <key>_language</key>
-                        <string>en</string>
-                        <key>actionButtonText</key>
-                        <string>Update Device</string>
-                        <key>informationButtonText</key>
-                        <string>More Info</string>
-                        <key>mainContentHeader</key>
-                        <string>Your device will restart during this update</string>
-                        <key>mainContentNote</key>
-                        <string>Important Notes</string>
-                        <key>mainContentSubHeader</key>
-                        <string>Updates can take around 30 minutes to complete</string>
-                        <key>mainContentText</key>
-                        <string>A fully up-to-date device is required to ensure that IT can accurately protect your device.
-
-If you do not update your device, you may lose access to some items necessary for your day-to-day tasks.
-
-To begin the update, simply click on the Update Device button and follow the provided steps.</string>
-                        <key>mainHeader</key>
-                        <string>Your device requires a security update</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Later</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>I understand</string>
-                        <key>subHeader</key>
-                        <string>A friendly reminder from your local IT team</string>
-                    </dict>
-                    <dict>
-                        <key>_language</key>
-                        <string>es</string>
-                        <key>actionButtonText</key>
-                        <string>Actualizar dispositivo</string>
-                        <key>informationButtonText</key>
-                        <string>Más información</string>
-                        <key>mainContentHeader</key>
-                        <string>Su dispositivo se reiniciará durante esta actualización</string>
-                        <key>mainContentNote</key>
-                        <string>Notas importantes</string>
-                        <key>mainContentSubHeader</key>
-                        <string>Las actualizaciones pueden tardar unos 30 minutos en completarse</string>
-                        <key>mainContentText</key>
-                        <string>Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.
-
-Si no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.
-
-Para comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.</string>
-                        <key>mainHeader</key>
-                        <string>Tu dispositivo requiere una actualización de seguridad</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Más tarde</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>Entiendo</string>
-                        <key>subHeader</key>
-                        <string>Un recordatorio amistoso de su equipo de IT local</string>
-                    </dict>
-                    <dict>
-                        <key>_language</key>
-                        <string>fr</string>
-                        <key>actionButtonText</key>
-                        <string>Mettre à jour l'appareil</string>
-                        <key>informationButtonText</key>
-                        <string>Plus d'informations</string>
-                        <key>mainContentHeader</key>
-                        <string>Votre appareil redémarrera pendant cette mise à jour</string>
-                        <key>mainContentNote</key>
-                        <string>Notes Importantes</string>
-                        <key>mainContentSubHeader</key>
-                        <string>Les mises à jour peuvent prendre environ 30 minutes.</string>
-                        <key>mainContentText</key>
-                        <string>Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.
-
-Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.
-
-Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.</string>
-                        <key>mainHeader</key>
-                        <string>Votre appareil nécessite une mise à jour de sécurité</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Plus tard</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>Je comprends</string>
-                        <key>subHeader</key>
-                        <string>Un rappel amical de votre équipe informatique locale</string>
-                    </dict>
-                    <dict>
-                        <key>_language</key>
-                        <string>de</string>
-                        <key>actionButtonText</key>
-                        <string>Gerät aktualisieren</string>
-                        <key>informationButtonText</key>
-                        <string>Mehr Informationen</string>
-                        <key>mainContentHeader</key>
-                        <string>Ihr Gerät wird während dieses Updates neu gestartet</string>
-                        <key>mainContentNote</key>
-                        <string>Wichtige Hinweise</string>
-                        <key>mainContentSubHeader</key>
-                        <string>Aktualisierungen können ca. 30 Minuten dauern.</string>
-                        <key>mainContentText</key>
-                        <string>Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.
-
-Wenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.
-
-Um das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die nachfolgend angegebenen Schritte.</string>
-                        <key>mainHeader</key>
-                        <string>Ihr Gerät benötigt ein Sicherheitsupdate</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Später</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>Ich verstehe</string>
-                        <key>subHeader</key>
-                        <string>Eine freundliche Erinnerung von Ihrem IT-Team</string>
-                    </dict>
-                </array>
+              <key>_language</key>
+              <string>es</string>
+              <key>actionButtonText</key>
+              <string>Actualizar dispositivo</string>
+              <key>informationButtonText</key>
+              <string>Más información</string>
+              <key>mainContentHeader</key>
+              <string>Su dispositivo se reiniciará durante esta actualización
+              </string>
+              <key>mainContentNote</key>
+              <string>Notas importantes</string>
+              <key>mainContentSubHeader</key>
+              <string>Las actualizaciones pueden tardar unos 30 minutos en
+                completarse</string>
+              <key>mainContentText</key>
+              <string>Se requiere un dispositivo completamente actualizado para
+                garantizar que
+                IT pueda proteger su dispositivo con precisión. Si no actualiza
+                su dispositivo,
+                es posible que pierda el acceso a algunos elementos necesarios
+                para sus tareas
+                diarias. Para comenzar la actualización, simplemente haga clic
+                en el botón
+                Actualizar dispositivo y siga los pasos proporcionados.</string>
+              <key>mainHeader</key>
+              <string>Tu dispositivo requiere una actualización de seguridad
+              </string>
+              <key>primaryQuitButtonText</key>
+              <string>Más tarde</string>
+              <key>secondaryQuitButtonText</key>
+              <string>Entiendo</string>
+              <key>subHeader</key>
+              <string>Un recordatorio amistoso de su equipo de IT local</string>
             </dict>
-		</dict>
-	</array>
-	<key>PayloadDescription</key>
-	<string>Configures Nudge application</string>
-	<key>PayloadDisplayName</key>
-	<string>Nudge</string>
-	<key>PayloadIdentifier</key>
-	<string>com.github.macadmins.Nudge.example</string>
-	<key>PayloadOrganization</key>
-	<string>Nudge</string>
+            <dict>
+              <key>_language</key>
+              <string>fr</string>
+              <key>actionButtonText</key>
+              <string>Mettre à jour l'appareil</string>
+              <key>informationButtonText</key>
+              <string>Plus d'informations</string>
+              <key>mainContentHeader</key>
+              <string>Votre appareil redémarrera pendant cette mise à jour
+              </string>
+              <key>mainContentNote</key>
+              <string>Notes Importantes</string>
+              <key>mainContentSubHeader</key>
+              <string>Les mises à jour peuvent prendre environ 30 minutes.
+              </string>
+              <key>mainContentText</key>
+              <string>Un appareil entièrement à jour est nécessaire pour
+                garantir que le
+                service informatique puisse protéger votre appareil
+                efficacement. Si vous ne
+                mettez pas à jour votre appareil, vous risquez de perdre l'accès
+                à certains
+                outils nécessaires à vos tâches quotidiennes. Pour commencer la
+                mise à jour,
+                cliquez simplement sur le bouton Mettre à jour le périphérique
+                et suivez les
+                étapes fournies.</string>
+              <key>mainHeader</key>
+              <string>Votre appareil nécessite une mise à jour de sécurité
+              </string>
+              <key>primaryQuitButtonText</key>
+              <string>Plus tard</string>
+              <key>secondaryQuitButtonText</key>
+              <string>Je comprends</string>
+              <key>subHeader</key>
+              <string>Un rappel amical de votre équipe informatique locale
+              </string>
+            </dict>
+            <dict>
+              <key>_language</key>
+              <string>de</string>
+              <key>actionButtonText</key>
+              <string>Gerät aktualisieren</string>
+              <key>informationButtonText</key>
+              <string>Mehr Informationen</string>
+              <key>mainContentHeader</key>
+              <string>Ihr Gerät wird während dieses Updates neu gestartet
+              </string>
+              <key>mainContentNote</key>
+              <string>Wichtige Hinweise</string>
+              <key>mainContentSubHeader</key>
+              <string>Aktualisierungen können ca. 30 Minuten dauern.</string>
+              <key>mainContentText</key>
+              <string>Ein vollständig aktualisiertes Gerät ist erforderlich, um
+                sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv
+                schützen kann. Wenn
+                Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise
+                den Zugriff auf
+                einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.
+                Um das Update
+                zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren
+                und befolgen
+                Sie die nachfolgend angegebenen Schritte.</string>
+              <key>mainHeader</key>
+              <string>Ihr Gerät benötigt ein Sicherheitsupdate</string>
+              <key>primaryQuitButtonText</key>
+              <string>Später</string>
+              <key>secondaryQuitButtonText</key>
+              <string>Ich verstehe</string>
+              <key>subHeader</key>
+              <string>Eine freundliche Erinnerung von Ihrem IT-Team</string>
+            </dict>
+          </array>
+        </dict>
+      </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>Configures Nudge application</string>
+    <key>PayloadDisplayName</key>
+    <string>Nudge</string>
+    <key>PayloadIdentifier</key>
+    <string>com.github.macadmins.Nudge.example</string>
+    <key>PayloadOrganization</key>
+    <string>Nudge</string>
     <key>PayloadScope</key>
     <string>System</string>
-	<key>PayloadType</key>
-	<string>Configuration</string>
-	<key>PayloadUUID</key>
-	<string>2F54F734-132D-4539-B583-F1DCF23DB5EB</string>
-	<key>PayloadVersion</key>
-	<integer>1</integer>
-</dict>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>2F54F734-132D-4539-B583-F1DCF23DB5EB</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+  </dict>
 </plist>
