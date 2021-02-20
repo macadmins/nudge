@@ -14,6 +14,8 @@ struct ScreenShotZoom: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
+        let darkMode = colorScheme == .dark
+        let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
         VStack(alignment: .center) {
             HStack {
                 Button(

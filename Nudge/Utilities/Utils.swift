@@ -11,8 +11,6 @@ import SystemConfiguration
 import SwiftUI
 
 struct Utils {
-    @Environment(\.colorScheme) var colorScheme
-
     func activateNudge() {
         let msg = "Re-activating Nudge"
         utilsLog.info("\(msg, privacy: .public)")
@@ -206,14 +204,13 @@ struct Utils {
         return PatchOSVersion
     }
     
-    func getScreenShotPath() -> String {
-        if colorScheme == .dark {
+    func getScreenShotPath(darkMode: Bool) -> String {
+        if darkMode {
             return screenShotDarkPath
         } else {
             return screenShotLightPath
         }
     }
-
 
     func getSerialNumber() -> String {
         if Utils().demoModeEnabled() {
