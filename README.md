@@ -132,6 +132,9 @@ Example LaunchAgent
 		<!-- <string>-json-url</string> -->
 		<!-- <string>https://raw.githubusercontent.com/macadmins/nudge/main/Nudge/example.json</string> -->
 		<!-- <string>-demo-mode</string> -->
+        <!-- <string>-force-screenshot-icon</string> -->
+        <!-- <string>-simple-mode</string> -->
+        <!-- <string>-version</string> -->
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
