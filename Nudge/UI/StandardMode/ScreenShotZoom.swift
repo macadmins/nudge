@@ -53,8 +53,8 @@ struct ScreenShotZoom: View {
                     } else {
                         Image("CompanyScreenshotIcon")
                             .resizable()
+                            .scaledToFit()
                             .aspectRatio(contentMode: .fit)
-                            .padding()
                             .frame(maxHeight: 512)
                     }
                 }
