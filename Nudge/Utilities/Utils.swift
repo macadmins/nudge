@@ -8,6 +8,7 @@
 import AppKit
 import Foundation
 import SystemConfiguration
+import SwiftUI
 
 struct Utils {
     func activateNudge() {
@@ -65,6 +66,14 @@ struct Utils {
             return true
         } else {
             return false
+        }
+    }
+    
+    func getCompanyLogoPath(darkMode: Bool) -> String {
+        if darkMode {
+            return iconDarkPath
+        } else {
+            return iconLightPath
         }
     }
 
@@ -201,6 +210,14 @@ struct Utils {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
         utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
         return PatchOSVersion
+    }
+    
+    func getScreenShotPath(darkMode: Bool) -> String {
+        if darkMode {
+            return screenShotDarkPath
+        } else {
+            return screenShotLightPath
+        }
     }
 
     func getSerialNumber() -> String {

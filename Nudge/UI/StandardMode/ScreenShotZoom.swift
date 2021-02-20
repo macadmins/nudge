@@ -14,7 +14,9 @@ struct ScreenShotZoom: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        VStack {
+        let darkMode = colorScheme == .dark
+        let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
+        VStack(alignment: .center) {
             HStack {
                 Button(
                     action: {
@@ -22,8 +24,6 @@ struct ScreenShotZoom: View {
                 {
                     Image(systemName: "xmark.circle")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
                         .frame(width: 20, height: 20)
                         .foregroundColor(.red)
                 }
@@ -36,20 +36,16 @@ struct ScreenShotZoom: View {
                         NSCursor.pop()
                     }
                 }
-                .frame(width: 35, height: 35)
+                .frame(width: 30, height: 30)
+                
+                // Horizontally align close button to left
                 Spacer()
             }
             
             HStack {
                 Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-                    if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
-                    } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                    if FileManager.default.fileExists(atPath: screenShotPath) {
+                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                             .resizable()
                             .scaledToFit()
                             .aspectRatio(contentMode: .fit)
@@ -57,13 +53,12 @@ struct ScreenShotZoom: View {
                     } else {
                         Image("CompanyScreenshotIcon")
                             .resizable()
+                            .scaledToFit()
                             .aspectRatio(contentMode: .fit)
-                            .padding()
                             .frame(maxHeight: 512)
                     }
                 }
                 )
-                .padding(.top, -75)
                 .buttonStyle(PlainButtonStyle())
                 .help("Click to close")
                 .onHover { inside in
@@ -74,7 +69,10 @@ struct ScreenShotZoom: View {
                     }
                 }
             }
+            // Vertically align Screenshot to center
+            Spacer()
         }
+        .frame(maxWidth: 900, maxHeight: 450)
     }
 }
 

@@ -30,11 +30,13 @@ struct SimpleMode: View {
     
     // Nudge UI
     var body: some View {
-        VStack{
-            // Company Logo
-            if colorScheme == .dark {
-                if FileManager.default.fileExists(atPath: iconDarkPath) {
-                    Image(nsImage: Utils().createImageData(fileImagePath: iconDarkPath))
+        let darkMode = colorScheme == .dark
+        let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
+        VStack {
+            VStack(alignment: .center, spacing: 10) {
+                // Company Logo
+                if FileManager.default.fileExists(atPath: companyLogoPath) {
+                    Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .scaledToFit()
@@ -44,76 +46,54 @@ struct SimpleMode: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .scaledToFit()
-                        .frame(width: 200, height: 150)
-                        .padding(.vertical, 50)
-                }
-            } else {
-                if FileManager.default.fileExists(atPath: iconLightPath) {
-                    Image(nsImage: Utils().createImageData(fileImagePath: iconLightPath))
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
                         .frame(width: 300, height: 225)
-                        .padding(.vertical, 2)
-                } else {
-                    Image(systemName: "applelogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
-                        .frame(width: 200, height: 150)
-                        .padding(.vertical, 50)
                 }
-            }
-            
-            // mainHeader
-            HStack {
-                Text(getMainHeader())
-                    .font(.title)
-                    .fontWeight(.bold)
-            }
-            .padding(.vertical, 2)
-            
-            // Days Remaining
-            HStack {
-                Text("Days remaining to update:")
-                    .font(.title2)
-                if self.daysRemaining <= 0 {
-                    Text(String(0))
-                        .font(.title2)
-                        .fontWeight(.bold)
-                } else {
-                    Text(String(self.daysRemaining))
-                        .font(.title2)
+
+                // mainHeader
+                HStack {
+                    Text(getMainHeader())
+                        .font(.title)
                         .fontWeight(.bold)
                 }
-            }
-            .padding(.vertical, 2)
-            
-            // Ignored Count
-            HStack{
-                Text("Ignored Count:")
-                    .font(.title2)
-                Text(String(self.deferralCountUI))
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .onReceive(nudgeRefreshCycleTimer) { _ in
-                        if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                            self.deferralCountUI += 1
-                        }
+                
+                // Days Remaining
+                HStack {
+                    Text("Days remaining to update:")
+                        .font(.title2)
+                    if self.daysRemaining <= 0 {
+                        Text(String(0))
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    } else {
+                        Text(String(self.daysRemaining))
+                            .font(.title2)
+                            .fontWeight(.bold)
                     }
+                }
+
+                // Ignored Count
+                HStack {
+                    Text("Ignored Count:")
+                        .font(.title2)
+                    Text(String(self.deferralCountUI))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .onReceive(nudgeRefreshCycleTimer) { _ in
+                            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
+                                self.deferralCountUI += 1
+                            }
+                        }
+                }
+
+                // actionButton
+                Button(action: Utils().updateDevice, label: {
+                    Text(actionButtonText)
+                        .frame(minWidth: 120)
+                    }
+                )
+                .keyboardShortcut(.defaultAction)
             }
-            .padding(.vertical, 2)
-            
-            // actionButton
-            Button(action: Utils().updateDevice, label: {
-                Text(actionButtonText)
-                    .frame(minWidth: 120)
-            }
-            )
-            .keyboardShortcut(.defaultAction)
-            .padding(.vertical, 2)
-            
-            Spacer()
+            .frame(height: 380)
             
             // Bottom buttons
             HStack {
@@ -133,12 +113,11 @@ struct SimpleMode: View {
                             NSCursor.pop()
                         }
                     }
-                    .padding(.leading, 20)
                 }
-                
+
                 // Separate the buttons with a spacer
                 Spacer()
-                
+
                 if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                     // secondaryQuitButton
                     if requireDualQuitButtons {
@@ -192,12 +171,11 @@ struct SimpleMode: View {
                     }
                 }
             }
+            .frame(width: 860)
             // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
-            .padding(.trailing, 20)
-            .padding(.bottom, 15)
-            .onAppear(perform: nudgeStartLogic)
         }
         .frame(width: 900, height: 450)
+        .onAppear(perform: nudgeStartLogic)
     }
 }
 

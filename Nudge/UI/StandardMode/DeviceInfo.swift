@@ -11,7 +11,6 @@ import SwiftUI
 // Sheet view for Device Information
 struct DeviceInfo: View {
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
     
     // State variables
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
@@ -20,7 +19,7 @@ struct DeviceInfo: View {
     @State var nudgeVersion = Utils().getNudgeVersion()
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 7.5) {
             HStack {
                 Button(
                     action: {
@@ -28,8 +27,6 @@ struct DeviceInfo: View {
                 {
                     Image(systemName: "xmark.circle")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaledToFit()
                         .frame(width: 20, height: 20)
                         .foregroundColor(.red)
                 }
@@ -42,57 +39,50 @@ struct DeviceInfo: View {
                         NSCursor.pop()
                     }
                 }
-                .frame(width: 35, height: 35)
-                
+                .frame(width: 30, height: 30)
+
+                // Horizontally align close button to left
                 Spacer()
             }
-            
             // Additional Device Information
-            HStack{
-                Text("Additional Device Information")
-                    .fontWeight(.bold)
+            Group {
+                HStack{
+                    Text("Additional Device Information")
+                        .fontWeight(.bold)
+                }
+                // Username
+                HStack{
+                    Text("Username:")
+                    Text(self.systemConsoleUsername)
+                        .foregroundColor(.secondary)
+                }
+                // Serial Number
+                HStack{
+                    Text("Serial Number:")
+                    Text(self.serialNumber)
+                        .foregroundColor(.secondary)
+                }
+                // Architecture
+                HStack{
+                    Text("Architecture:")
+                    Text(self.cpuType)
+                        .foregroundColor(.secondary)
+                }
+                // Language
+                HStack{
+                    Text("Language:")
+                    Text(language)
+                        .foregroundColor(.secondary)
+                }
+                // Nudge Version
+                HStack{
+                    Text("Version:")
+                    Text(self.nudgeVersion)
+                        .foregroundColor(.secondary)
+                }
             }
-            .padding(.vertical, 1)
             
-            // Username
-            HStack{
-                Text("Username:")
-                Text(self.systemConsoleUsername)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-            
-            // Serial Number
-            HStack{
-                Text("Serial Number:")
-                Text(self.serialNumber)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-            
-            // Architecture
-            HStack{
-                Text("Architecture:")
-                Text(self.cpuType)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-            
-            // Language
-            HStack{
-                Text("Language:")
-                Text(language)
-                    .foregroundColor(.secondary)
-            }
-            
-            // Nudge Version
-            HStack{
-                Text("Version:")
-                Text(self.nudgeVersion)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 1)
-            
+            // Vertically align Additional Device Information to center
             Spacer()
         }
         .frame(width: 400, height: 200)
@@ -105,11 +95,11 @@ struct DeviceInfoPreview: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.3") ))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.3") ))
                 .preferredColorScheme(.dark)
         }
     }
