@@ -29,6 +29,8 @@ struct StandardModeRightSide: View {
     
     // Nudge UI
     var body: some View {
+        let darkMode = colorScheme == .dark
+        let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
         // Right side of Nudge
         VStack{
             Group {
@@ -135,33 +137,11 @@ struct StandardModeRightSide: View {
                     HStack {
                         Spacer()
                         // screenShot
-                        if colorScheme == .dark && FileManager.default.fileExists(atPath: screenShotDarkPath) {
+                        if FileManager.default.fileExists(atPath: screenShotPath) {
                             Button {
                                 self.showSSDetail.toggle()
                             } label: {
-                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotDarkPath))
-                                    .resizable()
-                                    .scaledToFit()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: 125)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .help("Click to zoom into screenshot")
-                            .sheet(isPresented: $showSSDetail) {
-                                ScreenShotZoom()
-                            }
-                            .onHover { inside in
-                                if inside {
-                                    NSCursor.pointingHand.push()
-                                } else {
-                                    NSCursor.pop()
-                                }
-                            }
-                        } else if colorScheme == .light && FileManager.default.fileExists(atPath: screenShotLightPath) {
-                            Button {
-                                self.showSSDetail.toggle()
-                            } label: {
-                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotLightPath))
+                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                                     .resizable()
                                     .scaledToFit()
                                     .aspectRatio(contentMode: .fit)
