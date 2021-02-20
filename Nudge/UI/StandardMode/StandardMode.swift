@@ -12,7 +12,7 @@ import SwiftUI
 struct StandardMode: View {
     // Nudge UI
     var body: some View {
-        HStack(spacing: 0){
+        HStack {
             // Life side of Nudge
             StandardModeLeftSide()
 
