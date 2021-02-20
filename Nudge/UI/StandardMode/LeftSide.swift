@@ -29,7 +29,6 @@ struct StandardModeLeftSide: View {
         let darkMode = colorScheme == .dark
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         // Left side of Nudge
-        // Additional Device Information
         VStack(alignment: .center, spacing: 20) {
             HStack {
                 Button(action: {
@@ -132,7 +131,7 @@ struct StandardModeLeftSide: View {
             Spacer()
 
             // More Info
-            HStack(alignment: .top) {
+            HStack {
                 // informationButton
                 if aboutUpdateURL != "" {
                     Button(action: Utils().openMoreInfo, label: {

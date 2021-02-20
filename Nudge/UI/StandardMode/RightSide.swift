@@ -32,116 +32,122 @@ struct StandardModeRightSide: View {
         let darkMode = colorScheme == .dark
         let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
         // Right side of Nudge
-        VStack{
-            Group {
-                // mainHeader
-                VStack(alignment: .leading) {
-                    HStack {
-                        VStack {
-                            // mainHeader
-                            HStack {
-                                Text(getMainHeader())
-                                    .font(.largeTitle)
-                                    .minimumScaleFactor(0.5)
-                                    .frame(maxHeight: 25)
-                                    .lineLimit(1)
-                                Spacer()
-                            }
-                            // subHeader
-                            HStack {
-                                Text(subHeader)
-                                    .font(.body)
-                                    .fontWeight(.bold)
-                                    .lineLimit(1)
-                                Spacer()
-                            }
+        VStack {
+            // mainHeader
+            VStack(alignment: .center) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 5) {
+                        // mainHeader
+                        HStack {
+                            Text(getMainHeader())
+                                .font(.largeTitle)
+                                .minimumScaleFactor(0.5)
+                                .frame(maxHeight: 25)
+                                .lineLimit(1)
                         }
-                        Spacer()
+                        // subHeader
+                        HStack {
+                            Text(subHeader)
+                                .font(.body)
+                                .fontWeight(.bold)
+                                .lineLimit(1)
+                        }
                     }
+                    Spacer()
                 }
             }
-            .padding(.bottom, 0.5)
-            .padding(.leading, 20.0)
-            .padding(.trailing, 20.0)
-            .frame(width: 550)
+            .frame(width: 510)
             
             // I'm kind of impressed with myself
-            Group {
-                VStack(alignment: .leading) {
-                    // mainContentHeader / mainContentSubHeader
-                    HStack {
-                        VStack {
-                            HStack {
-                                Text(mainContentHeader)
-                                    .font(.callout)
-                                    .fontWeight(.bold)
-                                Spacer()
-                            }
-                            HStack {
-                                Text(mainContentSubHeader)
-                                    .font(.callout)
-                                Spacer()
-                            }
-                        }
-                        Spacer()
-                        // actionButton
-                        Button(action: Utils().updateDevice, label: {
-                            Text(actionButtonText)
-                        }
-                        )
-                        .keyboardShortcut(.defaultAction)
-                    }
-                    .padding(.top, 20.0)
-                    .padding(.leading, 20.0)
-                    .padding(.trailing, 20.0)
-                    
-                    // Horizontal line
-                    HStack{
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.5))
-                            .frame(height: 1)
-                    }
-                    .padding(.leading, 20.0)
-                    .padding(.top, 10)
-                    .padding(.bottom, 10)
-                    .frame(width: 530)
-                    
-                    // mainContentNote
-                    HStack {
-                        Text(mainContentNote)
-                            .font(.callout)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color.red)
-                        Spacer()
-                    }
-                    .padding(.leading, 20.0)
-                    .padding(.trailing, 20.0)
-                    
-                    // mainContentText
-                    HStack {
-                        VStack {
-                            Text(mainContentText)
+            VStack {
+                // mainContentHeader / mainContentSubHeader
+                HStack(alignment: .bottom) {
+                    VStack(alignment: .leading, spacing: 1) {
+                        HStack {
+                            Text(mainContentHeader)
                                 .font(.callout)
-                                .font(.body)
-                                .fontWeight(.regular)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
+                                .fontWeight(.bold)
+                            Spacer()
+                        }
+                        HStack {
+                            Text(mainContentSubHeader)
+                                .font(.callout)
                             Spacer()
                         }
                     }
-                    .frame(minHeight: 125.0)
-                    .frame(maxHeight: 125.0)
-                    .padding(.leading, 20.0)
-                    .padding(.trailing, 20.0)
-                    
-                    HStack {
-                        Spacer()
-                        // screenShot
-                        if FileManager.default.fileExists(atPath: screenShotPath) {
+                    Spacer()
+                    // actionButton
+                    Button(action: Utils().updateDevice, label: {
+                        Text(actionButtonText)
+                        }
+                    )
+                    .keyboardShortcut(.defaultAction)
+                }
+                .frame(width: 510, height: 50)
+                
+                // Horizontal line
+                HStack{
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(height: 1)
+                }
+                .frame(width: 510)
+                
+                // mainContentNote
+                HStack {
+                    Text(mainContentNote)
+                        .font(.callout)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.red)
+                    Spacer()
+                }
+                .frame(width: 510)
+                
+                // mainContentText
+                HStack {
+                    Text(mainContentText)
+                        .font(.callout)
+                        .font(.body)
+                        .fontWeight(.regular)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                }
+                .frame(minHeight: 125.0)
+                .frame(maxHeight: 125.0)
+                .frame(width: 510)
+                
+                HStack {
+                    Spacer()
+                    // screenShot
+                    if FileManager.default.fileExists(atPath: screenShotPath) {
+                        Button {
+                            self.showSSDetail.toggle()
+                        } label: {
+                            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                                .resizable()
+                                .scaledToFit()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxHeight: 125)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .help("Click to zoom into screenshot")
+                        .sheet(isPresented: $showSSDetail) {
+                            ScreenShotZoom()
+                        }
+                        .onHover { inside in
+                            if inside {
+                                NSCursor.pointingHand.push()
+                            } else {
+                                NSCursor.pop()
+                            }
+                        }
+                    } else {
+                        if forceScreenShotIconMode() {
                             Button {
                                 self.showSSDetail.toggle()
                             } label: {
-                                Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                                Image("CompanyScreenshotIcon")
                                     .resizable()
                                     .scaledToFit()
                                     .aspectRatio(contentMode: .fit)
@@ -160,107 +166,78 @@ struct StandardModeRightSide: View {
                                 }
                             }
                         } else {
-                            if forceScreenShotIconMode() {
-                                Button {
-                                    self.showSSDetail.toggle()
-                                } label: {
-                                    Image("CompanyScreenshotIcon")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(maxHeight: 125)
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                .help("Click to zoom into screenshot")
-                                .sheet(isPresented: $showSSDetail) {
-                                    ScreenShotZoom()
-                                }
-                                .onHover { inside in
-                                    if inside {
-                                        NSCursor.pointingHand.push()
-                                    } else {
-                                        NSCursor.pop()
-                                    }
-                                }
-                            } else {
-                                Text("Force a 125 pixel")
-                                    .hidden()
-                                    .frame(minHeight: 125)
-                            }
-                        }
-                        
-                        Spacer()
-                    }
-                }
-                .background(Color.secondary.opacity(0.1))
-                .cornerRadius(5)
-                .frame(width: 550)
-                
-                // Bottom buttons
-                HStack {
-                    // Separate the buttons with a spacer
-                    Spacer()
-                    
-                    if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
-                        // secondaryQuitButton
-                        if requireDualQuitButtons {
-                            if self.hasClickedSecondaryQuitButton {
-                                Button {} label: {
-                                    Text(secondaryQuitButtonText)
-                                }
+                            Text("Force a 125 pixel")
                                 .hidden()
-                            } else {
-                                Button {
-                                    hasClickedSecondaryQuitButton = true
-                                    userHasClickedSecondaryQuitButton()
-                                } label: {
-                                    Text(secondaryQuitButtonText)
-                                }
-                                .padding(.trailing, 20.0)
-                            }
-                        } else {
+                                .frame(minHeight: 125)
+                        }
+                    }
+                    Spacer()
+                }
+            }
+            .background(Color.secondary.opacity(0.1))
+            .cornerRadius(5)
+            .frame(width: 550)
+                
+            // Bottom buttons
+            HStack {
+                // Separate the buttons with a spacer
+                Spacer()
+                
+                if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
+                    // secondaryQuitButton
+                    if requireDualQuitButtons {
+                        if self.hasClickedSecondaryQuitButton {
                             Button {} label: {
                                 Text(secondaryQuitButtonText)
                             }
                             .hidden()
-                        }
-                        
-                        // primaryQuitButton
-                        if requireDualQuitButtons {
-                            if self.hasClickedSecondaryQuitButton {
-                                Button {
-                                    Utils().exitNudge()
-                                } label: {
-                                    Text(primaryQuitButtonText)
-                                        .frame(minWidth: 35)
-                                }
-                                .padding(.trailing, 20.0)
-                            } else {
-                                Button {
-                                    hasClickedSecondaryQuitButton = true
-                                    userHasClickedSecondaryQuitButton()
-                                } label: {
-                                    Text(primaryQuitButtonText)
-                                        .frame(minWidth: 35)
-                                }
-                                .hidden()
-                            }
                         } else {
+                            Button {
+                                hasClickedSecondaryQuitButton = true
+                                userHasClickedSecondaryQuitButton()
+                            } label: {
+                                Text(secondaryQuitButtonText)
+                            }
+                        }
+                    } else {
+                        Button {} label: {
+                            Text(secondaryQuitButtonText)
+                        }
+                        .hidden()
+                    }
+                    
+                    // primaryQuitButton
+                    if requireDualQuitButtons {
+                        if self.hasClickedSecondaryQuitButton {
                             Button {
                                 Utils().exitNudge()
                             } label: {
                                 Text(primaryQuitButtonText)
                                     .frame(minWidth: 35)
                             }
+                        } else {
+                            Button {
+                                hasClickedSecondaryQuitButton = true
+                                userHasClickedSecondaryQuitButton()
+                            } label: {
+                                Text(primaryQuitButtonText)
+                                    .frame(minWidth: 35)
+                            }
+                            .hidden()
+                        }
+                    } else {
+                        Button {
+                            Utils().exitNudge()
+                        } label: {
+                            Text(primaryQuitButtonText)
+                                .frame(minWidth: 35)
                         }
                     }
                 }
             }
-            .padding(.vertical, 0.5)
-            .frame(width: 550)
+            .frame(width: 510)
         }
-        .frame(width: 600)
-        .padding(.bottom, 15)
+        .frame(width: 600, height: 450)
         // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
         .onAppear(perform: nudgeStartLogic)
     }
