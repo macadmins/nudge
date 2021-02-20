@@ -15,9 +15,14 @@ struct Utils {
         utilsLog.info("\(msg, privacy: .public)")
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
-        NSApp.windows[0].center()
         NSApp.activate(ignoringOtherApps: true)
         NSApp.windows[0].makeKeyAndOrderFront(self)
+    }
+
+    func centerNudge() {
+        // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
+        // Sheets do not count as windows though.
+        NSApp.windows[0].center()
     }
 
     func createImageData(fileImagePath: String) -> NSImage {
