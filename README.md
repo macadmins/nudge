@@ -238,90 +238,9 @@ In this example, Nudge will do the following:
 ```
 
 ### Full Example
-```
-{
-    "optionalFeatures": {
-        "attemptToFetchMajorUpgrade": true
-    },
-    "osVersionRequirements": [
-        {
-            "aboutUpdateURLs": [
-                {
-                    "_language": "en",
-                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
-                },
-                {
-                    "_language": "es",
-                    "aboutUpdateURL": "https://support.apple.com/es-es/HT211896"
-                },
-                {
-                    "_language": "fr",
-                    "aboutUpdateURL": "https://support.apple.com/fr-fr/HT211896"
-                }
-            ],
-            "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
-            "requiredInstallationDate": "2021-02-28T00:00:00Z",
-            "requiredMinimumOSVersion": "11.2.1",
-            "targetedOSVersions": [
-                "11.0",
-                "11.0.1",
-                "11.1",
-                "11.2"
-            ]
-        }
-    ],
-    "userExperience": {
-        "allowedDeferrals": 1000000,
-        "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
-        "approachingRefreshCycle": 6000,
-        "approachingWindowTime": 72,
-        "elapsedRefreshCycle": 300,
-        "imminentRefeshCycle": 600,
-        "imminentWindowTime": 24,
-        "initialRefreshCycle": 18000,
-        "maxRandomDelayInSeconds": 1200,
-        "noTimers": false,
-        "nudgeRefreshCycle": 60,
-        "randomDelay": false
-    },
-    "userInterface": {
-        "forceScreenShotIcon": false,
-        "iconDarkPath": "/somewhere/logoDark.png",
-        "iconLightPath": "/somewhere/logoLight.png",
-        "screenShotDarkPath": "/somewhere/screenShotDark.jpg",
-        "screenShotLightPath": "/somewhere/screenShotLight.jpg",
-        "simpleMode": false,
-        "updateElements": [
-            {
-                "_language": "es",
-                "actionButtonText": "Actualizar dispositivo",
-                "informationButtonText": "Más información",
-                "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
-                "mainContentNote": "Notas importantes",
-                "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
-                "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.",
-                "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
-                "primaryQuitButtonText": "Más tarde",
-                "secondaryQuitButtonText": "Entiendo",
-                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
-            },
-            {
-                "_language": "fr",
-                "actionButtonText": "Mettre à jour l'appareil",
-                "informationButtonText": "Plus d'informations",
-                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
-                "mainContentNote": "Notes Importantes",
-                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
-                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.",
-                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
-                "primaryQuitButtonText": "Plus tard",
-                "secondaryQuitButtonText": "Je comprends",
-                "subHeader": "Un rappel amical de votre équipe informatique locale"
-            }
-        ]
-    }
-}
-```
+For full examples please see the Example Assets folder in this repo.
+- [JSON](Example Assets/com.github.macadmins.Nudge.json)
+- [Mobile Config](Example Assets/com.github.macadmins.Nudge.mobileconfig)
 
 # Examples of the User Interface
 
