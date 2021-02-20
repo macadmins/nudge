@@ -130,11 +130,11 @@ Example LaunchAgent
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
+  <key>Label</key>
 	<string>com.github.macadmins.Nudge</string>
 	<key>LimitLoadToSessionType</key>
 	<array>
-		<string>Aqua</string>
+    <string>Aqua</string>
 	</array>
 	<key>ProgramArguments</key>
 	<array>
@@ -142,9 +142,9 @@ Example LaunchAgent
 		<!-- <string>-json-url</string> -->
 		<!-- <string>https://raw.githubusercontent.com/macadmins/nudge/main/Nudge/example.json</string> -->
 		<!-- <string>-demo-mode</string> -->
-        <!-- <string>-force-screenshot-icon</string> -->
-        <!-- <string>-simple-mode</string> -->
-        <!-- <string>-version</string> -->
+    <!-- <string>-force-screenshot-icon</string> -->
+    <!-- <string>-simple-mode</string> -->
+    <!-- <string>-version</string> -->
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
@@ -176,36 +176,36 @@ The following example would add support for the French (fr) locale.
 JSON
 ```json
 {
-    "userInterface": {
-        "updateElements": [
-            {
-                "_language": "es",
-                "actionButtonText": "Actualizar dispositivo",
-                "informationButtonText": "Más información",
-                "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
-                "mainContentNote": "Notas importantes",
-                "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
-                "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.",
-                "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
-                "primaryQuitButtonText": "Más tarde",
-                "secondaryQuitButtonText": "Entiendo",
-                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
-            },
-            {
-                "_language": "fr",
-                "actionButtonText": "Mettre à jour l'appareil",
-                "informationButtonText": "Plus d'informations",
-                "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
-                "mainContentNote": "Notes Importantes",
-                "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
-                "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse le protéger efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains systèmes nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à Jour le Périphérique et suivez les étapes fournies.",
-                "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
-                "primaryQuitButtonText": "Plus tard",
-                "secondaryQuitButtonText": "Je comprends",
-                "subHeader": "Un rappel amical de votre équipe informatique locale"
-            }
-        ]
-    }
+  "userInterface": {
+    "updateElements": [
+      {
+        "_language": "es",
+        "actionButtonText": "Actualizar dispositivo",
+        "informationButtonText": "Más información",
+        "mainContentHeader": "Su dispositivo se reiniciará durante esta actualización",
+        "mainContentNote": "Notas importantes",
+        "mainContentSubHeader": "Las actualizaciones pueden tardar unos 30 minutos en completarse",
+        "mainContentText": "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.",
+        "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
+        "primaryQuitButtonText": "Más tarde",
+        "secondaryQuitButtonText": "Entiendo",
+        "subHeader": "Un recordatorio amistoso de su equipo de IT local"
+      },
+      {
+        "_language": "fr",
+        "actionButtonText": "Mettre à jour l'appareil",
+        "informationButtonText": "Plus d'informations",
+        "mainContentHeader": "Votre appareil redémarrera pendant cette mise à jour",
+        "mainContentNote": "Notes Importantes",
+        "mainContentSubHeader": "Les mises à jour peuvent prendre environ 30 minutes.",
+        "mainContentText": "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse le protéger efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains systèmes nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à Jour le Périphérique et suivez les étapes fournies.",
+        "mainHeader": "Votre appareil nécessite une mise à jour de sécurité",
+        "primaryQuitButtonText": "Plus tard",
+        "secondaryQuitButtonText": "Je comprends",
+        "subHeader": "Un rappel amical de votre équipe informatique locale"
+      }
+    ]
+  }
 }
 ```
 
@@ -218,70 +218,70 @@ Mobile Config
 	<key>PayloadContent</key>
 	<array>
 		<dict>
-            <key>userInterface</key>
-            <dict>
-<key>updateElements</key>
-                <array>
-                    <dict>
-                        <key>_language</key>
-                        <string>es</string>
-                        <key>actionButtonText</key>
-                        <string>Actualizar dispositivo</string>
-                        <key>informationButtonText</key>
-                        <string>Más información</string>
-                        <key>mainContentHeader</key>
-                        <string>Su dispositivo se reiniciará durante esta actualización</string>
-                        <key>mainContentNote</key>
-                        <string>Notas importantes</string>
-                        <key>mainContentSubHeader</key>
-                        <string>Las actualizaciones pueden tardar unos 30 minutos en completarse</string>
-                        <key>mainContentText</key>
-                        <string>Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.
+      <key>userInterface</key>
+      <dict>
+        <key>updateElements</key>
+        <array>
+          <dict>
+            <key>_language</key>
+            <string>es</string>
+            <key>actionButtonText</key>
+            <string>Actualizar dispositivo</string>
+            <key>informationButtonText</key>
+            <string>Más información</string>
+            <key>mainContentHeader</key>
+            <string>Su dispositivo se reiniciará durante esta actualización</string>
+            <key>mainContentNote</key>
+            <string>Notas importantes</string>
+            <key>mainContentSubHeader</key>
+            <string>Las actualizaciones pueden tardar unos 30 minutos en completarse</string>
+            <key>mainContentText</key>
+            <string>Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.
 
 Si no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.
 
 Para comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados.</string>
-                        <key>mainHeader</key>
-                        <string>Tu dispositivo requiere una actualización de seguridad</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Más tarde</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>Entiendo</string>
-                        <key>subHeader</key>
-                        <string>Un recordatorio amistoso de su equipo de IT local</string>
-                    </dict>
-                    <dict>
-                        <key>_language</key>
-                        <string>fr</string>
-                        <key>actionButtonText</key>
-                        <string>Mettre à jour l'appareil</string>
-                        <key>informationButtonText</key>
-                        <string>Plus d'informations</string>
-                        <key>mainContentHeader</key>
-                        <string>Votre appareil redémarrera pendant cette mise à jour</string>
-                        <key>mainContentNote</key>
-                        <string>Notes Importantes</string>
-                        <key>mainContentSubHeader</key>
-                        <string>Les mises à jour peuvent prendre environ 30 minutes.</string>
-                        <key>mainContentText</key>
-                        <string>Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.
+            <key>mainHeader</key>
+            <string>Tu dispositivo requiere una actualización de seguridad</string>
+            <key>primaryQuitButtonText</key>
+            <string>Más tarde</string>
+            <key>secondaryQuitButtonText</key>
+            <string>Entiendo</string>
+            <key>subHeader</key>
+            <string>Un recordatorio amistoso de su equipo de IT local</string>
+          </dict>
+          <dict>
+            <key>_language</key>
+            <string>fr</string>
+            <key>actionButtonText</key>
+            <string>Mettre à jour l'appareil</string>
+            <key>informationButtonText</key>
+            <string>Plus d'informations</string>
+            <key>mainContentHeader</key>
+            <string>Votre appareil redémarrera pendant cette mise à jour</string>
+            <key>mainContentNote</key>
+            <string>Notes Importantes</string>
+            <key>mainContentSubHeader</key>
+            <string>Les mises à jour peuvent prendre environ 30 minutes.</string>
+            <key>mainContentText</key>
+            <string>Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.
 
 Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.
 
 Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour le périphérique et suivez les étapes fournies.</string>
-                        <key>mainHeader</key>
-                        <string>Votre appareil nécessite une mise à jour de sécurité</string>
-                        <key>primaryQuitButtonText</key>
-                        <string>Plus tard</string>
-                        <key>secondaryQuitButtonText</key>
-                        <string>Je comprends</string>
-                        <key>subHeader</key>
-                        <string>Un rappel amical de votre équipe informatique locale</string>
-                    </dict>
-                </array>
-            </dict>
-		</dict>
-	</array>
+            <key>mainHeader</key>
+            <string>Votre appareil nécessite une mise à jour de sécurité</string>
+            <key>primaryQuitButtonText</key>
+            <string>Plus tard</string>
+            <key>secondaryQuitButtonText</key>
+            <string>Je comprends</string>
+            <key>subHeader</key>
+            <string>Un rappel amical de votre équipe informatique locale</string>
+          </dict>
+        </array>
+      </dict>
+    </dict>
+  </array>
 </dict>
 </plist>
 ```
@@ -303,27 +303,27 @@ In this example, Nudge will do the following:
 #### JSON
 ```json
 {
-    "userInterface": {
-      "simpleMode": false
-    },
-    "osVersionRequirements": [
+  "userInterface": {
+    "simpleMode": false
+  },
+  "osVersionRequirements": [
+    {
+      "aboutUpdateURLs": [
         {
-            "aboutUpdateURLs": [
-                {
-                    "_language": "en",
-                    "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
-                }
-            ],
-            "requiredInstallationDate": "2021-02-28T00:00:00Z",
-            "requiredMinimumOSVersion": "11.2.1",
-            "targetedOSVersions": [
-                "11.0",
-                "11.0.1",
-                "11.1",
-                "11.2"
-            ]
+          "_language": "en",
+          "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
         }
-    ],
+      ],
+      "requiredInstallationDate": "2021-02-28T00:00:00Z",
+      "requiredMinimumOSVersion": "11.2.1",
+      "targetedOSVersions": [
+        "11.0",
+        "11.0.1",
+        "11.1",
+        "11.2"
+      ]
+    }
+  ],
 }
 ```
 
@@ -333,41 +333,41 @@ In this example, Nudge will do the following:
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PayloadContent</key>
+  <key>PayloadContent</key>
 	<array>
-		<dict>
-            <key>osVersionRequirements</key>
-            <array>
-                <dict>
-                    <key>aboutUpdateURLs</key>
-                    <array>
-                        <dict>
-                            <key>_language</key>
-                            <string>en</string>
-                            <key>aboutUpdateURL</key>
-                            <string>https://support.apple.com/en-us/HT211896#macos1121</string>
-                        </dict>
-                    </array>
-                    <key>majorUpgradeAppPath</key>
-                    <string>/Applications/Install macOS Big Sur.app</string>
-                    <key>requiredInstallationDate</key>
-                    <date>2021-02-28T00:00:00Z</date>
-                    <key>requiredMinimumOSVersion</key>
-                    <string>11.2.1</string>
-                    <key>targetedOSVersions</key>
-                    <array>
-                        <string>11.0</string>
-                        <string>11.0.1</string>
-                        <string>11.1</string>
-                        <string>11.2</string>
-                    </array>
-                </dict>
-            </array>
-            <key>userInterface</key>
+    <dict>
+      <key>osVersionRequirements</key>
+      <array>
+        <dict>
+          <key>aboutUpdateURLs</key>
+          <array>
             <dict>
-                <key>simpleMode</key>
-                <false/>
+              <key>_language</key>
+              <string>en</string>
+              <key>aboutUpdateURL</key>
+              <string>https://support.apple.com/en-us/HT211896#macos1121</string>
             </dict>
+          </array>
+          <key>majorUpgradeAppPath</key>
+          <string>/Applications/Install macOS Big Sur.app</string>
+          <key>requiredInstallationDate</key>
+          <date>2021-02-28T00:00:00Z</date>
+          <key>requiredMinimumOSVersion</key>
+          <string>11.2.1</string>
+          <key>targetedOSVersions</key>
+          <array>
+              <string>11.0</string>
+              <string>11.0.1</string>
+              <string>11.1</string>
+              <string>11.2</string>
+          </array>
+        </dict>
+      </array>
+      <key>userInterface</key>
+      <dict>
+        <key>simpleMode</key>
+        <false/>
+      </dict>
 		</dict>
 	</array>
 </dict>
