@@ -30,56 +30,58 @@ struct StandardModeLeftSide: View {
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         // Left side of Nudge
         // Additional Device Information
-        VStack{
-            Button(action: {
-                self.showDeviceInfo.toggle()
-            }) {
-                Image(systemName: "questionmark.circle")
+        VStack(alignment: .center, spacing: 20) {
+            HStack {
+                Button(action: {
+                    self.showDeviceInfo.toggle()
+                }) {
+                    Image(systemName: "questionmark.circle")
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.top, -25.0)
+                // TODO: This is broken because of the padding
+                .help("Click for additional device information")
+                .onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
+                    }
+                }
+                .sheet(isPresented: $showDeviceInfo) {
+                    DeviceInfo()
+                }
+                Spacer()
             }
-            .padding(.leading, -140)
-            .padding(.top, -25.0)
-            .buttonStyle(PlainButtonStyle())
-            // TODO: This is broken because of the padding
-            .help("Click for additional device information")
-            .onHover { inside in
-                if inside {
-                    NSCursor.pointingHand.push()
+            .frame(width: 290)
+
+            // Company Logo
+            Group {
+                if FileManager.default.fileExists(atPath: companyLogoPath) {
+                    Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
+                        .frame(width: 200, height: 150)
                 } else {
-                    NSCursor.pop()
+                    Image(systemName: "applelogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
+                        .frame(width: 200, height: 150)
                 }
             }
-            .sheet(isPresented: $showDeviceInfo) {
-                DeviceInfo()
-            }
-            
-            // Company Logo
-            if FileManager.default.fileExists(atPath: companyLogoPath) {
-                Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .scaledToFit()
-                    .frame(width: 200, height: 150)
-            } else {
-                Image(systemName: "applelogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .scaledToFit()
-                    .frame(width: 200, height: 150)
-            }
-            
+            .frame(width: 250)
+
             // Horizontal line
             HStack{
                 Rectangle()
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 1)
             }
-            .padding(.top, 20)
-            .padding(.bottom, 20)
             .frame(width: 230)
-            
-            
-            // Can only have 10 objects per stack unless you hack it and use groups
-            Group {
+
+            VStack(alignment: .center, spacing: 10) {
                 // Required OS Version
                 HStack{
                     Text("Required OS Version:")
@@ -89,7 +91,7 @@ struct StandardModeLeftSide: View {
                         .foregroundColor(.secondary)
                         .fontWeight(.bold)
                 }
-                
+
                 // Current OS Version
                 HStack{
                     Text("Current OS Version:")
@@ -97,7 +99,7 @@ struct StandardModeLeftSide: View {
                     Text(manager.current.description)
                         .foregroundColor(.secondary)
                 }
-                
+
                 // Days Remaining
                 HStack{
                     Text("Days remaining to update:")
@@ -110,7 +112,7 @@ struct StandardModeLeftSide: View {
                             .foregroundColor(.secondary)
                     }
                 }
-                
+
                 // Ignored Count
                 HStack{
                     Text("Ignored Count:")
@@ -125,13 +127,11 @@ struct StandardModeLeftSide: View {
                 }
             }
             .frame(width: 250)
-            .padding(.vertical, 0.5)
-            
+
             // Force buttons to the bottom with a spacer
             Spacer()
-            
+
             // More Info
-            // https://developer.apple.com/documentation/swiftui/openurlaction
             HStack(alignment: .top) {
                 // informationButton
                 if aboutUpdateURL != "" {
@@ -154,8 +154,7 @@ struct StandardModeLeftSide: View {
                 // Force the button to the left with a spacer
                 Spacer()
             }
-            .frame(width: 250)
-            .padding(.bottom, 17.5)
+            .frame(width: 250, height: 40)
         }
         .frame(width: 300, height: 450)
     }
