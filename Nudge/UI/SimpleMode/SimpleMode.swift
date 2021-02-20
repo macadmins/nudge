@@ -146,7 +146,7 @@ struct SimpleMode: View {
                     if requireDualQuitButtons {
                         if self.hasClickedSecondaryQuitButton {
                             Button {
-                                Utils().exitNudge()
+                                Utils().userInitiatedExit()
                             } label: {
                                 Text(primaryQuitButtonText)
                                     .frame(minWidth: 35)
@@ -163,7 +163,7 @@ struct SimpleMode: View {
                         }
                     } else {
                         Button {
-                            Utils().exitNudge()
+                            Utils().userInitiatedExit()
                         } label: {
                             Text(primaryQuitButtonText)
                                 .frame(minWidth: 35)

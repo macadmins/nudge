@@ -43,7 +43,7 @@ struct Utils {
     }
 
     func exitNudge() {
-        let msg = "User clicked primaryQuitButton"
+        let msg = "Nudge is terminating due to condition met"
         uiLog.info("\(msg, privacy: .public)")
         shouldExit = true
         AppKit.NSApp.terminate(nil)
@@ -323,7 +323,14 @@ struct Utils {
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
     }
-    
+
+    func userInitiatedExit() {
+        let msg = "User clicked primaryQuitButton"
+        uiLog.info("\(msg, privacy: .public)")
+        shouldExit = true
+        AppKit.NSApp.terminate(nil)
+    }
+
     func versionArgumentPassed() -> Bool {
         let versionArgumentPassed = CommandLine.arguments.contains("-version")
         if versionArgumentPassed {

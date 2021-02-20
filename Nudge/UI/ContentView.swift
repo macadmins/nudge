@@ -52,7 +52,7 @@ struct HostingWindowFinder: NSViewRepresentable {
         let view = NSView()
         if Utils().versionArgumentPassed() {
             print(Utils().getNudgeVersion())
-            AppKit.NSApp.terminate(nil)
+            Utils().exitNudge()
         }
 
         if randomDelay {
