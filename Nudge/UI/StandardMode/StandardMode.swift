@@ -15,17 +15,6 @@ struct StandardMode: View {
     @Environment(\.openURL) var openURL
     @EnvironmentObject var manager: PolicyManager
 
-    // State variables
-    @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
-    @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
-    @State var hasClickedSecondaryQuitButton = false
-    @State var deferralCountUI = 0
-
-    // Modal view for screenshot and device info
-    @State var showSSDetail = false
-    @State var showDeviceInfo = false
-
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
 
