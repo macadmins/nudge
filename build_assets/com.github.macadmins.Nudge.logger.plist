@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.github.macadmins.Nudge.logger</string>
+	<string>com.github.macadmins.Nudge.Logger</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/bin/log</string>
 		<string>stream</string>
 		<string>--predicate</string>
-		<string>subsystem == "com.github.macadmins.Nudge"</string>
+		<string>subsystem == 'com.github.macadmins.Nudge'</string>
 		<string>--info</string>
 		<string>--style</string>
 		<string>syslog</string>
@@ -19,6 +19,6 @@
 	<key>RunAtLoad</key>
 	<true/>
 	<key>StandardOutPath</key>
-	<string>/var/log/nudge.log</string>
+	<string>/var/log/Nudge.log</string>
 </dict>
 </plist>
