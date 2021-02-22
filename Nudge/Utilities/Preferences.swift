@@ -63,9 +63,13 @@ func getUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
+    var desiredLanguage = language
+    if forceFallbackLanguage {
+        desiredLanguage = fallbackLanguage
+    }
     if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirementsJSON()?.aboutUpdateURLs {
         for (_, subUpdates) in updates.enumerated() {
-            if subUpdates.language == language {
+            if subUpdates.language == desiredLanguage {
                 return subUpdates.aboutUpdateURL ?? ""
             }
         }
@@ -104,10 +108,14 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
     if Utils().demoModeEnabled() {
         return nil
     }
+    var desiredLanguage = language
+    if forceFallbackLanguage {
+        desiredLanguage = fallbackLanguage
+    }
     let updateElements = userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
-            if subPreferences["_language"] as? String == language {
+            if subPreferences["_language"] as? String == desiredLanguage {
                 return subPreferences
             }
         }
@@ -120,10 +128,14 @@ func getUserInterfaceJSON() -> UpdateElement? {
     if Utils().demoModeEnabled() {
         return nil
     }
+    var desiredLanguage = language
+    if forceFallbackLanguage {
+        desiredLanguage = fallbackLanguage
+    }
     let updateElements = nudgeJSONPreferences?.userInterface?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
-            if subPreferences.language == language {
+            if subPreferences.language == desiredLanguage {
                 return subPreferences
             }
         }

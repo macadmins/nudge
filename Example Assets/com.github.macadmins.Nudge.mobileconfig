@@ -102,6 +102,10 @@
         </dict>
         <key>userInterface</key>
         <dict>
+          <key>fallbackLanguage</key>
+          <string>en</string>
+          <key>forceFallbackLanguage</key>
+          <false/>
           <key>forceScreenShotIcon</key>
           <false/>
           <key>iconDarkPath</key>

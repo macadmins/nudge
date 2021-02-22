@@ -36,6 +36,8 @@ let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? nudgeJSONPre
 
 // userInterface
 let userInterfaceProfile = getUserInterfaceProfile()
+let fallbackLanguage = userInterfaceProfile?["fallbackLanguage"] as? String ?? nudgeJSONPreferences?.userInterface?.fallbackLanguage ?? "en"
+let forceFallbackLanguage = userInterfaceProfile?["forceFallbackLanguage"] as? Bool ?? nudgeJSONPreferences?.userInterface?.forceFallbackLanguage ?? false
 let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? nudgeJSONPreferences?.userInterface?.iconDarkPath ?? ""
 let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? nudgeJSONPreferences?.userInterface?.iconLightPath ?? ""
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? nudgeJSONPreferences?.userInterface?.screenShotDarkPath ?? ""
