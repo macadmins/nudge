@@ -169,6 +169,7 @@ extension UmadFeatures {
 
 // MARK: - OSVersionRequirement
 struct OSVersionRequirement: Codable {
+    var aboutUpdateURL: String?
     var aboutUpdateURLs: [AboutUpdateURL]?
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
@@ -189,6 +190,7 @@ extension OSVersionRequirement {
                 }
             }
         }
+        self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.aboutUpdateURLs = generatedAboutUpdateURLs
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
@@ -212,6 +214,7 @@ extension OSVersionRequirement {
     }
 
     func with(
+        aboutUpdateURL: String?? = nil,
         aboutUpdateURLs: [AboutUpdateURL]?? = nil,
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
@@ -219,6 +222,7 @@ extension OSVersionRequirement {
         targetedOSVersions: [String]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
+            aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,

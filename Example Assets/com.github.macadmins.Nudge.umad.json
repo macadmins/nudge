@@ -18,6 +18,7 @@
   },
   "osVersionRequirements": [
     {
+      "aboutUpdateURL_disabled": "https://support.apple.com/en-us/HT211896#macos1121",
       "aboutUpdateURLs": [
         {
           "_language": "en",

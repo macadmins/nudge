@@ -31,6 +31,8 @@
         <key>osVersionRequirements</key>
         <array>
           <dict>
+            <!-- <key>aboutUpdateURL</key> -->
+            <!-- <string>https://support.apple.com/en-us/HT211896#macos1121</string> -->
             <key>aboutUpdateURLs</key>
             <array>
               <dict>

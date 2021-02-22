@@ -72,6 +72,8 @@ func getAboutUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
+    if let update = getOSVersionRequirementsProfile()?.aboutUpdateURL ?? getOSVersionRequirementsJSON()?.aboutUpdateURL {
+        return update
     }
     if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirementsJSON()?.aboutUpdateURLs {
         for (_, subUpdates) in updates.enumerated() {

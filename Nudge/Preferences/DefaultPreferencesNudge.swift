@@ -17,7 +17,7 @@ let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bo
 let majorUpgradeAppPath = getOSVersionRequirementsProfile()?.majorUpgradeAppPath ?? getOSVersionRequirementsJSON()?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = getOSVersionRequirementsProfile()?.requiredInstallationDate ?? getOSVersionRequirementsJSON()?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = getOSVersionRequirementsProfile()?.requiredMinimumOSVersion ?? getOSVersionRequirementsJSON()?.requiredMinimumOSVersion ?? "0.0"
-let aboutUpdateURL = getUpdateURL() ?? ""
+let aboutUpdateURL = getAboutUpdateURL() ?? ""
 
 // userExperience
 let userExperienceProfile = nudgeDefaults.dictionary(forKey: "userExperience")
