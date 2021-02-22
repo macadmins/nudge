@@ -39,7 +39,7 @@ struct StandardModeLeftSide: View {
                 .buttonStyle(PlainButtonStyle())
                 .padding(.top, -25.0)
                 // TODO: This is broken because of the padding
-                .help("Click for additional device information")
+                .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -83,7 +83,7 @@ struct StandardModeLeftSide: View {
             VStack(alignment: .center, spacing: 10) {
                 // Required OS Version
                 HStack{
-                    Text("Required OS Version:")
+                    Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                         .fontWeight(.bold)
                     Spacer()
                     Text(String(requiredMinimumOSVersion))
@@ -93,7 +93,7 @@ struct StandardModeLeftSide: View {
 
                 // Current OS Version
                 HStack{
-                    Text("Current OS Version:")
+                    Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     Text(manager.current.description)
                         .foregroundColor(.secondary)
@@ -101,7 +101,7 @@ struct StandardModeLeftSide: View {
 
                 // Days Remaining
                 HStack{
-                    Text("Days remaining to update:")
+                    Text("Days remaining to update:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     if self.daysRemaining <= 0 {
                         Text(String(0))
@@ -114,7 +114,7 @@ struct StandardModeLeftSide: View {
 
                 // Ignored Count
                 HStack{
-                    Text("Ignored Count:")
+                    Text("Ignored Count:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     Text(String(self.deferralCountUI))
                         .onReceive(nudgeRefreshCycleTimer) { _ in
@@ -140,7 +140,7 @@ struct StandardModeLeftSide: View {
                     }
                     )
                     .buttonStyle(PlainButtonStyle())
-                    .help("Click for more information about the security update")
+                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {
                             NSCursor.pointingHand.push()

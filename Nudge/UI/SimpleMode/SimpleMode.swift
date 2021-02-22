@@ -61,7 +61,7 @@ struct SimpleMode: View {
                 
                 // Days Remaining
                 HStack {
-                    Text("Days remaining to update:")
+                    Text("Days remaining to update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     if self.daysRemaining <= 0 {
                         Text(String(0))
@@ -76,7 +76,7 @@ struct SimpleMode: View {
 
                 // Ignored Count
                 HStack {
-                    Text("Ignored Count:")
+                    Text("Ignored Count:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     Text(String(self.deferralCountUI))
                         .font(.title2)
@@ -108,7 +108,7 @@ struct SimpleMode: View {
                     }
                     )
                     .buttonStyle(PlainButtonStyle())
-                    .help("Click for more information about the security update")
+                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {
                             NSCursor.pointingHand.push()

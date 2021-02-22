@@ -42,15 +42,15 @@ let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? nudgeJSON
 let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? nudgeJSONPreferences?.userInterface?.iconLightPath ?? ""
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? nudgeJSONPreferences?.userInterface?.screenShotDarkPath ?? ""
 let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? nudgeJSONPreferences?.userInterface?.screenShotLightPath ?? ""
-let actionButtonText = getUserInterfaceUpdateElementsProfile()?["actionButtonText"] as? String ?? getUserInterfaceJSON()?.actionButtonText ?? "Update Device"
-let informationButtonText = getUserInterfaceUpdateElementsProfile()?["informationButtonText"] as? String ?? getUserInterfaceJSON()?.informationButtonText ?? "More Info"
-let mainContentHeader = getUserInterfaceUpdateElementsProfile()?["mainContentHeader"] as? String ?? getUserInterfaceJSON()?.mainContentHeader ?? "Your device will restart during this update"
-let mainContentNote = getUserInterfaceUpdateElementsProfile()?["mainContentNote"] as? String ?? getUserInterfaceJSON()?.mainContentNote ?? "Important Notes"
-let mainContentSubHeader = getUserInterfaceUpdateElementsProfile()?["mainContentSubHeader"] as? String ?? getUserInterfaceJSON()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
-let mainContentText = getUserInterfaceUpdateElementsProfile()?["mainContentText"] as? String ?? getUserInterfaceJSON()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
-let primaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["primaryQuitButtonText"] as? String ?? getUserInterfaceJSON()?.primaryQuitButtonText ?? "Later"
-let secondaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["secondaryQuitButtonText"] as? String ?? getUserInterfaceJSON()?.secondaryQuitButtonText ?? "I understand"
-let subHeader = getUserInterfaceUpdateElementsProfile()?["subHeader"] as? String ?? getUserInterfaceJSON()?.subHeader ?? "A friendly reminder from your local IT team"
+let actionButtonText = getUserInterfaceUpdateElementsProfile()?["actionButtonText"] as? String ?? getUserInterfaceJSON()?.actionButtonText ?? "Update Device".localized(desiredLanguage: getDesiredLanguage())
+let informationButtonText = getUserInterfaceUpdateElementsProfile()?["informationButtonText"] as? String ?? getUserInterfaceJSON()?.informationButtonText ?? "More Info".localized(desiredLanguage: getDesiredLanguage())
+let mainContentHeader = getUserInterfaceUpdateElementsProfile()?["mainContentHeader"] as? String ?? getUserInterfaceJSON()?.mainContentHeader ?? "Your device will restart during this update".localized(desiredLanguage: getDesiredLanguage())
+let mainContentNote = getUserInterfaceUpdateElementsProfile()?["mainContentNote"] as? String ?? getUserInterfaceJSON()?.mainContentNote ?? "Important Notes".localized(desiredLanguage: getDesiredLanguage())
+let mainContentSubHeader = getUserInterfaceUpdateElementsProfile()?["mainContentSubHeader"] as? String ?? getUserInterfaceJSON()?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete".localized(desiredLanguage: getDesiredLanguage())
+let mainContentText = getUserInterfaceUpdateElementsProfile()?["mainContentText"] as? String ?? getUserInterfaceJSON()?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.".localized(desiredLanguage: getDesiredLanguage())
+let primaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["primaryQuitButtonText"] as? String ?? getUserInterfaceJSON()?.primaryQuitButtonText ?? "Later".localized(desiredLanguage: getDesiredLanguage())
+let secondaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["secondaryQuitButtonText"] as? String ?? getUserInterfaceJSON()?.secondaryQuitButtonText ?? "I understand".localized(desiredLanguage: getDesiredLanguage())
+let subHeader = getUserInterfaceUpdateElementsProfile()?["subHeader"] as? String ?? getUserInterfaceJSON()?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
 
 // Other important defaults
 let acceptableApps = [

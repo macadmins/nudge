@@ -12,6 +12,15 @@ let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
 var shouldExit = false
 
+// Get the language
+func getDesiredLanguage() -> String {
+    var desiredLanguage = language
+    if forceFallbackLanguage {
+        desiredLanguage = fallbackLanguage
+    }
+    return desiredLanguage
+}
+
 // optionalFeatures
 // Even if profile is installed, return nil if in demo-mode
 func getOptionalFeaturesProfile() -> [String:Any]? {
@@ -59,17 +68,14 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 }
 
 // Compare current language against the available updateURLs
-func getUpdateURL() -> String? {
+func getAboutUpdateURL() -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
-    var desiredLanguage = language
-    if forceFallbackLanguage {
-        desiredLanguage = fallbackLanguage
     }
     if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirementsJSON()?.aboutUpdateURLs {
         for (_, subUpdates) in updates.enumerated() {
-            if subUpdates.language == desiredLanguage {
+            if subUpdates.language == getDesiredLanguage() {
                 return subUpdates.aboutUpdateURL ?? ""
             }
         }
@@ -108,14 +114,10 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
     if Utils().demoModeEnabled() {
         return nil
     }
-    var desiredLanguage = language
-    if forceFallbackLanguage {
-        desiredLanguage = fallbackLanguage
-    }
     let updateElements = userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
-            if subPreferences["_language"] as? String == desiredLanguage {
+            if subPreferences["_language"] as? String == getDesiredLanguage() {
                 return subPreferences
             }
         }
@@ -128,14 +130,10 @@ func getUserInterfaceJSON() -> UpdateElement? {
     if Utils().demoModeEnabled() {
         return nil
     }
-    var desiredLanguage = language
-    if forceFallbackLanguage {
-        desiredLanguage = fallbackLanguage
-    }
     let updateElements = nudgeJSONPreferences?.userInterface?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
-            if subPreferences.language == desiredLanguage {
+            if subPreferences.language == getDesiredLanguage() {
                 return subPreferences
             }
         }
@@ -146,8 +144,8 @@ func getUserInterfaceJSON() -> UpdateElement? {
 // Returns the mainHeader
 func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
-        return "Your device requires a security update (Demo Mode)"
+        return "Your device requires a security update (Demo Mode)".localized(desiredLanguage: getDesiredLanguage())
     } else {
-        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceJSON()?.mainHeader ?? "Your device requires a security update"
+        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
     }
 }

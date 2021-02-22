@@ -131,7 +131,7 @@ struct StandardModeRightSide: View {
                                 .frame(maxHeight: 120)
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .help("Click to zoom into screenshot")
+                        .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                         .sheet(isPresented: $showSSDetail) {
                             ScreenShotZoom()
                         }
@@ -154,7 +154,7 @@ struct StandardModeRightSide: View {
                                     .frame(maxHeight: 120)
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .help("Click to zoom into screenshot")
+                            .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                             .sheet(isPresented: $showSSDetail) {
                                 ScreenShotZoom()
                             }
@@ -177,7 +177,7 @@ struct StandardModeRightSide: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                             .hidden()
-                            .help("Click to zoom into screenshot")
+                            .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                             .sheet(isPresented: $showSSDetail) {
                                 ScreenShotZoom()
                             }

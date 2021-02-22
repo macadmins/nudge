@@ -28,7 +28,7 @@ struct ScreenShotZoom: View {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .help("Click to close")
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -60,7 +60,7 @@ struct ScreenShotZoom: View {
                 }
                 )
                 .buttonStyle(PlainButtonStyle())
-                .help("Click to close")
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()

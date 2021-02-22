@@ -10,6 +10,17 @@ import Foundation
 import SystemConfiguration
 import SwiftUI
 
+// https://stackoverflow.com/questions/29985614/how-can-i-change-locale-programmatically-with-swift
+// Apple recommends against this, but this is super frustrating since Nudge does dynamic UIs
+extension String {
+    func localized(desiredLanguage :String) ->String {
+        // Try to get the language passed and if it does not exist, use en
+        let path = Bundle.main.path(forResource: desiredLanguage, ofType: "lproj") ?? Bundle.main.path(forResource: "en", ofType: "lproj")
+        let bundle = Bundle(path: path!)
+        return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
+}
+
 struct Utils {
     func activateNudge() {
         let msg = "Re-activating Nudge"

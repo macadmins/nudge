@@ -31,7 +31,7 @@ struct DeviceInfo: View {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .help("Click to close")
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -47,36 +47,36 @@ struct DeviceInfo: View {
             // Additional Device Information
             Group {
                 HStack{
-                    Text("Additional Device Information")
+                    Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage()))
                         .fontWeight(.bold)
                 }
                 // Username
                 HStack{
-                    Text("Username:")
+                    Text("Username:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.systemConsoleUsername)
                         .foregroundColor(.secondary)
                 }
                 // Serial Number
                 HStack{
-                    Text("Serial Number:")
+                    Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.serialNumber)
                         .foregroundColor(.secondary)
                 }
                 // Architecture
                 HStack{
-                    Text("Architecture:")
+                    Text("Architecture:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.cpuType)
                         .foregroundColor(.secondary)
                 }
                 // Language
                 HStack{
-                    Text("Language:")
+                    Text("Language:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(language)
                         .foregroundColor(.secondary)
                 }
                 // Nudge Version
                 HStack{
-                    Text("Version:")
+                    Text("Version:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.nudgeVersion)
                         .foregroundColor(.secondary)
                 }
