@@ -34,7 +34,7 @@ Any MDM that supports the installation of packages (.pkgs) and profiles (.mobile
 - Nudge consists of the following three components
  - Nudge.app installed to `/Applications/Utilities/Nudge.app`
  - a LaunchAgent installed to `/Library/LaunchAgents`
- - a Preference file, either in JSON or mobileconfig format (coming soon)
+ - a Preference file, either in JSON or mobileconfig format
 
 - Rather than trying to install updates via `softwareupdate`, Nudge merely prompts users to install updates via Apple approved/tested methods - System Preferences and major application upgrades (Ex: `Install macOS Big Sur.app`).
 
