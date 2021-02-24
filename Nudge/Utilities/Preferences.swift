@@ -26,9 +26,27 @@ func getDesiredLanguage() -> String {
 func getOptionalFeaturesProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
-    } else {
-        return nudgeDefaults.dictionary(forKey: "optionalFeatures")
     }
+    if let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures") {
+        return optionalFeatures
+    } else {
+        let msg = "profile optionalFeatures key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
+func getOptionalFeaturesJSON() -> OptionalFeatures? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let optionalFeatures = nudgeJSONPreferences?.optionalFeatures {
+        return optionalFeatures
+    } else {
+        let msg = "json optionalFeatures key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
 }
 
 // osVersionRequirements
@@ -91,14 +109,60 @@ func getAboutUpdateURL(OSVerReq :OSVersionRequirement?) -> String? {
     return ""
 }
 
+// userExperience
+// Even if profile is installed, return nil if in demo-mode
+func getUserExperienceProfile() -> [String:Any]? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let userExperience = nudgeDefaults.dictionary(forKey: "userExperience") {
+        return userExperience
+    } else {
+        let msg = "profile userExperience key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
+func getUserExperienceJSON() -> UserExperience? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let userExperience = nudgeJSONPreferences?.userExperience {
+        return userExperience
+    } else {
+        let msg = "json userExperience key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
 
 // userInterface
 func getUserInterfaceProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
-    } else {
-        return nudgeDefaults.dictionary(forKey: "userInterface")
     }
+    if let userInterface = nudgeDefaults.dictionary(forKey: "userInterface") {
+        return userInterface
+    } else {
+        let msg = "profile userInterface key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
+func getUserInterfaceJSON() -> UserInterface? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let userInterface = nudgeJSONPreferences?.userInterface {
+        return userInterface
+    } else {
+        let msg = "json userInterface key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
 }
 
 func forceScreenShotIconMode() -> Bool {
@@ -129,22 +193,28 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
                 return subPreferences
             }
         }
+    } else {
+        let msg = "profile updateElements key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
     }
     return nil
 }
 
 // Loop through JSON userInterface -> updateElements preferences and then compare language
-func getUserInterfaceJSON() -> UpdateElement? {
+func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
     if Utils().demoModeEnabled() {
         return nil
     }
-    let updateElements = nudgeJSONPreferences?.userInterface?.updateElements
+    let updateElements = getUserInterfaceJSON()?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
             if subPreferences.language == getDesiredLanguage() {
                 return subPreferences
             }
         }
+    } else {
+        let msg = "json updateElements key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -154,6 +224,6 @@ func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)".localized(desiredLanguage: getDesiredLanguage())
     } else {
-        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
+        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
     }
 }
