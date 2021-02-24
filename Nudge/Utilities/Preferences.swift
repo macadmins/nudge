@@ -74,14 +74,14 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 }
 
 // Compare current language against the available updateURLs
-func getAboutUpdateURL() -> String? {
+func getAboutUpdateURL(OSVerReq :OSVersionRequirement?) -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
-    if let update = getOSVersionRequirementsProfile()?.aboutUpdateURL ?? getOSVersionRequirementsJSON()?.aboutUpdateURL {
+    if let update = OSVerReq?.aboutUpdateURL {
         return update
     }
-    if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirementsJSON()?.aboutUpdateURLs {
+    if let updates = OSVerReq?.aboutUpdateURLs {
         for (_, subUpdates) in updates.enumerated() {
             if subUpdates.language == getDesiredLanguage() {
                 return subUpdates.aboutUpdateURL ?? ""
