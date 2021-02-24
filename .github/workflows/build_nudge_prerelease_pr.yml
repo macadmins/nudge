@@ -1,7 +1,7 @@
 name: Build signed Nudge for pull requests (prerelease)
 
 on:
-  pull_request:
+  pull_request_target:
     branches:
     - development
 
