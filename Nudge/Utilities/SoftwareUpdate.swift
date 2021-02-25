@@ -49,7 +49,7 @@ class SoftwareUpdate {
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
             let msg = "Apple Silicon devices do not support automated softwareupdate calls. Please use MDM."
-            softwareupdateListLog.info("\(msg, privacy: .public)")
+            softwareupdateListLog.warning("\(msg, privacy: .public)")
             return
         }
 
@@ -57,7 +57,7 @@ class SoftwareUpdate {
 
         if softwareupdateList.contains("restart") {
             let msg = "Starting softwareupdate download"
-            softwareupdateListLog.info("\(msg, privacy: .public)")
+            softwareupdateListLog.debug("\(msg, privacy: .public)")
             let task = Process()
             task.launchPath = "/usr/sbin/softwareupdate"
             task.arguments = ["--download", "--all"]
@@ -81,7 +81,7 @@ class SoftwareUpdate {
             let output = String(decoding: outputData, as: UTF8.self)
             let error = String(decoding: errorData, as: UTF8.self)
 
-            softwareupdateDownloadLog.info("\(output, privacy: .public)")
+            softwareupdateDownloadLog.debug("\(output, privacy: .public)")
             softwareupdateDownloadLog.error("\(error, privacy: .public)")
         } else {
             let msg = "softwareupdate did not find any available updates"

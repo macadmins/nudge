@@ -38,7 +38,7 @@ struct Utils {
     }
 
     func createImageData(fileImagePath: String) -> NSImage {
-        utilsLog.info("Creating image path for \(fileImagePath, privacy: .public)")
+        utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
         let imageData:NSData = NSData(contentsOf: urlPath as URL)!
         return NSImage(data: imageData as Data)!
@@ -64,7 +64,7 @@ struct Utils {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
         if forceScreenShotIconMode {
             let msg = "-force-screenshot-icon argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return forceScreenShotIconMode
     }
@@ -113,12 +113,12 @@ struct Utils {
         let cpu_arch = type & 0xff // mask for architecture bits
         if cpu_arch == cpu_type_t(7){
             let msg = "CPU Type is Intel"
-            utilsLog.info("\(msg, privacy: .public)")
+            utilsLog.debug("\(msg, privacy: .public)")
             return "Intel"
         }
         if cpu_arch == cpu_type_t(12){
             let msg = "CPU Type is Apple Silicon"
-            utilsLog.info("\(msg, privacy: .public)")
+            utilsLog.debug("\(msg, privacy: .public)")
             return "Apple Silicon"
         }
         let msg = "Unknown CPU Type"
@@ -132,7 +132,7 @@ struct Utils {
 
     func getJSONUrl() -> String {
         let jsonURL = nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
-        utilsLog.info("JSON url: \(jsonURL, privacy: .public)")
+        utilsLog.debug("JSON url: \(jsonURL, privacy: .public)")
         return jsonURL
     }
 
@@ -144,20 +144,20 @@ struct Utils {
 
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        utilsLog.debug("OS Version: \(MajorOSVersion, privacy: .public)")
         return MajorOSVersion
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
-        utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        utilsLog.debug("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
         return majorRequiredNudgeOSVersion
     }
 
     func getMinorOSVersion() -> Int {
         let MinorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
-        utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
+        utilsLog.debug("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
     }
 
@@ -220,7 +220,7 @@ struct Utils {
 
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
-        utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
+        utilsLog.debug("Patch OS Version: \(PatchOSVersion, privacy: .public)")
         return PatchOSVersion
     }
     
@@ -250,7 +250,7 @@ struct Utils {
 
             IOObjectRelease(platformExpert)
 
-            utilsLog.info("Serial Number: \(serialNumber, privacy: .public)")
+            utilsLog.debug("Serial Number: \(serialNumber, privacy: .public)")
             return serialNumber
         }
 
@@ -262,14 +262,13 @@ struct Utils {
         var uid: uid_t = 0
         var gid: gid_t = 0
         let SystemConsoleUsername = SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
-        utilsLog.info("System console username: \(SystemConsoleUsername, privacy: .public)")
+        utilsLog.debug("System console username: \(SystemConsoleUsername, privacy: .public)")
         return SystemConsoleUsername
     }
 
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
-        // print("Timer Cycle:", String(timerCycle)) // Easy way to debug the timerController logic
-        utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
+        utilsLog.debug("Timer cycle: \(timerCycle, privacy: .public)")
         return timerCycle
     }
 
@@ -302,14 +301,14 @@ struct Utils {
 
     func requireDualQuitButtons() -> Bool {
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
-        uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
+        uiLog.debug("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
         return requireDualQuitButtons
     }
 
     func requireMajorUpgrade() -> Bool {
         if requiredMinimumOSVersion == "0.0" {
             let msg = "Device requireMajorUpgrade: false"
-            utilsLog.info("\(msg, privacy: .public)")
+            utilsLog.debug("\(msg, privacy: .public)")
             return false
         }
         let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: OSVersion(ProcessInfo().operatingSystemVersion).description, newVersion: requiredMinimumOSVersion)
@@ -321,12 +320,14 @@ struct Utils {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
         if simpleModeEnabled {
             let msg = "-simple-mode argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return simpleModeEnabled
     }
 
     func updateDevice() {
+        let msg = "User clicked updateDevice"
+        utilsLog.info("\(msg, privacy: .public)")
         if requireMajorUpgrade() {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
@@ -342,11 +343,16 @@ struct Utils {
         AppKit.NSApp.terminate(nil)
     }
 
+    func userInitiatedDeviceInfo() {
+        let msg = "User clicked deviceInfo"
+        uiLog.info("\(msg, privacy: .public)")
+    }
+
     func versionArgumentPassed() -> Bool {
         let versionArgumentPassed = CommandLine.arguments.contains("-version")
         if versionArgumentPassed {
             let msg = "-version argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return versionArgumentPassed
     }
