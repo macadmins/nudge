@@ -56,7 +56,7 @@ let mainContentSubHeader = getUserInterfaceUpdateElementsProfile()?["mainContent
 let mainContentText = getUserInterfaceUpdateElementsProfile()?["mainContentText"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.".localized(desiredLanguage: getDesiredLanguage())
 let primaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["primaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.primaryQuitButtonText ?? "Later".localized(desiredLanguage: getDesiredLanguage())
 let secondaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["secondaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ?? "I understand".localized(desiredLanguage: getDesiredLanguage())
-let singleQuitButton = userExperienceProfile?["singleQuitButton"] as? Bool ?? userExperienceJSON?.singleQuitButton ?? false
+let singleQuitButton = userInterfaceProfile?["singleQuitButton"] as? Bool ?? userInterfaceJSON?.singleQuitButton ?? false
 let subHeader = getUserInterfaceUpdateElementsProfile()?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
 
 // Other important defaults
