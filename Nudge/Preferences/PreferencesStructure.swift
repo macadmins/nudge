@@ -296,6 +296,7 @@ struct UserExperience: Codable {
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
+    var singleQuitButton: Bool?
 }
 
 // MARK: UserExperience convenience initializers and mutators

@@ -37,6 +37,7 @@ let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] 
 let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? userExperienceJSON?.noTimers ?? false
 let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? userExperienceJSON?.nudgeRefreshCycle ?? 60
 let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? userExperienceJSON?.randomDelay ?? false
+let singleQuitButton = userExperienceProfile?["singleQuitButton"] as? Bool ?? userExperienceJSON?.singleQuitButton ?? false
 
 // userInterface
 let userInterfaceProfile = getUserInterfaceProfile()
