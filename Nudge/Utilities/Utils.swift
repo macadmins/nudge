@@ -74,7 +74,7 @@ struct Utils {
         let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
             let msg = "Current operating system (\(currentVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
-            utilsLog.debug("\(msg, privacy: .public)")
+            utilsLog.info("\(msg, privacy: .public)")
             return true
         } else {
             return false
