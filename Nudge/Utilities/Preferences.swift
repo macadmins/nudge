@@ -70,7 +70,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         }
     } else {
         let msg = "profile osVersionRequirements key is empty"
-        prefsLog.info("\(msg, privacy: .public)")
+        prefsLog.debug("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -87,7 +87,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
         }
     } else {
         let msg = "json osVersionRequirements key is empty"
-        prefsLog.info("\(msg, privacy: .public)")
+        prefsLog.debug("\(msg, privacy: .public)")
     }
     return nil
 }
