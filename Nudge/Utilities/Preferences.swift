@@ -22,17 +22,36 @@ func getDesiredLanguage() -> String {
 }
 
 // optionalFeatures
-// Even if profile is installed, return nil if in demo-mode
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getOptionalFeaturesProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
-    } else {
-        return nudgeDefaults.dictionary(forKey: "optionalFeatures")
     }
+    if let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures") {
+        return optionalFeatures
+    } else {
+        let msg = "profile optionalFeatures key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
+func getOptionalFeaturesJSON() -> OptionalFeatures? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let optionalFeatures = nudgeJSONPreferences?.optionalFeatures {
+        return optionalFeatures
+    } else {
+        let msg = "json optionalFeatures key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
 }
 
 // osVersionRequirements
 // Mutate the profile into our required construct and then compare currentOS against targetedOSVersions
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     if Utils().demoModeEnabled() {
         return nil
@@ -74,14 +93,14 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 }
 
 // Compare current language against the available updateURLs
-func getAboutUpdateURL() -> String? {
+func getAboutUpdateURL(OSVerReq :OSVersionRequirement?) -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
-    if let update = getOSVersionRequirementsProfile()?.aboutUpdateURL ?? getOSVersionRequirementsJSON()?.aboutUpdateURL {
+    if let update = OSVerReq?.aboutUpdateURL {
         return update
     }
-    if let updates = getOSVersionRequirementsProfile()?.aboutUpdateURLs ?? getOSVersionRequirementsJSON()?.aboutUpdateURLs {
+    if let updates = OSVerReq?.aboutUpdateURLs {
         for (_, subUpdates) in updates.enumerated() {
             if subUpdates.language == getDesiredLanguage() {
                 return subUpdates.aboutUpdateURL ?? ""
@@ -91,14 +110,61 @@ func getAboutUpdateURL() -> String? {
     return ""
 }
 
+// userExperience
+// Even if profile/JSON is installed, return nil if in demo-mode
+func getUserExperienceProfile() -> [String:Any]? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let userExperience = nudgeDefaults.dictionary(forKey: "userExperience") {
+        return userExperience
+    } else {
+        let msg = "profile userExperience key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
+func getUserExperienceJSON() -> UserExperience? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let userExperience = nudgeJSONPreferences?.userExperience {
+        return userExperience
+    } else {
+        let msg = "json userExperience key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
 
 // userInterface
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getUserInterfaceProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
-    } else {
-        return nudgeDefaults.dictionary(forKey: "userInterface")
     }
+    if let userInterface = nudgeDefaults.dictionary(forKey: "userInterface") {
+        return userInterface
+    } else {
+        let msg = "profile userInterface key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
+}
+
+func getUserInterfaceJSON() -> UserInterface? {
+    if Utils().demoModeEnabled() {
+        return nil
+    }
+    if let userInterface = nudgeJSONPreferences?.userInterface {
+        return userInterface
+    } else {
+        let msg = "json userInterface key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
+    }
+    return nil
 }
 
 func forceScreenShotIconMode() -> Bool {
@@ -118,6 +184,7 @@ func simpleMode() -> Bool {
 }
 
 // Mutate the profile into our required construct
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
     if Utils().demoModeEnabled() {
         return nil
@@ -129,22 +196,28 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
                 return subPreferences
             }
         }
+    } else {
+        let msg = "profile updateElements key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
     }
     return nil
 }
 
 // Loop through JSON userInterface -> updateElements preferences and then compare language
-func getUserInterfaceJSON() -> UpdateElement? {
+func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
     if Utils().demoModeEnabled() {
         return nil
     }
-    let updateElements = nudgeJSONPreferences?.userInterface?.updateElements
+    let updateElements = getUserInterfaceJSON()?.updateElements
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
             if subPreferences.language == getDesiredLanguage() {
                 return subPreferences
             }
         }
+    } else {
+        let msg = "json updateElements key is empty"
+        prefsLog.debug("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -154,6 +227,6 @@ func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)".localized(desiredLanguage: getDesiredLanguage())
     } else {
-        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
+        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
     }
 }
