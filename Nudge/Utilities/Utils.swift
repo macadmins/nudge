@@ -154,7 +154,7 @@ struct Utils {
         utilsLog.debug("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
         return majorRequiredNudgeOSVersion
     }
-s
+
     func getMinorOSVersion() -> Int {
         let MinorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
         utilsLog.debug("Minor OS Version: \(MinorOSVersion, privacy: .public)")
@@ -253,7 +253,7 @@ s
             utilsLog.debug("Serial Number: \(serialNumber, privacy: .public)")
             return serialNumber
         }
-s
+
         return serialNumber ?? ""
     }
 
@@ -265,7 +265,7 @@ s
         utilsLog.debug("System console username: \(SystemConsoleUsername, privacy: .public)")
         return SystemConsoleUsername
     }
-s
+
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
         utilsLog.debug("Timer cycle: \(timerCycle, privacy: .public)")
@@ -326,6 +326,8 @@ s
     }
 
     func updateDevice() {
+        let msg = "User clicked updateDevice"
+        utilsLog.info("\(msg, privacy: .public)")
         if requireMajorUpgrade() {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
@@ -339,6 +341,11 @@ s
         uiLog.info("\(msg, privacy: .public)")
         shouldExit = true
         AppKit.NSApp.terminate(nil)
+    }
+
+    func userInitiatedDeviceInfo() {
+        let msg = "User clicked deviceInfo"
+        uiLog.info("\(msg, privacy: .public)")
     }
 
     func versionArgumentPassed() -> Bool {

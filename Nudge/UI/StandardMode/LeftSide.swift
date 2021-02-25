@@ -32,6 +32,7 @@ struct StandardModeLeftSide: View {
         VStack(alignment: .center, spacing: 20) {
             HStack {
                 Button(action: {
+                    Utils().userInitiatedDeviceInfo()
                     self.showDeviceInfo.toggle()
                 }) {
                     Image(systemName: "questionmark.circle")
