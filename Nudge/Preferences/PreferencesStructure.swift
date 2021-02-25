@@ -330,6 +330,7 @@ extension UserExperience {
         noTimers: Bool?? = nil,
         nudgeRefreshCycle: Int?? = nil,
         randomDelay: Bool?? = nil
+        singleQuitButton: Bool?? = nil
     ) -> UserExperience {
         return UserExperience(
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
