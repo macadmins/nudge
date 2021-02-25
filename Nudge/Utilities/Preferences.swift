@@ -22,7 +22,7 @@ func getDesiredLanguage() -> String {
 }
 
 // optionalFeatures
-// Even if profile is installed, return nil if in demo-mode
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getOptionalFeaturesProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
@@ -51,6 +51,7 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
 
 // osVersionRequirements
 // Mutate the profile into our required construct and then compare currentOS against targetedOSVersions
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     if Utils().demoModeEnabled() {
         return nil
@@ -110,7 +111,7 @@ func getAboutUpdateURL(OSVerReq :OSVersionRequirement?) -> String? {
 }
 
 // userExperience
-// Even if profile is installed, return nil if in demo-mode
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getUserExperienceProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
@@ -139,6 +140,7 @@ func getUserExperienceJSON() -> UserExperience? {
 
 
 // userInterface
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getUserInterfaceProfile() -> [String:Any]? {
     if Utils().demoModeEnabled() {
         return nil
@@ -182,6 +184,7 @@ func simpleMode() -> Bool {
 }
 
 // Mutate the profile into our required construct
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
     if Utils().demoModeEnabled() {
         return nil
