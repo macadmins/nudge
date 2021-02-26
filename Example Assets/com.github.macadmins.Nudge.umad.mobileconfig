@@ -141,6 +141,8 @@
           <string>/somewhere/screenShotLight.png</string>
           <key>simpleMode</key>
           <false/>
+          <key>singleQuitButton</key>
+          <false/>>
           <key>umadElements</key>
           <array>
             <dict>
