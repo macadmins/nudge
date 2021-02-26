@@ -360,8 +360,7 @@ struct UserInterface: Codable {
     var fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
-    var simpleMode: Bool?
-    var singleQuitButton: Bool?
+    var simpleMode, singleQuitButton: Bool?
     var umadElements: [UmadElement]?
     var updateElements: [UpdateElement]?
 }
