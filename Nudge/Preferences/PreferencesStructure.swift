@@ -360,7 +360,7 @@ struct UserInterface: Codable {
     var fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
-    var simpleMode: Bool?
+    var simpleMode, singleQuitButton: Bool?
     var umadElements: [UmadElement]?
     var updateElements: [UpdateElement]?
 }
@@ -392,6 +392,7 @@ extension UserInterface {
         screenShotDarkPath: String?? = nil,
         screenShotLightPath: String?? = nil,
         simpleMode: Bool?? = nil,
+        singleQuitButton: Bool?? = nil,
         umadElements: [UmadElement]?? = nil,
         updateElements: [UpdateElement]?? = nil
     ) -> UserInterface {
@@ -404,6 +405,7 @@ extension UserInterface {
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
             simpleMode: simpleMode ?? self.simpleMode,
+            singleQuitButton: singleQuitButton ?? self.simpleMode,
             umadElements: umadElements ?? self.umadElements,
             updateElements: updateElements ?? self.updateElements
         )

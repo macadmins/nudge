@@ -23,6 +23,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return NSApplication.TerminateReply.terminateCancel
         }
     }
+
+    func runSoftwareUpdate() {
+        if asyncronousSoftwareUpdate {
+            DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
+                SoftwareUpdate().Download()
+            })
+        } else {
+            SoftwareUpdate().Download()
+        }
+    }
+
+    // Random Delay logic
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        if randomDelay {
+            let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
+            uiLog.debug("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
+            sleep(UInt32(randomDelaySeconds))
+        }
+        self.runSoftwareUpdate()
+    }
 }
 
 @main

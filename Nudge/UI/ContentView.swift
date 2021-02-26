@@ -38,35 +38,15 @@ struct ContentView_Previews: PreviewProvider {
 struct HostingWindowFinder: NSViewRepresentable {
     var callback: (NSWindow?) -> ()
 
-    func runSoftwareUpdate(delay: Int) {
-        if asyncronousSoftwareUpdate {
-            DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now() + Double(delay), execute: {
-                SoftwareUpdate().Download()
-            })
-        } else {
-            SoftwareUpdate().Download()
-        }
-    }
-
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSView()
         if Utils().versionArgumentPassed() {
             print(Utils().getNudgeVersion())
             Utils().exitNudge()
         }
-
-        if randomDelay {
-            let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
-            uiLog.debug("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
-            runSoftwareUpdate(delay: randomDelaySeconds)
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(randomDelaySeconds)) { [weak view] in
-                self.callback(view?.window)
-            }
-        } else {
-            runSoftwareUpdate(delay: 0)
-            DispatchQueue.main.async { [weak view] in
-                self.callback(view?.window)
-            }
+        
+        DispatchQueue.main.async { [weak view] in
+            self.callback(view?.window)
         }
         return view
     }
