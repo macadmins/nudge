@@ -300,6 +300,10 @@ struct Utils {
     }
 
     func requireDualQuitButtons() -> Bool {
+        if singleQuitButton {
+            uiLog.debug("Single quit button configured")
+            return false
+        }
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
         uiLog.debug("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
         return requireDualQuitButtons
