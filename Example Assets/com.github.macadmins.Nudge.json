@@ -59,6 +59,7 @@
     "screenShotDarkPath": "/somewhere/screenShotDark.png",
     "screenShotLightPath": "/somewhere/screenShotLight.png",
     "simpleMode": false,
+    "singleQuitButton": false,
     "updateElements": [
       {
         "_language": "en",
