@@ -51,7 +51,7 @@ struct Main: App {
     let manager = try! PolicyManager() // TODO: handle errors
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(manager)
+            ContentView(simpleModePreview: false).environmentObject(manager)
                 .frame(width: 900, height: 450)
         }
         // Hide Title Bar
