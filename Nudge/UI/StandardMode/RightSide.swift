@@ -194,6 +194,14 @@ struct StandardModeRightSide: View {
             HStack {
                 // Separate the buttons with a spacer
                 Spacer()
+                #if DEBUG
+                Button {
+                    Utils().userInitiatedExit()
+                } label: {
+                    Text(primaryQuitButtonText)
+                        .frame(minWidth: 35)
+                }
+                #endif
                 
                 if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                     // secondaryQuitButton
@@ -261,11 +269,11 @@ struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
                 .preferredColorScheme(.dark)
         }
     }
