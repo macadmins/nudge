@@ -13,18 +13,28 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var manager: PolicyManager
     var body: some View {
-        HostingWindowFinder {window in
-            window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-            window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-            window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-            window?.center() // center
-            window?.isMovable = false // not movable
-            NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-        }
         if simpleMode() {
-            SimpleMode()
+            SimpleMode().background(
+                HostingWindowFinder {window in
+                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                    window?.center() // center
+                    window?.isMovable = false // not movable
+                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
+                }
+            )
         } else {
-            StandardMode()
+            StandardMode().background(
+                HostingWindowFinder {window in
+                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                    window?.center() // center
+                    window?.isMovable = false // not movable
+                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
+                }
+            )
         }
     }
 }
@@ -32,6 +42,9 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            .preferredColorScheme(.light)
+        ContentView().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            .preferredColorScheme(.dark)
     }
 }
 
