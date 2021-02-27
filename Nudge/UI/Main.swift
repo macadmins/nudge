@@ -50,6 +50,19 @@ struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     let manager = try! PolicyManager() // TODO: handle errors
     var body: some Scene {
+        #if DEBUG
+        WindowGroup {
+            TabView {
+                ContentView(simpleModePreview: false).environmentObject(manager)
+                    .frame(width: 900, height: 450)
+                ContentView(simpleModePreview: true).environmentObject(manager)
+                    .frame(width: 900, height: 450)
+            }
+        }
+        // Hide Title Bar
+        .windowStyle(HiddenTitleBarWindowStyle())
+        #endif
+
         WindowGroup {
             ContentView(simpleModePreview: false).environmentObject(manager)
                 .frame(width: 900, height: 450)
