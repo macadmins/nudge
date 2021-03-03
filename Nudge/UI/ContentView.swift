@@ -12,28 +12,48 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var manager: PolicyManager
+    @State var simpleModePreview: Bool
     var body: some View {
-        HostingWindowFinder {window in
-            window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-            window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-            window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-            window?.center() // center
-            window?.isMovable = false // not movable
-            NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-        }
-        if simpleMode() {
-            SimpleMode()
+        if simpleMode() || simpleModePreview {
+            SimpleMode().background(
+                HostingWindowFinder {window in
+                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                    window?.center() // center
+                    window?.isMovable = false // not movable
+                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
+                }
+            )
         } else {
-            StandardMode()
+            StandardMode().background(
+                HostingWindowFinder {window in
+                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                    window?.center() // center
+                    window?.isMovable = false // not movable
+                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
+                }
+            )
         }
     }
 }
 
+#if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+        ContentView(simpleModePreview: true).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            .preferredColorScheme(.light)
+        ContentView(simpleModePreview: false).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            .preferredColorScheme(.light)
+        ContentView(simpleModePreview: true).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            .preferredColorScheme(.dark)
+        ContentView(simpleModePreview: false).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            .preferredColorScheme(.dark)
     }
 }
+#endif
 
 struct HostingWindowFinder: NSViewRepresentable {
     var callback: (NSWindow?) -> ()
