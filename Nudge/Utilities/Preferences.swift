@@ -93,7 +93,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 }
 
 // Compare current language against the available updateURLs
-func getAboutUpdateURL(OSVerReq :OSVersionRequirement?) -> String? {
+func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
     if Utils().demoModeEnabled() {
         return "https://support.apple.com/en-us/HT201541"
     }
@@ -107,7 +107,7 @@ func getAboutUpdateURL(OSVerReq :OSVersionRequirement?) -> String? {
             }
         }
     }
-    return ""
+    return nil
 }
 
 // userExperience

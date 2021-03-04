@@ -120,6 +120,15 @@ struct SimpleMode: View {
 
                 // Separate the buttons with a spacer
                 Spacer()
+                
+                #if DEBUG
+                Button {
+                    Utils().userInitiatedExit()
+                } label: {
+                    Text(primaryQuitButtonText)
+                        .frame(minWidth: 35)
+                }
+                #endif
 
                 if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                     // secondaryQuitButton
@@ -188,11 +197,11 @@ struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
                 .preferredColorScheme(.dark)
         }
     }
