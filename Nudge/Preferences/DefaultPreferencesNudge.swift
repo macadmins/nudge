@@ -18,7 +18,7 @@ let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUp
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 
 // osVersionRequirements
-let osVersionRequirementsProfile = getOSVersionRequirementsProfile(currentOSVersion: currentOSVersion)
+let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
 let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)

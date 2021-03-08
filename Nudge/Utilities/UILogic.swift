@@ -11,7 +11,7 @@ import Foundation
 // This likely needs to be refactored into PolicyManager.swift, but I wanted all functions out of Nudge.swift for now
 // Start doing a basic check
 func nudgeStartLogic() {
-    if Utils().fullyUpdated(currentOSVersion: currentOSVersion) {
+    if Utils().fullyUpdated() {
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         // https://zacwhite.com/2020/detecting-swiftui-previews/
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
@@ -30,7 +30,7 @@ func nudgeStartLogic() {
                 Utils().exitNudge()
             }
         }
-    } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade(currentOSVersion: currentOSVersion) == false {
+    } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
         let msg = "Device requires a minor update but enforceMinorUpdates is false"
         uiLog.info("\(msg, privacy: .public)")
         Utils().exitNudge()

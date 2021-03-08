@@ -69,7 +69,7 @@ struct Utils {
         return forceScreenShotIconMode
     }
 
-    func fullyUpdated(currentOSVersion: String) -> Bool {
+    func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
             let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
@@ -308,7 +308,7 @@ struct Utils {
         return requireDualQuitButtons
     }
 
-    func requireMajorUpgrade(currentOSVersion: String) -> Bool {
+    func requireMajorUpgrade() -> Bool {
         if requiredMinimumOSVersion == "0.0" {
             let msg = "Device requireMajorUpgrade: false"
             utilsLog.debug("\(msg, privacy: .public)")
@@ -331,7 +331,7 @@ struct Utils {
     func updateDevice() {
         let msg = "User clicked updateDevice"
         utilsLog.info("\(msg, privacy: .public)")
-        if requireMajorUpgrade(currentOSVersion: currentOSVersion) {
+        if requireMajorUpgrade() {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
