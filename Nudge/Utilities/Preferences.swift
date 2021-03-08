@@ -52,7 +52,7 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
 // osVersionRequirements
 // Mutate the profile into our required construct and then compare currentOS against targetedOSVersions
 // Even if profile/JSON is installed, return nil if in demo-mode
-func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
+func getOSVersionRequirementsProfile(currentOSVersion: String) -> OSVersionRequirement? {
     if Utils().demoModeEnabled() {
         return nil
     }
@@ -64,7 +64,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     }
     if !requirements.isEmpty {
         for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersions?.contains(OSVersion(ProcessInfo().operatingSystemVersion).description) == true {
+            if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0")  {
                 return subPreferences
             }
         }
@@ -81,7 +81,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
         for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersions?.contains(OSVersion(ProcessInfo().operatingSystemVersion).description) == true {
+            if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0") {
                 return subPreferences
             }
         }

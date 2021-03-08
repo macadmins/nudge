@@ -7,6 +7,9 @@
 
 import Foundation
 
+// Globals
+let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+
 // optionalFeatures
 let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
@@ -15,7 +18,7 @@ let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUp
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 
 // osVersionRequirements
-let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
+let osVersionRequirementsProfile = getOSVersionRequirementsProfile(currentOSVersion: currentOSVersion)
 let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
 let requiredInstallationDate = osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
