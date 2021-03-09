@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
-            uiLog.debug("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
+            uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
             sleep(UInt32(randomDelaySeconds))
         }
         self.runSoftwareUpdate()

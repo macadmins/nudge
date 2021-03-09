@@ -38,26 +38,26 @@ class SoftwareUpdate {
             softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
             return error
         } else {
-            softwareupdateListLog.info("\(output, privacy: .public)")
+            softwareupdateListLog.notice("\(output, privacy: .public)")
             return output
         }
 
     }
 
     func Download() {
-        softwareupdateDownloadLog.info("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
+        softwareupdateDownloadLog.notice("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
 
         if Utils().getCPUTypeString() == "Apple Silicon" {
             let msg = "Apple Silicon devices do not support automated softwareupdate calls. Please use MDM."
-            softwareupdateListLog.warning("\(msg, privacy: .public)")
+            softwareupdateListLog.debug("\(msg, privacy: .public)")
             return
         }
 
         let softwareupdateList = self.List()
 
         if softwareupdateList.contains("restart") {
-            let msg = "Starting softwareupdate download"
-            softwareupdateListLog.debug("\(msg, privacy: .public)")
+            let msg = "softwareupdate found available updates requiring a restart - attempting download"
+            softwareupdateListLog.notice("\(msg, privacy: .public)")
             let task = Process()
             task.launchPath = "/usr/sbin/softwareupdate"
             task.arguments = ["--download", "--all"]
@@ -74,18 +74,23 @@ class SoftwareUpdate {
                 let msg = "Error downloading software updates"
                 softwareupdateListLog.error("\(msg, privacy: .public)")
             }
-
+            
+            task.waitUntilExit()
+            
             let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
             let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-
+            
             let output = String(decoding: outputData, as: UTF8.self)
             let error = String(decoding: errorData, as: UTF8.self)
-
-            softwareupdateDownloadLog.debug("\(output, privacy: .public)")
-            softwareupdateDownloadLog.error("\(error, privacy: .public)")
+            
+            if task.terminationStatus != 0 {
+                softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")
+            } else {
+                softwareupdateDownloadLog.notice("\(output, privacy: .public)")
+            }
         } else {
-            let msg = "softwareupdate did not find any available updates"
-            softwareupdateListLog.info("\(msg, privacy: .public)")
+            let msg = "softwareupdate did not find any available updates requiring a restart - skipping download"
+            softwareupdateListLog.notice("\(msg, privacy: .public)")
         }
     }
 }

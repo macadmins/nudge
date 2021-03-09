@@ -19,20 +19,20 @@ func nudgeStartLogic() {
         } else {
             if Utils().demoModeEnabled() {
                 let msg = "Device in demo mode"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.info("\(msg, privacy: .public)")
                 if Utils().simpleModeEnabled() {
                     let msg = "Device in simple mode"
-                    uiLog.debug("\(msg, privacy: .public)")
+                    uiLog.info("\(msg, privacy: .public)")
                 }
             } else {
                 let msg = "Device in fully updated"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.notice("\(msg, privacy: .public)")
                 Utils().exitNudge()
             }
         }
     } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
         let msg = "Device requires a minor update but enforceMinorUpdates is false"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.warning("\(msg, privacy: .public)")
         Utils().exitNudge()
     }
 }
@@ -46,7 +46,7 @@ var hasLoggedDeferralCountPastThreshold = false
 
 func userHasClickedSecondaryQuitButton() {
     let msg = "User clicked secondaryQuitButton"
-    uiLog.info("\(msg, privacy: .public)")
+    uiLog.notice("\(msg, privacy: .public)")
 }
 
 func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
@@ -100,7 +100,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
         if deferralCountVar > allowedDeferrals  {
             if !hasLoggedDeferralCountPastThreshold {
                 let msg = "allowedDeferrals has been passed"
-                uiLog.info("\(msg, privacy: .public)")
+                uiLog.warning("\(msg, privacy: .public)")
             }
             _ = hasLoggedDeferralCountPastThreshold = true
             // Loop through all the running applications and hide them

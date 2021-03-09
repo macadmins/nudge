@@ -31,7 +31,7 @@ func getOptionalFeaturesProfile() -> [String:Any]? {
         return optionalFeatures
     } else {
         let msg = "profile optionalFeatures key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsProfileLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -44,7 +44,7 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
         return optionalFeatures
     } else {
         let msg = "json optionalFeatures key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsJSONLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -70,7 +70,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         }
     } else {
         let msg = "profile osVersionRequirements key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsProfileLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -87,7 +87,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
         }
     } else {
         let msg = "json osVersionRequirements key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsJSONLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -120,7 +120,7 @@ func getUserExperienceProfile() -> [String:Any]? {
         return userExperience
     } else {
         let msg = "profile userExperience key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsProfileLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -133,7 +133,7 @@ func getUserExperienceJSON() -> UserExperience? {
         return userExperience
     } else {
         let msg = "json userExperience key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsJSONLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -149,7 +149,7 @@ func getUserInterfaceProfile() -> [String:Any]? {
         return userInterface
     } else {
         let msg = "profile userInterface key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsProfileLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -162,7 +162,7 @@ func getUserInterfaceJSON() -> UserInterface? {
         return userInterface
     } else {
         let msg = "json userInterface key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsJSONLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -198,7 +198,7 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
         }
     } else {
         let msg = "profile updateElements key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsProfileLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -217,7 +217,7 @@ func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
         }
     } else {
         let msg = "json updateElements key is empty"
-        prefsLog.debug("\(msg, privacy: .public)")
+        prefsJSONLog.warning("\(msg, privacy: .public)")
     }
     return nil
 }
@@ -227,6 +227,6 @@ func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)".localized(desiredLanguage: getDesiredLanguage())
     } else {
-        return getUserInterfaceUpdateElementsProfile()?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
+        return userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
     }
 }
