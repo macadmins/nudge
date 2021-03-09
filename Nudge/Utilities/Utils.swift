@@ -294,7 +294,7 @@ struct Utils {
 
     func pastRequiredInstallationDate() -> Bool {
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
-        utilsLog.warning("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+        utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
         return pastRequiredInstallationDate
     }
 
