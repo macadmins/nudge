@@ -48,7 +48,7 @@ struct Utils {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if demoModeArgumentPassed {
             let msg = "-demo-mode argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return demoModeArgumentPassed
     }
@@ -64,7 +64,7 @@ struct Utils {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
         if forceScreenShotIconMode {
             let msg = "-force-screenshot-icon argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return forceScreenShotIconMode
     }
@@ -131,7 +131,7 @@ struct Utils {
 
     func getJSONUrl() -> String {
         let jsonURL = nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
-        utilsLog.info("JSON url: \(jsonURL, privacy: .public)")
+        utilsLog.debug("JSON url: \(jsonURL, privacy: .public)")
         return jsonURL
     }
 
@@ -219,7 +219,7 @@ struct Utils {
 
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
-        utilsLog.debug("Patch OS Version: \(PatchOSVersion, privacy: .public)")
+        utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
         return PatchOSVersion
     }
     
@@ -323,14 +323,14 @@ struct Utils {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
         if simpleModeEnabled {
             let msg = "-simple-mode argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return simpleModeEnabled
     }
 
     func updateDevice() {
         let msg = "User clicked updateDevice"
-        utilsLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\(msg, privacy: .public)")
         if requireMajorUpgrade() {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
@@ -355,7 +355,7 @@ struct Utils {
         let versionArgumentPassed = CommandLine.arguments.contains("-version")
         if versionArgumentPassed {
             let msg = "-version argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return versionArgumentPassed
     }

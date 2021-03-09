@@ -19,13 +19,13 @@ func nudgeStartLogic() {
         } else {
             if Utils().demoModeEnabled() {
                 let msg = "Device in demo mode"
-                uiLog.info("\(msg, privacy: .public)")
+                uiLog.debug("\(msg, privacy: .public)")
                 if Utils().simpleModeEnabled() {
                     let msg = "Device in simple mode"
-                    uiLog.info("\(msg, privacy: .public)")
+                    uiLog.debug("\(msg, privacy: .public)")
                 }
             } else {
-                let msg = "Device in fully updated"
+                let msg = "Device is fully updated"
                 uiLog.notice("\(msg, privacy: .public)")
                 Utils().exitNudge()
             }
@@ -64,7 +64,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     // The first time the main timer contoller hits we don't care
     if !afterFirstRun {
         let msg = "Initilizing nudgeRefreshCycle"
-        uiLog.debug("\(msg, privacy: .public)")
+        uiLog.info("\(msg, privacy: .public)")
         _ = afterFirstRun = true
         _ = lastRefreshTime = Date()
         return false

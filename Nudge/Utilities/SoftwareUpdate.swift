@@ -38,7 +38,7 @@ class SoftwareUpdate {
             softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
             return error
         } else {
-            softwareupdateListLog.notice("\(output, privacy: .public)")
+            softwareupdateListLog.info("\(output, privacy: .public)")
             return output
         }
 
@@ -86,7 +86,9 @@ class SoftwareUpdate {
             if task.terminationStatus != 0 {
                 softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")
             } else {
-                softwareupdateDownloadLog.notice("\(output, privacy: .public)")
+                let msg = "softwareupdate successfully downloaded available updates"
+                softwareupdateListLog.notice("\(msg, privacy: .public)")
+                softwareupdateDownloadLog.info("\(output, privacy: .public)")
             }
         } else {
             let msg = "softwareupdate did not find any available updates requiring a restart - skipping download"
