@@ -25,9 +25,9 @@
 // Required OS Version
 "Required OS Version:" = "Erforderliche Betriebssystemversion:";
 // Days remaining to update
-"Days remaining to update:" = "Verbleibende Tage zur Aktualisierung:";
-// Ignored Count
-"Ignored Count:" = "Ignorierte Aufforderungen:";
+"Days remaining to update:" = "Verbleibende Tage Zur Aktualisierung:";
+// Deferred Count
+"Deferred Count:" = "Aufgeschobene Zählung:";
 // More Info
 "More Info" = "Mehr Informationen";
 
@@ -38,8 +38,7 @@
 "Click for more information about the security update" = "Hier klicken, um mehr Informationen über das Sicherheitsupdate zu erhalten";
 
 //// Right side of Nudge
-"Update Device" = "Gerät aktualisieren";
-"More Info" = "Mehr Informationen";
+"Update Device" = "Gerät Aktualisieren";
 "Your device will restart during this update" = "Ihr Gerät wird während dieses Updates neu gestartet";
 "Important Notes" = "Wichtige Hinweise";
 "Updates can take around 30 minutes to complete" = "Updates can take around 30 minutes to complete";
@@ -47,5 +46,5 @@
 "Your device requires a security update" = "Ihr Gerät benötigt ein Sicherheitsupdate";
 "Your device requires a security update (Demo Mode)" = "Ihr Gerät benötigt ein Sicherheitsupdate (Demo-Modus)";
 "Later" = "Später";
-"I understand" = "Ich verstehe";
+"I understand" = "Ich Verstehe";
 "A friendly reminder from your local IT team" = "Eine freundliche Erinnerung von Ihrem IT-Team";

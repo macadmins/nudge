@@ -24,10 +24,10 @@
 "Current OS Version:" = "Current OS Version:";
 // Required OS Version
 "Required OS Version:" = "Required OS Version:";
-// Days remaining to update
-"Days remaining to update:" = "Days remaining to update:";
-// Ignored Count
-"Ignored Count:" = "Ignored Count:";
+// Days Remaining To Update
+"Days Remaining To Update:" = "Days Remaining To Update:";
+// Deferred Count
+"Deferred Count:" = "Deferred Count:";
 // More Info
 "More Info" = "More Info";
 
@@ -39,7 +39,6 @@
 
 //// Right side of Nudge
 "Update Device" = "Update Device";
-"More Info" = "More Info";
 "Your device will restart during this update" = "Your device will restart during this update";
 "Important Notes" = "Important Notes";
 "Updates can take around 30 minutes to complete" = "Updates can take around 30 minutes to complete";
