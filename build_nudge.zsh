@@ -179,5 +179,5 @@ if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
   # Move the signed pkg
-  /bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.0.pkg" "$OUTPUTSDIR"
+  /bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" "$OUTPUTSDIR"
 fi
