@@ -160,11 +160,11 @@ fi
     "distribution_style": true,
     "identifier": "com.github.macadmins.Nudge.Logger",
     "install_location": "/",
-    "name": "Nudge_Logger-1.0.0.pkg",
+    "name": "Nudge_Logger-1.0.1.pkg",
     "ownership": "recommended",
     "postinstall_action": "none",
     "suppress_bundle_relocation": true,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "signing_info": {
         "identity": "$SIGNING_IDENTITY",
         "timestamp": true

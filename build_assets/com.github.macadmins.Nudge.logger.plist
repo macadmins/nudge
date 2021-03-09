@@ -10,7 +10,6 @@
 		<string>stream</string>
 		<string>--predicate</string>
 		<string>subsystem == 'com.github.macadmins.Nudge'</string>
-		<string>--info</string>
 		<string>--style</string>
 		<string>syslog</string>
 		<string>--color</string>
