@@ -70,10 +70,9 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let currentVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentVersion, newVersion: requiredMinimumOSVersion)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
             utilsLog.info("\(msg, privacy: .public)")
             return true
         } else {
@@ -315,7 +314,7 @@ struct Utils {
             utilsLog.debug("\(msg, privacy: .public)")
             return false
         }
-        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: OSVersion(ProcessInfo().operatingSystemVersion).description, newVersion: requiredMinimumOSVersion)
+        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }

@@ -7,6 +7,9 @@
 
 import Foundation
 
+// Globals
+let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+
 // optionalFeatures
 let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
