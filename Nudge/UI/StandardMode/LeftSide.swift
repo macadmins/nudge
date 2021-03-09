@@ -102,7 +102,7 @@ struct StandardModeLeftSide: View {
 
                 // Days Remaining
                 HStack{
-                    Text("Days remaining to update:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     if self.daysRemaining <= 0 {
                         Text(String(0))
@@ -113,9 +113,9 @@ struct StandardModeLeftSide: View {
                     }
                 }
 
-                // Ignored Count
+                // Deferred Count
                 HStack{
-                    Text("Ignored Count:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     Text(String(self.deferralCountUI))
                         .onReceive(nudgeRefreshCycleTimer) { _ in
