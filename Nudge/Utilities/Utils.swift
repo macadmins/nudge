@@ -37,6 +37,12 @@ struct Utils {
         NSApp.windows[0].center()
     }
 
+    func coerceStringToDate(dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        return dateFormatter.date(from: dateString) ?? Date()
+    }
+
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
