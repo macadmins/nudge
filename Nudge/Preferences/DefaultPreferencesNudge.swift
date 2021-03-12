@@ -7,6 +7,9 @@
 
 import Foundation
 
+// Globals
+let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+
 // optionalFeatures
 let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
@@ -41,6 +44,7 @@ let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? userExperien
 // userInterface
 let userInterfaceProfile = getUserInterfaceProfile()
 let userInterfaceJSON = getUserInterfaceJSON()
+let userInterfaceUpdateElementsProfile = getUserInterfaceUpdateElementsProfile()
 let userInterfaceUpdateElementsJSON = getUserInterfaceUpdateElementsJSON()
 let fallbackLanguage = userInterfaceProfile?["fallbackLanguage"] as? String ?? userInterfaceJSON?.fallbackLanguage ?? "en"
 let forceFallbackLanguage = userInterfaceProfile?["forceFallbackLanguage"] as? Bool ?? userInterfaceJSON?.forceFallbackLanguage ?? false
@@ -48,16 +52,16 @@ let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? userInter
 let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? userInterfaceJSON?.iconLightPath ?? ""
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? userInterfaceJSON?.screenShotDarkPath ?? ""
 let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? userInterfaceJSON?.screenShotLightPath ?? ""
-let actionButtonText = getUserInterfaceUpdateElementsProfile()?["actionButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.actionButtonText ?? "Update Device".localized(desiredLanguage: getDesiredLanguage())
-let informationButtonText = getUserInterfaceUpdateElementsProfile()?["informationButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.informationButtonText ?? "More Info".localized(desiredLanguage: getDesiredLanguage())
-let mainContentHeader = getUserInterfaceUpdateElementsProfile()?["mainContentHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentHeader ?? "Your device will restart during this update".localized(desiredLanguage: getDesiredLanguage())
-let mainContentNote = getUserInterfaceUpdateElementsProfile()?["mainContentNote"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentNote ?? "Important Notes".localized(desiredLanguage: getDesiredLanguage())
-let mainContentSubHeader = getUserInterfaceUpdateElementsProfile()?["mainContentSubHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete".localized(desiredLanguage: getDesiredLanguage())
-let mainContentText = getUserInterfaceUpdateElementsProfile()?["mainContentText"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.".localized(desiredLanguage: getDesiredLanguage())
-let primaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["primaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.primaryQuitButtonText ?? "Later".localized(desiredLanguage: getDesiredLanguage())
-let secondaryQuitButtonText = getUserInterfaceUpdateElementsProfile()?["secondaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ?? "I understand".localized(desiredLanguage: getDesiredLanguage())
+let actionButtonText = userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.actionButtonText ?? "Update Device".localized(desiredLanguage: getDesiredLanguage())
+let informationButtonText = userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.informationButtonText ?? "More Info".localized(desiredLanguage: getDesiredLanguage())
+let mainContentHeader = userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentHeader ?? "Your device will restart during this update".localized(desiredLanguage: getDesiredLanguage())
+let mainContentNote = userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentNote ?? "Important Notes".localized(desiredLanguage: getDesiredLanguage())
+let mainContentSubHeader = userInterfaceUpdateElementsProfile?["mainContentSubHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete".localized(desiredLanguage: getDesiredLanguage())
+let mainContentText = userInterfaceUpdateElementsProfile?["mainContentText"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.".localized(desiredLanguage: getDesiredLanguage())
+let primaryQuitButtonText = userInterfaceUpdateElementsProfile?["primaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.primaryQuitButtonText ?? "Later".localized(desiredLanguage: getDesiredLanguage())
+let secondaryQuitButtonText = userInterfaceUpdateElementsProfile?["secondaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ?? "I understand".localized(desiredLanguage: getDesiredLanguage())
 let singleQuitButton = userInterfaceProfile?["singleQuitButton"] as? Bool ?? userInterfaceJSON?.singleQuitButton ?? false
-let subHeader = getUserInterfaceUpdateElementsProfile()?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
+let subHeader = userInterfaceUpdateElementsProfile?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
 
 // Other important defaults
 let acceptableApps = [

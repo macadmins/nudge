@@ -37,6 +37,12 @@ struct Utils {
         NSApp.windows[0].center()
     }
 
+    func coerceStringToDate(dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        return dateFormatter.date(from: dateString) ?? Date()
+    }
+
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
@@ -48,14 +54,14 @@ struct Utils {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if demoModeArgumentPassed {
             let msg = "-demo-mode argument passed"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.debug("\(msg, privacy: .public)")
         }
         return demoModeArgumentPassed
     }
 
     func exitNudge() {
         let msg = "Nudge is terminating due to condition met"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.notice("\(msg, privacy: .public)")
         shouldExit = true
         AppKit.NSApp.terminate(nil)
     }
@@ -70,11 +76,10 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let currentVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentVersion, newVersion: requiredMinimumOSVersion)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
-            utilsLog.info("\(msg, privacy: .public)")
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
+            utilsLog.notice("\(msg, privacy: .public)")
             return true
         } else {
             return false
@@ -122,7 +127,7 @@ struct Utils {
             return "Apple Silicon"
         }
         let msg = "Unknown CPU Type"
-        utilsLog.info("\(msg, privacy: .public)")
+        utilsLog.debug("\(msg, privacy: .public)")
         return "unknown"
     }
 
@@ -144,20 +149,20 @@ struct Utils {
 
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        utilsLog.debug("OS Version: \(MajorOSVersion, privacy: .public)")
+        utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
         return MajorOSVersion
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
-        utilsLog.debug("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
         return majorRequiredNudgeOSVersion
     }
 
     func getMinorOSVersion() -> Int {
         let MinorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
-        utilsLog.debug("Minor OS Version: \(MinorOSVersion, privacy: .public)")
+        utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
     }
 
@@ -171,7 +176,7 @@ struct Utils {
                         let decodedData = try NudgePreferences(data: data)
                         return decodedData
                     } catch {
-                        prefsLog.error("\(error.localizedDescription, privacy: .public)")
+                        prefsJSONLog.error("\(error.localizedDescription, privacy: .public)")
                         return nil
                     }
                 }
@@ -180,7 +185,7 @@ struct Utils {
         
         guard let fileURL = URL(string: url) else {
             let msg = "Could not find on-disk json"
-            prefsLog.error("\(msg, privacy: .public)")
+            prefsJSONLog.error("\(msg, privacy: .public)")
             return nil
         }
         
@@ -195,7 +200,7 @@ struct Utils {
                 return decodedData
                 
             } catch let error {
-                prefsLog.error("\(error.localizedDescription, privacy: .public)")
+                prefsJSONLog.error("\(error.localizedDescription, privacy: .public)")
                 return nil
             }
         }
@@ -220,7 +225,7 @@ struct Utils {
 
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
-        utilsLog.debug("Patch OS Version: \(PatchOSVersion, privacy: .public)")
+        utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
         return PatchOSVersion
     }
     
@@ -268,7 +273,7 @@ struct Utils {
 
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
-        utilsLog.debug("Timer cycle: \(timerCycle, privacy: .public)")
+        utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
         return timerCycle
     }
 
@@ -289,33 +294,33 @@ struct Utils {
             return
         }
         let msg = "User clicked moreInfo button"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.notice("\(msg, privacy: .public)")
         NSWorkspace.shared.open(url)
     }
 
     func pastRequiredInstallationDate() -> Bool {
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
-        utilsLog.info("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+        utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
         return pastRequiredInstallationDate
     }
 
     func requireDualQuitButtons() -> Bool {
         if singleQuitButton {
-            uiLog.debug("Single quit button configured")
+            uiLog.info("Single quit button configured")
             return false
         }
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
-        uiLog.debug("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
+        uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
         return requireDualQuitButtons
     }
 
     func requireMajorUpgrade() -> Bool {
         if requiredMinimumOSVersion == "0.0" {
             let msg = "Device requireMajorUpgrade: false"
-            utilsLog.debug("\(msg, privacy: .public)")
+            utilsLog.info("\(msg, privacy: .public)")
             return false
         }
-        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: OSVersion(ProcessInfo().operatingSystemVersion).description, newVersion: requiredMinimumOSVersion)
+        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }
@@ -331,7 +336,7 @@ struct Utils {
 
     func updateDevice() {
         let msg = "User clicked updateDevice"
-        utilsLog.info("\(msg, privacy: .public)")
+        uiLog.notice("\(msg, privacy: .public)")
         if requireMajorUpgrade() {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
@@ -342,14 +347,14 @@ struct Utils {
 
     func userInitiatedExit() {
         let msg = "User clicked primaryQuitButton"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.notice("\(msg, privacy: .public)")
         shouldExit = true
         AppKit.NSApp.terminate(nil)
     }
 
     func userInitiatedDeviceInfo() {
         let msg = "User clicked deviceInfo"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.notice("\(msg, privacy: .public)")
     }
 
     func versionArgumentPassed() -> Bool {

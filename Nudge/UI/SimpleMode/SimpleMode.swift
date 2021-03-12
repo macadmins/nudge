@@ -74,9 +74,9 @@ struct SimpleMode: View {
                     }
                 }
 
-                // Ignored Count
+                // Deferred Count
                 HStack {
-                    Text("Ignored Count:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     Text(String(self.deferralCountUI))
                         .font(.title2)

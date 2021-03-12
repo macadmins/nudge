@@ -39,6 +39,8 @@ if [[ $3 == "/" ]] ; then
     echo "Detected Loginwindow Environment"
   elif [[ "$console_user" == "_mbsetupuser" ]]; then
     echo "Detect SetupAssistant Environment"
+  elif [[ "$console_user" == "root" ]]; then
+    echo "Detect root as currently logged-in user"
   else
     # Unload the agent so it can be triggered on re-install
     /bin/launchctl asuser "${console_user_uid}" /bin/launchctl unload -w "$3${launch_agent_base_path}${launch_agent_plist_name}"
