@@ -46,7 +46,14 @@ struct Utils {
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
-        let imageData:NSData = NSData(contentsOf: urlPath as URL)!
+        var imageData = NSData()
+        do {
+            imageData = try NSData(contentsOf: urlPath as URL)
+        } catch {
+            uiLog.error("Error accessing file \(fileImagePath). Incorrect permissions")
+            let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
+            return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+        }
         return NSImage(data: imageData as Data)!
     }
 
