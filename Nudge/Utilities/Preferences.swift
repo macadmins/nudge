@@ -63,6 +63,10 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         }
     }
     if !requirements.isEmpty {
+        if requirements.count >= 2 {
+            let v1ErrorMsg = "Multiple hashes may result in undefined behavior. Please deploy a single hash for OS enforcement at this time."
+            prefsProfileLog.error("\(v1ErrorMsg, privacy: .public)")
+        }
         for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0")  {
                 return subPreferences
@@ -80,6 +84,10 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
         return nil
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
+        if requirements.count >= 2 {
+            let v1ErrorMsg = "Multiple hashes may result in undefined behavior. Please deploy a single hash for OS enforcement at this time."
+            prefsJSONLog.error("\(v1ErrorMsg, privacy: .public)")
+        }
         for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0") {
                 return subPreferences
