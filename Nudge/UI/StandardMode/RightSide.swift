@@ -60,12 +60,14 @@ struct StandardModeRightSide: View {
             
             // I'm kind of impressed with myself
             VStack {
+                Spacer()
+                    .frame(height: 10)
                 // mainContentHeader / mainContentSubHeader
-                HStack(alignment: .bottom) {
+                HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: 1) {
                         HStack {
                             Text(mainContentHeader)
-                                .font(.callout)
+                                 .font(.callout)
                                 .fontWeight(.bold)
                             Spacer()
                         }
@@ -84,7 +86,7 @@ struct StandardModeRightSide: View {
                     }
                     .keyboardShortcut(.defaultAction)
                 }
-                .frame(width: 510, height: 50)
+                .frame(width: 510)
                 
                 // Horizontal line
                 HStack{
@@ -189,7 +191,7 @@ struct StandardModeRightSide: View {
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
-            .frame(width: 550)
+            .frame(width: 550, height: 350)
                 
             // Bottom buttons
             HStack {
