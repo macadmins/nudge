@@ -52,12 +52,13 @@ struct Main: App {
     var body: some Scene {
         #if DEBUG
         WindowGroup {
-            TabView {
+            VSplitView {
                 ContentView(simpleModePreview: false).environmentObject(manager)
                     .frame(width: 900, height: 450)
                 ContentView(simpleModePreview: true).environmentObject(manager)
                     .frame(width: 900, height: 450)
             }
+            .frame(height: 900)
         }
         // Hide Title Bar
         .windowStyle(HiddenTitleBarWindowStyle())

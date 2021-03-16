@@ -60,12 +60,14 @@ struct StandardModeRightSide: View {
             
             // I'm kind of impressed with myself
             VStack {
+                Spacer()
+                    .frame(height: 10)
                 // mainContentHeader / mainContentSubHeader
-                HStack(alignment: .bottom) {
+                HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: 1) {
                         HStack {
                             Text(mainContentHeader)
-                                .font(.callout)
+                                 .font(.callout)
                                 .fontWeight(.bold)
                             Spacer()
                         }
@@ -77,13 +79,14 @@ struct StandardModeRightSide: View {
                     }
                     Spacer()
                     // actionButton
-                    Button(action: Utils().updateDevice, label: {
+                    Button(action: {
+                        Utils().updateDevice()
+                    }) {
                         Text(actionButtonText)
-                        }
-                    )
+                    }
                     .keyboardShortcut(.defaultAction)
                 }
-                .frame(width: 510, height: 50)
+                .frame(width: 510)
                 
                 // Horizontal line
                 HStack{
@@ -188,20 +191,12 @@ struct StandardModeRightSide: View {
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
-            .frame(width: 550)
+            .frame(width: 550, height: 350)
                 
             // Bottom buttons
             HStack {
                 // Separate the buttons with a spacer
                 Spacer()
-                #if DEBUG
-                Button {
-                    Utils().userInitiatedExit()
-                } label: {
-                    Text(primaryQuitButtonText)
-                        .frame(minWidth: 35)
-                }
-                #endif
                 
                 if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                     // secondaryQuitButton

@@ -89,11 +89,12 @@ struct SimpleMode: View {
                 }
 
                 // actionButton
-                Button(action: Utils().updateDevice, label: {
+                Button(action: {
+                    Utils().updateDevice()
+                }) {
                     Text(actionButtonText)
                         .frame(minWidth: 120)
-                    }
-                )
+                }
                 .keyboardShortcut(.defaultAction)
             }
             .frame(height: 390)
@@ -120,15 +121,6 @@ struct SimpleMode: View {
 
                 // Separate the buttons with a spacer
                 Spacer()
-                
-                #if DEBUG
-                Button {
-                    Utils().userInitiatedExit()
-                } label: {
-                    Text(primaryQuitButtonText)
-                        .frame(minWidth: 35)
-                }
-                #endif
 
                 if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                     // secondaryQuitButton

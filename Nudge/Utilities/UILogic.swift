@@ -78,7 +78,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     let runningApplications = NSWorkspace.shared.runningApplications
 
     // Don't nudge if major upgrade is frontmostApplication
-    if FileManager.default.fileExists(atPath: majorUpgradeAppPath) {
+    if majorUpgradeAppPathExists {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
             let msg = "majorUpgradeApp is currently the frontmostApplication"
             uiLog.info("\(msg, privacy: .public)")
@@ -110,8 +110,10 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
                 if acceptableApps.contains(appName) {
                     continue
                 }
-                if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
-                    continue
+                if majorUpgradeAppPathExists {
+                    if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
+                        continue
+                    }
                 }
                 // Taken from nudge-python as there was a race condition with NSWorkspace
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
@@ -119,7 +121,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
                 })
             }
             Utils().activateNudge()
-            Utils().updateDevice()
+            Utils().updateDevice(userClicked: false)
         } else {
             Utils().activateNudge()
         }

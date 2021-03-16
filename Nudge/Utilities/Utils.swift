@@ -46,7 +46,14 @@ struct Utils {
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
-        let imageData:NSData = NSData(contentsOf: urlPath as URL)!
+        var imageData = NSData()
+        do {
+            imageData = try NSData(contentsOf: urlPath as URL)
+        } catch {
+            uiLog.error("Error accessing file \(fileImagePath). Incorrect permissions")
+            let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
+            return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+        }
         return NSImage(data: imageData as Data)!
     }
 
@@ -334,10 +341,15 @@ struct Utils {
         return simpleModeEnabled
     }
 
-    func updateDevice() {
-        let msg = "User clicked updateDevice"
-        uiLog.notice("\(msg, privacy: .public)")
-        if requireMajorUpgrade() {
+    func updateDevice(userClicked: Bool = true) {
+        if userClicked {
+            let msg = "User clicked updateDevice"
+            uiLog.notice("\(msg, privacy: .public)")
+        } else {
+            let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
+            uiLog.notice("\(msg, privacy: .public)")
+        }
+        if requireMajorUpgrade() && majorUpgradeAppPathExists {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))

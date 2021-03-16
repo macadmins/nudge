@@ -44,6 +44,8 @@ if [[ $3 == "/" ]] ; then
   else
     # Unload the agent so it can be triggered on re-install
     /bin/launchctl asuser "${console_user_uid}" /bin/launchctl unload -w "$3${launch_agent_base_path}${launch_agent_plist_name}"
+    # Kill Nudge just in case (say someone manually opens it and not launched via launchagent
+    /usr/bin/killall Nudge
     # Load the launch agent
     /bin/launchctl asuser "${console_user_uid}" /bin/launchctl load -w "$3${launch_agent_base_path}${launch_agent_plist_name}"
   fi
