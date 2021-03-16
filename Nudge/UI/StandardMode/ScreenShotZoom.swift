@@ -81,11 +81,8 @@ struct ScreenShotZoom: View {
 struct ScreenShotZoomPreview: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
-                    .preferredColorScheme(.light)
-                    .environment(\.locale, .init(identifier: id))
-            }
+            ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                .preferredColorScheme(.light)
             ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
                 .preferredColorScheme(.dark)
         }
