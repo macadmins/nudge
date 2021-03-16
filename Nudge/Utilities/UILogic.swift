@@ -121,7 +121,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
                 })
             }
             Utils().activateNudge()
-            Utils().updateDevice()
+            Utils().updateDevice(userClicked: false)
         } else {
             Utils().activateNudge()
         }

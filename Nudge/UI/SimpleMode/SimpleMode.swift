@@ -89,11 +89,12 @@ struct SimpleMode: View {
                 }
 
                 // actionButton
-                Button(action: Utils().updateDevice, label: {
+                Button(action: {
+                    Utils().updateDevice()
+                }) {
                     Text(actionButtonText)
                         .frame(minWidth: 120)
-                    }
-                )
+                }
                 .keyboardShortcut(.defaultAction)
             }
             .frame(height: 390)

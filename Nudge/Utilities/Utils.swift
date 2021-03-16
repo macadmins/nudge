@@ -341,10 +341,14 @@ struct Utils {
         return simpleModeEnabled
     }
 
-    func updateDevice() {
-        let msg = "User clicked updateDevice"
-        uiLog.notice("\(msg, privacy: .public)")
-        if requireMajorUpgrade() {
+    func updateDevice(userClicked: Bool = true) {
+        if userClicked {
+            let msg = "User clicked updateDevice"
+            uiLog.notice("\(msg, privacy: .public)")
+        } else {
+            let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
+            uiLog.notice("\(msg, privacy: .public)")
+        }
         if requireMajorUpgrade() && majorUpgradeAppPathExists {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {

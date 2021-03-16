@@ -77,10 +77,11 @@ struct StandardModeRightSide: View {
                     }
                     Spacer()
                     // actionButton
-                    Button(action: Utils().updateDevice, label: {
+                    Button(action: {
+                        Utils().updateDevice()
+                    }) {
                         Text(actionButtonText)
-                        }
-                    )
+                    }
                     .keyboardShortcut(.defaultAction)
                 }
                 .frame(width: 510, height: 50)
