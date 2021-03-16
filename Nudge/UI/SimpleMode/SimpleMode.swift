@@ -121,15 +121,6 @@ struct SimpleMode: View {
 
                 // Separate the buttons with a spacer
                 Spacer()
-                
-                #if DEBUG
-                Button {
-                    Utils().userInitiatedExit()
-                } label: {
-                    Text(primaryQuitButtonText)
-                        .frame(minWidth: 35)
-                }
-                #endif
 
                 if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
                     // secondaryQuitButton
