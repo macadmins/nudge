@@ -345,6 +345,7 @@ struct Utils {
         let msg = "User clicked updateDevice"
         uiLog.notice("\(msg, privacy: .public)")
         if requireMajorUpgrade() {
+        if requireMajorUpgrade() && majorUpgradeAppPathExists {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
