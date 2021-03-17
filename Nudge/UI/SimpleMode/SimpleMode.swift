@@ -174,19 +174,24 @@ struct SimpleMode: View {
             // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
         }
         .frame(width: 900, height: 450)
-        .onAppear(perform: nudgeStartLogic)
+        .onAppear() {
+            updateUI()
+        }
         .onReceive(nudgeRefreshCycleTimer) { _ in
             if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
                 self.deferralCountUI += 1
             }
-            if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
-                self.requireDualQuitButtons = true
-            }
-            if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
-                self.allowButtons = false
-            }
-            self.daysRemaining = Utils().getNumberOfDaysBetween()
+            updateUI()
         }
+    }
+    func updateUI() {
+        if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
+            self.requireDualQuitButtons = true
+        }
+        if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
+            self.allowButtons = false
+        }
+        self.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 

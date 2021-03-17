@@ -152,12 +152,18 @@ struct StandardModeLeftSide: View {
             .frame(width: 250, height: 50)
         }
         .frame(width: 300, height: 450)
+        .onAppear() {
+            updateUI()
+        }
         .onReceive(nudgeRefreshCycleTimer) { _ in
             if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
                 self.deferralCountUI += 1
             }
-            self.daysRemaining = Utils().getNumberOfDaysBetween()
+            updateUI()
         }
+    }
+    func updateUI() {
+        self.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 

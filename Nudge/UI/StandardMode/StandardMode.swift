@@ -28,8 +28,6 @@ struct StandardMode: View {
             StandardModeRightSide()
         }
         .frame(width: 900, height: 450)
-        // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
-        .onAppear(perform: nudgeStartLogic)
     }
 }
 

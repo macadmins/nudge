@@ -59,8 +59,10 @@ struct Main: App {
         WindowGroup {
             VSplitView {
                 ContentView(simpleModePreview: false).environmentObject(manager)
+                    .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
                 ContentView(simpleModePreview: true).environmentObject(manager)
+                    .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
             }
             .frame(height: 900)
@@ -71,6 +73,7 @@ struct Main: App {
 
         WindowGroup {
             ContentView(simpleModePreview: false).environmentObject(manager)
+                .onAppear(perform: nudgeStartLogic)
                 .frame(width: 900, height: 450)
         }
         // Hide Title Bar

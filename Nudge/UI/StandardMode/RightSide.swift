@@ -256,12 +256,19 @@ struct StandardModeRightSide: View {
         }
         .frame(width: 600, height: 450)
         .onReceive(nudgeRefreshCycleTimer) { _ in
-            if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
-                self.requireDualQuitButtons = true
-            }
-            if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
-                self.allowButtons = false
-            }
+            updateUI()
+        }
+        .onAppear() {
+            updateUI()
+        }
+    }
+    
+    func updateUI() {
+        if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
+            self.requireDualQuitButtons = true
+        }
+        if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
+            self.allowButtons = false
         }
     }
 }
