@@ -16,16 +16,18 @@ struct StandardModeRightSide: View {
     @EnvironmentObject var manager: PolicyManager
     
     // State variables
-    @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
-    @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
+    @State var allowButtons = true
     @State var hasClickedSecondaryQuitButton = false
-    @State var deferralCountUI = 0
+    @State var requireDualQuitButtons = false
     
     // Modal view for screenshot and device info
     @State var showSSDetail = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
+    
+    // Setup the main refresh timer that controls the child refresh logic
+    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
@@ -198,7 +200,7 @@ struct StandardModeRightSide: View {
                 // Separate the buttons with a spacer
                 Spacer()
                 
-                if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
+                if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if requireDualQuitButtons {
                         if self.hasClickedSecondaryQuitButton {
@@ -253,8 +255,14 @@ struct StandardModeRightSide: View {
             .frame(width: 510)
         }
         .frame(width: 600, height: 450)
-        // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
-        .onAppear(perform: nudgeStartLogic)
+        .onReceive(nudgeRefreshCycleTimer) { _ in
+            if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
+                self.requireDualQuitButtons = true
+            }
+            if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
+                self.allowButtons = false
+            }
+        }
     }
 }
 

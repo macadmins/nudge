@@ -118,11 +118,6 @@ struct StandardModeLeftSide: View {
                     Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     Text(String(self.deferralCountUI))
-                        .onReceive(nudgeRefreshCycleTimer) { _ in
-                            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                                self.deferralCountUI += 1
-                            }
-                        }
                         .foregroundColor(.secondary)
                 }
             }
@@ -157,6 +152,12 @@ struct StandardModeLeftSide: View {
             .frame(width: 250, height: 50)
         }
         .frame(width: 300, height: 450)
+        .onReceive(nudgeRefreshCycleTimer) { _ in
+            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
+                self.deferralCountUI += 1
+            }
+            self.daysRemaining = Utils().getNumberOfDaysBetween()
+        }
     }
 }
 
