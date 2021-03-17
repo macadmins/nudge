@@ -16,11 +16,11 @@ struct SimpleMode: View {
     @EnvironmentObject var manager: PolicyManager
     
     // State variables
+    @State var allowButtons = true
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var requireDualQuitButtons = Utils().requireDualQuitButtons()
-    @State var pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
-    @State var hasClickedSecondaryQuitButton = false
     @State var deferralCountUI = 0
+    @State var requireDualQuitButtons = false
+    @State var hasClickedSecondaryQuitButton = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
@@ -81,11 +81,6 @@ struct SimpleMode: View {
                     Text(String(self.deferralCountUI))
                         .font(.title2)
                         .fontWeight(.bold)
-                        .onReceive(nudgeRefreshCycleTimer) { _ in
-                            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                                self.deferralCountUI += 1
-                            }
-                        }
                 }
 
                 // actionButton
@@ -122,7 +117,7 @@ struct SimpleMode: View {
                 // Separate the buttons with a spacer
                 Spacer()
 
-                if Utils().demoModeEnabled() || !pastRequiredInstallationDate && allowedDeferrals > self.deferralCountUI {
+                if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if requireDualQuitButtons {
                         if self.hasClickedSecondaryQuitButton {
@@ -179,7 +174,24 @@ struct SimpleMode: View {
             // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
         }
         .frame(width: 900, height: 450)
-        .onAppear(perform: nudgeStartLogic)
+        .onAppear() {
+            updateUI()
+        }
+        .onReceive(nudgeRefreshCycleTimer) { _ in
+            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
+                self.deferralCountUI += 1
+            }
+            updateUI()
+        }
+    }
+    func updateUI() {
+        if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
+            self.requireDualQuitButtons = true
+        }
+        if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
+            self.allowButtons = false
+        }
+        self.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 
