@@ -7,19 +7,54 @@
 
 import SwiftUI
 
+// Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
-    // Thanks you ftiff
-    // Create an AppDelegate so the close button will terminate Nudge
-    // Technically not needed because we are now hiding those buttons
+    // This allows Nudge to terminate if all of the windows have been closed. It was needed when the close button was visible, but less needed now.
+    // However if someone does close all the windows, we still want this.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        true
+        return true
     }
     
-    // Disable CMD+Q - Only exit if primaryQuitButton is clicked
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        // Listen for keyboard events
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+            if self.detectBannedShortcutKeys(with: $0) {
+                return nil
+            } else {
+                return $0
+            }
+        }
+    }
+    
+    func detectBannedShortcutKeys(with event: NSEvent) -> Bool {
+        // Only detect shortcut keys if Nudge is active - adapted from https://stackoverflow.com/questions/32446978/swift-capture-keydown-from-nsviewcontroller/40465919
+        if NSApplication.shared.isActive {
+            switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+                // Disable CMD + W - closes the Nudge window and breaks it
+                case [.command] where event.characters == "w":
+                    let msg = "Nudge detected an attempt to close the application via CMD + W shortcut key."
+                    uiLog.warning("\(msg, privacy: .public)")
+                    return true
+                // Disable CMD + Q -  fully closes Nudge
+                case [.command] where event.characters == "q":
+                    let msg = "Nudge detected an attempt to close the application via CMD + Q shortcut key."
+                    uiLog.warning("\(msg, privacy: .public)")
+                    return true
+                // Don't care about any other shortcut keys
+                default:
+                    return false
+            }
+        }
+        return false
+    }
+    
+    // Only exit if primaryQuitButton is clicked
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         if shouldExit {
             return NSApplication.TerminateReply.terminateNow
         } else {
+            let msg = "Nudge detected an attempt to close the application."
+            uiLog.warning("\(msg, privacy: .public)")
             return NSApplication.TerminateReply.terminateCancel
         }
     }
