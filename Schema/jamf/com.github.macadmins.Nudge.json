@@ -1,0 +1,193 @@
+{
+"title": "Nudge (com.github.macadmins.Nudge)",
+"description": "Preference settings for Nudge",
+  "properties": {
+    "optionalFeatures": {
+      "type": "object",
+      "properties": {
+        "asyncronousSoftwareUpdate": {
+          "type": "boolean"
+        },
+        "attemptToFetchMajorUpgrade": {
+          "type": "boolean"
+        },
+        "enforceMinorUpdates": {
+          "type": "boolean"
+        }
+      }
+    },
+    "osVersionRequirements": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "aboutUpdateURL": {
+              "type": "string"
+            },
+            "aboutUpdateURLs": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "_language": {
+                      "type": "string"
+                    },
+                    "aboutUpdateURL": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "_language": {
+                      "type": "string"
+                    },
+                    "aboutUpdateURL": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            },
+            "majorUpgradeAppPath": {
+              "type": "string"
+            },
+            "requiredInstallationDate": {
+              "type": "string"
+            },
+            "requiredMinimumOSVersion": {
+              "type": "string"
+            },
+            "targetedOSVersions": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "userExperience": {
+      "type": "object",
+      "properties": {
+        "allowedDeferrals": {
+          "type": "integer"
+        },
+        "allowedDeferralsUntilForcedSecondaryQuitButton": {
+          "type": "integer"
+        },
+        "approachingRefreshCycle": {
+          "type": "integer"
+        },
+        "approachingWindowTime": {
+          "type": "integer"
+        },
+        "elapsedRefreshCycle": {
+          "type": "integer"
+        },
+        "imminentRefeshCycle": {
+          "type": "integer"
+        },
+        "imminentWindowTime": {
+          "type": "integer"
+        },
+        "initialRefreshCycle": {
+          "type": "integer"
+        },
+        "maxRandomDelayInSeconds": {
+          "type": "integer"
+        },
+        "noTimers": {
+          "type": "boolean"
+        },
+        "nudgeRefreshCycle": {
+          "type": "integer"
+        },
+        "randomDelay": {
+          "type": "boolean"
+        }
+      }
+    },
+    "userInterface": {
+      "type": "object",
+      "properties": {
+        "fallbackLanguage": {
+          "type": "string"
+        },
+        "forceFallbackLanguage": {
+          "type": "boolean"
+        },
+        "forceScreenShotIcon": {
+          "type": "boolean"
+        },
+        "iconDarkPath": {
+          "type": "string"
+        },
+        "iconLightPath": {
+          "type": "string"
+        },
+        "screenShotDarkPath": {
+          "type": "string"
+        },
+        "screenShotLightPath": {
+          "type": "string"
+        },
+        "simpleMode": {
+          "type": "boolean"
+        },
+        "singleQuitButton": {
+          "type": "boolean"
+        },
+        "updateElements": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "_language": {
+                  "type": "string"
+                },
+                "actionButtonText": {
+                  "type": "string"
+                },
+                "informationButtonText": {
+                  "type": "string"
+                },
+                "mainContentHeader": {
+                  "type": "string"
+                },
+                "mainContentNote": {
+                  "type": "string"
+                },
+                "mainContentSubHeader": {
+                  "type": "string"
+                },
+                "mainContentText": {
+                  "type": "string"
+                },
+                "mainHeader": {
+                  "type": "string"
+                },
+                "primaryQuitButtonText": {
+                  "type": "string"
+                },
+                "secondaryQuitButtonText": {
+                  "type": "string"
+                },
+                "subHeader": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
