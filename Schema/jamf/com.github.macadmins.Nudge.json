@@ -8,7 +8,7 @@
 			"properties": {
 				"asyncronousSoftwareUpdate": {
 					"default": true,
-					"description": "When enabled Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
+					"description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
 					"type": "boolean"
 				},
 				"attemptToFetchMajorUpgrade": {
