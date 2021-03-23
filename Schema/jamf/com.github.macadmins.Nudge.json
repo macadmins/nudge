@@ -1,193 +1,314 @@
 {
-"title": "Nudge (com.github.macadmins.Nudge)",
-"description": "Preference settings for Nudge",
-  "properties": {
-    "optionalFeatures": {
-      "type": "object",
-      "properties": {
-        "asyncronousSoftwareUpdate": {
-          "type": "boolean"
-        },
-        "attemptToFetchMajorUpgrade": {
-          "type": "boolean"
-        },
-        "enforceMinorUpdates": {
-          "type": "boolean"
-        }
-      }
-    },
-    "osVersionRequirements": {
-      "type": "array",
-      "items": [
-        {
-          "type": "object",
-          "properties": {
-            "aboutUpdateURL": {
-              "type": "string"
-            },
-            "aboutUpdateURLs": {
-              "type": "array",
-              "items": [
-                {
-                  "type": "object",
-                  "properties": {
-                    "_language": {
-                      "type": "string"
-                    },
-                    "aboutUpdateURL": {
-                      "type": "string"
-                    }
+	"description": "Preference settings for Nudge (com.github.macadmins.Nudge)",
+	"properties": {
+		"optionalFeatures": {
+			"description": "All optional features to enhance and customize the Nudge experience for your employer's needs.",
+			"title": "optionalFeatures",
+			"type": "object",
+			"properties": {
+				"asyncronousSoftwareUpdate": {
+					"default": true,
+					"description": "When enabled Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
+					"type": "boolean"
+				},
+				"attemptToFetchMajorUpgrade": {
+					"default": false,
+					"description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. Note: This feature is currently not implemented as of v1.0.",
+					"type": "boolean"
+				},
+				"enforceMinorUpdates": {
+					"default": true,
+					"description": "When enabled, Nudge will enforce minor updates. This should likely never be disabled.",
+					"type": "boolean"
+				}
+			}
+		},
+		"osVersionRequirements": {
+			"description": "The required components necessary to enforce an Operating System version through Nudge. Specify one array to enforce a single Operating System version across all machines or specify multiple arrays for specific enforcements.",
+			"type": "array",
+			"items": {
+				"title": "osVersionRequirement",
+				"type": "object",
+				"properties": {
+					"aboutUpdateURL": {
+						"description": "A single URL, enabling the More Info button URL path. While this accepts a string, it must be a valid URL (http://, https://, file://). Note: If this value is passed with aboutUpdateURLs, the aboutUpdateURLs key will be ignored.",
+						"options": {
+							"inputAttributes": {
+								"placeholder": "https://github.com/macadmins/nudge"
+							}
+						},
+						"type": "string"
+					},
+					"aboutUpdateURLs": {
+						"description": "The aboutUpdateURL - per country localization.",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"title": "aboutUpdateURL - Dictionary",
+							"properties": {
+								"_language": {
+									"description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
+									"options": {
+										"inputAttributes": {
+											"placeholder": "en"
+										}
+									},
+									"type": "string"
+								},
+								"aboutUpdateURL": {
+									"description": "The URL for the More Info button. While this accepts a string, it must be a valid URL (http://, https://, file://).",
+									"options": {
+										"inputAttributes": {
+											"placeholder": "https://github.com/macadmins/nudge"
+										}
+									},
+									"type": "string"
+								}
+							}
+						}
+					},
+					"majorUpgradeAppPath": {
+						"description": "The app path for a major upgrade. Note: This logic is not fully written as it cannot be tested until the next major Operating System is released. A future version of Nudge will finalize support for this feature.",
+						"options": {
+							"inputAttributes": {
+								"placeholder": "/Applications/Install macOS Big Sur.app"
+							}
+						},
+						"type": "string"
+					},
+					"requiredInstallationDate": {
+						"description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-01-31T00:00:00Z",
+						"options": {
+							"inputAttributes": {
+								"placeholder": "2021-03-31T00:00:00Z"
+							}
+						},
+						"type": "string"
+					},
+					"requiredMinimumOSVersion": {
+						"description": "The required minimum operating system version. Note: When passing versions such as 11.2.0 it will be normalized to 11.2. It is recommended to leave the trailing zero from the version number.",
+						"options": {
+							"inputAttributes": {
+								"placeholder": "11.2.3"
+							}
+						},
+						"type": "string"
+					},
+					"targetedOSVersions": {
+						"description": "The versions of macOS that require a security update. You can specify single version or multiple versions.",
+						"type": "array",
+						"items": {
+							"options": {
+								"inputAttributes": {
+									"placeholder": "11.0.1"
+								}
+							},
+							"type": "string",
+							"title": "targetedOSVersion"
+						}
+					}
+				}
+			}
+		},
+		"userExperience": {
+			"description": "All features related to how Nudge refreshes and defines the user experience.",
+			"title": "userExperience",
+			"type": "object",
+			"properties": {
+				"allowedDeferrals": {
+          "default": 1000000,
+          "description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before the \"aggressive user experience\" is enabled. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
+					"type": "integer"
+				},
+				"allowedDeferralsUntilForcedSecondaryQuitButton": {
+          "default": 14,
+          "description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before the both quit buttons need to be actioned. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
+					"type": "integer"
+				},
+				"approachingRefreshCycle": {
+          "default": 6000,
+          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key approachingWindowTime to know when to trigger this timer.",
+					"type": "integer"
+				},
+				"approachingWindowTime": {
+          "default": 72,
+          "description": "The amount of time in hours Nudge will use to determine that the requiredInstallationDate is \"approaching\".",
+					"type": "integer"
+				},
+				"elapsedRefreshCycle": {
+          "default": 300,
+          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the requiredInstallationDate has expired.",
+					"type": "integer"
+				},
+				"imminentRefeshCycle": {
+          "default": 600,
+          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key imminentWindowTime to know when to trigger this timer.",
+					"type": "integer"
+				},
+				"imminentWindowTime": {
+          "default": 24,
+          "description": "The amount of time in hours Nudge will use to determine that the requiredInstallationDate is \"imminent\".",
+					"type": "integer"
+				},
+				"initialRefreshCycle": {
+          "default": 18000,
+          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered for all Nudge launches until the approachingWindowTime has been passed.",
+					"type": "integer"
+				},
+				"maxRandomDelayInSeconds": {
+          "default": 1200,
+          "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling randomDelay",
+					"type": "integer"
+				},
+				"noTimers": {
+          "default": false,
+          "description": "This will disable all functionality related to the userExperience preference domain.",
+					"type": "boolean"
+				},
+				"nudgeRefreshCycle": {
+          "default": 60,
+          "description": "The amount of time in seconds Nudge will use as its core timer to refresh all the core code paths. Note: While you can lower this setting, it could make Nudge too aggressive. Be mindful of decreasing this value.",
+					"type": "integer"
+				},
+				"randomDelay": {
+          "default": false,
+          "description": "Enables an initial delay Nudge before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent.",
+					"type": "boolean"
+				}
+			}
+		},
+		"userInterface": {
+			"description": "All features related to how Nudge defines the user interface.",
+			"title": "userInterface",
+			"type": "object",
+			"properties": {
+				"fallbackLanguage": {
+          "default": "en",
+          "description": "The language to revert to if no localizations are available for the device's current language.",
+          "options": {
+            "inputAttributes": {
+              "placeholder": "en"
+            }
+          },
+					"type": "string"
+				},
+				"forceFallbackLanguage": {
+          "default": false,
+          "description": "Force the custom localizations to the value of fallbackLanguage.",
+					"type": "boolean"
+				},
+				"forceScreenShotIcon": {
+          "default": false,
+          "description": "Force the built-in ScreenShot icon to render in the UI if a ScreenShot path is not passed.",
+					"type": "boolean"
+				},
+				"iconDarkPath": {
+          "description": "A path to a local jpg, png, icns that contains the icon for dark mode. This will replace the Apple logo on the left side of Nudge.",
+          "options": {
+            "inputAttributes": {
+              "placeholder": "/Library/Application Support/Nudge/logoDark.png"
+            }
+          },
+					"type": "string"
+				},
+        "iconLightPath": {
+          "description": "A path to a local jpg, png, icns that contains the icon for light mode. This will replace the Apple logo on the left side of Nudge.",
+          "options": {
+            "inputAttributes": {
+              "placeholder": "/Library/Application Support/Nudge/logoLight.png"
+            }
+          },
+					"type": "string"
+				},
+        "screenShotDarkPath": {
+          "description": "A path to a local jpg, png, icns that contains the screen shot for dark mode. This will replace the Big Sur logo on the lower right side of Nudge.",
+          "options": {
+            "inputAttributes": {
+              "placeholder": "/Library/Application Support/Nudge/screenShotDark.png"
+            }
+          },
+					"type": "string"
+				},
+        "screenShotLightPath": {
+          "description": "A path to a local jpg, png, icns that contains the screen shot for light mode. This will replace the Big Sur logo on the lower right side of Nudge.",
+          "options": {
+            "inputAttributes": {
+              "placeholder": "/Library/Application Support/Nudge/screenShotLight.png"
+            }
+          },
+					"type": "string"
+				},
+				"simpleMode": {
+          "default": false,
+          "description": "Enables Nudge to launch in the simplified user experience.",
+					"type": "boolean"
+				},
+				"singleQuitButton": {
+          "default": false,
+          "description": "Only display one quit button regardless of proximity to the due date.",
+					"type": "boolean"
+				},
+        "updateElements": {
+          "description": "The individual buttons and text elements that can be customized for your employer's needs. This includes per country localization.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "title": "updateElement - Dictionary",
+            "properties": {
+              "_language": {
+                "description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
+                "options": {
+                  "inputAttributes": {
+                    "placeholder": "en"
                   }
                 },
-                {
-                  "type": "object",
-                  "properties": {
-                    "_language": {
-                      "type": "string"
-                    },
-                    "aboutUpdateURL": {
-                      "type": "string"
-                    }
-                  }
-                }
-              ]
-            },
-            "majorUpgradeAppPath": {
-              "type": "string"
-            },
-            "requiredInstallationDate": {
-              "type": "string"
-            },
-            "requiredMinimumOSVersion": {
-              "type": "string"
-            },
-            "targetedOSVersions": {
-              "type": "array",
-              "items": [
-                {
-                  "type": "string"
-                }
-              ]
+                "type": "string"
+              },
+              "actionButtonText": {
+                "description": "Modifies the actionButton, also known as the \"Update Device\" button",
+                "type": "string"
+              },
+              "informationButtonText": {
+                "description": "Modifies the informationButton, also known as the \"More Info\" button",
+                "type": "string"
+              },
+              "mainContentHeader": {
+                "description": "Modifies the mainContentHeader. This is the \"Your device will restart during this update\" text.",
+                "type": "string"
+              },
+              "mainContentNote": {
+                "description": "Modifies the mainContentNote. This is the \"Important Notes\" text.",
+                "type": "string"
+              },
+              "mainContentSubHeader": {
+                "description": "Modifies the mainContentSubHeader. This is the \"Updates can take around 30 minutes to complete\" text.",
+                "type": "string"
+              },
+              "mainContentText": {
+                "description": "Modifies the mainContentText. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device. If you do not update your device, you may lose access to some items necessary for your day-to-day tasks. To begin the update, simply click on the button below and follow the provided steps.\" text. Note: The python version of Nudge required three paragraphs. With the Swift version, this is no longer necessary. Simply pass two newlines (\\n\\n) to start a new paragraph. You can have as many or as few as you want, with the only limitation being window space.",
+                "type": "string"
+              },
+              "mainHeader": {
+                "description": "Modifies the mainHeader. This is the \"Your device requires a security update\" text.",
+                "type": "string"
+              },
+              "primaryQuitButtonText": {
+                "description": "Modifies the primaryQuitButton, also known as the \"Later\" button",
+                "type": "string"
+              },
+              "secondaryQuitButtonText": {
+                "description": "Modifies the secondaryQuitButton, also known as the \"I understand\" button",
+                "type": "string"
+              },
+              "subHeader": {
+                "description": "Modifies the subHeader. This is the \"A friendly reminder from your local IT team\" text.",
+                "type": "string"
+              }
             }
           }
         }
-      ]
-    },
-    "userExperience": {
-      "type": "object",
-      "properties": {
-        "allowedDeferrals": {
-          "type": "integer"
-        },
-        "allowedDeferralsUntilForcedSecondaryQuitButton": {
-          "type": "integer"
-        },
-        "approachingRefreshCycle": {
-          "type": "integer"
-        },
-        "approachingWindowTime": {
-          "type": "integer"
-        },
-        "elapsedRefreshCycle": {
-          "type": "integer"
-        },
-        "imminentRefeshCycle": {
-          "type": "integer"
-        },
-        "imminentWindowTime": {
-          "type": "integer"
-        },
-        "initialRefreshCycle": {
-          "type": "integer"
-        },
-        "maxRandomDelayInSeconds": {
-          "type": "integer"
-        },
-        "noTimers": {
-          "type": "boolean"
-        },
-        "nudgeRefreshCycle": {
-          "type": "integer"
-        },
-        "randomDelay": {
-          "type": "boolean"
-        }
-      }
-    },
-    "userInterface": {
-      "type": "object",
-      "properties": {
-        "fallbackLanguage": {
-          "type": "string"
-        },
-        "forceFallbackLanguage": {
-          "type": "boolean"
-        },
-        "forceScreenShotIcon": {
-          "type": "boolean"
-        },
-        "iconDarkPath": {
-          "type": "string"
-        },
-        "iconLightPath": {
-          "type": "string"
-        },
-        "screenShotDarkPath": {
-          "type": "string"
-        },
-        "screenShotLightPath": {
-          "type": "string"
-        },
-        "simpleMode": {
-          "type": "boolean"
-        },
-        "singleQuitButton": {
-          "type": "boolean"
-        },
-        "updateElements": {
-          "type": "array",
-          "items": [
-            {
-              "type": "object",
-              "properties": {
-                "_language": {
-                  "type": "string"
-                },
-                "actionButtonText": {
-                  "type": "string"
-                },
-                "informationButtonText": {
-                  "type": "string"
-                },
-                "mainContentHeader": {
-                  "type": "string"
-                },
-                "mainContentNote": {
-                  "type": "string"
-                },
-                "mainContentSubHeader": {
-                  "type": "string"
-                },
-                "mainContentText": {
-                  "type": "string"
-                },
-                "mainHeader": {
-                  "type": "string"
-                },
-                "primaryQuitButtonText": {
-                  "type": "string"
-                },
-                "secondaryQuitButtonText": {
-                  "type": "string"
-                },
-                "subHeader": {
-                  "type": "string"
-                }
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
+			}
+		}
+	},
+	"title": "Nudge"
 }
