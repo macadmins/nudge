@@ -77,7 +77,7 @@
 						"type": "string"
 					},
 					"requiredInstallationDate": {
-						"description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-01-31T00:00:00Z",
+						"description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-03-31T00:00:00Z",
 						"options": {
 							"inputAttributes": {
 								"placeholder": "2021-03-31T00:00:00Z"
