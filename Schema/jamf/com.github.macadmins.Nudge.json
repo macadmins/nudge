@@ -122,7 +122,7 @@
 				},
 				"allowedDeferralsUntilForcedSecondaryQuitButton": {
 					"default": 14,
-					"description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before the both quit buttons need to be actioned. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
+					"description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before both quit buttons need to be actioned. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
 					"type": "integer"
 				},
 				"approachingRefreshCycle": {
