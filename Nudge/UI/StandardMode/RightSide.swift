@@ -110,7 +110,7 @@ struct StandardModeRightSide: View {
                 
                 // mainContentText
                 HStack {
-                    Text(mainContentText)
+                    Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
                         .font(.callout)
                         .font(.body)
                         .fontWeight(.regular)
