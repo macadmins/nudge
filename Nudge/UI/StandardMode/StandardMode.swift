@@ -13,7 +13,7 @@ struct StandardMode: View {
     // Nudge UI
     var body: some View {
         HStack {
-            // Life side of Nudge
+            // Left side of Nudge
             StandardModeLeftSide()
 
             // Vertical Line
