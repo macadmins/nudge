@@ -298,7 +298,7 @@ extension AboutUpdateURL {
 // MARK: - UserExperience
 struct UserExperience: Codable {
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
-    var elapsedRefreshCycle, imminentRefeshCycle, imminentWindowTime, initialRefreshCycle: Int?
+    var elapsedRefreshCycle, imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
     var maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
@@ -329,7 +329,7 @@ extension UserExperience {
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
         elapsedRefreshCycle: Int?? = nil,
-        imminentRefeshCycle: Int?? = nil,
+        imminentRefreshCycle: Int?? = nil,
         imminentWindowTime: Int?? = nil,
         initialRefreshCycle: Int?? = nil,
         maxRandomDelayInSeconds: Int?? = nil,
@@ -343,7 +343,7 @@ extension UserExperience {
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
-            imminentRefeshCycle: imminentRefeshCycle ?? self.imminentRefeshCycle,
+            imminentRefreshCycle: imminentRefreshCycle ?? self.imminentRefreshCycle,
             imminentWindowTime: imminentWindowTime ?? self.imminentWindowTime,
             initialRefreshCycle: initialRefreshCycle ?? self.initialRefreshCycle,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,

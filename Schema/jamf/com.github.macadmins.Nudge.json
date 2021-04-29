@@ -140,7 +140,7 @@
 					"description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the requiredInstallationDate has expired.",
 					"type": "integer"
 				},
-				"imminentRefeshCycle": {
+				"imminentRefreshCycle": {
 					"default": 600,
 					"description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key imminentWindowTime to know when to trigger this timer.",
 					"type": "integer"
