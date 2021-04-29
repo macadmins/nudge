@@ -54,7 +54,7 @@
     "approachingRefreshCycle": 6000,
     "approachingWindowTime": 72,
     "elapsedRefreshCycle": 300,
-    "imminentRefeshCycle": 600,
+    "imminentRefreshCycle": 600,
     "imminentWindowTime": 24,
     "initialRefreshCycle": 18000,
     "maxRandomDelayInSeconds": 1200,

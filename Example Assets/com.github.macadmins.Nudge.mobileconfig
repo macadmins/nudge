@@ -87,7 +87,7 @@
           <integer>72</integer>
           <key>elapsedRefreshCycle</key>
           <integer>300</integer>
-          <key>imminentRefeshCycle</key>
+          <key>imminentRefreshCycle</key>
           <integer>600</integer>
           <key>imminentWindowTime</key>
           <integer>24</integer>
