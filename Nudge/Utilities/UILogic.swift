@@ -64,7 +64,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
 
     // The first time the main timer contoller hits we don't care
     if !afterFirstRun {
-        let msg = "Initilizing nudgeRefreshCycle"
+        let msg = "Initializing nudgeRefreshCycle"
         uiLog.info("\(msg, privacy: .public)")
         _ = afterFirstRun = true
         _ = lastRefreshTime = Date()
