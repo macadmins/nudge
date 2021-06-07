@@ -61,7 +61,7 @@ struct SimpleMode: View {
                 
                 // Days Remaining
                 HStack {
-                    Text("Days remaining to update:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     if self.daysRemaining <= 0 {
                         Text(String(0))
