@@ -57,6 +57,7 @@
 /* Begin PBXFileReference section */
 		0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.umad.json; sourceTree = "<group>"; };
 		035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.json; sourceTree = "<group>"; };
+		05DDB291263049DB006629B3 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972625CE26CE0019FC8F /* PolicyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyManager.swift; sourceTree = "<group>"; };
@@ -336,6 +337,7 @@
 				fr,
 				es,
 				de,
+				sv,
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -446,6 +448,7 @@
 				5870FF6825CFE5FA0036D203 /* fr */,
 				63B6FDBF25D785010038E81C /* es */,
 				068D23D025DC27EA00FE05A5 /* de */,
+				05DDB291263049DB006629B3 /* sv */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
