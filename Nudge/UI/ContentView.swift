@@ -10,32 +10,31 @@ import SwiftUI
 // https://stackoverflow.com/a/66039864
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
-struct ContentView: View {
+// BackgroundView
+struct BackgroundView: View {
     @State var simpleModePreview: Bool
     var body: some View {
         if simpleMode() || simpleModePreview {
-            SimpleMode().background(
-                HostingWindowFinder { window in
-                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-                    window?.center() // center
-                    window?.isMovable = false // not movable
-                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-                }
-            )
+            SimpleMode()
         } else {
-            StandardMode().background(
-                HostingWindowFinder { window in
-                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-                    window?.center() // center
-                    window?.isMovable = false // not movable
-                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-                }
-            )
+            StandardMode()
         }
+    }
+}
+
+struct ContentView: View {
+    @State var simpleModePreview: Bool
+    var body: some View {
+        BackgroundView(simpleModePreview: simpleModePreview).background(
+            HostingWindowFinder { window in
+                window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                window?.center() // center
+                window?.isMovable = false // not movable
+                NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
+            }
+        )
     }
 }
 
