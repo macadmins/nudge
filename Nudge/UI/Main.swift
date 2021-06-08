@@ -108,6 +108,6 @@ struct Main: App {
             }
         }
         // Hide Title Bar
-        .windowStyle(HiddenTitleBarWindowStyle())
+        .windowStyle(.hiddenTitleBar)
     }
 }
