@@ -36,7 +36,7 @@ struct StandardModeLeftSide: View {
                 }) {
                     Image(systemName: "questionmark.circle")
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
                 .padding(.top, -25.0)
                 .padding(.leading, 5.0)
                 // TODO: This is broken because of the padding
@@ -135,7 +135,7 @@ struct StandardModeLeftSide: View {
                             .foregroundColor(.secondary)
                     }
                     )
-                    .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {

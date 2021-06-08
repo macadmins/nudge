@@ -102,7 +102,7 @@ struct SimpleMode: View {
                             .foregroundColor(.secondary)
                     }
                     )
-                    .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {

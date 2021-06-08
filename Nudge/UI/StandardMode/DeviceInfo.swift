@@ -30,7 +30,7 @@ struct DeviceInfo: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(.red)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
                 .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
