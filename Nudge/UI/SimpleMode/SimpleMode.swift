@@ -199,7 +199,7 @@ struct SimpleMode: View {
 struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
+            ForEach(["en", "es"], id: \.self) { id in
                 SimpleMode()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))

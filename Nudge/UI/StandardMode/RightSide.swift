@@ -277,7 +277,7 @@ struct StandardModeRightSide: View {
 struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
+            ForEach(["en", "es"], id: \.self) { id in
                 StandardModeRightSide()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))

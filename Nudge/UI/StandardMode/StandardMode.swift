@@ -36,7 +36,7 @@ struct StandardMode: View {
 struct StandardModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
+            ForEach(["en", "es"], id: \.self) { id in
                 StandardMode()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
