@@ -12,7 +12,6 @@ import SwiftUI
 struct StandardModeLeftSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
@@ -96,7 +95,7 @@ struct StandardModeLeftSide: View {
                 HStack{
                     Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
-                    Text(manager.current.description)
+                    Text(currentOSVersion)
                         .foregroundColor(.secondary)
                 }
 
@@ -173,11 +172,11 @@ struct StandardModeLeftSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                StandardModeLeftSide()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            StandardModeLeftSide()
                 .preferredColorScheme(.dark)
         }
     }

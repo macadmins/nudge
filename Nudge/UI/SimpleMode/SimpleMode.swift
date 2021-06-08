@@ -13,7 +13,6 @@ struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
     @State var allowButtons = true
@@ -201,11 +200,11 @@ struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+                SimpleMode()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            SimpleMode()
                 .preferredColorScheme(.dark)
         }
     }

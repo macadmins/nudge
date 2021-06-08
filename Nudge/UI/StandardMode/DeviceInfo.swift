@@ -95,11 +95,11 @@ struct DeviceInfoPreview: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.3") ))
+                DeviceInfo()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.3") ))
+            DeviceInfo()
                 .preferredColorScheme(.dark)
         }
     }

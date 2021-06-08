@@ -37,11 +37,11 @@ struct StandardModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+                StandardMode()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            StandardMode()
                 .preferredColorScheme(.dark)
         }
     }

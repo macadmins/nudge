@@ -89,15 +89,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    let manager = try! PolicyManager() // TODO: handle errors
     var body: some Scene {
         #if DEBUG
         WindowGroup {
             VSplitView {
-                ContentView(simpleModePreview: false).environmentObject(manager)
+                ContentView(simpleModePreview: false)
                     .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
-                ContentView(simpleModePreview: true).environmentObject(manager)
+                ContentView(simpleModePreview: true)
                     .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
             }
@@ -108,7 +107,7 @@ struct Main: App {
         #endif
 
         WindowGroup {
-            ContentView(simpleModePreview: false).environmentObject(manager)
+            ContentView(simpleModePreview: false)
                 .onAppear(perform: nudgeStartLogic)
                 .frame(width: 900, height: 450)
         }

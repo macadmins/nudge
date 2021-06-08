@@ -11,7 +11,6 @@ import SwiftUI
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
 struct ContentView: View {
-    @EnvironmentObject var manager: PolicyManager
     @State var simpleModePreview: Bool
     var body: some View {
         if simpleMode() || simpleModePreview {
@@ -43,13 +42,13 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(simpleModePreview: true).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+        ContentView(simpleModePreview: true)
             .preferredColorScheme(.light)
-        ContentView(simpleModePreview: false).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+        ContentView(simpleModePreview: false)
             .preferredColorScheme(.light)
-        ContentView(simpleModePreview: true).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+        ContentView(simpleModePreview: true)
             .preferredColorScheme(.dark)
-        ContentView(simpleModePreview: false).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+        ContentView(simpleModePreview: false)
             .preferredColorScheme(.dark)
     }
 }

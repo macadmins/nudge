@@ -81,9 +81,9 @@ struct ScreenShotZoom: View {
 struct ScreenShotZoomPreview: PreviewProvider {
     static var previews: some View {
         Group {
-            ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            ScreenShotZoom()
                 .preferredColorScheme(.light)
-            ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            ScreenShotZoom()
                 .preferredColorScheme(.dark)
         }
     }
