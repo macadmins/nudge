@@ -15,7 +15,7 @@ struct ContentView: View {
     var body: some View {
         if simpleMode() || simpleModePreview {
             SimpleMode().background(
-                HostingWindowFinder {window in
+                HostingWindowFinder { window in
                     window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
                     window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
                     window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
@@ -26,7 +26,7 @@ struct ContentView: View {
             )
         } else {
             StandardMode().background(
-                HostingWindowFinder {window in
+                HostingWindowFinder { window in
                     window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
                     window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
                     window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
