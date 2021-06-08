@@ -90,26 +90,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
-        #if DEBUG
         WindowGroup {
-            VSplitView {
+            if Utils().debugUIModeEnabled() {
+                VSplitView {
+                    ContentView(simpleModePreview: false)
+                        .onAppear(perform: nudgeStartLogic)
+                        .frame(width: 900, height: 450)
+                    ContentView(simpleModePreview: true)
+                        .onAppear(perform: nudgeStartLogic)
+                        .frame(width: 900, height: 450)
+                }
+                .frame(height: 900)
+            } else {
                 ContentView(simpleModePreview: false)
                     .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
-                ContentView(simpleModePreview: true)
-                    .onAppear(perform: nudgeStartLogic)
-                    .frame(width: 900, height: 450)
             }
-            .frame(height: 900)
-        }
-        // Hide Title Bar
-        .windowStyle(HiddenTitleBarWindowStyle())
-        #endif
-
-        WindowGroup {
-            ContentView(simpleModePreview: false)
-                .onAppear(perform: nudgeStartLogic)
-                .frame(width: 900, height: 450)
         }
         // Hide Title Bar
         .windowStyle(HiddenTitleBarWindowStyle())

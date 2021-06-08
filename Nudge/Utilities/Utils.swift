@@ -57,6 +57,15 @@ struct Utils {
         return NSImage(data: imageData as Data)!
     }
 
+    func debugUIModeEnabled() -> Bool {
+        let debugUIModeArgumentPassed = CommandLine.arguments.contains("-debug-ui-mode")
+        if debugUIModeArgumentPassed {
+            let msg = "-debug-ui-mode argument passed"
+            uiLog.debug("\(msg, privacy: .public)")
+        }
+        return debugUIModeArgumentPassed
+    }
+
     func demoModeEnabled() -> Bool {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if demoModeArgumentPassed {

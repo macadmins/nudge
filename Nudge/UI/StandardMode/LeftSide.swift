@@ -37,7 +37,8 @@ struct StandardModeLeftSide: View {
                     Image(systemName: "questionmark.circle")
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.top, -25.0)
+                .padding(.top, -24.0)
+                .padding(.leading, 5.0)
                 // TODO: This is broken because of the padding
                 .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
