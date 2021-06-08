@@ -23,6 +23,7 @@ AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$DATE"
 # Create files to use for build process info
 echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
 
+ls -la /Applications
 # build nudge
 echo "Building Nudge"
 if [ -e $XCODE_BUILD_PATH ]; then
