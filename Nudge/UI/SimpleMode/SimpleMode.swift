@@ -58,6 +58,24 @@ struct SimpleMode: View {
                         .fontWeight(.bold)
                 }
                 
+                // Required OS Version
+                HStack{
+                    Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
+                        .font(.title2)
+                    Text(String(requiredMinimumOSVersion))
+                        .foregroundColor(.secondary)
+                        .font(.title2)
+                }
+
+                // Current OS Version
+                HStack{
+                    Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
+                        .font(.title3)
+                    Text(manager.current.description)
+                        .foregroundColor(.secondary)
+                        .font(.title3)
+                }
+
                 // Days Remaining
                 HStack {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
@@ -73,12 +91,13 @@ struct SimpleMode: View {
                     }
                 }
 
+                // Maybe make this default to hidden with a pref to enable
                 // Deferred Count
                 HStack {
                     Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
+                        .font(.title3)
                     Text(String(self.deferralCountUI))
-                        .font(.title2)
+                        .font(.title3)
                         .fontWeight(.bold)
                 }
 
