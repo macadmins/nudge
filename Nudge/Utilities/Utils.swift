@@ -304,7 +304,7 @@ struct Utils {
             return initialRefreshCycle
         }
     }
-    
+
     func openMoreInfo() {
         guard let url = URL(string: aboutUpdateURL) else {
             return
