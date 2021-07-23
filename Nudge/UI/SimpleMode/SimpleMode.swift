@@ -44,7 +44,7 @@ struct SimpleMode: View {
                         Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.top, -41)
+                    .padding(.top, -45)
                     // TODO: This is broken because of the padding
                     .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
