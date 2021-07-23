@@ -21,6 +21,9 @@ struct SimpleMode: View {
     @State var requireDualQuitButtons = false
     @State var hasClickedSecondaryQuitButton = false
     
+    // Modal view for screenshot and device info
+    @State var showDeviceInfo = false
+
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
     
@@ -33,6 +36,30 @@ struct SimpleMode: View {
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         VStack {
             VStack(alignment: .center, spacing: 10) {
+                HStack {
+                    Button(action: {
+                        Utils().userInitiatedDeviceInfo()
+                        self.showDeviceInfo.toggle()
+                    }) {
+                        Image(systemName: "questionmark.circle")
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.top, -57.5)
+                    // TODO: This is broken because of the padding
+                    .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    .sheet(isPresented: $showDeviceInfo) {
+                        DeviceInfo()
+                    }
+                    Spacer()
+                }
+                .frame(width: 891)
                 // Company Logo
                 HStack {
                     if FileManager.default.fileExists(atPath: companyLogoPath) {
