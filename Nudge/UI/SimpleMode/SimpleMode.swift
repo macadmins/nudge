@@ -63,17 +63,8 @@ struct SimpleMode: View {
                     Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     Text(String(requiredMinimumOSVersion))
-                        .foregroundColor(.secondary)
                         .font(.title2)
-                }
-
-                // Current OS Version
-                HStack{
-                    Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
-                    Text(manager.current.description)
-                        .foregroundColor(.secondary)
-                        .font(.title2)
+                        .fontWeight(.bold)
                 }
 
                 // Days Remaining
@@ -87,18 +78,6 @@ struct SimpleMode: View {
                     } else {
                         Text(String(self.daysRemaining))
                             .font(.title2)
-                            .fontWeight(.bold)
-                    }
-                }
-
-                // Deferred Count
-                // Show by default, allow to be hidden via preference
-                if showDeferralCount {
-                    HStack {
-                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                            .font(.title3)
-                        Text(String(self.deferralCountUI))
-                            .font(.title3)
                             .fontWeight(.bold)
                     }
                 }
