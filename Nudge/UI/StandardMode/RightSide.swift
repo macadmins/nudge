@@ -13,7 +13,6 @@ struct StandardModeRightSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
     @State var allowButtons = true
@@ -158,7 +157,7 @@ struct StandardModeRightSide: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(maxHeight: 120)
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(.plain)
                             .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                             .sheet(isPresented: $showSSDetail) {
                                 ScreenShotZoom()
@@ -180,7 +179,7 @@ struct StandardModeRightSide: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(maxHeight: 120)
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(.plain)
                             .hidden()
                             .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                             .sheet(isPresented: $showSSDetail) {
@@ -278,12 +277,12 @@ struct StandardModeRightSide: View {
 struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            ForEach(["en", "es"], id: \.self) { id in
+                StandardModeRightSide()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            StandardModeRightSide()
                 .preferredColorScheme(.dark)
         }
     }

@@ -13,7 +13,6 @@ struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
     @State var allowButtons = true
@@ -103,7 +102,7 @@ struct SimpleMode: View {
                             .foregroundColor(.secondary)
                     }
                     )
-                    .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {
@@ -200,12 +199,12 @@ struct SimpleMode: View {
 struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            ForEach(["en", "es"], id: \.self) { id in
+                SimpleMode()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            SimpleMode()
                 .preferredColorScheme(.dark)
         }
     }

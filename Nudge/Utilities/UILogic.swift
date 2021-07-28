@@ -8,7 +8,6 @@
 import AppKit
 import Foundation
 
-// This likely needs to be refactored into PolicyManager.swift, but I wanted all functions out of Nudge.swift for now
 // Start doing a basic check
 func nudgeStartLogic() {
     if Utils().fullyUpdated() {
