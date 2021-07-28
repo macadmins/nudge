@@ -38,7 +38,7 @@ struct StandardModeLeftSide: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.top, -25.0)
-                .padding(.leading, 5.0)
+                .padding(.leading, -1.5)
                 // TODO: This is broken because of the padding
                 .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
