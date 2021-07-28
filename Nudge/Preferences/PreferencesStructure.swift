@@ -365,9 +365,9 @@ extension UserExperience {
 // MARK: - UserInterface
 struct UserInterface: Codable {
     var fallbackLanguage: String?
-    var forceFallbackLanguage, forceScreenShotIcon, showDeferralCount: Bool?
+    var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
-    var simpleMode, singleQuitButton: Bool?
+    var showDeferralCount, simpleMode, singleQuitButton: Bool?
     var umadElements: [UmadElement]?
     var updateElements: [UpdateElement]?
 }
