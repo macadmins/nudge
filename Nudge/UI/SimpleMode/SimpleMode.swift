@@ -44,7 +44,7 @@ struct SimpleMode: View {
                         Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .padding(.top, -57.5)
+                    .padding(.top, -41)
                     // TODO: This is broken because of the padding
                     .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
@@ -59,7 +59,7 @@ struct SimpleMode: View {
                     }
                     Spacer()
                 }
-                .frame(width: 891)
+                .frame(width: 894)
                 // Company Logo
                 HStack {
                     if FileManager.default.fileExists(atPath: companyLogoPath) {
@@ -85,19 +85,9 @@ struct SimpleMode: View {
                         .fontWeight(.bold)
                 }
                 
-                // Required OS Version
-                HStack{
-                    Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
-                    Text(String(requiredMinimumOSVersion))
-                        .font(.title2)
-                        .fontWeight(.bold)
-                }
-
                 // Days Remaining
-                HStack {
-                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
+
+                HStack(spacing: 3.5) {
                     if self.daysRemaining <= 0 {
                         Text(String(0))
                             .font(.title2)
@@ -107,7 +97,10 @@ struct SimpleMode: View {
                             .font(.title2)
                             .fontWeight(.bold)
                     }
+                    Text("Days Remaining To Update".localized(desiredLanguage: getDesiredLanguage()))
+                        .font(.title2)
                 }
+                Spacer()
 
                 // actionButton
                 Button(action: {
@@ -117,6 +110,8 @@ struct SimpleMode: View {
                         .frame(minWidth: 120)
                 }
                 .keyboardShortcut(.defaultAction)
+                .padding(.bottom, 2)
+                Spacer()
             }
             .frame(height: 390)
             
