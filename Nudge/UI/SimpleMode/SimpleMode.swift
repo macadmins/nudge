@@ -35,8 +35,8 @@ struct SimpleMode: View {
         let darkMode = colorScheme == .dark
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         VStack {
-            VStack(alignment: .center, spacing: 10) {
-                HStack {
+            VStack(alignment: .leading) {
+                HStack(alignment: .top) {
                     Button(action: {
                         Utils().userInitiatedDeviceInfo()
                         self.showDeviceInfo.toggle()
@@ -44,7 +44,7 @@ struct SimpleMode: View {
                         Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(.plain)
-                    .padding(.top, -45)
+                    .padding(.top, -43.5)
                     // TODO: This is broken because of the padding
                     .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
@@ -59,7 +59,9 @@ struct SimpleMode: View {
                     }
                     Spacer()
                 }
-                .frame(width: 894)
+            }
+            .frame(width: 894)
+            VStack(alignment: .center, spacing: 10) {
                 // Company Logo
                 HStack {
                     if FileManager.default.fileExists(atPath: companyLogoPath) {
@@ -88,6 +90,8 @@ struct SimpleMode: View {
                 // Days Remaining
 
                 HStack(spacing: 3.5) {
+                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                        .font(.title2)
                     if self.daysRemaining <= 0 {
                         Text(String(0))
                             .font(.title2)
@@ -97,8 +101,17 @@ struct SimpleMode: View {
                             .font(.title2)
                             .fontWeight(.bold)
                     }
-                    Text("Days Remaining To Update".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
+
+                }
+                if showDeferralCount {
+                    HStack{
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                            .font(.title2)
+                        Text(String(self.deferralCountUI))
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
                 }
                 Spacer()
 
