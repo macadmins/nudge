@@ -112,6 +112,13 @@ struct SimpleMode: View {
                             .font(.title2)
                             .fontWeight(.bold)
                     }
+                } else {
+                    HStack{
+                        Text(" ")
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
                 }
                 Spacer()
 
