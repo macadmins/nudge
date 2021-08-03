@@ -367,7 +367,7 @@ struct UserInterface: Codable {
     var fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
-    var simpleMode, singleQuitButton: Bool?
+    var showDeferralCount, simpleMode, singleQuitButton: Bool?
     var umadElements: [UmadElement]?
     var updateElements: [UpdateElement]?
 }
@@ -398,6 +398,7 @@ extension UserInterface {
         iconLightPath: String?? = nil,
         screenShotDarkPath: String?? = nil,
         screenShotLightPath: String?? = nil,
+        showDeferralCount: Bool?? = nil,
         simpleMode: Bool?? = nil,
         singleQuitButton: Bool?? = nil,
         umadElements: [UmadElement]?? = nil,
@@ -411,6 +412,7 @@ extension UserInterface {
             iconLightPath: iconLightPath ?? self.iconLightPath,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
+            showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.simpleMode,
             umadElements: umadElements ?? self.umadElements,

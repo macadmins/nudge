@@ -118,6 +118,8 @@
           <string>/somewhere/screenShotDark.png</string>
           <key>screenShotLightPath</key>
           <string>/somewhere/screenShotLight.png</string>
+          <key>showDeferralCount</key>
+          <true/>
           <key>simpleMode</key>
           <false/>
           <key>singleQuitButton</key>

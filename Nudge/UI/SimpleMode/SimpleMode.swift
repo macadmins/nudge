@@ -21,6 +21,9 @@ struct SimpleMode: View {
     @State var requireDualQuitButtons = false
     @State var hasClickedSecondaryQuitButton = false
     
+    // Modal view for screenshot and device info
+    @State var showDeviceInfo = false
+
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
     
@@ -32,6 +35,32 @@ struct SimpleMode: View {
         let darkMode = colorScheme == .dark
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         VStack {
+            VStack(alignment: .leading) {
+                HStack(alignment: .top) {
+                    Button(action: {
+                        Utils().userInitiatedDeviceInfo()
+                        self.showDeviceInfo.toggle()
+                    }) {
+                        Image(systemName: "questionmark.circle")
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, -43.5)
+                    // TODO: This is broken because of the padding
+                    .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    .sheet(isPresented: $showDeviceInfo) {
+                        DeviceInfo()
+                    }
+                    Spacer()
+                }
+            }
+            .frame(width: 894)
             VStack(alignment: .center, spacing: 10) {
                 // Company Logo
                 HStack {
@@ -59,7 +88,8 @@ struct SimpleMode: View {
                 }
                 
                 // Days Remaining
-                HStack {
+
+                HStack(spacing: 3.5) {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     if self.daysRemaining <= 0 {
@@ -71,16 +101,26 @@ struct SimpleMode: View {
                             .font(.title2)
                             .fontWeight(.bold)
                     }
-                }
 
-                // Deferred Count
-                HStack {
-                    Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
-                    Text(String(self.deferralCountUI))
-                        .font(.title2)
-                        .fontWeight(.bold)
                 }
+                if showDeferralCount {
+                    HStack{
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                            .font(.title2)
+                        Text(String(self.deferralCountUI))
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                } else {
+                    HStack{
+                        Text(" ")
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                }
+                Spacer()
 
                 // actionButton
                 Button(action: {
@@ -90,6 +130,8 @@ struct SimpleMode: View {
                         .frame(minWidth: 120)
                 }
                 .keyboardShortcut(.defaultAction)
+                .padding(.bottom, 2)
+                Spacer()
             }
             .frame(height: 390)
             
