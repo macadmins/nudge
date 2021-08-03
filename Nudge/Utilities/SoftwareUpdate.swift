@@ -53,7 +53,7 @@ class SoftwareUpdate {
             return
         }
         
-        if Utils().requireMajorUpgrade() == true {
+        if Utils().requireMajorUpgrade() {
             let msg = "device requires major upgrade - attempting download"
             softwareupdateListLog.notice("\(msg, privacy: .public)")
             let task = Process()

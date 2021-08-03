@@ -83,7 +83,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             sleep(UInt32(randomDelaySeconds))
         }
         self.runSoftwareUpdate()
-        if Utils().requireMajorUpgrade() == true && fetchMajorUpgradeSuccessful == false && majorUpgradeAppPathExists == false {
+        if Utils().requireMajorUpgrade() && fetchMajorUpgradeSuccessful == false && majorUpgradeAppPathExists == false {
             let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
             uiLog.notice("\(msg, privacy: .public)")
             shouldExit = true
