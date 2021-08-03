@@ -65,7 +65,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let msg = "Due to a bug in Big Sur 11.3 and lower, Nudge cannot reliably use /usr/sbin/softwareupdate to download updates. See https://openradar.appspot.com/radar?id=4987491098558464 for more information regarding this issue."
             softwareupdateDownloadLog.warning("\(msg, privacy: .public)")
         } else {
-            if asyncronousSoftwareUpdate {
+            if asyncronousSoftwareUpdate && Utils().requireMajorUpgrade() == false {
                 DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
                     SoftwareUpdate().Download()
                 })
@@ -83,6 +83,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             sleep(UInt32(randomDelaySeconds))
         }
         self.runSoftwareUpdate()
+        if Utils().requireMajorUpgrade() == true && fetchMajorUpgradeSuccessful == false && majorUpgradeAppPathExists == false {
+            let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
+            uiLog.notice("\(msg, privacy: .public)")
+            shouldExit = true
+            AppKit.NSApp.terminate(nil)
+        }
     }
 }
 

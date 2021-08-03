@@ -331,12 +331,7 @@ struct Utils {
     }
 
     func requireMajorUpgrade() -> Bool {
-        if requiredMinimumOSVersion == "0.0" {
-            let msg = "Device requireMajorUpgrade: false"
-            utilsLog.info("\(msg, privacy: .public)")
-            return false
-        }
-        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
+        let requireMajorUpdate = versionGreaterThan(currentVersion: String(getMajorRequiredNudgeOSVersion()), newVersion: String(getMajorOSVersion()))
         utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }
