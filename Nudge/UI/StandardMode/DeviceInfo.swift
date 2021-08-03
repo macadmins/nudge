@@ -30,7 +30,7 @@ struct DeviceInfo: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(.red)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
                 .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
@@ -94,12 +94,12 @@ struct DeviceInfo: View {
 struct DeviceInfoPreview: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.3") ))
+            ForEach(["en", "es"], id: \.self) { id in
+                DeviceInfo()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            DeviceInfo().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.3") ))
+            DeviceInfo()
                 .preferredColorScheme(.dark)
         }
     }

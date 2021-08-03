@@ -27,7 +27,7 @@ struct ScreenShotZoom: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(.red)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
                 .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
@@ -59,7 +59,7 @@ struct ScreenShotZoom: View {
                     }
                 }
                 )
-                .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                 .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
@@ -80,11 +80,9 @@ struct ScreenShotZoom: View {
 // Xcode preview for both light and dark mode
 struct ScreenShotZoomPreview: PreviewProvider {
     static var previews: some View {
-        Group {
-            ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
-                .preferredColorScheme(.light)
-            ScreenShotZoom().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
-                .preferredColorScheme(.dark)
+        ForEach(ColorScheme.allCases, id: \.self) {
+            ScreenShotZoom()
+                .preferredColorScheme($0)
         }
     }
 }

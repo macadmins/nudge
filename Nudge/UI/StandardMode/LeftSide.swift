@@ -12,7 +12,6 @@ import SwiftUI
 struct StandardModeLeftSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
@@ -37,8 +36,9 @@ struct StandardModeLeftSide: View {
                 }) {
                     Image(systemName: "questionmark.circle")
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(.plain)
                 .padding(.top, -25.0)
+                .padding(.leading, -1.5)
                 // TODO: This is broken because of the padding
                 .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
@@ -96,7 +96,7 @@ struct StandardModeLeftSide: View {
                 HStack{
                     Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
-                    Text(manager.current.description)
+                    Text(currentOSVersion)
                         .foregroundColor(.secondary)
                 }
 
@@ -114,11 +114,14 @@ struct StandardModeLeftSide: View {
                 }
 
                 // Deferred Count
-                HStack{
-                    Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                    Spacer()
-                    Text(String(self.deferralCountUI))
-                        .foregroundColor(.secondary)
+                // Show by default, allow to be hidden via preference
+                if showDeferralCount {
+                    HStack{
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                        Spacer()
+                        Text(String(self.deferralCountUI))
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             .frame(width: 250)
@@ -135,7 +138,7 @@ struct StandardModeLeftSide: View {
                             .foregroundColor(.secondary)
                     }
                     )
-                    .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {
@@ -149,7 +152,7 @@ struct StandardModeLeftSide: View {
                 // Force the button to the left with a spacer
                 Spacer()
             }
-            .frame(width: 250, height: 50)
+            .frame(width: 250, height: 35)
         }
         .frame(width: 300, height: 450)
         .onAppear() {
@@ -172,12 +175,12 @@ struct StandardModeLeftSide: View {
 struct StandardModeLeftSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            ForEach(["en", "es"], id: \.self) { id in
+                StandardModeLeftSide()
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            StandardModeLeftSide()
                 .preferredColorScheme(.dark)
         }
     }
