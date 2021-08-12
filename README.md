@@ -323,7 +323,7 @@ In this example, Nudge will do the following:
         "11.2"
       ]
     }
-  ],
+  ]
 }
 ```
 
