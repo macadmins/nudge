@@ -119,6 +119,20 @@ While the `-json-url` argument is mainly designed for web urls, you can actually
 
 ** Note: ** Spaces must be converted to `%20`, just as a standard url. This is required both for web and local assets
 
+### Setting the json-url in mobileconfig profile
+
+Using PayloadType com.github.macadmins.Nudge in a mobileconfig, use the json-url
+```
+<key>PayloadContent</key>
+<dict>
+        <key>json-url</key>
+        <string>https://example.org/nudge.json</string>
+</dict>
+<key>PayloadType</key>
+<string>com.github.macadmins.Nudge</string>
+```
+
+
 ## Scheduling Nudge to run
 Every release of Nudge comes with an optional LaunchAgent package.
 
