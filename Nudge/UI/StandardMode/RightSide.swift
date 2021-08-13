@@ -289,7 +289,7 @@ struct StandardModeRightSide: View {
         let daysRemaining = Utils().getNumberOfDaysBetween()
         if daysRemaining > 0 {
             // Do not let the user defer past the point of the approachingWindowTime
-            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(approachingWindowTime / 24), to: Date())!
+            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(imminentWindowTime / 24), to: Date())!
         } else {
             return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }
