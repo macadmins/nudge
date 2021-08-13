@@ -31,6 +31,24 @@ struct Utils {
         NSApp.windows[0].makeKeyAndOrderFront(self)
     }
 
+    func allow1HourDeferral() -> Bool {
+        let allow1HourDeferralButtons = getNumberOfHoursBetween() > 0
+        uiLog.info("Device allow1HourDeferralButtons: \(allow1HourDeferralButtons, privacy: .public)")
+        return allow1HourDeferralButtons
+    }
+
+    func allow24HourDeferral() -> Bool {
+        let allow24HourDeferralButtons = getNumberOfHoursBetween() > imminentWindowTime
+        uiLog.info("Device allow24HourDeferralButtons: \(allow24HourDeferralButtons, privacy: .public)")
+        return allow24HourDeferralButtons
+    }
+
+    func allowCustomDeferral() -> Bool {
+        let allowCustomDeferralButtons = getNumberOfHoursBetween() > approachingWindowTime
+        uiLog.info("Device allowCustomDeferralButtons: \(allowCustomDeferralButtons, privacy: .public)")
+        return allowCustomDeferralButtons
+    }
+
     func centerNudge() {
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.

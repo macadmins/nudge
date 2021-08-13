@@ -229,25 +229,31 @@ struct StandardModeRightSide: View {
                                         Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
                                     }
-                                    Button {
-                                        nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
-                                        Utils().userInitiatedExit()
-                                    } label: {
-                                        Text("One Hour")
-                                            .frame(minWidth: 35)
+                                    if Utils().allow1HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                            Utils().userInitiatedExit()
+                                        } label: {
+                                            Text("One Hour")
+                                                .frame(minWidth: 35)
+                                        }
                                     }
-                                    Button {
-                                        nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
-                                        Utils().userInitiatedExit()
-                                    } label: {
-                                        Text("One Day")
-                                            .frame(minWidth: 35)
+                                    if Utils().allow24HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                            Utils().userInitiatedExit()
+                                        } label: {
+                                            Text("One Day")
+                                                .frame(minWidth: 35)
+                                        }
                                     }
-                                    Button {
-                                        hasClickedCustomDeferralButton = true
-                                    } label: {
-                                        Text("Custom")
-                                            .frame(minWidth: 35)
+                                    if Utils().allowCustomDeferral() {
+                                        Button {
+                                            hasClickedCustomDeferralButton = true
+                                        } label: {
+                                            Text("Custom")
+                                                .frame(minWidth: 35)
+                                        }
                                     }
                                 }
                                 .frame(maxWidth: 100)
@@ -282,7 +288,8 @@ struct StandardModeRightSide: View {
     var limitRange: ClosedRange<Date> {
         let daysRemaining = Utils().getNumberOfDaysBetween()
         if daysRemaining > 0 {
-            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining, to: Date())!
+            // Do not let the user defer past the point of the approachingWindowTime
+            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(approachingWindowTime / 24), to: Date())!
         } else {
             return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }
