@@ -11,6 +11,7 @@ let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
 var shouldExit = false
+let deferRunUntil = UserDefaults.standard.object(forKey: "deferRunUntil") as? Date
 
 // Get the language
 func getDesiredLanguage() -> String {

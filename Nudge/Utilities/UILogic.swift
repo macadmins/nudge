@@ -10,6 +10,11 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
+    if deferRunUntil ?? lastRefreshTime > Date() {
+        let msg = "User has selected a deferral date that is in the future"
+        uiLog.notice("\(msg, privacy: .public)")
+        Utils().exitNudge()
+    }
     if Utils().fullyUpdated() {
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         // https://zacwhite.com/2020/detecting-swiftui-previews/

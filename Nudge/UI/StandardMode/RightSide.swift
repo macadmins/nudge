@@ -17,7 +17,10 @@ struct StandardModeRightSide: View {
     // State variables
     @State var allowButtons = true
     @State var hasClickedSecondaryQuitButton = false
+    @State var hasClickedCustomDeferralButton = false
     @State var requireDualQuitButtons = false
+    @State var nudgeEventDate = Date()
+    @State var nudgeCustomEventDate = Date()
     
     // Modal view for screenshot and device info
     @State var showSSDetail = false
@@ -202,51 +205,65 @@ struct StandardModeRightSide: View {
                 if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {} label: {
-                                Text(secondaryQuitButtonText)
-                            }
-                            .hidden()
-                        } else {
+                        if self.hasClickedSecondaryQuitButton == false {
                             Button {
                                 hasClickedSecondaryQuitButton = true
                                 userHasClickedSecondaryQuitButton()
                             } label: {
                                 Text(secondaryQuitButtonText)
                             }
+                            .padding(.leading, -200.0)
                         }
-                    } else {
-                        Button {} label: {
-                            Text(secondaryQuitButtonText)
-                        }
-                        .hidden()
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {
-                                Utils().userInitiatedExit()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                    if requireDualQuitButtons == false || self.hasClickedSecondaryQuitButton {
+                        HStack(spacing: 20) {
+                            if hasClickedCustomDeferralButton == false {
+                                Menu("Defer") {
+                                    Button {
+                                        // Always go back a day to trigger Nudge every time user hits this button
+                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: -(1440), to: nudgeEventDate), forKey: "deferRunUntil")
+                                        Utils().userInitiatedExit()
+                                    } label: {
+                                        Text(primaryQuitButtonText)
+                                            .frame(minWidth: 35)
+                                    }
+                                    Button {
+                                        nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                        Utils().userInitiatedExit()
+                                    } label: {
+                                        Text("One Hour")
+                                            .frame(minWidth: 35)
+                                    }
+                                    Button {
+                                        nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                        Utils().userInitiatedExit()
+                                    } label: {
+                                        Text("One Day")
+                                            .frame(minWidth: 35)
+                                    }
+                                    Button {
+                                        hasClickedCustomDeferralButton = true
+                                    } label: {
+                                        Text("Custom")
+                                            .frame(minWidth: 35)
+                                    }
+                                }
+                                .frame(maxWidth: 100)
                             }
-                        } else {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                            if hasClickedCustomDeferralButton {
+                                DatePicker("Please enter a time", selection: $nudgeCustomEventDate, in: limitRange)
+                                    .labelsHidden()
+                                    .frame(maxWidth: 150)
+                                Button {
+                                    nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
+                                    Utils().userInitiatedExit()
+                                } label: {
+                                    Text("Defer")
+                                        .frame(minWidth: 35)
+                                }
                             }
-                            .hidden()
-                        }
-                    } else {
-                        Button {
-                            Utils().userInitiatedExit()
-                        } label: {
-                            Text(primaryQuitButtonText)
-                                .frame(minWidth: 35)
                         }
                     }
                 }
@@ -259,6 +276,15 @@ struct StandardModeRightSide: View {
         }
         .onAppear() {
             updateUI()
+        }
+    }
+    
+    var limitRange: ClosedRange<Date> {
+        let daysRemaining = Utils().getNumberOfDaysBetween()
+        if daysRemaining > 0 {
+            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining, to: Date())!
+        } else {
+            return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }
     }
     
