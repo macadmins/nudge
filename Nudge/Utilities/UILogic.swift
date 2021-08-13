@@ -10,8 +10,8 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
-    if deferRunUntil ?? lastRefreshTime > Date() {
-        let msg = "User has selected a deferral date that is greater than the launch date"
+    if deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() {
+        let msg = "User has selected a deferral date (\(deferRunUntil ?? lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
         uiLog.notice("\(msg, privacy: .public)")
         Utils().exitNudge()
     }
