@@ -260,11 +260,13 @@ struct StandardModeRightSide: View {
                                 }
                                 .frame(maxWidth: 100)
                             } else {
-                                Button {
-                                    Utils().userInitiatedExit()
-                                } label: {
-                                    Text(primaryQuitButtonText)
-                                        .frame(minWidth: 35)
+                                if hasClickedCustomDeferralButton == false {
+                                    Button {
+                                        Utils().userInitiatedExit()
+                                    } label: {
+                                        Text(primaryQuitButtonText)
+                                            .frame(minWidth: 35)
+                                    }
                                 }
                             }
                             if hasClickedCustomDeferralButton {
