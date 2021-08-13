@@ -37,6 +37,7 @@
     }
   ],
   "userExperience": {
+    "allowUserQuitDeferrals": true,
     "allowedDeferrals": 1000000,
     "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
     "approachingRefreshCycle": 6000,
