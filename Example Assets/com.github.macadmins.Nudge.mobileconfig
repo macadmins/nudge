@@ -133,6 +133,8 @@
               <string>en</string>
               <key>actionButtonText</key>
               <string>Update Device</string>
+              <key>customDeferralButtonText</key>
+              <string>Custom</string>
               <key>informationButtonText</key>
               <string>More Info</string>
               <key>mainContentHeader</key>
@@ -149,6 +151,10 @@ If you do not update your device, you may lose access to some items necessary fo
 To begin the update, simply click on the Update Device button and follow the provided steps.</string>
               <key>mainHeader</key>
               <string>Your device requires a security update</string>
+              <key>oneDayDeferralButtonText</key>
+              <string>One Day</string>
+              <key>oneHourDeferralButtonText</key>
+              <string>One Hour</string>
               <key>primaryQuitButtonText</key>
               <string>Later</string>
               <key>secondaryQuitButtonText</key>

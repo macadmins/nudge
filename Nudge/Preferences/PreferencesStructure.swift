@@ -434,13 +434,13 @@ extension UserInterface {
 
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
-    var language, actionButtonText, informationButtonText, mainContentHeader: String?
-    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
-    var primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+    var language, actionButtonText, customDeferralButtonText, informationButtonText, mainContentHeader: String?
+    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText: String?
+    var oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+        case actionButtonText, customDeferralButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
     }
 }
 
@@ -465,12 +465,15 @@ extension UpdateElement {
     func with(
         language: String?? = nil,
         actionButtonText: String?? = nil,
+        customDeferralButtonText: String?? = nil,
         informationButtonText: String?? = nil,
         mainContentHeader: String?? = nil,
         mainContentNote: String?? = nil,
         mainContentSubHeader: String?? = nil,
         mainContentText: String?? = nil,
         mainHeader: String?? = nil,
+        oneDayDeferralButtonText: String?? = nil,
+        oneHourDeferralButtonText: String?? = nil,
         primaryQuitButtonText: String?? = nil,
         secondaryQuitButtonText: String?? = nil,
         subHeader: String?? = nil
@@ -478,12 +481,15 @@ extension UpdateElement {
         return UpdateElement(
             language: language ?? self.language,
             actionButtonText: actionButtonText ?? self.actionButtonText,
+            customDeferralButtonText: customDeferralButtonText ?? self.customDeferralButtonText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentNote: mainContentNote ?? self.mainContentNote,
             mainContentSubHeader: mainContentSubHeader ?? self.mainContentSubHeader,
             mainContentText: mainContentText ?? self.mainContentText,
             mainHeader: mainHeader ?? self.mainHeader,
+            oneDayDeferralButtonText: oneDayDeferralButtonText ?? self.oneDayDeferralButtonText,
+            oneHourDeferralButtonText: oneHourDeferralButtonText ?? self.oneHourDeferralButtonText,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
             secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
             subHeader: subHeader ?? self.subHeader
