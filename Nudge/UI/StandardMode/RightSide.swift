@@ -232,6 +232,7 @@ struct StandardModeRightSide: View {
                                     if Utils().allow1HourDeferral() {
                                         Button {
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
                                             Utils().userInitiatedExit()
                                         } label: {
                                             Text("One Hour")
@@ -241,6 +242,7 @@ struct StandardModeRightSide: View {
                                     if Utils().allow24HourDeferral() {
                                         Button {
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
                                             Utils().userInitiatedExit()
                                         } label: {
                                             Text("One Day")
@@ -264,6 +266,7 @@ struct StandardModeRightSide: View {
                                     .frame(maxWidth: 150)
                                 Button {
                                     nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
+                                    userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
                                     Utils().userInitiatedExit()
                                 } label: {
                                     Text("Defer")

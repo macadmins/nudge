@@ -54,6 +54,11 @@ func userHasClickedSecondaryQuitButton() {
     uiLog.notice("\(msg, privacy: .public)")
 }
 
+func userHasClickedDeferralQuitButton(deferralTime: Date) {
+    let msg = "User initiated a deferral: \(deferralTime)"
+    uiLog.notice("\(msg, privacy: .public)")
+}
+
 func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
     // Center Nudge
     Utils().centerNudge()
