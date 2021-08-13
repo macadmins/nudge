@@ -18,8 +18,11 @@ struct SimpleMode: View {
     @State var allowButtons = true
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var deferralCountUI = 0
-    @State var requireDualQuitButtons = false
+    @State var hasClickedCustomDeferralButton = false
     @State var hasClickedSecondaryQuitButton = false
+    @State var requireDualQuitButtons = false
+    @State var nudgeEventDate = Date()
+    @State var nudgeCustomEventDate = Date()
     
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
@@ -161,53 +164,76 @@ struct SimpleMode: View {
                 if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {} label: {
-                                Text(secondaryQuitButtonText)
-                            }
-                            .hidden()
-                        } else {
+                        if self.hasClickedSecondaryQuitButton == false {
                             Button {
                                 hasClickedSecondaryQuitButton = true
                                 userHasClickedSecondaryQuitButton()
                             } label: {
                                 Text(secondaryQuitButtonText)
                             }
+                            .padding(.leading, -200.0)
                         }
-                    } else {
-                        Button(action: {}, label: {
-                            Text(secondaryQuitButtonText)
-                        }
-                        )
-                        .hidden()
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {
-                                Utils().userInitiatedExit()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                    if requireDualQuitButtons == false || self.hasClickedSecondaryQuitButton {
+                        HStack(spacing: 20) {
+                            if hasClickedCustomDeferralButton == false {
+                                Menu("Defer") {
+                                    Button {
+                                        // Always go back a day to trigger Nudge every time user hits this button
+                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: -(1440), to: nudgeEventDate), forKey: "deferRunUntil")
+                                        Utils().userInitiatedExit()
+                                    } label: {
+                                        Text(primaryQuitButtonText)
+                                            .frame(minWidth: 35)
+                                    }
+                                    if Utils().allow1HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
+                                            Utils().userInitiatedExit()
+                                        } label: {
+                                            Text("One Hour")
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allow24HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
+                                            Utils().userInitiatedExit()
+                                        } label: {
+                                            Text("One Day")
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allowCustomDeferral() {
+                                        Button {
+                                            hasClickedCustomDeferralButton = true
+                                        } label: {
+                                            Text("Custom")
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                }
+                                .frame(maxWidth: 100)
                             }
-                        } else {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                            if hasClickedCustomDeferralButton {
+                                DatePicker("Please enter a time", selection: $nudgeCustomEventDate, in: limitRange)
+                                    .labelsHidden()
+                                    .frame(maxWidth: 150)
+                                Button {
+                                    nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
+                                    userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
+                                    Utils().userInitiatedExit()
+                                } label: {
+                                    Text("Defer")
+                                        .frame(minWidth: 35)
+                                }
                             }
-                            .hidden()
                         }
-                    } else {
-                        Button {
-                            Utils().userInitiatedExit()
-                        } label: {
-                            Text(primaryQuitButtonText)
-                                .frame(minWidth: 35)
-                        }
+                        .frame(maxHeight: 30)
                     }
                 }
             }
@@ -225,6 +251,17 @@ struct SimpleMode: View {
             updateUI()
         }
     }
+    
+    var limitRange: ClosedRange<Date> {
+        let daysRemaining = Utils().getNumberOfDaysBetween()
+        if daysRemaining > 0 {
+            // Do not let the user defer past the point of the approachingWindowTime
+            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(imminentWindowTime / 24), to: Date())!
+        } else {
+            return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
+        }
+    }
+
     func updateUI() {
         if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
             self.requireDualQuitButtons = true

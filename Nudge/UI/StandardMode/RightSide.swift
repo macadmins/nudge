@@ -16,8 +16,8 @@ struct StandardModeRightSide: View {
     
     // State variables
     @State var allowButtons = true
-    @State var hasClickedSecondaryQuitButton = false
     @State var hasClickedCustomDeferralButton = false
+    @State var hasClickedSecondaryQuitButton = false
     @State var requireDualQuitButtons = false
     @State var nudgeEventDate = Date()
     @State var nudgeCustomEventDate = Date()
@@ -274,6 +274,7 @@ struct StandardModeRightSide: View {
                                 }
                             }
                         }
+                        .frame(maxHeight: 30)
                     }
                 }
             }
