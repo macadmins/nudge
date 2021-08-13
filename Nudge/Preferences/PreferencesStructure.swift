@@ -297,6 +297,7 @@ extension AboutUpdateURL {
 
 // MARK: - UserExperience
 struct UserExperience: Codable {
+    var allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
     var elapsedRefreshCycle, imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
     var maxRandomDelayInSeconds: Int?
@@ -324,6 +325,7 @@ extension UserExperience {
     }
 
     func with(
+        allowUserQuitDeferrals: Bool?? = nil,
         allowedDeferrals: Int?? = nil,
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
@@ -338,6 +340,7 @@ extension UserExperience {
         randomDelay: Bool?? = nil
     ) -> UserExperience {
         return UserExperience(
+            allowUserQuitDeferrals: allowUserQuitDeferrals ?? self.allowUserQuitDeferrals,
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,

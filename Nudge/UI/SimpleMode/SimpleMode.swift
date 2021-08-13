@@ -178,7 +178,7 @@ struct SimpleMode: View {
                     // primaryQuitButton
                     if requireDualQuitButtons == false || self.hasClickedSecondaryQuitButton {
                         HStack(spacing: 20) {
-                            if hasClickedCustomDeferralButton == false {
+                            if allowUserQuitDeferrals && hasClickedCustomDeferralButton == false {
                                 Menu("Defer") {
                                     Button {
                                         // Always go back a day to trigger Nudge every time user hits this button
@@ -218,6 +218,13 @@ struct SimpleMode: View {
                                     }
                                 }
                                 .frame(maxWidth: 100)
+                            } else {
+                                Button {
+                                    Utils().userInitiatedExit()
+                                } label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: 35)
+                                }
                             }
                             if hasClickedCustomDeferralButton {
                                 DatePicker("Please enter a time", selection: $nudgeCustomEventDate, in: limitRange)
