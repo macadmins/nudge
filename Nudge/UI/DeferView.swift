@@ -41,15 +41,14 @@ struct DeferView: View {
                 .frame(width: 30, height: 30)
                 Spacer()
             }
-            DatePicker("", selection: $nudgeCustomEventDate, in: limitRange, displayedComponents: [.date])
+            // We have two DatePickers because DatePicker is non-ideal
+            DatePicker("", selection: $nudgeCustomEventDate, in: limitRange)
                 .datePickerStyle(.graphical)
                 .labelsHidden()
-                .frame(width: 150, height: 150, alignment: .center)
-                .clipped()
+                .frame(width: 280, height: 150, alignment: .center)
             DatePicker("", selection: $nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
-                .datePickerStyle(.stepperField)
                 .labelsHidden()
-                .frame(maxWidth: 75)
+                .frame(maxWidth: 100)
             Divider()
             HStack {
                 Button {
@@ -63,7 +62,7 @@ struct DeferView: View {
                 }
             }
         }
-        .frame(width: 280, height: 280)
+        .frame(width: 350, height: 275)
     }
     var limitRange: ClosedRange<Date> {
         let daysRemaining = Utils().getNumberOfDaysBetween()
