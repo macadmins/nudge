@@ -10,20 +10,21 @@ import SwiftUI
 
 // StandardModeRightSide
 struct StandardModeRightSide: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
     
     // State variables
     @State var allowButtons = true
-    @State var hasClickedCustomDeferralButton = false
     @State var hasClickedSecondaryQuitButton = false
     @State var requireDualQuitButtons = false
     @State var nudgeEventDate = Date()
     @State var nudgeCustomEventDate = Date()
     
-    // Modal view for screenshot and device info
+    // Modal view for screenshot and deferral info
     @State var showSSDetail = false
+    @State var showDeferView = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
@@ -217,13 +218,12 @@ struct StandardModeRightSide: View {
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons == false || self.hasClickedSecondaryQuitButton {
+                    if requireDualQuitButtons == false {
                         HStack(spacing: 20) {
-                            if allowUserQuitDeferrals && hasClickedCustomDeferralButton == false {
+                            if allowUserQuitDeferrals {
                                 Menu("Defer") {
                                     Button {
-                                        // Always go back a day to trigger Nudge every time user hits this button
-                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: -(1440), to: nudgeEventDate), forKey: "deferRunUntil")
+                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: (0), to: nudgeEventDate), forKey: "deferRunUntil")
                                         Utils().userInitiatedExit()
                                     } label: {
                                         Text(primaryQuitButtonText)
@@ -250,8 +250,9 @@ struct StandardModeRightSide: View {
                                         }
                                     }
                                     if Utils().allowCustomDeferral() {
+                                        Divider()
                                         Button {
-                                            hasClickedCustomDeferralButton = true
+                                            self.showDeferView.toggle()
                                         } label: {
                                             Text("Custom")
                                                 .frame(minWidth: 35)
@@ -260,30 +261,22 @@ struct StandardModeRightSide: View {
                                 }
                                 .frame(maxWidth: 100)
                             } else {
-                                if hasClickedCustomDeferralButton == false {
-                                    Button {
-                                        Utils().userInitiatedExit()
-                                    } label: {
-                                        Text(primaryQuitButtonText)
-                                            .frame(minWidth: 35)
-                                    }
-                                }
-                            }
-                            if hasClickedCustomDeferralButton {
-                                DatePicker("Please enter a time", selection: $nudgeCustomEventDate, in: limitRange)
-                                    .labelsHidden()
-                                    .frame(maxWidth: 150)
                                 Button {
-                                    nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
-                                    userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
                                     Utils().userInitiatedExit()
                                 } label: {
-                                    Text("Defer")
+                                    Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
                                 }
                             }
                         }
-                        .frame(maxHeight: 30)
+                        .sheet(isPresented: $showDeferView) {
+                            if viewObserved.shouldExit {
+                                Utils().userInitiatedExit()
+                            }
+                        } content: {
+                            DeferView(viewObserved: viewObserved)
+                        }
+
                     }
                 }
             }
@@ -295,16 +288,6 @@ struct StandardModeRightSide: View {
         }
         .onAppear() {
             updateUI()
-        }
-    }
-    
-    var limitRange: ClosedRange<Date> {
-        let daysRemaining = Utils().getNumberOfDaysBetween()
-        if daysRemaining > 0 {
-            // Do not let the user defer past the point of the approachingWindowTime
-            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(imminentWindowTime / 24), to: Date())!
-        } else {
-            return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }
     }
     
@@ -324,11 +307,11 @@ struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                StandardModeRightSide()
+                StandardModeRightSide(viewObserved: ViewState())
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeRightSide()
+            StandardModeRightSide(viewObserved: ViewState())
                 .preferredColorScheme(.dark)
         }
     }

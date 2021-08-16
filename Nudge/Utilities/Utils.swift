@@ -96,7 +96,7 @@ struct Utils {
     func exitNudge() {
         let msg = "Nudge is terminating due to condition met"
         uiLog.notice("\(msg, privacy: .public)")
-        shouldExit = true
+        nudgePrimaryState.shouldExit.toggle()
         AppKit.NSApp.terminate(nil)
     }
 
@@ -391,7 +391,7 @@ struct Utils {
     func userInitiatedExit() {
         let msg = "User clicked primaryQuitButton"
         uiLog.notice("\(msg, privacy: .public)")
-        shouldExit = true
+        nudgePrimaryState.shouldExit.toggle()
         AppKit.NSApp.terminate(nil)
     }
 

@@ -50,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // Only exit if primaryQuitButton is clicked
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        if shouldExit {
+        if nudgePrimaryState.shouldExit {
             return NSApplication.TerminateReply.terminateNow
         } else {
             let msg = "Nudge detected an attempt to close the application."
@@ -86,7 +86,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if Utils().requireMajorUpgrade() && fetchMajorUpgradeSuccessful == false && majorUpgradeAppPathExists == false {
             let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
             uiLog.notice("\(msg, privacy: .public)")
-            shouldExit = true
+            nudgePrimaryState.shouldExit.toggle()
             AppKit.NSApp.terminate(nil)
         }
     }

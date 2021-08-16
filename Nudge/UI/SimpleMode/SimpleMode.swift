@@ -10,6 +10,7 @@ import SwiftUI
 
 // SimpleMode
 struct SimpleMode: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
@@ -288,11 +289,11 @@ struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                SimpleMode()
+                SimpleMode(viewObserved: ViewState())
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode()
+            SimpleMode(viewObserved: ViewState())
                 .preferredColorScheme(.dark)
         }
     }

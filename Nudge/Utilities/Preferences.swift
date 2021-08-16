@@ -10,7 +10,7 @@ import Foundation
 let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
-var shouldExit = false
+var nudgePrimaryState = ViewState()
 let deferRunUntil = UserDefaults.standard.object(forKey: "deferRunUntil") as? Date
 
 // Get the language

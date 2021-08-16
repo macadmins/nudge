@@ -10,6 +10,7 @@ import SwiftUI
 
 // Standard Mode
 struct StandardMode: View {
+    @ObservedObject var viewObserved: ViewState
     // Nudge UI
     var body: some View {
         HStack {
@@ -25,7 +26,7 @@ struct StandardMode: View {
             .frame(height: 525)
             
             // Right side of Nudge
-            StandardModeRightSide()
+            StandardModeRightSide(viewObserved: viewObserved)
         }
         .frame(width: 900, height: 450)
     }
@@ -37,11 +38,11 @@ struct StandardModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                StandardMode()
+                StandardMode(viewObserved: ViewState())
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardMode()
+            StandardMode(viewObserved: ViewState())
                 .preferredColorScheme(.dark)
         }
     }
