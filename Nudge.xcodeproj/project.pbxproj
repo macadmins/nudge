@@ -150,6 +150,7 @@
 			children = (
 				63D7D0E225C9E9A400236281 /* Main.swift */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
+				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				639B6B5625DF376300E38EC1 /* StandardMode */,
 				639B6B5525DF375800E38EC1 /* SimpleMode */,
 			);
