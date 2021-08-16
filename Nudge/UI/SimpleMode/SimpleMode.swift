@@ -25,8 +25,9 @@ struct SimpleMode: View {
     @State var nudgeEventDate = Date()
     @State var nudgeCustomEventDate = Date()
     
-    // Modal view for screenshot and device info
+    // Modal view for screenshot and deferral info
     @State var showDeviceInfo = false
+    @State var showDeferView = false
 
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
@@ -48,7 +49,7 @@ struct SimpleMode: View {
                         Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(.plain)
-                    .padding(.top, -43.5)
+                    .padding(.top, -40)
                     // TODO: This is broken because of the padding
                     .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
@@ -177,13 +178,12 @@ struct SimpleMode: View {
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons == false || self.hasClickedSecondaryQuitButton {
+                    if requireDualQuitButtons == false {
                         HStack(spacing: 20) {
-                            if allowUserQuitDeferrals && hasClickedCustomDeferralButton == false {
+                            if allowUserQuitDeferrals {
                                 Menu("Defer") {
                                     Button {
-                                        // Always go back a day to trigger Nudge every time user hits this button
-                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: -(1440), to: nudgeEventDate), forKey: "deferRunUntil")
+                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: (0), to: nudgeEventDate), forKey: "deferRunUntil")
                                         Utils().userInitiatedExit()
                                     } label: {
                                         Text(primaryQuitButtonText)
@@ -210,8 +210,9 @@ struct SimpleMode: View {
                                         }
                                     }
                                     if Utils().allowCustomDeferral() {
+                                        Divider()
                                         Button {
-                                            hasClickedCustomDeferralButton = true
+                                            self.showDeferView.toggle()
                                         } label: {
                                             Text("Custom")
                                                 .frame(minWidth: 35)
@@ -220,30 +221,22 @@ struct SimpleMode: View {
                                 }
                                 .frame(maxWidth: 100)
                             } else {
-                                if hasClickedCustomDeferralButton == false {
-                                    Button {
-                                        Utils().userInitiatedExit()
-                                    } label: {
-                                        Text(primaryQuitButtonText)
-                                            .frame(minWidth: 35)
-                                    }
-                                }
-                            }
-                            if hasClickedCustomDeferralButton {
-                                DatePicker("Please enter a time", selection: $nudgeCustomEventDate, in: limitRange)
-                                    .labelsHidden()
-                                    .frame(maxWidth: 150)
                                 Button {
-                                    nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
-                                    userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
                                     Utils().userInitiatedExit()
                                 } label: {
-                                    Text("Defer")
+                                    Text(primaryQuitButtonText)
                                         .frame(minWidth: 35)
                                 }
                             }
                         }
                         .frame(maxHeight: 30)
+                        .sheet(isPresented: $showDeferView) {
+                            if viewObserved.shouldExit {
+                                Utils().userInitiatedExit()
+                            }
+                        } content: {
+                            DeferView(viewObserved: viewObserved)
+                        }
                     }
                 }
             }

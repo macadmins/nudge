@@ -45,7 +45,7 @@ struct DeferView: View {
             DatePicker("", selection: $nudgeCustomEventDate, in: limitRange)
                 .datePickerStyle(.graphical)
                 .labelsHidden()
-                .frame(width: 280, height: 150, alignment: .center)
+                .frame(width: 280, height: 140, alignment: .center)
             DatePicker("", selection: $nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
                 .labelsHidden()
                 .frame(maxWidth: 100)

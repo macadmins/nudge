@@ -276,7 +276,6 @@ struct StandardModeRightSide: View {
                         } content: {
                             DeferView(viewObserved: viewObserved)
                         }
-
                     }
                 }
             }
