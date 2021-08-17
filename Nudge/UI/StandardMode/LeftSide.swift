@@ -105,8 +105,9 @@ struct StandardModeLeftSide: View {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
                     if self.daysRemaining <= 0 {
-                        Text(String(0))
-                            .foregroundColor(.secondary)
+                        Text(String(self.daysRemaining))
+                            .foregroundColor(.red)
+                            .fontWeight(.bold)
                     } else {
                         Text(String(self.daysRemaining))
                             .foregroundColor(.secondary)

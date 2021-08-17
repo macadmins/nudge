@@ -98,7 +98,8 @@ struct SimpleMode: View {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
                     if self.daysRemaining <= 0 {
-                        Text(String(0))
+                        Text(String(self.daysRemaining))
+                            .foregroundColor(.red)
                             .font(.title2)
                             .fontWeight(.bold)
                     } else {
