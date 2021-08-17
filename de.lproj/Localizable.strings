@@ -15,7 +15,7 @@
 // Architecture
 "Architecture:" = "Architektur:";
 // Nudge Version
-"Version:" = "Ausführung:";
+"Version:" = "Version:";
 // Language
 "Language:" = "Sprache:";
 
@@ -25,7 +25,7 @@
 // Required OS Version
 "Required OS Version:" = "Erforderliche Betriebssystemversion:";
 // Days Remaining To update
-"Days Remaining To Update:" = "Verbleibende Tage Zur Aktualisierung:";
+"Days Remaining To Update:" = "Verbleibende Tage bis zur Aktualisierung:";
 // Deferred Count
 "Deferred Count:" = "Aufgeschobene Zählung:";
 // More Info
@@ -46,9 +46,9 @@
 "Your device requires a security update" = "Ihr Gerät benötigt ein Sicherheitsupdate";
 "Your device requires a security update (Demo Mode)" = "Ihr Gerät benötigt ein Sicherheitsupdate (Demo-Modus)";
 "Later" = "Später";
-"I understand" = "Ich Verstehe";
+"I understand" = "Ich verstehe";
 "A friendly reminder from your local IT team" = "Eine freundliche Erinnerung von Ihrem IT-Team";
 "Defer" = "Verschieben";
 "One Hour" = "Eine Stunde";
-"One Day" = "Eines Tages";
-"Custom" = "Personifizieren";
+"One Day" = "Ein Tag";
+"Custom" = "Benutzerdefinierter Zeitraum";
