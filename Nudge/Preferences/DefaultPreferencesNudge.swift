@@ -49,6 +49,7 @@ let userInterfaceProfile = getUserInterfaceProfile()
 let userInterfaceJSON = getUserInterfaceJSON()
 let userInterfaceUpdateElementsProfile = getUserInterfaceUpdateElementsProfile()
 let userInterfaceUpdateElementsJSON = getUserInterfaceUpdateElementsJSON()
+let actionButtonPath = userInterfaceProfile?["actionButtonPath"] as? String ?? userInterfaceJSON?.actionButtonPath ?? nil
 let fallbackLanguage = userInterfaceProfile?["fallbackLanguage"] as? String ?? userInterfaceJSON?.fallbackLanguage ?? "en"
 let forceFallbackLanguage = userInterfaceProfile?["forceFallbackLanguage"] as? Bool ?? userInterfaceJSON?.forceFallbackLanguage ?? false
 let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? userInterfaceJSON?.iconDarkPath ?? ""

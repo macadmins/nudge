@@ -187,6 +187,15 @@
 			"title": "userInterface",
 			"type": "object",
 			"properties": {
+				"actionButtonPath": {
+					"description": "A path to a URI for opening alternative actions, like jamf self service items",
+					"options": {
+						"inputAttributes": {
+							"placeholder": "jamfselfservice://remediate"
+						}
+					},
+					"type": "string"
+				},
 				"fallbackLanguage": {
 					"default": "en",
 					"description": "The language to revert to if no localizations are available for the device's current language.",

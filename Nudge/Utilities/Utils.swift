@@ -380,7 +380,9 @@ struct Utils {
             let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
             uiLog.notice("\(msg, privacy: .public)")
         }
-        if requireMajorUpgrade() && majorUpgradeAppPathExists {
+        if actionButtonPath != nil {
+            NSWorkspace.shared.open(URL(string: actionButtonPath!)!)
+        } else if requireMajorUpgrade() && majorUpgradeAppPathExists {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
