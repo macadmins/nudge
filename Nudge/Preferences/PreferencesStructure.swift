@@ -300,7 +300,7 @@ extension UserExperience {
 
 // MARK: - UserInterface
 struct UserInterface: Codable {
-    var fallbackLanguage: String?
+    var actionButtonPath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var showDeferralCount, simpleMode, singleQuitButton: Bool?
@@ -326,6 +326,7 @@ extension UserInterface {
     }
 
     func with(
+        actionButtonPath: String?? = nil,
         fallbackLanguage: String?? = nil,
         forceFallbackLanguage: Bool?? = nil,
         forceScreenShotIcon: Bool?? = nil,
@@ -339,6 +340,7 @@ extension UserInterface {
         updateElements: [UpdateElement]?? = nil
     ) -> UserInterface {
         return UserInterface(
+            actionButtonPath: actionButtonPath ?? self.actionButtonPath,
             fallbackLanguage: fallbackLanguage ?? self.fallbackLanguage,
             forceFallbackLanguage: forceFallbackLanguage ?? self.forceFallbackLanguage,
             forceScreenShotIcon: forceScreenShotIcon ?? self.forceScreenShotIcon,

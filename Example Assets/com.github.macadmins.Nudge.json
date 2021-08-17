@@ -52,6 +52,7 @@
     "randomDelay": false
   },
   "userInterface": {
+    "actionButtonPath": "munki://updates",
     "fallbackLanguage": "en",
     "forceFallbackLanguage": false,
     "forceScreenShotIcon": false,
