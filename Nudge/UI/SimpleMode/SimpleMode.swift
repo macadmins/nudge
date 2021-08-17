@@ -18,7 +18,6 @@ struct SimpleMode: View {
     // State variables
     @State var allowButtons = true
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var deferralCountUI = 0
     @State var hasClickedCustomDeferralButton = false
     @State var hasClickedSecondaryQuitButton = false
     @State var requireDualQuitButtons = false
@@ -113,7 +112,7 @@ struct SimpleMode: View {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
-                        Text(String(self.deferralCountUI))
+                        Text(String(viewObserved.userDeferralCount))
                             .foregroundColor(.secondary)
                             .font(.title2)
                             .fontWeight(.bold)
@@ -184,6 +183,7 @@ struct SimpleMode: View {
                             if allowUserQuitDeferrals {
                                 Menu("Defer") {
                                     Button {
+                                        Utils().logUserQuitDeferrals()
                                         nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: (0), to: nudgeEventDate), forKey: "deferRunUntil")
                                         Utils().userInitiatedExit()
                                     } label: {
@@ -192,6 +192,7 @@ struct SimpleMode: View {
                                     }
                                     if Utils().allow1HourDeferral() {
                                         Button {
+                                            Utils().logUserQuitDeferrals()
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
                                             Utils().userInitiatedExit()
@@ -202,6 +203,7 @@ struct SimpleMode: View {
                                     }
                                     if Utils().allow24HourDeferral() {
                                         Button {
+                                            Utils().logUserQuitDeferrals()
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
                                             Utils().userInitiatedExit()
@@ -223,6 +225,7 @@ struct SimpleMode: View {
                                 .frame(maxWidth: 100)
                             } else {
                                 Button {
+                                    Utils().logUserQuitDeferrals()
                                     Utils().userInitiatedExit()
                                 } label: {
                                     Text(primaryQuitButtonText)
@@ -249,8 +252,8 @@ struct SimpleMode: View {
             updateUI()
         }
         .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                self.deferralCountUI += 1
+            if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
+                viewObserved.userDeferralCount += 1
             }
             updateUI()
         }
@@ -283,11 +286,11 @@ struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                SimpleMode(viewObserved: ViewState())
+                SimpleMode(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode(viewObserved: ViewState())
+            SimpleMode(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
     }

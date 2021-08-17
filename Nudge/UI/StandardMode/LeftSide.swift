@@ -10,12 +10,12 @@ import SwiftUI
 
 // StandardModeLeftSide
 struct StandardModeLeftSide: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     
     // State variables
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var deferralCountUI = 0
     
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
@@ -120,7 +120,7 @@ struct StandardModeLeftSide: View {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                         Spacer()
-                        Text(String(self.deferralCountUI))
+                        Text(String(viewObserved.userDeferralCount))
                             .foregroundColor(.secondary)
                     }
                 }
@@ -160,8 +160,8 @@ struct StandardModeLeftSide: View {
             updateUI()
         }
         .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                self.deferralCountUI += 1
+            if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
+                viewObserved.userDeferralCount += 1
             }
             updateUI()
         }
@@ -177,11 +177,11 @@ struct StandardModeLeftSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                StandardModeLeftSide()
+                StandardModeLeftSide(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeLeftSide()
+            StandardModeLeftSide(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
     }

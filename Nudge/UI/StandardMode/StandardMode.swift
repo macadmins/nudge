@@ -15,7 +15,7 @@ struct StandardMode: View {
     var body: some View {
         HStack {
             // Left side of Nudge
-            StandardModeLeftSide()
+            StandardModeLeftSide(viewObserved: viewObserved)
 
             // Vertical Line
             VStack{
@@ -38,11 +38,11 @@ struct StandardModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                StandardMode(viewObserved: ViewState())
+                StandardMode(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardMode(viewObserved: ViewState())
+            StandardMode(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
     }
