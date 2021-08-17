@@ -168,6 +168,9 @@ struct StandardModeLeftSide: View {
     }
     func updateUI() {
         self.daysRemaining = Utils().getNumberOfDaysBetween()
+        if Utils().requireDualQuitButtons() || viewObserved.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton {
+            viewObserved.requireDualQuitButtons = true
+        }
     }
 }
 
