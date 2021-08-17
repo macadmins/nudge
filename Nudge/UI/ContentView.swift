@@ -13,6 +13,8 @@ import SwiftUI
 class ViewState: ObservableObject {
     @Published var shouldExit = false
     @Published var userDeferralCount = 0
+    @Published var requireDualQuitButtons = false
+    @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
 }
 
 // BackgroundView

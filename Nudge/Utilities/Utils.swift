@@ -327,7 +327,11 @@ struct Utils {
         if resetCount {
             nudgeDefaults.set(0, forKey: "userQuitDeferrals")
         } else {
-            nudgeDefaults.set(userQuitDeferrals+1, forKey: "userQuitDeferrals")
+            if userQuitDeferrals > 0 {
+                nudgeDefaults.set(userQuitDeferrals+1, forKey: "userQuitDeferrals")
+            } else {
+                nudgeDefaults.set(userQuitDeferrals, forKey: "userQuitDeferrals")
+            }
         }
     }
 
@@ -335,7 +339,12 @@ struct Utils {
         if resetCount {
             nudgeDefaults.set(0, forKey: "userSessionDeferrals")
         } else {
-            nudgeDefaults.set(nudgePrimaryState.userDeferralCount+1, forKey: "userSessionDeferrals")
+            if userSessionDeferrals > 0 {
+                nudgeDefaults.set(nudgePrimaryState.userDeferralCount+1, forKey: "userSessionDeferrals")
+            } else {
+                nudgeDefaults.set(nudgePrimaryState.userDeferralCount, forKey: "userSessionDeferrals")
+            }
+            
         }
         
     }

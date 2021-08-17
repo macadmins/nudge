@@ -20,7 +20,6 @@ struct SimpleMode: View {
     @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var hasClickedCustomDeferralButton = false
     @State var hasClickedSecondaryQuitButton = false
-    @State var requireDualQuitButtons = false
     @State var nudgeEventDate = Date()
     @State var nudgeCustomEventDate = Date()
     
@@ -165,7 +164,7 @@ struct SimpleMode: View {
 
                 if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
-                    if requireDualQuitButtons {
+                    if viewObserved.requireDualQuitButtons {
                         if self.hasClickedSecondaryQuitButton == false {
                             Button {
                                 hasClickedSecondaryQuitButton = true
@@ -178,7 +177,7 @@ struct SimpleMode: View {
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons == false {
+                    if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
                         HStack(spacing: 20) {
                             if allowUserQuitDeferrals {
                                 Menu("Defer") {
@@ -270,8 +269,8 @@ struct SimpleMode: View {
     }
 
     func updateUI() {
-        if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            self.requireDualQuitButtons = true
+        if Utils().requireDualQuitButtons() || viewObserved.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton {
+            viewObserved.requireDualQuitButtons = true
         }
         if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
             self.allowButtons = false
