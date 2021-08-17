@@ -97,8 +97,8 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     }
 
     // Don't nudge if acceptable apps are frontmostApplication
-    if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
-        let msg = "acceptableApp is currently the frontmostApplication"
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
+        let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication"
         uiLog.info("\(msg, privacy: .public)")
         return false
     }
@@ -122,7 +122,7 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
             for runningApplication in runningApplications {
                 let appName = runningApplication.bundleIdentifier ?? ""
                 let appBundle = runningApplication.bundleURL
-                if acceptableApps.contains(appName) {
+                if builtInAcceptableApplicationBundleIDs.contains(appName) || customAcceptableApplicationBundleIDs.contains(appName) {
                     continue
                 }
                 if majorUpgradeAppPathExists {
