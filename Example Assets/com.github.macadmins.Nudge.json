@@ -1,5 +1,8 @@
 {
   "optionalFeatures": {
+    "acceptableApplicationBundleIDs": [
+      "us.zoom.xos"
+    ],
     "asyncronousSoftwareUpdate": true,
     "attemptToFetchMajorUpgrade": true,
     "enforceMinorUpdates": true

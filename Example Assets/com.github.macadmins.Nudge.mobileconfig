@@ -21,6 +21,10 @@
         <integer>1</integer>
         <key>optionalFeatures</key>
         <dict>
+          <key>acceptableApplicationBundleIDs</key>
+          <array>
+            <string>us.zoom.xos</string>
+          </array>
           <key>asyncronousSoftwareUpdate</key>
           <true/>
           <key>attemptToFetchMajorUpgrade</key>

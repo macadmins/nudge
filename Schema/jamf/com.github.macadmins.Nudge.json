@@ -6,6 +6,19 @@
 			"title": "optionalFeatures",
 			"type": "object",
 			"properties": {
+				"acceptableApplicationBundleIDs": {
+					"description": "The bundle id of applications you allow without Nudge taking focus. You can specify a single bundle id or multiple.",
+					"type": "array",
+					"items": {
+						"options": {
+							"inputAttributes": {
+								"placeholder": "us.zoom.xos"
+							}
+						},
+						"type": "string",
+						"title": "acceptableApplications"
+					}
+				},
 				"asyncronousSoftwareUpdate": {
 					"default": true,
 					"description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
