@@ -10,6 +10,17 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
+    if (userQuitDeferrals > 0 || userSessionDeferrals > 0) && Utils().newNudgeEvent() {
+        let msg = "New Nudge event detected - resetting deferrals"
+        uiLog.notice("\(msg, privacy: .public)")
+        userQuitDeferrals = 0
+        userSessionDeferrals = 0
+        Utils().logUserQuitDeferrals(resetCount: true)
+        Utils().logUserSessionDeferrals(resetCount: true)
+    } else if userSessionDeferrals > 0 {
+        nudgePrimaryState.userDeferralCount = userSessionDeferrals
+    }
+    Utils().logRequiredMinimumOSVersion()
     if deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() {
         let msg = "User has selected a deferral date (\(deferRunUntil ?? lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
         uiLog.notice("\(msg, privacy: .public)")
@@ -45,7 +56,6 @@ func nudgeStartLogic() {
 // This type of logic is not indeal and should be redesigned.
 var lastRefreshTime = Utils().getInitialDate()
 var afterFirstRun = false
-var deferralCount = 1
 var hasLoggedDeferralCountPastThreshold = false
 var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
 
@@ -59,9 +69,10 @@ func userHasClickedDeferralQuitButton(deferralTime: Date) {
     uiLog.notice("\(msg, privacy: .public)")
 }
 
-func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
+func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
     // Center Nudge
     Utils().centerNudge()
+    Utils().logUserSessionDeferrals()
 
     // If noTimers is true, just bail
     if noTimers {
@@ -105,14 +116,13 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
 
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
-        _ = deferralCount += 1
         _ = lastRefreshTime = Date()
-        if !hasLoggedDeferralCountPastThresholdDualQuitButtons && (deferralCountVar > allowedDeferralsUntilForcedSecondaryQuitButton) {
+        if !hasLoggedDeferralCountPastThresholdDualQuitButtons && (nudgePrimaryState.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton) {
             let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
             uiLog.warning("\(msg, privacy: .public)")
             _ = hasLoggedDeferralCountPastThresholdDualQuitButtons = true
         }
-        if deferralCountVar > allowedDeferrals  {
+        if nudgePrimaryState.userDeferralCount > allowedDeferrals  {
             if !hasLoggedDeferralCountPastThreshold {
                 let msg = "allowedDeferrals has been passed"
                 uiLog.warning("\(msg, privacy: .public)")

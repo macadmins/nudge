@@ -223,6 +223,7 @@ struct StandardModeRightSide: View {
                             if allowUserQuitDeferrals {
                                 Menu("Defer") {
                                     Button {
+                                        Utils().logUserQuitDeferrals()
                                         nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: (0), to: nudgeEventDate), forKey: "deferRunUntil")
                                         Utils().userInitiatedExit()
                                     } label: {
@@ -231,6 +232,7 @@ struct StandardModeRightSide: View {
                                     }
                                     if Utils().allow1HourDeferral() {
                                         Button {
+                                            Utils().logUserQuitDeferrals()
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
                                             Utils().userInitiatedExit()
@@ -241,6 +243,7 @@ struct StandardModeRightSide: View {
                                     }
                                     if Utils().allow24HourDeferral() {
                                         Button {
+                                            Utils().logUserQuitDeferrals()
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
                                             Utils().userInitiatedExit()
@@ -262,6 +265,7 @@ struct StandardModeRightSide: View {
                                 .frame(maxWidth: 100)
                             } else {
                                 Button {
+                                    Utils().logUserQuitDeferrals()
                                     Utils().userInitiatedExit()
                                 } label: {
                                     Text(primaryQuitButtonText)
@@ -306,11 +310,11 @@ struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                StandardModeRightSide(viewObserved: ViewState())
+                StandardModeRightSide(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeRightSide(viewObserved: ViewState())
+            StandardModeRightSide(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
     }

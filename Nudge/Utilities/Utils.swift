@@ -323,6 +323,31 @@ struct Utils {
         }
     }
 
+    func logUserQuitDeferrals(resetCount: Bool = false) {
+        if resetCount {
+            nudgeDefaults.set(0, forKey: "userQuitDeferrals")
+        } else {
+            nudgeDefaults.set(userQuitDeferrals+1, forKey: "userQuitDeferrals")
+        }
+    }
+
+    func logUserSessionDeferrals(resetCount: Bool = false) {
+        if resetCount {
+            nudgeDefaults.set(0, forKey: "userSessionDeferrals")
+        } else {
+            nudgeDefaults.set(nudgePrimaryState.userDeferralCount+1, forKey: "userSessionDeferrals")
+        }
+        
+    }
+
+    func logRequiredMinimumOSVersion() {
+        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+    }
+
+    func newNudgeEvent() -> Bool {
+        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: userRequiredMinimumOSVersion)
+    }
+
     func openMoreInfo() {
         guard let url = URL(string: aboutUpdateURL) else {
             return

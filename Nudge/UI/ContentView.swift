@@ -12,12 +12,13 @@ import SwiftUI
 
 class ViewState: ObservableObject {
     @Published var shouldExit = false
+    @Published var userDeferralCount = 0
 }
 
 // BackgroundView
 struct BackgroundView: View {
     @State var simpleModePreview: Bool
-    @StateObject var viewState = ViewState()
+    @StateObject var viewState = nudgePrimaryState
     var body: some View {
         if simpleMode() || simpleModePreview {
             SimpleMode(viewObserved: viewState)

@@ -52,6 +52,7 @@ struct DeferView: View {
             Divider()
             HStack {
                 Button {
+                    Utils().logUserQuitDeferrals()
                     nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
                     userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
                     viewObserved.shouldExit.toggle()
@@ -81,11 +82,11 @@ struct DeviceViewPreview: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                DeferView(viewObserved: ViewState())
+                DeferView(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            DeferView(viewObserved: ViewState())
+            DeferView(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
     }
