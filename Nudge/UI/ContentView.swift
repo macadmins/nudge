@@ -10,14 +10,19 @@ import SwiftUI
 // https://stackoverflow.com/a/66039864
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
+class ViewState: ObservableObject {
+    @Published var shouldExit = false
+}
+
 // BackgroundView
 struct BackgroundView: View {
     @State var simpleModePreview: Bool
+    @StateObject var viewState = ViewState()
     var body: some View {
         if simpleMode() || simpleModePreview {
-            SimpleMode()
+            SimpleMode(viewObserved: viewState)
         } else {
-            StandardMode()
+            StandardMode(viewObserved: viewState)
         }
     }
 }

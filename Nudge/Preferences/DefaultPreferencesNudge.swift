@@ -30,6 +30,7 @@ let aboutUpdateURL = getAboutUpdateURL(OSVerReq: osVersionRequirementsProfile) ?
 // userExperience
 let userExperienceProfile = getUserExperienceProfile()
 let userExperienceJSON = getUserExperienceJSON()
+let allowUserQuitDeferrals = userExperienceProfile?["allowUserQuitDeferrals"] as? Bool ?? userExperienceJSON?.allowUserQuitDeferrals ?? true
 let allowedDeferrals = userExperienceProfile?["allowedDeferrals"] as? Int ?? userExperienceJSON?.allowedDeferrals ?? 1000000
 let allowedDeferralsUntilForcedSecondaryQuitButton = userExperienceProfile?["allowedDeferralsUntilForcedSecondaryQuitButton"] as? Int ?? userExperienceJSON?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let approachingRefreshCycle = userExperienceProfile?["approachingRefreshCycle"] as? Int ?? userExperienceJSON?.approachingRefreshCycle ?? 6000
@@ -65,6 +66,9 @@ let secondaryQuitButtonText = userInterfaceUpdateElementsProfile?["secondaryQuit
 let showDeferralCount = userInterfaceProfile?["showDeferralCount"] as? Bool ?? userInterfaceJSON?.showDeferralCount ?? true
 let singleQuitButton = userInterfaceProfile?["singleQuitButton"] as? Bool ?? userInterfaceJSON?.singleQuitButton ?? false
 let subHeader = userInterfaceUpdateElementsProfile?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
+let customDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "Custom".localized(desiredLanguage: getDesiredLanguage())
+let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ?? "One Day".localized(desiredLanguage: getDesiredLanguage())
+let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour".localized(desiredLanguage: getDesiredLanguage())
 
 // Other important defaults
 let acceptableApps = [

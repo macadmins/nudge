@@ -10,6 +10,7 @@ import SwiftUI
 
 // StandardModeRightSide
 struct StandardModeRightSide: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
@@ -18,9 +19,12 @@ struct StandardModeRightSide: View {
     @State var allowButtons = true
     @State var hasClickedSecondaryQuitButton = false
     @State var requireDualQuitButtons = false
+    @State var nudgeEventDate = Date()
+    @State var nudgeCustomEventDate = Date()
     
-    // Modal view for screenshot and device info
+    // Modal view for screenshot and deferral info
     @State var showSSDetail = false
+    @State var showDeferView = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
@@ -202,51 +206,75 @@ struct StandardModeRightSide: View {
                 if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {} label: {
-                                Text(secondaryQuitButtonText)
-                            }
-                            .hidden()
-                        } else {
+                        if self.hasClickedSecondaryQuitButton == false {
                             Button {
                                 hasClickedSecondaryQuitButton = true
                                 userHasClickedSecondaryQuitButton()
                             } label: {
                                 Text(secondaryQuitButtonText)
                             }
+                            .padding(.leading, -200.0)
                         }
-                    } else {
-                        Button {} label: {
-                            Text(secondaryQuitButtonText)
-                        }
-                        .hidden()
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {
-                                Utils().userInitiatedExit()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                    if requireDualQuitButtons == false {
+                        HStack(spacing: 20) {
+                            if allowUserQuitDeferrals {
+                                Menu("Defer") {
+                                    Button {
+                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: (0), to: nudgeEventDate), forKey: "deferRunUntil")
+                                        Utils().userInitiatedExit()
+                                    } label: {
+                                        Text(primaryQuitButtonText)
+                                            .frame(minWidth: 35)
+                                    }
+                                    if Utils().allow1HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
+                                            Utils().userInitiatedExit()
+                                        } label: {
+                                            Text("One Hour")
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allow24HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
+                                            Utils().userInitiatedExit()
+                                        } label: {
+                                            Text("One Day")
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allowCustomDeferral() {
+                                        Divider()
+                                        Button {
+                                            self.showDeferView.toggle()
+                                        } label: {
+                                            Text("Custom")
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                }
+                                .frame(maxWidth: 100)
+                            } else {
+                                Button {
+                                    Utils().userInitiatedExit()
+                                } label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: 35)
+                                }
                             }
-                        } else {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
-                            }
-                            .hidden()
                         }
-                    } else {
-                        Button {
-                            Utils().userInitiatedExit()
-                        } label: {
-                            Text(primaryQuitButtonText)
-                                .frame(minWidth: 35)
+                        .sheet(isPresented: $showDeferView) {
+                            if viewObserved.shouldExit {
+                                Utils().userInitiatedExit()
+                            }
+                        } content: {
+                            DeferView(viewObserved: viewObserved)
                         }
                     }
                 }
@@ -278,11 +306,11 @@ struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                StandardModeRightSide()
+                StandardModeRightSide(viewObserved: ViewState())
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeRightSide()
+            StandardModeRightSide(viewObserved: ViewState())
                 .preferredColorScheme(.dark)
         }
     }

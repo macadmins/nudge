@@ -68,10 +68,10 @@
 						}
 					},
 					"majorUpgradeAppPath": {
-						"description": "The app path for a major upgrade. Note: This logic is not fully written as it cannot be tested until the next major Operating System is released. A future version of Nudge will finalize support for this feature.",
+						"description": "The app path for a major upgrade. Note: Nudge v1.0.1 or higher is required for this feature.",
 						"options": {
 							"inputAttributes": {
-								"placeholder": "/Applications/Install macOS Big Sur.app"
+								"placeholder": "/Applications/Install macOS Monterey.app"
 							}
 						},
 						"type": "string"
@@ -119,6 +119,11 @@
 					"default": 1000000,
 					"description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before the \"aggressive user experience\" is enabled. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
 					"type": "integer"
+				},
+				"allowUserQuitDeferrals": {
+					"default": true,
+					"description": "Allows users to customize their deferral window on top of the LaunchAgent launch timing.",
+					"type": "boolean"
 				},
 				"allowedDeferralsUntilForcedSecondaryQuitButton": {
 					"default": 14,
@@ -238,6 +243,11 @@
 					},
 					"type": "string"
 				},
+				"showDeferralCount": {
+					"default": true,
+					"description": "Enables or disables the deferral count of the current Nudge event.",
+					"type": "boolean"
+				},
 				"simpleMode": {
 					"default": false,
 					"description": "Enables Nudge to launch in the simplified user experience.",
@@ -256,6 +266,7 @@
 						"title": "updateElement - Dictionary",
 						"properties": {
 							"_language": {
+								"default": "en",
 								"description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
 								"options": {
 									"inputAttributes": {
@@ -268,8 +279,20 @@
 								"description": "Modifies the actionButton, also known as the \"Update Device\" button",
 								"type": "string"
 							},
+							"customDeferralButtonText": {
+								"description": "Modifies the customDeferralButtonText, also known as the \"Custom\" button",
+								"type": "string"
+							},
 							"informationButtonText": {
 								"description": "Modifies the informationButton, also known as the \"More Info\" button",
+								"type": "string"
+							},
+							"oneDayDeferralButtonText": {
+								"description": "Modifies the oneDayDeferralButtonText, also known as the \"One Day\" button",
+								"type": "string"
+							},
+							"oneHourDeferralButtonText": {
+								"description": "Modifies the oneHourDeferralButtonText, also known as the \"One Hour\" button",
 								"type": "string"
 							},
 							"mainContentHeader": {

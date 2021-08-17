@@ -7,19 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0348CD2925D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json in Resources */ = {isa = PBXBuildFile; fileRef = 0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */; };
 		035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */ = {isa = PBXBuildFile; fileRef = 035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */; };
 		0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */; };
 		0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */; };
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
+		636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B9C0126CACCAB0007BE3B /* DeferView.swift */; };
 		636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
 		639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */; };
-		639B6B1425DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */; };
 		639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3A25DF200C00E38EC1 /* Preferences.swift */; };
-		639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */; };
 		639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */; };
 		639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */; };
 		639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B6D25DF3C3F00E38EC1 /* SimpleMode.swift */; };
@@ -54,7 +52,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.umad.json; sourceTree = "<group>"; };
 		035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.json; sourceTree = "<group>"; };
 		05DDB291263049DB006629B3 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -64,12 +61,11 @@
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5870FF6825CFE5FA0036D203 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		636B9C0126CACCAB0007BE3B /* DeferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferView.swift; sourceTree = "<group>"; };
 		636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesNudge.swift; sourceTree = "<group>"; };
 		636C4B7525D4306A0004A791 /* UILogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogic.swift; sourceTree = "<group>"; };
 		639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.mobileconfig; sourceTree = "<group>"; };
-		639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.umad.mobileconfig; sourceTree = "<group>"; };
 		639B6B3A25DF200C00E38EC1 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUMAD.swift; sourceTree = "<group>"; };
 		639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotZoom.swift; sourceTree = "<group>"; };
 		639B6B6D25DF3C3F00E38EC1 /* SimpleMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMode.swift; sourceTree = "<group>"; };
@@ -124,9 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */,
-				639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */,
 				035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */,
-				0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */,
 			);
 			path = "Example Assets";
 			sourceTree = "<group>";
@@ -135,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */,
-				639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */,
 				639E198125CD885D008F618B /* PreferencesStructure.swift */,
 			);
 			path = Preferences;
@@ -159,6 +152,8 @@
 			children = (
 				63D7D0E225C9E9A400236281 /* Main.swift */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
+				636B9C0126CACCAB0007BE3B /* DeferView.swift */,
+				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				639B6B5625DF376300E38EC1 /* StandardMode */,
 				639B6B5525DF375800E38EC1 /* SimpleMode */,
 			);
@@ -177,7 +172,6 @@
 			isa = PBXGroup;
 			children = (
 				63D7D12625C9F1EE00236281 /* StandardMode.swift */,
-				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */,
 				639B6BA125DF41DB00E38EC1 /* LeftSide.swift */,
 				639B6BA625DF432D00E38EC1 /* RightSide.swift */,
@@ -360,8 +354,6 @@
 				5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
 				639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */,
-				0348CD2925D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json in Resources */,
-				639B6B1425DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig in Resources */,
 				035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -388,7 +380,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
-				639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */,
@@ -402,6 +393,7 @@
 				639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* Main.swift in Sources */,
 				639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */,
+				636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */,
 				639B6BA225DF41DB00E38EC1 /* LeftSide.swift in Sources */,
 				639B6BA725DF432D00E38EC1 /* RightSide.swift in Sources */,
 			);
