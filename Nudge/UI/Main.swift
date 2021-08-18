@@ -99,16 +99,16 @@ struct Main: App {
         WindowGroup {
             if Utils().debugUIModeEnabled() {
                 VSplitView {
-                    ContentView(simpleModePreview: false)
+                    ContentView()
                         .onAppear(perform: nudgeStartLogic)
                         .frame(width: 900, height: 450)
-                    ContentView(simpleModePreview: true)
+                    ContentView()
                         .onAppear(perform: nudgeStartLogic)
                         .frame(width: 900, height: 450)
                 }
                 .frame(height: 900)
             } else {
-                ContentView(simpleModePreview: false)
+                ContentView()
                     .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
             }

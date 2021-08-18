@@ -19,10 +19,9 @@ class ViewState: ObservableObject {
 
 // BackgroundView
 struct BackgroundView: View {
-    @State var simpleModePreview: Bool
     @StateObject var viewState = nudgePrimaryState
     var body: some View {
-        if simpleMode() || simpleModePreview {
+        if simpleMode() {
             SimpleMode(viewObserved: viewState)
         } else {
             StandardMode(viewObserved: viewState)
@@ -31,9 +30,8 @@ struct BackgroundView: View {
 }
 
 struct ContentView: View {
-    @State var simpleModePreview: Bool
     var body: some View {
-        BackgroundView(simpleModePreview: simpleModePreview).background(
+        BackgroundView().background(
             HostingWindowFinder { window in
                 window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
                 window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
@@ -49,16 +47,16 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(simpleModePreview: false)
+        StandardMode(viewObserved: nudgePrimaryState)
             .preferredColorScheme(.light)
         ZStack {
-            ContentView(simpleModePreview: false)
+            StandardMode(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
-        ContentView(simpleModePreview: true)
+        SimpleMode(viewObserved: nudgePrimaryState)
             .preferredColorScheme(.light)
         ZStack {
-            ContentView(simpleModePreview: true)
+            SimpleMode(viewObserved: nudgePrimaryState)
                 .preferredColorScheme(.dark)
         }
     }
