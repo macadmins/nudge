@@ -73,7 +73,15 @@ let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferr
 let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour".localized(desiredLanguage: getDesiredLanguage())
 
 // Other important defaults
-let builtInAcceptableApplicationBundleIDs = [
-    "com.apple.loginwindow",
-    "com.apple.systempreferences"
-]
+#if DEBUG
+    let builtInAcceptableApplicationBundleIDs = [
+        "com.apple.loginwindow",
+        "com.apple.systempreferences",
+        "com.apple.dt.Xcode"
+    ]
+#else
+    let builtInAcceptableApplicationBundleIDs = [
+        "com.apple.loginwindow",
+        "com.apple.systempreferences"
+    ]
+#endif
