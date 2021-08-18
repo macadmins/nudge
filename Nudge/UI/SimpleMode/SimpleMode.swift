@@ -196,7 +196,7 @@ struct SimpleMode: View {
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
                                             Utils().userInitiatedExit()
                                         } label: {
-                                            Text("One Hour")
+                                            Text("One Hour".localized(desiredLanguage: getDesiredLanguage()))
                                                 .frame(minWidth: 35)
                                         }
                                     }
@@ -207,7 +207,7 @@ struct SimpleMode: View {
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
                                             Utils().userInitiatedExit()
                                         } label: {
-                                            Text("One Day")
+                                            Text("One Day".localized(desiredLanguage: getDesiredLanguage()))
                                                 .frame(minWidth: 35)
                                         }
                                     }
@@ -216,7 +216,7 @@ struct SimpleMode: View {
                                         Button {
                                             self.showDeferView.toggle()
                                         } label: {
-                                            Text("Custom")
+                                            Text("Custom".localized(desiredLanguage: getDesiredLanguage()))
                                                 .frame(minWidth: 35)
                                         }
                                     }
