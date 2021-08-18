@@ -183,7 +183,7 @@ struct SimpleMode: View {
                                 Menu("Defer") {
                                     Button {
                                         Utils().logUserQuitDeferrals()
-                                        nudgeDefaults.set(Calendar.current.date(byAdding: .minute, value: (0), to: nudgeEventDate), forKey: "deferRunUntil")
+                                        nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
                                         Utils().userInitiatedExit()
                                     } label: {
                                         Text(primaryQuitButtonText)

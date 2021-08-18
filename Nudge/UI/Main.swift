@@ -87,7 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
             uiLog.notice("\(msg, privacy: .public)")
             nudgePrimaryState.shouldExit = true
-            AppKit.NSApp.terminate(nil)
+            exit(0)
         }
     }
 }

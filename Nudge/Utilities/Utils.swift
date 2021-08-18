@@ -97,7 +97,7 @@ struct Utils {
         let msg = "Nudge is terminating due to condition met"
         uiLog.notice("\(msg, privacy: .public)")
         nudgePrimaryState.shouldExit = true
-        AppKit.NSApp.terminate(nil)
+        exit(0)
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
@@ -428,7 +428,7 @@ struct Utils {
         let msg = "User clicked primaryQuitButton"
         uiLog.notice("\(msg, privacy: .public)")
         nudgePrimaryState.shouldExit = true
-        AppKit.NSApp.terminate(nil)
+        exit(0)
     }
 
     func userInitiatedDeviceInfo() {
