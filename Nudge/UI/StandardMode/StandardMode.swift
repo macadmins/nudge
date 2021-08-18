@@ -42,8 +42,10 @@ struct StandardModePreviews: PreviewProvider {
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardMode(viewObserved: nudgePrimaryState)
-                .preferredColorScheme(.dark)
+            ZStack {
+                StandardMode(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

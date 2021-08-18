@@ -184,8 +184,10 @@ struct StandardModeLeftSidePreviews: PreviewProvider {
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeLeftSide(viewObserved: nudgePrimaryState)
-                .preferredColorScheme(.dark)
+            ZStack {
+                StandardModeLeftSide(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

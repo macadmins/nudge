@@ -99,8 +99,10 @@ struct DeviceInfoPreview: PreviewProvider {
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            DeviceInfo()
-                .preferredColorScheme(.dark)
+            ZStack {
+                DeviceInfo()
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

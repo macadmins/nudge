@@ -289,8 +289,10 @@ struct SimpleModePreviews: PreviewProvider {
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode(viewObserved: nudgePrimaryState)
-                .preferredColorScheme(.dark)
+            ZStack {
+                SimpleMode(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

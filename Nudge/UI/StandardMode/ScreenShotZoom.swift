@@ -80,9 +80,16 @@ struct ScreenShotZoom: View {
 // Xcode preview for both light and dark mode
 struct ScreenShotZoomPreview: PreviewProvider {
     static var previews: some View {
-        ForEach(ColorScheme.allCases, id: \.self) {
-            ScreenShotZoom()
-                .preferredColorScheme($0)
+        Group {
+            ForEach(["en", "es"], id: \.self) { id in
+                ScreenShotZoom()
+                    .preferredColorScheme(.light)
+                    .environment(\.locale, .init(identifier: id))
+            }
+            ZStack {
+                ScreenShotZoom()
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

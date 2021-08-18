@@ -49,11 +49,17 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach(ColorScheme.allCases, id: \.self) {
-            ContentView(simpleModePreview: false).preferredColorScheme($0)
+        ContentView(simpleModePreview: false)
+            .preferredColorScheme(.light)
+        ZStack {
+            ContentView(simpleModePreview: false)
+                .preferredColorScheme(.dark)
         }
-        ForEach(ColorScheme.allCases, id: \.self) {
-            ContentView(simpleModePreview: true).preferredColorScheme($0)
+        ContentView(simpleModePreview: true)
+            .preferredColorScheme(.light)
+        ZStack {
+            ContentView(simpleModePreview: true)
+                .preferredColorScheme(.dark)
         }
     }
 }

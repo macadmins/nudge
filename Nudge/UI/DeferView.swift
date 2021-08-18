@@ -86,8 +86,10 @@ struct DeviceViewPreview: PreviewProvider {
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            DeferView(viewObserved: nudgePrimaryState)
-                .preferredColorScheme(.dark)
+            ZStack {
+                DeferView(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }
