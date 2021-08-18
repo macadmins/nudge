@@ -47,8 +47,6 @@ struct SimpleMode: View {
                         Image(systemName: "questionmark.circle")
                     }
                     .buttonStyle(.plain)
-                    .padding(.top, -40)
-                    // TODO: This is broken because of the padding
                     .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {
@@ -63,7 +61,8 @@ struct SimpleMode: View {
                     Spacer()
                 }
             }
-            .frame(width: 894)
+            .frame(width: 894, height: 20)
+
             VStack(alignment: .center, spacing: 10) {
                 // Company Logo
                 HStack {
@@ -91,7 +90,6 @@ struct SimpleMode: View {
                 }
                 
                 // Days Remaining
-
                 HStack(spacing: 3.5) {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
@@ -105,8 +103,9 @@ struct SimpleMode: View {
                             .font(.title2)
                             .fontWeight(.bold)
                     }
-
                 }
+                
+                // Deferral Count
                 if showDeferralCount {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
@@ -118,11 +117,14 @@ struct SimpleMode: View {
                     }
                 } else {
                     HStack{
-                        Text(" ")
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                            .font(.title2)
+                        Text(String(viewObserved.userDeferralCount))
                             .foregroundColor(.secondary)
                             .font(.title2)
                             .fontWeight(.bold)
                     }
+                    .hidden()
                 }
                 Spacer()
 
@@ -134,10 +136,8 @@ struct SimpleMode: View {
                         .frame(minWidth: 120)
                 }
                 .keyboardShortcut(.defaultAction)
-                .padding(.bottom, 2)
                 Spacer()
             }
-            .frame(height: 390)
             
             // Bottom buttons
             HStack {
@@ -149,14 +149,15 @@ struct SimpleMode: View {
                     }
                     )
                         .buttonStyle(.plain)
-                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
-                    .onHover { inside in
-                        if inside {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
+                        .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
+                        .onHover { inside in
+                            if inside {
+                                NSCursor.pointingHand.push()
+                            } else {
+                                NSCursor.pop()
+                            }
                         }
-                    }
+                    
                 }
 
                 // Separate the buttons with a spacer
@@ -244,7 +245,7 @@ struct SimpleMode: View {
                 }
             }
             .frame(width: 860)
-            // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
+            .padding(.bottom, -20)
         }
         .frame(width: 900, height: 450)
         .onAppear() {

@@ -37,9 +37,6 @@ struct StandardModeLeftSide: View {
                     Image(systemName: "questionmark.circle")
                 }
                 .buttonStyle(.plain)
-                .padding(.top, -25.0)
-                .padding(.leading, -1.5)
-                // TODO: This is broken because of the padding
                 .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
@@ -153,6 +150,7 @@ struct StandardModeLeftSide: View {
                 // Force the button to the left with a spacer
                 Spacer()
             }
+            .padding(.top, 45.0)
             .frame(width: 250, height: 35)
         }
         .frame(width: 300, height: 450)

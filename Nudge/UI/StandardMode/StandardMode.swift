@@ -27,6 +27,7 @@ struct StandardMode: View {
             
             // Right side of Nudge
             StandardModeRightSide(viewObserved: viewObserved)
+                .padding(.bottom, -60.0)
         }
         .frame(width: 900, height: 450)
     }

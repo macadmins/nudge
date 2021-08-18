@@ -41,6 +41,7 @@ struct ContentView: View {
                 _ = needToActivateNudge(lastRefreshTimeVar: lastRefreshTime)
             }
         )
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
