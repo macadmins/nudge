@@ -13,6 +13,8 @@ BUILDSDIR="$TOOLSDIR/build"
 OUTPUTSDIR="$TOOLSDIR/outputs"
 MP_ZIP="/tmp/munki-pkg.zip"
 XCODE_BUILD_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/xcodebuild"
+XCODE_NOTARY_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/notarytool"
+XCODE_STAPLER_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/stapler"
 CURRENT_NUDGE_MAIN_BUILD_VERSION=$(/usr/libexec/PlistBuddy -c Print:CFBundleVersion $TOOLSDIR/Nudge/Info.plist)
 DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
 
@@ -43,6 +45,14 @@ if ! [ -n "$1" ]; then
   echo "Did not pass option to create package"
   exit 0
 fi
+
+# Setup notary item
+$XCODE_NOTARY_PATH store-credentials --apple-id "macadmins@cleverdevops.com" --team-id "9GQZ7KUFR6" --password "$2" nudge
+
+# Zip application for notary
+/usr/bin/ditto -c -k --keepParent "${BUILDSDIR}/Release/Nudge.app" "${BUILDSDIR}/Release/Nudge.zip"
+# Notarize nudge application
+$XCODE_NOTARY_PATH submit "${BUILDSDIR}/Release/Nudge.zip" --keychain-profile "nudge" --wait
 
 # Create outputs folder
 if [ -e $OUTPUTSDIR ]; then
@@ -100,6 +110,9 @@ PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
+  # Notarize nudge package
+  $XCODE_NOTARY_PATH submit "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+  $XCODE_STAPLER_PATH staple "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
   # Move the signed pkg
   /bin/mv "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
 fi

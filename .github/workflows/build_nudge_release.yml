@@ -1,5 +1,8 @@
 name: Build signed Nudge and upload signed package
 
+env:
+  NOTARY_APP_PASSWORD: ${{ secrets.NOTARY_APP_PASSWORD }}
+
 on:
   push:
     branches:
@@ -14,7 +17,7 @@ jobs:
     runs-on: macos-11
 
     steps:
-    - name: Checkout python repo
+    - name: Checkout nudge repo
       uses: actions/checkout@v2
 
     - name: Install Apple Xcode certificates
@@ -33,7 +36,7 @@ jobs:
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
 
     - name: Run build package script
-      run: ./build_nudge.zsh "CREATE_PKG"
+      run: ./build_nudge.zsh "CREATE_PKG" "$NOTARY_APP_PASSWORD"
 
     - name: get environment variables
       id: get_env_var
