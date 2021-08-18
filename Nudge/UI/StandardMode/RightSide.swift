@@ -137,7 +137,7 @@ struct StandardModeRightSide: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxHeight: 120)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                         .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                         .sheet(isPresented: $showSSDetail) {
                             ScreenShotZoom()
