@@ -55,7 +55,7 @@ struct DeferView: View {
                     Utils().logUserQuitDeferrals()
                     nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
                     userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
-                    viewObserved.shouldExit.toggle()
+                    viewObserved.shouldExit = true
                     self.presentationMode.wrappedValue.dismiss()
                 } label: {
                     Text("Defer")
