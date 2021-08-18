@@ -40,11 +40,7 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
-                #if DEBUG
-                    NSApp.activate(ignoringOtherApps: false) // bring to forefront upon launch
-                #else
-                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-                #endif
+                _ = needToActivateNudge(lastRefreshTimeVar: lastRefreshTime)
             }
         )
     }
