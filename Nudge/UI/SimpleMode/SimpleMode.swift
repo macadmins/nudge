@@ -166,15 +166,18 @@ struct SimpleMode: View {
                 if allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if viewObserved.requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton == false {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(secondaryQuitButtonText)
+                        HStack(spacing: 20) {
+                            if self.hasClickedSecondaryQuitButton == false {
+                                Button {
+                                    hasClickedSecondaryQuitButton = true
+                                    userHasClickedSecondaryQuitButton()
+                                } label: {
+                                    Text(secondaryQuitButtonText)
+                                }
+                                .padding(.leading, -200.0)
                             }
-                            .padding(.leading, -200.0)
                         }
+                        .frame(maxHeight: 30)
                     }
                     
                     // primaryQuitButton
@@ -245,7 +248,7 @@ struct SimpleMode: View {
                 }
             }
             .frame(width: 860)
-            .padding(.bottom, -20)
+            .padding(.bottom, -17.5)
         }
         .frame(width: 900, height: 450)
         .onAppear() {
