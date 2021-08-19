@@ -42,6 +42,12 @@ jobs:
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
 
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@e5306b306fa2e34f05258789e0e5c526c1bd4352 # v1.0.0
+      with:
+        myToken: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Pre-Release
       id: create_pre_release
       uses: actions/create-release@v1
@@ -53,13 +59,16 @@ jobs:
         body: |
             # Notes
             This is a pre-release version of Nudge created by GitHub Actions.
-            Nudge.app has been signed application as well as the package.
+            Nudge.app has been signed and notarized. The package has been signed, notarized and stapled.
 
             By default Nudge looks for a `com.github.macadmins.Nudge.json` file located in `/Library/Preferences`. If you would like to use an alternative path, please read the [README](https://github.com/macadmins/nudge/blob/main/README.md) or the [WIKI](https://github.com/macadmins/nudge/wiki)
 
             ## About the LaunchAgent
             This is a basic launch agent that opens Nudge twice an hour, every 30 minutes.
             If you would like to reduce the amount of times Nudge launches per day, it is recommended to create your own LaunchAgent.
+
+            # Changes
+            ${{ steps.changelog.outputs.changelog }}
         draft: false
         prerelease: true
 
