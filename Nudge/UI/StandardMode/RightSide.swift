@@ -111,19 +111,23 @@ struct StandardModeRightSide: View {
                 .frame(width: 510)
                 
                 // mainContentText
-                HStack {
-                    Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
-                        .font(.callout)
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer()
+                ScrollView(.vertical) {
+                    VStack {
+                        HStack {
+                            Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                .font(.callout)
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                        }
+                    }
                 }
                 .frame(minHeight: 125.0)
                 .frame(maxHeight: 125.0)
                 .frame(width: 510)
-                
+
                 HStack {
                     Spacer()
                     // screenShot
