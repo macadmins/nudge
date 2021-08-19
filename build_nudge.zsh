@@ -67,8 +67,10 @@ if [ -e $NUDGE_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_PKG_PATH
 fi
 /bin/mkdir -p "$NUDGE_PKG_PATH/payload/Applications/Utilities"
+/bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
 /bin/mv "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
 
 # Download specific version of munki-pkg
 echo "Downloading munki-pkg tool from github..."
