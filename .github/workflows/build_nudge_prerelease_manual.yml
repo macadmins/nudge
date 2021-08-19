@@ -36,6 +36,12 @@ jobs:
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
 
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@e5306b306fa2e34f05258789e0e5c526c1bd4352 # v1.0.0
+      with:
+        myToken: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Pre-Release
       id: create_pre_release
       uses: actions/create-release@v1
@@ -54,7 +60,10 @@ jobs:
             ## About the LaunchAgent
             This is a basic launch agent that opens Nudge twice an hour, every 30 minutes.
             If you would like to reduce the amount of times Nudge launches per day, it is recommended to create your own LaunchAgent.
-        draft: false
+
+            # Changes
+            ${{ steps.changelog.outputs.changelog }}
+        draft: true
         prerelease: true
 
     - name: Upload Signed Package Pre-Release Asset
