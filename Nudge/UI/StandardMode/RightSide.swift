@@ -227,11 +227,7 @@ struct StandardModeRightSide: View {
                                 Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
                                     Button {
                                         nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
-                                        viewObserved.userQuitDeferrals += 1
-                                        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-                                        Utils().logUserQuitDeferrals()
-                                        Utils().logUserDeferrals()
-                                        Utils().userInitiatedExit()
+                                        updateDeferralUI()
                                     } label: {
                                         Text(primaryQuitButtonText)
                                             .frame(minWidth: 35)
@@ -240,11 +236,7 @@ struct StandardModeRightSide: View {
                                         Button {
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
-                                            viewObserved.userQuitDeferrals += 1
-                                            viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-                                            Utils().logUserQuitDeferrals()
-                                            Utils().logUserDeferrals()
-                                            Utils().userInitiatedExit()
+                                            updateDeferralUI()
                                         } label: {
                                             Text(oneHourDeferralButtonText)
                                                 .frame(minWidth: 35)
@@ -254,11 +246,7 @@ struct StandardModeRightSide: View {
                                         Button {
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
-                                            viewObserved.userQuitDeferrals += 1
-                                            viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-                                            Utils().logUserQuitDeferrals()
-                                            Utils().logUserDeferrals()
-                                            Utils().userInitiatedExit()
+                                            updateDeferralUI()
                                         } label: {
                                             Text(oneDayDeferralButtonText)
                                                 .frame(minWidth: 35)
@@ -304,7 +292,15 @@ struct StandardModeRightSide: View {
             updateUI()
         }
     }
-    
+
+    func updateDeferralUI() {
+        viewObserved.userQuitDeferrals += 1
+        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+        Utils().logUserQuitDeferrals()
+        Utils().logUserDeferrals()
+        Utils().userInitiatedExit()
+    }
+
     func updateUI() {
         if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
             viewObserved.requireDualQuitButtons = true
