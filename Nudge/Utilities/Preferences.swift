@@ -11,10 +11,6 @@ let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
 var nudgePrimaryState = ViewState()
-let deferRunUntil = UserDefaults.standard.object(forKey: "deferRunUntil") as? Date
-let userRequiredMinimumOSVersion = UserDefaults.standard.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
-var userSessionDeferrals = UserDefaults.standard.object(forKey: "userSessionDeferrals") as? Int ?? 0
-var userQuitDeferrals = UserDefaults.standard.object(forKey: "userQuitDeferrals") as? Int ?? 0
 
 // Get the language
 func getDesiredLanguage() -> String {

@@ -119,7 +119,7 @@ struct StandardModeLeftSide: View {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                         Spacer()
-                        Text(String(viewObserved.userDeferralCount))
+                        Text(String(viewObserved.userDeferrals))
                             .foregroundColor(.secondary)
                     }
                 }
@@ -161,14 +161,15 @@ struct StandardModeLeftSide: View {
         }
         .onReceive(nudgeRefreshCycleTimer) { _ in
             if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
-                viewObserved.userDeferralCount += 1
+                viewObserved.userSessionDeferrals += 1
+                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
             }
             updateUI()
         }
     }
     func updateUI() {
         self.daysRemaining = Utils().getNumberOfDaysBetween()
-        if Utils().requireDualQuitButtons() || viewObserved.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton {
+        if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
             viewObserved.requireDualQuitButtons = true
         }
     }

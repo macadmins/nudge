@@ -112,7 +112,7 @@ struct SimpleMode: View {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
-                        Text(String(viewObserved.userDeferralCount))
+                        Text(String(viewObserved.userDeferrals))
                             .foregroundColor(.secondary)
                             .font(.title2)
                             .fontWeight(.bold)
@@ -121,7 +121,7 @@ struct SimpleMode: View {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
-                        Text(String(viewObserved.userDeferralCount))
+                        Text(String(viewObserved.userDeferrals))
                             .foregroundColor(.secondary)
                             .font(.title2)
                             .fontWeight(.bold)
@@ -188,8 +188,11 @@ struct SimpleMode: View {
                             if allowUserQuitDeferrals {
                                 Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
                                     Button {
-                                        Utils().logUserQuitDeferrals()
                                         nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
+                                        viewObserved.userQuitDeferrals += 1
+                                        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+                                        Utils().logUserQuitDeferrals()
+                                        Utils().logUserDeferrals()
                                         Utils().userInitiatedExit()
                                     } label: {
                                         Text(primaryQuitButtonText)
@@ -197,9 +200,12 @@ struct SimpleMode: View {
                                     }
                                     if Utils().allow1HourDeferral() {
                                         Button {
-                                            Utils().logUserQuitDeferrals()
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
+                                            viewObserved.userQuitDeferrals += 1
+                                            viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+                                            Utils().logUserQuitDeferrals()
+                                            Utils().logUserDeferrals()
                                             Utils().userInitiatedExit()
                                         } label: {
                                             Text(oneHourDeferralButtonText)
@@ -208,9 +214,12 @@ struct SimpleMode: View {
                                     }
                                     if Utils().allow24HourDeferral() {
                                         Button {
-                                            Utils().logUserQuitDeferrals()
                                             nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
+                                            viewObserved.userQuitDeferrals += 1
+                                            viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+                                            Utils().logUserQuitDeferrals()
+                                            Utils().logUserDeferrals()
                                             Utils().userInitiatedExit()
                                         } label: {
                                             Text(oneDayDeferralButtonText)
@@ -230,7 +239,6 @@ struct SimpleMode: View {
                                 .frame(maxWidth: 100)
                             } else {
                                 Button {
-                                    Utils().logUserQuitDeferrals()
                                     Utils().userInitiatedExit()
                                 } label: {
                                     Text(primaryQuitButtonText)
@@ -258,7 +266,8 @@ struct SimpleMode: View {
         }
         .onReceive(nudgeRefreshCycleTimer) { _ in
             if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
-                viewObserved.userDeferralCount += 1
+                viewObserved.userSessionDeferrals += 1
+                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
             }
             updateUI()
         }
@@ -275,7 +284,7 @@ struct SimpleMode: View {
     }
 
     func updateUI() {
-        if Utils().requireDualQuitButtons() || viewObserved.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton {
+        if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
             viewObserved.requireDualQuitButtons = true
         }
         if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {

@@ -12,7 +12,11 @@ import SwiftUI
 
 class ViewState: ObservableObject {
     @Published var shouldExit = false
-    @Published var userDeferralCount = 0
+    @Published var userDeferrals = nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
+    @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
+    @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
+    @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
+    @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
     @Published var requireDualQuitButtons = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
 }

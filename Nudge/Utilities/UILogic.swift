@@ -10,22 +10,28 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
-    if (userQuitDeferrals > 0 || userSessionDeferrals > 0) && Utils().newNudgeEvent() {
-        let msg = "New Nudge event detected - resetting deferrals"
+    if Utils().newNudgeEvent() {
+        let msg = "New Nudge event detected - resetting all deferral values"
         uiLog.notice("\(msg, privacy: .public)")
-        userQuitDeferrals = 0
-        userSessionDeferrals = 0
+        Utils().logRequiredMinimumOSVersion()
+        Utils().logUserDeferrals(resetCount: true)
         Utils().logUserQuitDeferrals(resetCount: true)
         Utils().logUserSessionDeferrals(resetCount: true)
-    } else if userSessionDeferrals > 0 {
-        nudgePrimaryState.userDeferralCount = userSessionDeferrals
+        nudgeDefaults.removeObject(forKey: "deferRunUntil")
+    } else {
+        if nudgePrimaryState.userDeferrals >= 0 {
+            nudgePrimaryState.userDeferrals = nudgePrimaryState.userSessionDeferrals + nudgePrimaryState.userQuitDeferrals
+        }
+        Utils().logRequiredMinimumOSVersion()
+        Utils().logUserDeferrals()
+        Utils().logUserQuitDeferrals()
+        Utils().logUserSessionDeferrals()
     }
-    Utils().logRequiredMinimumOSVersion()
-    if nudgePrimaryState.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton {
+    if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
         nudgePrimaryState.requireDualQuitButtons = true
     }
-    if deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
-        let msg = "User has selected a deferral date (\(deferRunUntil ?? lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
+    if nudgePrimaryState.deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
+        let msg = "User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
         uiLog.notice("\(msg, privacy: .public)")
         Utils().exitNudge()
     }
@@ -75,6 +81,7 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
     // Center Nudge
     Utils().centerNudge()
     Utils().logUserSessionDeferrals()
+    Utils().logUserDeferrals()
 
     // If noTimers is true, just bail
     if noTimers {
@@ -118,12 +125,12 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
         _ = lastRefreshTime = Date()
-        if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons && (nudgePrimaryState.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton) {
+        if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons && (nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton) {
             let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
             uiLog.warning("\(msg, privacy: .public)")
             nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
         }
-        if nudgePrimaryState.userDeferralCount > allowedDeferrals  {
+        if nudgePrimaryState.userDeferrals > allowedDeferrals  {
             if !hasLoggedDeferralCountPastThreshold {
                 let msg = "allowedDeferrals has been passed"
                 uiLog.warning("\(msg, privacy: .public)")

@@ -52,10 +52,13 @@ struct DeferView: View {
             Divider()
             HStack {
                 Button {
-                    Utils().logUserQuitDeferrals()
                     nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
                     userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
                     viewObserved.shouldExit = true
+                    viewObserved.userQuitDeferrals += 1
+                    viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+                    Utils().logUserQuitDeferrals()
+                    Utils().logUserDeferrals()
                     self.presentationMode.wrappedValue.dismiss()
                 } label: {
                     Text("Defer")

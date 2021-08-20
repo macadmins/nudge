@@ -323,28 +323,31 @@ struct Utils {
         }
     }
 
+    func logUserDeferrals(resetCount: Bool = false) {
+        if resetCount {
+            nudgePrimaryState.userDeferrals = 0
+            nudgeDefaults.set(nudgePrimaryState.userDeferrals, forKey: "userDeferrals")
+        } else {
+            nudgeDefaults.set(nudgePrimaryState.userDeferrals, forKey: "userDeferrals")
+        }
+        
+    }
+
     func logUserQuitDeferrals(resetCount: Bool = false) {
         if resetCount {
-            nudgeDefaults.set(0, forKey: "userQuitDeferrals")
+            nudgePrimaryState.userQuitDeferrals = 0
+            nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
         } else {
-            if userQuitDeferrals > 0 {
-                nudgeDefaults.set(userQuitDeferrals+1, forKey: "userQuitDeferrals")
-            } else {
-                nudgeDefaults.set(userQuitDeferrals, forKey: "userQuitDeferrals")
-            }
+            nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
         }
     }
 
     func logUserSessionDeferrals(resetCount: Bool = false) {
         if resetCount {
-            nudgeDefaults.set(0, forKey: "userSessionDeferrals")
+            nudgePrimaryState.userSessionDeferrals = 0
+            nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
         } else {
-            if userSessionDeferrals > 0 {
-                nudgeDefaults.set(nudgePrimaryState.userDeferralCount+1, forKey: "userSessionDeferrals")
-            } else {
-                nudgeDefaults.set(nudgePrimaryState.userDeferralCount, forKey: "userSessionDeferrals")
-            }
-            
+            nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
         }
         
     }
@@ -354,7 +357,7 @@ struct Utils {
     }
 
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     func openMoreInfo() {
