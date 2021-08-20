@@ -24,7 +24,7 @@ func nudgeStartLogic() {
     if nudgePrimaryState.userDeferralCount > allowedDeferralsUntilForcedSecondaryQuitButton {
         nudgePrimaryState.requireDualQuitButtons = true
     }
-    if deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() {
+    if deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
         let msg = "User has selected a deferral date (\(deferRunUntil ?? lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
         uiLog.notice("\(msg, privacy: .public)")
         Utils().exitNudge()
