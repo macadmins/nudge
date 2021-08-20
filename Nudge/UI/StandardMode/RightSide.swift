@@ -224,7 +224,7 @@ struct StandardModeRightSide: View {
                     if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
                         HStack(spacing: 20) {
                             if allowUserQuitDeferrals {
-                                Menu("Defer") {
+                                Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
                                     Button {
                                         Utils().logUserQuitDeferrals()
                                         nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
@@ -240,7 +240,7 @@ struct StandardModeRightSide: View {
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
                                             Utils().userInitiatedExit()
                                         } label: {
-                                            Text("One Hour".localized(desiredLanguage: getDesiredLanguage()))
+                                            Text(oneHourDeferralButtonText)
                                                 .frame(minWidth: 35)
                                         }
                                     }
@@ -251,7 +251,7 @@ struct StandardModeRightSide: View {
                                             userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
                                             Utils().userInitiatedExit()
                                         } label: {
-                                            Text("One Day".localized(desiredLanguage: getDesiredLanguage()))
+                                            Text(oneDayDeferralButtonText)
                                                 .frame(minWidth: 35)
                                         }
                                     }
@@ -260,7 +260,7 @@ struct StandardModeRightSide: View {
                                         Button {
                                             self.showDeferView.toggle()
                                         } label: {
-                                            Text("Custom".localized(desiredLanguage: getDesiredLanguage()))
+                                            Text(customDeferralButtonText)
                                                 .frame(minWidth: 35)
                                         }
                                     }
