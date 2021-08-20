@@ -27,7 +27,7 @@ func nudgeStartLogic() {
         Utils().logUserQuitDeferrals()
         Utils().logUserSessionDeferrals()
     }
-    if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+    if Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
         nudgePrimaryState.requireDualQuitButtons = true
     }
     if nudgePrimaryState.deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
@@ -65,7 +65,6 @@ func nudgeStartLogic() {
 // This type of logic is not indeal and should be redesigned.
 var lastRefreshTime = Utils().getInitialDate()
 var afterFirstRun = false
-var hasLoggedDeferralCountPastThreshold = false
 
 func userHasClickedSecondaryQuitButton() {
     let msg = "User clicked secondaryQuitButton"
@@ -102,6 +101,24 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
     if Utils().getTimerController() > timeDiff  {
         return false
     }
+    
+    nudgePrimaryState.deferralCountPastThreshhold = nudgePrimaryState.userDeferrals > allowedDeferrals
+    
+    if nudgePrimaryState.deferralCountPastThreshhold {
+        if !nudgePrimaryState.hasLoggedDeferralCountPastThreshhold {
+            let msg = "allowedDeferrals has been passed"
+            uiLog.warning("\(msg, privacy: .public)")
+            nudgePrimaryState.hasLoggedDeferralCountPastThreshhold = true
+        }
+    }
+    
+    if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+        if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
+            let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
+            uiLog.warning("\(msg, privacy: .public)")
+            nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
+        }
+    }
 
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
@@ -125,17 +142,7 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
         _ = lastRefreshTime = Date()
-        if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons && (nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton) {
-            let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
-            uiLog.warning("\(msg, privacy: .public)")
-            nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
-        }
-        if nudgePrimaryState.userDeferrals > allowedDeferrals  {
-            if !hasLoggedDeferralCountPastThreshold {
-                let msg = "allowedDeferrals has been passed"
-                uiLog.warning("\(msg, privacy: .public)")
-            }
-            _ = hasLoggedDeferralCountPastThreshold = true
+        if nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate() {
             // Loop through all the running applications and hide them
             for runningApplication in runningApplications {
                 let appName = runningApplication.bundleIdentifier ?? ""

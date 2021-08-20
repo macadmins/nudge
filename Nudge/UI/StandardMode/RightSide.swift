@@ -305,7 +305,7 @@ struct StandardModeRightSide: View {
         if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
             viewObserved.requireDualQuitButtons = true
         }
-        if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
+        if Utils().pastRequiredInstallationDate() || viewObserved.deferralCountPastThreshhold {
             self.allowButtons = false
         }
     }
