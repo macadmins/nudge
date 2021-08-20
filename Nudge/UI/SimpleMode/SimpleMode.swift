@@ -46,6 +46,8 @@ struct SimpleMode: View {
                     }) {
                         Image(systemName: "questionmark.circle")
                     }
+                    .padding(.leading, -2.0)
+                    .padding(.top, -3.0)
                     .buttonStyle(.plain)
                     .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
