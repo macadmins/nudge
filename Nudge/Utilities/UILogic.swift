@@ -90,7 +90,6 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
         uiLog.info("\(msg, privacy: .public)")
         _ = afterFirstRun = true
         _ = lastRefreshTime = Date()
-        return false
     }
 
     if Utils().getTimerController() > timeDiff  {
