@@ -33,6 +33,7 @@ struct Utils {
 
     func allow1HourDeferral() -> Bool {
         let allow1HourDeferralButtons = getNumberOfHoursBetween() > 0
+        // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgePrimaryState.afterFirstRun {
             uiLog.info("Device allow1HourDeferralButtons: \(allow1HourDeferralButtons, privacy: .public)")
         }
@@ -41,6 +42,7 @@ struct Utils {
 
     func allow24HourDeferral() -> Bool {
         let allow24HourDeferralButtons = getNumberOfHoursBetween() > imminentWindowTime
+        // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgePrimaryState.afterFirstRun {
             uiLog.info("Device allow24HourDeferralButtons: \(allow24HourDeferralButtons, privacy: .public)")
         }
@@ -49,6 +51,7 @@ struct Utils {
 
     func allowCustomDeferral() -> Bool {
         let allowCustomDeferralButtons = getNumberOfHoursBetween() > approachingWindowTime
+        // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgePrimaryState.afterFirstRun {
             uiLog.info("Device allowCustomDeferralButtons: \(allowCustomDeferralButtons, privacy: .public)")
         }
