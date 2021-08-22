@@ -16,7 +16,6 @@ struct StandardModeRightSide: View {
     @Environment(\.openURL) var openURL
     
     // State variables
-    @State var allowButtons = true
     @State var hasClickedSecondaryQuitButton = false
     @State var nudgeEventDate = Date()
     @State var nudgeCustomEventDate = Date()
@@ -27,9 +26,6 @@ struct StandardModeRightSide: View {
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
@@ -206,7 +202,7 @@ struct StandardModeRightSide: View {
                 // Separate the buttons with a spacer
                 Spacer()
                 
-                if allowButtons || Utils().demoModeEnabled() {
+                if viewObserved.allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if viewObserved.requireDualQuitButtons {
                         if self.hasClickedSecondaryQuitButton == false {
@@ -285,12 +281,6 @@ struct StandardModeRightSide: View {
             .frame(width: 510)
         }
         .frame(width: 600, height: 450)
-        .onReceive(nudgeRefreshCycleTimer) { _ in
-            updateUI()
-        }
-        .onAppear() {
-            updateUI()
-        }
     }
 
     func updateDeferralUI() {
@@ -299,15 +289,6 @@ struct StandardModeRightSide: View {
         Utils().logUserQuitDeferrals()
         Utils().logUserDeferrals()
         Utils().userInitiatedExit()
-    }
-
-    func updateUI() {
-        if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
-            viewObserved.requireDualQuitButtons = true
-        }
-        if Utils().pastRequiredInstallationDate() || viewObserved.deferralCountPastThreshhold {
-            self.allowButtons = false
-        }
     }
 }
 

@@ -14,14 +14,8 @@ struct StandardModeLeftSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     
-    // State variables
-    @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
@@ -103,12 +97,12 @@ struct StandardModeLeftSide: View {
                 HStack{
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
-                    if self.daysRemaining <= 0 {
-                        Text(String(self.daysRemaining))
+                    if viewObserved.daysRemaining <= 0 {
+                        Text(String(viewObserved.daysRemaining))
                             .foregroundColor(.red)
                             .fontWeight(.bold)
                     } else {
-                        Text(String(self.daysRemaining))
+                        Text(String(viewObserved.daysRemaining))
                             .foregroundColor(.secondary)
                     }
                 }
@@ -156,22 +150,6 @@ struct StandardModeLeftSide: View {
             .frame(width: 250, height: 35)
         }
         .frame(width: 300, height: 450)
-        .onAppear() {
-            updateUI()
-        }
-        .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
-                viewObserved.userSessionDeferrals += 1
-                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-            }
-            updateUI()
-        }
-    }
-    func updateUI() {
-        self.daysRemaining = Utils().getNumberOfDaysBetween()
-        if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
-            viewObserved.requireDualQuitButtons = true
-        }
     }
 }
 

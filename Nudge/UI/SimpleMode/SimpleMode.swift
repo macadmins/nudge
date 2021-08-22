@@ -16,8 +16,6 @@ struct SimpleMode: View {
     @Environment(\.openURL) var openURL
     
     // State variables
-    @State var allowButtons = true
-    @State var daysRemaining = Utils().getNumberOfDaysBetween()
     @State var hasClickedCustomDeferralButton = false
     @State var hasClickedSecondaryQuitButton = false
     @State var nudgeEventDate = Date()
@@ -29,9 +27,6 @@ struct SimpleMode: View {
 
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
@@ -95,13 +90,13 @@ struct SimpleMode: View {
                 HStack(spacing: 3.5) {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
-                    if self.daysRemaining <= 0 {
-                        Text(String(self.daysRemaining))
+                    if viewObserved.daysRemaining <= 0 {
+                        Text(String(viewObserved.daysRemaining))
                             .foregroundColor(.red)
                             .font(.title2)
                             .fontWeight(.bold)
                     } else {
-                        Text(String(self.daysRemaining))
+                        Text(String(viewObserved.daysRemaining))
                             .font(.title2)
                             .fontWeight(.bold)
                     }
@@ -165,7 +160,7 @@ struct SimpleMode: View {
                 // Separate the buttons with a spacer
                 Spacer()
 
-                if allowButtons || Utils().demoModeEnabled() {
+                if viewObserved.allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
                     if viewObserved.requireDualQuitButtons {
                         HStack(spacing: 20) {
@@ -249,23 +244,12 @@ struct SimpleMode: View {
             .padding(.bottom, -17.5)
         }
         .frame(width: 900, height: 450)
-        .onAppear() {
-            updateUI()
-        }
-        .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
-                viewObserved.userSessionDeferrals += 1
-                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-            }
-            updateUI()
-        }
     }
     
     var limitRange: ClosedRange<Date> {
-        let daysRemaining = Utils().getNumberOfDaysBetween()
-        if daysRemaining > 0 {
+        if viewObserved.daysRemaining > 0 {
             // Do not let the user defer past the point of the approachingWindowTime
-            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(imminentWindowTime / 24), to: Date())!
+            return Date()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Date())!
         } else {
             return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }
@@ -278,16 +262,7 @@ struct SimpleMode: View {
         Utils().logUserDeferrals()
         Utils().userInitiatedExit()
     }
-
-    func updateUI() {
-        if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
-            viewObserved.requireDualQuitButtons = true
-        }
-        if Utils().pastRequiredInstallationDate() || viewObserved.deferralCountPastThreshhold {
-            self.allowButtons = false
-        }
-        self.daysRemaining = Utils().getNumberOfDaysBetween()
-    }
+    
 }
 
 #if DEBUG

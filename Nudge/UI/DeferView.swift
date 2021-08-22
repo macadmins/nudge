@@ -69,10 +69,9 @@ struct DeferView: View {
         .frame(width: 350, height: 275)
     }
     var limitRange: ClosedRange<Date> {
-        let daysRemaining = Utils().getNumberOfDaysBetween()
-        if daysRemaining > 0 {
+        if viewObserved.daysRemaining > 0 {
             // Do not let the user defer past the point of the approachingWindowTime
-            return Date()...Calendar.current.date(byAdding: .day, value: daysRemaining-(imminentWindowTime / 24), to: Date())!
+            return Date()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Date())!
         } else {
             return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }

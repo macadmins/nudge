@@ -11,33 +11,39 @@ import SwiftUI
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
 class ViewState: ObservableObject {
-    @Published var shouldExit = false
-    @Published var userDeferrals = nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
-    @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
-    @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
-    @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
-    @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
-    @Published var requireDualQuitButtons = false
+    @Published var allowButtons = true
+    @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
+    @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
     @Published var hasLoggedDeferralCountPastThreshhold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
+    @Published var requireDualQuitButtons = false
+    @Published var shouldExit = false
+    @Published var userDeferrals = nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
+    @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
+    @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
+    @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
 }
 
 // BackgroundView
 struct BackgroundView: View {
-    @StateObject var viewState = nudgePrimaryState
+    @ObservedObject var viewObserved: ViewState
     var body: some View {
         if simpleMode() {
-            SimpleMode(viewObserved: viewState)
+            SimpleMode(viewObserved: viewObserved)
         } else {
-            StandardMode(viewObserved: viewState)
+            StandardMode(viewObserved: viewObserved)
         }
     }
 }
 
 struct ContentView: View {
+    @StateObject var viewState = nudgePrimaryState
+    // Setup the main refresh timer that controls the child refresh logic
+    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
+
     var body: some View {
-        BackgroundView().background(
+        BackgroundView(viewObserved: viewState).background(
             HostingWindowFinder { window in
                 window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
                 window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
@@ -48,6 +54,25 @@ struct ContentView: View {
             }
         )
         .edgesIgnoringSafeArea(.all)
+        .onAppear() {
+            updateUI()
+        }
+        .onReceive(nudgeRefreshCycleTimer) { _ in
+            if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
+                viewState.userSessionDeferrals += 1
+                viewState.userDeferrals = viewState.userSessionDeferrals + viewState.userQuitDeferrals
+            }
+            updateUI()
+        }
+    }
+    func updateUI() {
+        if Utils().requireDualQuitButtons() || viewState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+            viewState.requireDualQuitButtons = true
+        }
+        if Utils().pastRequiredInstallationDate() || viewState.deferralCountPastThreshhold {
+            viewState.allowButtons = false
+        }
+        viewState.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 
