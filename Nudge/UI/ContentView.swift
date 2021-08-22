@@ -18,9 +18,12 @@ class ViewState: ObservableObject {
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
     @Published var hasLoggedDeferralCountPastThreshhold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
+    @Published var hasLoggedPastRequiredInstallationDate = false
+    @Published var hasLoggedRequireDualQuitButtons = false
     @Published var lastRefreshTime = Utils().getInitialDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
+    @Published var timerCycle = 0
     @Published var userDeferrals = nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
     @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
     @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"

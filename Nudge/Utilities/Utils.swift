@@ -33,19 +33,25 @@ struct Utils {
 
     func allow1HourDeferral() -> Bool {
         let allow1HourDeferralButtons = getNumberOfHoursBetween() > 0
-        uiLog.info("Device allow1HourDeferralButtons: \(allow1HourDeferralButtons, privacy: .public)")
+        if !nudgePrimaryState.afterFirstRun {
+            uiLog.info("Device allow1HourDeferralButtons: \(allow1HourDeferralButtons, privacy: .public)")
+        }
         return allow1HourDeferralButtons
     }
 
     func allow24HourDeferral() -> Bool {
         let allow24HourDeferralButtons = getNumberOfHoursBetween() > imminentWindowTime
-        uiLog.info("Device allow24HourDeferralButtons: \(allow24HourDeferralButtons, privacy: .public)")
+        if !nudgePrimaryState.afterFirstRun {
+            uiLog.info("Device allow24HourDeferralButtons: \(allow24HourDeferralButtons, privacy: .public)")
+        }
         return allow24HourDeferralButtons
     }
 
     func allowCustomDeferral() -> Bool {
         let allowCustomDeferralButtons = getNumberOfHoursBetween() > approachingWindowTime
-        uiLog.info("Device allowCustomDeferralButtons: \(allowCustomDeferralButtons, privacy: .public)")
+        if !nudgePrimaryState.afterFirstRun {
+            uiLog.info("Device allowCustomDeferralButtons: \(allowCustomDeferralButtons, privacy: .public)")
+        }
         return allowCustomDeferralButtons
     }
 
@@ -307,7 +313,10 @@ struct Utils {
 
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
-        utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
+        if timerCycle != nudgePrimaryState.timerCycle {
+            utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
+            nudgePrimaryState.timerCycle = timerCycle
+        }
         return timerCycle
     }
 
@@ -371,7 +380,10 @@ struct Utils {
 
     func pastRequiredInstallationDate() -> Bool {
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
-        utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
+            nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
+            utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+        }
         return pastRequiredInstallationDate
     }
 
@@ -381,7 +393,10 @@ struct Utils {
             return false
         }
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
-        uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedRequireDualQuitButtons {
+            nudgePrimaryState.hasLoggedRequireDualQuitButtons = true
+            uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
+        }
         return requireDualQuitButtons
     }
 
