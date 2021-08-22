@@ -54,6 +54,7 @@ struct ContentView: View {
             }
         )
         .edgesIgnoringSafeArea(.all)
+        .onAppear(perform: nudgeStartLogic)
         .onAppear() {
             updateUI()
         }

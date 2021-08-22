@@ -100,16 +100,13 @@ struct Main: App {
             if Utils().debugUIModeEnabled() {
                 VSplitView {
                     ContentView()
-                        .onAppear(perform: nudgeStartLogic)
                         .frame(width: 900, height: 450)
                     ContentView()
-                        .onAppear(perform: nudgeStartLogic)
                         .frame(width: 900, height: 450)
                 }
                 .frame(height: 900)
             } else {
                 ContentView()
-                    .onAppear(perform: nudgeStartLogic)
                     .frame(width: 900, height: 450)
             }
         }
