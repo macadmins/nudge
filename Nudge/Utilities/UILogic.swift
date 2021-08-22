@@ -30,8 +30,8 @@ func nudgeStartLogic() {
     if Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
         nudgePrimaryState.requireDualQuitButtons = true
     }
-    if nudgePrimaryState.deferRunUntil ?? lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
-        let msg = "User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
+    if nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
+        let msg = "User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
         uiLog.notice("\(msg, privacy: .public)")
         Utils().exitNudge()
     }
@@ -61,11 +61,6 @@ func nudgeStartLogic() {
     }
 }
 
-// These are initial variables that needToActivateNudge() will update within the timer controller
-// This type of logic is not indeal and should be redesigned.
-var lastRefreshTime = Utils().getInitialDate()
-var afterFirstRun = false
-
 func userHasClickedSecondaryQuitButton() {
     let msg = "User clicked secondaryQuitButton"
     uiLog.notice("\(msg, privacy: .public)")
@@ -76,7 +71,7 @@ func userHasClickedDeferralQuitButton(deferralTime: Date) {
     uiLog.notice("\(msg, privacy: .public)")
 }
 
-func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
+func needToActivateNudge() -> Bool {
     // Center Nudge
     Utils().centerNudge()
     Utils().logUserSessionDeferrals()
@@ -88,14 +83,14 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
     }
 
     let currentTime = Date().timeIntervalSince1970
-    let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
+    let timeDiff = Int((currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))
 
     // The first time the main timer contoller hits we don't care
-    if !afterFirstRun {
-        let msg = "Initializing nudgeRefreshCycle"
+    if !nudgePrimaryState.afterFirstRun {
+        let msg = "Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)"
         uiLog.info("\(msg, privacy: .public)")
-        _ = afterFirstRun = true
-        _ = lastRefreshTime = Date()
+        nudgePrimaryState.afterFirstRun = true
+        nudgePrimaryState.lastRefreshTime = Date()
     }
 
     if Utils().getTimerController() > timeDiff  {
@@ -141,7 +136,7 @@ func needToActivateNudge(lastRefreshTimeVar: Date) -> Bool {
 
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
-        _ = lastRefreshTime = Date()
+        nudgePrimaryState.lastRefreshTime = Date()
         if nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate() {
             // Loop through all the running applications and hide them
             for runningApplication in runningApplications {

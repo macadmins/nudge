@@ -12,11 +12,13 @@ import SwiftUI
 
 class ViewState: ObservableObject {
     @Published var allowButtons = true
+    @Published var afterFirstRun = false
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
     @Published var hasLoggedDeferralCountPastThreshhold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
+    @Published var lastRefreshTime = Utils().getInitialDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
     @Published var userDeferrals = nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
@@ -50,7 +52,7 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
-                _ = needToActivateNudge(lastRefreshTimeVar: lastRefreshTime)
+                _ = needToActivateNudge()
             }
         )
         .edgesIgnoringSafeArea(.all)
@@ -59,7 +61,7 @@ struct ContentView: View {
             updateUI()
         }
         .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(lastRefreshTimeVar: lastRefreshTime) {
+            if needToActivateNudge() {
                 viewState.userSessionDeferrals += 1
                 viewState.userDeferrals = viewState.userSessionDeferrals + viewState.userQuitDeferrals
             }
