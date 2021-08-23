@@ -64,11 +64,10 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     }
     if !requirements.isEmpty {
         if requirements.count >= 2 {
-            let v1ErrorMsg = "Multiple hashes may result in undefined behavior. Please deploy a single hash for OS enforcement at this time."
-            prefsProfileLog.error("\(v1ErrorMsg, privacy: .public)")
-        }
-        for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0")  {
+            let errorMsg = "Multiple hashes results in undefined behavior. Please deploy a single hash for OS enforcement."
+            prefsProfileLog.error("\(errorMsg, privacy: .public)")
+        } else {
+            for (_ , subPreferences) in requirements.enumerated() {
                 return subPreferences
             }
         }
@@ -85,11 +84,10 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
         if requirements.count >= 2 {
-            let v1ErrorMsg = "Multiple hashes may result in undefined behavior. Please deploy a single hash for OS enforcement at this time."
-            prefsJSONLog.error("\(v1ErrorMsg, privacy: .public)")
-        }
-        for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0") {
+            let errorMsg = "Multiple hashes results in undefined behavior. Please deploy a single hash for OS enforcement."
+            prefsJSONLog.error("\(errorMsg, privacy: .public)")
+        } else {
+            for (_ , subPreferences) in requirements.enumerated() {
                 return subPreferences
             }
         }
@@ -116,6 +114,78 @@ func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
         }
     }
     return nil
+}
+
+// Figure out the appropriate ruleset to return
+func getMajorUpgradeAppPath() -> String {
+    var fullMatch = ""
+    var majorMatch = ""
+    if let rules = versionRules {
+        for (_, rule) in rules.enumerated() {
+            if rule.rule == currentOSVersion {
+                fullMatch = rule.majorUpgradeAppPath ?? ""
+            }
+            if rule.rule == String(Utils().getMajorOSVersion()) {
+                majorMatch = rule.majorUpgradeAppPath ?? ""
+            }
+        }
+    }
+    if !fullMatch.isEmpty {
+        return fullMatch
+    } else if !majorMatch.isEmpty {
+        return majorMatch
+    } else if !majorUpgradeAppPath.isEmpty {
+        return majorUpgradeAppPath
+    } else {
+        return ""
+    }
+}
+func getRequiredInstallationDate() -> Date {
+    var fullMatch = Date(timeIntervalSince1970: 0)
+    var majorMatch = Date(timeIntervalSince1970: 0)
+    if let rules = versionRules {
+        for (_, rule) in rules.enumerated() {
+            if rule.rule == currentOSVersion {
+                fullMatch = rule.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+            }
+            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+            if rule.rule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
+                majorMatch = rule.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+            }
+        }
+    }
+    if fullMatch != Date(timeIntervalSince1970: 0) {
+        return fullMatch
+    } else if majorMatch != Date(timeIntervalSince1970: 0) {
+        return majorMatch
+    } else if requiredInstallationDate != Date(timeIntervalSince1970: 0) {
+        return requiredInstallationDate
+    } else {
+        return Date(timeIntervalSince1970: 0)
+    }
+}
+func getRequiredMinimumOSVersion() -> String {
+    var fullMatch = "0.0"
+    var majorMatch = "0.0"
+    if let rules = versionRules {
+        for (_, rule) in rules.enumerated() {
+            if rule.rule == currentOSVersion {
+                fullMatch = rule.requiredMinimumOSVersion ?? "0.0"
+            }
+            if rule.rule == String(Utils().getMajorOSVersion()) {
+                majorMatch = rule.requiredMinimumOSVersion ?? "0.0"
+            }
+        }
+    }
+    if Utils().versionGreaterThan(currentVersion: fullMatch, newVersion: "0.0") {
+        return fullMatch
+    } else if Utils().versionGreaterThan(currentVersion: majorMatch, newVersion: "0.0") {
+        return majorMatch
+    } else if Utils().versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: "0.0") {
+        return requiredMinimumOSVersion
+    } else {
+        return "0.0"
+    }
 }
 
 // userExperience

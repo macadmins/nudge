@@ -111,6 +111,7 @@ struct OSVersionRequirement: Codable {
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
     var targetedOSVersions: [String]?
+    var versionRules: [VersionRule]?
 }
 
 // MARK: OSVersionRequirement convenience initializers and mutators
@@ -162,7 +163,8 @@ extension OSVersionRequirement {
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
-        targetedOSVersions: [String]?? = nil
+        targetedOSVersions: [String]?? = nil,
+        versionRules: [VersionRule]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
@@ -170,7 +172,8 @@ extension OSVersionRequirement {
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
-            targetedOSVersions: targetedOSVersions ?? self.targetedOSVersions
+            targetedOSVersions: targetedOSVersions ?? self.targetedOSVersions,
+            versionRules: versionRules ?? self.versionRules
         )
     }
 
@@ -219,6 +222,68 @@ extension AboutUpdateURL {
         return AboutUpdateURL(
             language: language ?? self.language,
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+// MARK: - VersionRule
+struct VersionRule: Codable {
+    var majorUpgradeAppPath: String?
+    var requiredInstallationDate: Date?
+    var requiredMinimumOSVersion: String?
+    var rule: String?
+}
+
+// MARK: VersionRule convenience initializers and mutators
+
+extension VersionRule {
+    init(fromDictionary: [String:AnyObject]) {
+        var generatedVersionRules = [VersionRule]()
+        if let versionRules = fromDictionary["versionRules"] as? [[String:String]] {
+            for each in versionRules {
+                if let rule = each["rule"], let majorUpgradeAppPath = each["majorUpgradeAppPath"], let requiredInstallationDate = each["requiredInstallationDate"], let requiredMinimumOSVersion = each["requiredMinimumOSVersion"]  {
+                    // We have to import the date as a string, now convert it to a Date
+                    self.requiredInstallationDate = Utils().coerceStringToDate(dateString: fromDictionary["requiredInstallationDate"] as! String)
+                    generatedVersionRules.append(VersionRule(majorUpgradeAppPath: majorUpgradeAppPath, requiredInstallationDate: Utils().coerceStringToDate(dateString: requiredInstallationDate), requiredMinimumOSVersion: requiredMinimumOSVersion, rule: rule))
+                }
+            }
+        }
+    }
+
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(VersionRule.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        majorUpgradeAppPath: String?? = nil,
+        requiredInstallationDate: Date?? = nil,
+        requiredMinimumOSVersion: String?? = nil,
+        rule: String?? = nil
+    ) -> VersionRule {
+        return VersionRule(
+            majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
+            requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
+            requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
+            rule: rule ?? self.rule
         )
     }
 

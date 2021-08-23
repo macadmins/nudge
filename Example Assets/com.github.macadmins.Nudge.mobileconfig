@@ -70,20 +70,38 @@
             <date>2021-08-28T00:00:00Z</date>
             <key>requiredMinimumOSVersion</key>
             <string>11.5.2</string>
-            <key>targetedOSVersions</key>
+            <key>versionRules</key>
             <array>
-              <string>11.0</string>
-              <string>11.0.1</string>
-              <string>11.1</string>
-              <string>11.2</string>
-              <string>11.2.1</string>
-              <string>11.2.2</string>
-              <string>11.2.3</string>
-              <string>11.3</string>
-              <string>11.3.1</string>
-              <string>11.4</string>
-              <string>11.5</string>
-              <string>11.5.1</string>
+              <dict>
+                <key>majorUpgradeAppPath</key>
+                <string>/Applications/Install macOS Big Sur.app</string>
+                <key>requiredMinimumOSVersion</key>
+                <string>11.5.2</string>
+                <key>requiredInstallationDate</key>
+                <date>2021-08-28T00:00:00Z</date>
+                <key>rule</key>
+                <string>11</string>
+              </dict>
+              <dict>
+                <key>majorUpgradeAppPath</key>
+                <string>/Applications/Install macOS Big Sur.app</string>
+                <key>requiredMinimumOSVersion</key>
+                <string>11.5.2</string>
+                <key>requiredInstallationDate</key>
+                <date>2021-08-28T12:00:00Z</date>
+                <key>rule</key>
+                <string>11.5.1</string>
+              </dict>
+              <dict>
+                <key>majorUpgradeAppPath</key>
+                <string>/Applications/Install macOS Monterey.app</string>
+                <key>requiredMinimumOSVersion</key>
+                <string>12.0.1</string>
+                <key>requiredInstallationDate</key>
+                <date>2021-10-28T00:00:00Z</date>
+                <key>rule</key>
+                <string>12</string>
+              </dict>
             </array>
           </dict>
         </array>

@@ -10,6 +10,7 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
+    print(getRequiredInstallationDate())
     if Utils().newNudgeEvent() {
         let msg = "New Nudge event detected - resetting all deferral values"
         uiLog.notice("\(msg, privacy: .public)")
@@ -120,7 +121,7 @@ func needToActivateNudge() -> Bool {
 
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
-        if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
+        if NSURL.fileURL(withPath: getMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
             let msg = "majorUpgradeApp is currently the frontmostApplication"
             uiLog.info("\(msg, privacy: .public)")
             return false
@@ -146,7 +147,7 @@ func needToActivateNudge() -> Bool {
                     continue
                 }
                 if majorUpgradeAppPathExists {
-                    if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
+                    if NSURL.fileURL(withPath: getMajorUpgradeAppPath()) == appBundle {
                         continue
                     }
                 }

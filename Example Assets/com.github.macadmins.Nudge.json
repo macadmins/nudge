@@ -31,19 +31,25 @@
       "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
       "requiredInstallationDate": "2021-08-28T00:00:00Z",
       "requiredMinimumOSVersion": "11.5.2",
-      "targetedOSVersions": [
-        "11.0",
-        "11.0.1",
-        "11.1",
-        "11.2",
-        "11.2.1",
-        "11.2.2",
-        "11.2.3",
-        "11.3",
-        "11.3.1",
-        "11.4",
-        "11.5",
-        "11.5.1"
+      "versionRules": [
+        {
+          "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
+          "requiredMinimumOSVersion": "11.5.2",
+          "requiredInstallationDate": "2021-08-28T00:00:00Z",
+          "rule": "11"
+        },
+        {
+          "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
+          "requiredMinimumOSVersion": "11.5.2",
+          "requiredInstallationDate": "2021-08-28T12:00:00Z",
+          "rule": "11.5.1"
+        },
+        {
+          "majorUpgradeAppPath": "/Applications/Install macOS Monterey.app",
+          "requiredMinimumOSVersion": "12.0.1",
+          "requiredInstallationDate": "2021-10-28T00:00:00Z",
+          "rule": "12"
+        }
       ]
     }
   ],

@@ -80,7 +80,7 @@ struct StandardModeLeftSide: View {
                     Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                         .fontWeight(.bold)
                     Spacer()
-                    Text(String(requiredMinimumOSVersion))
+                    Text(String(getRequiredMinimumOSVersion()))
                         .foregroundColor(.secondary)
                         .fontWeight(.bold)
                 }

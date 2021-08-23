@@ -23,10 +23,11 @@ let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bo
 let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
 let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
-let majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
+let majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: getMajorUpgradeAppPath())
 let requiredInstallationDate = osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = osVersionRequirementsProfile?.requiredMinimumOSVersion ?? osVersionRequirementsJSON?.requiredMinimumOSVersion ?? "0.0"
 let aboutUpdateURL = getAboutUpdateURL(OSVerReq: osVersionRequirementsProfile) ?? getAboutUpdateURL(OSVerReq: osVersionRequirementsJSON) ?? ""
+let versionRules = osVersionRequirementsProfile?.versionRules ?? osVersionRequirementsJSON?.versionRules ?? nil
 
 // userExperience
 let userExperienceProfile = getUserExperienceProfile()

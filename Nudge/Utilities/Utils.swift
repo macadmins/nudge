@@ -119,9 +119,9 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: getRequiredMinimumOSVersion())
         if fullyUpdated {
-            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(getRequiredMinimumOSVersion()))"
             utilsLog.notice("\(msg, privacy: .public)")
             return true
         } else {
@@ -192,14 +192,20 @@ struct Utils {
 
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedMajorOSVersion {
+            nudgePrimaryState.hasLoggedMajorOSVersion = true
+            utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        }
         return MajorOSVersion
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = getRequiredMinimumOSVersion().split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
-        utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
+            nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
+            utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        }
         return majorRequiredNudgeOSVersion
     }
 
@@ -257,13 +263,13 @@ struct Utils {
     func getNumberOfDaysBetween() -> Int {
        let currentCal = Calendar.current
        let fromDate = currentCal.startOfDay(for: getCurrentDate())
-       let toDate = currentCal.startOfDay(for: requiredInstallationDate)
+       let toDate = currentCal.startOfDay(for: getRequiredInstallationDate())
        let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
        return numberOfDays.day!
     }
 
     func getNumberOfHoursBetween() -> Int {
-        return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
+        return Int(getRequiredInstallationDate().timeIntervalSince(getCurrentDate()) / 3600 )
     }
 
     func getPatchOSVersion() -> Int {
@@ -365,11 +371,11 @@ struct Utils {
     }
 
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        nudgeDefaults.set(getRequiredMinimumOSVersion(), forKey: "requiredMinimumOSVersion")
     }
 
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: getRequiredMinimumOSVersion(), newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     func openMoreInfo() {
@@ -382,7 +388,7 @@ struct Utils {
     }
 
     func pastRequiredInstallationDate() -> Bool {
-        let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
+        let pastRequiredInstallationDate = getCurrentDate() > getRequiredInstallationDate()
         if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
             nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
             utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
@@ -405,7 +411,10 @@ struct Utils {
 
     func requireMajorUpgrade() -> Bool {
         let requireMajorUpdate = versionGreaterThan(currentVersion: String(getMajorRequiredNudgeOSVersion()), newVersion: String(getMajorOSVersion()))
-        utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedRequireMajorUgprade {
+            nudgePrimaryState.hasLoggedRequireMajorUgprade = true
+            utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
+        }
         return requireMajorUpdate
     }
 
@@ -438,7 +447,7 @@ struct Utils {
         if actionButtonPath != nil {
             NSWorkspace.shared.open(URL(string: actionButtonPath!)!)
         } else if requireMajorUpgrade() && majorUpgradeAppPathExists {
-            NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+            NSWorkspace.shared.open(URL(fileURLWithPath: getMajorUpgradeAppPath()))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
