@@ -192,14 +192,20 @@ struct Utils {
 
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedMajorOSVersion {
+            nudgePrimaryState.hasLoggedMajorOSVersion = true
+            utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        }
         return MajorOSVersion
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
-        utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
+            nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
+            utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        }
         return majorRequiredNudgeOSVersion
     }
 
@@ -405,7 +411,10 @@ struct Utils {
 
     func requireMajorUpgrade() -> Bool {
         let requireMajorUpdate = versionGreaterThan(currentVersion: String(getMajorRequiredNudgeOSVersion()), newVersion: String(getMajorOSVersion()))
-        utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedRequireMajorUgprade {
+            nudgePrimaryState.hasLoggedRequireMajorUgprade = true
+            utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
+        }
         return requireMajorUpdate
     }
 
