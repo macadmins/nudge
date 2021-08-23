@@ -329,13 +329,7 @@ In this example, Nudge will do the following:
         }
       ],
       "requiredInstallationDate": "2021-02-28T00:00:00Z",
-      "requiredMinimumOSVersion": "11.2.1",
-      "targetedOSVersions": [
-        "11.0",
-        "11.0.1",
-        "11.1",
-        "11.2"
-      ]
+      "requiredMinimumOSVersion": "11.2.1"
     }
   ]
 }

@@ -110,7 +110,6 @@ struct OSVersionRequirement: Codable {
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
-    var targetedOSVersions: [String]?
     var versionRules: [VersionRule]?
 }
 
@@ -139,7 +138,6 @@ extension OSVersionRequirement {
         self.aboutUpdateURLs = generatedAboutUpdateURLs
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
-        self.targetedOSVersions = fromDictionary["targetedOSVersions"] as? [String]
     }
 
     init(data: Data) throws {
@@ -163,7 +161,6 @@ extension OSVersionRequirement {
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
-        targetedOSVersions: [String]?? = nil,
         versionRules: [VersionRule]?? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
@@ -172,7 +169,6 @@ extension OSVersionRequirement {
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
-            targetedOSVersions: targetedOSVersions ?? self.targetedOSVersions,
             versionRules: versionRules ?? self.versionRules
         )
     }

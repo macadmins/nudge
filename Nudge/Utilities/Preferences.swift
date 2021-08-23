@@ -50,7 +50,7 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
 }
 
 // osVersionRequirements
-// Mutate the profile into our required construct and then compare currentOS against targetedOSVersions
+// Mutate the profile into our required construct
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     if Utils().demoModeEnabled() {
@@ -77,7 +77,8 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     }
     return nil
 }
-// Loop through JSON osVersionRequirements preferences and then compare currentOS against targetedOSVersions
+// Loop through JSON osVersionRequirements preferences
+// Even if profile/JSON is installed, return nil if in demo-mode
 func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     if Utils().demoModeEnabled() {
         return nil
