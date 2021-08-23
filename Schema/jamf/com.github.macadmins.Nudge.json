@@ -108,7 +108,7 @@
 						"type": "string"
 					},
 					"targetedOSVersions": {
-						"description": "The versions of macOS that require a security update. You can specify single version or multiple versions.",
+						"description": "The versions of macOS that require a security update. You can specify single version or multiple versions. This key is only used with Nudge v1.0 and will not be honored in v1.1",
 						"type": "array",
 						"items": {
 							"options": {
@@ -119,7 +119,16 @@
 							"type": "string",
 							"title": "targetedOSVersion"
 						}
-					}
+					},
+					"targetedOSVersionsRule": {
+						"description": "The OS string rule for targeting nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0",
+						"options": {
+							"inputAttributes": {
+								"placeholder": "default"
+							}
+						},
+						"type": "string"
+					},
 				}
 			}
 		},
