@@ -70,21 +70,8 @@
             <date>2021-08-28T00:00:00Z</date>
             <key>requiredMinimumOSVersion</key>
             <string>11.5.2</string>
-            <key>targetedOSVersions</key>
-            <array>
-              <string>11.0</string>
-              <string>11.0.1</string>
-              <string>11.1</string>
-              <string>11.2</string>
-              <string>11.2.1</string>
-              <string>11.2.2</string>
-              <string>11.2.3</string>
-              <string>11.3</string>
-              <string>11.3.1</string>
-              <string>11.4</string>
-              <string>11.5</string>
-              <string>11.5.1</string>
-            </array>
+            <key>targetedOSVersionsRule</key>
+            <string>default</string>
           </dict>
         </array>
         <key>userExperience</key>
