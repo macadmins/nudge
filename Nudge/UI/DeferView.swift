@@ -59,7 +59,7 @@ struct DeferView: View {
                     viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
                     Utils().logUserQuitDeferrals()
                     Utils().logUserDeferrals()
-                    self.presentationMode.wrappedValue.dismiss()
+                    Utils().userInitiatedExit()
                 } label: {
                     Text("Defer")
                         .frame(minWidth: 35)

@@ -269,9 +269,6 @@ struct StandardModeRightSide: View {
                             }
                         }
                         .sheet(isPresented: $showDeferView) {
-                            if viewObserved.shouldExit {
-                                Utils().userInitiatedExit()
-                            }
                         } content: {
                             DeferView(viewObserved: viewObserved)
                         }

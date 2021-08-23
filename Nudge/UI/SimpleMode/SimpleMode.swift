@@ -231,9 +231,6 @@ struct SimpleMode: View {
                         }
                         .frame(maxHeight: 30)
                         .sheet(isPresented: $showDeferView) {
-                            if viewObserved.shouldExit {
-                                Utils().userInitiatedExit()
-                            }
                         } content: {
                             DeferView(viewObserved: viewObserved)
                         }
