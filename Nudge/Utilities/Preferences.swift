@@ -83,8 +83,8 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         prefsProfileLog.info("\(msg, privacy: .public)")
     }
     if fullMatch.requiredMinimumOSVersion != nil {
-        return fullMatch }
-    else if partialMatch.requiredMinimumOSVersion != nil {
+        return fullMatch
+    } else if partialMatch.requiredMinimumOSVersion != nil {
         return partialMatch
     } else if defaultMatch.requiredMinimumOSVersion != nil {
         return defaultMatch
@@ -117,8 +117,8 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
         prefsJSONLog.info("\(msg, privacy: .public)")
     }
     if fullMatch.requiredMinimumOSVersion != nil {
-        return fullMatch }
-    else if partialMatch.requiredMinimumOSVersion != nil {
+        return fullMatch
+    } else if partialMatch.requiredMinimumOSVersion != nil {
         return partialMatch
     } else if defaultMatch.requiredMinimumOSVersion != nil {
         return defaultMatch
