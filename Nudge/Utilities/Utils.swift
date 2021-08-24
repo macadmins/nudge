@@ -32,30 +32,30 @@ struct Utils {
     }
 
     func allow1HourDeferral() -> Bool {
-        let allow1HourDeferralButtons = getNumberOfHoursBetween() > 0
+        let allow1HourDeferralButton = getNumberOfHoursBetween() > 0
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgePrimaryState.afterFirstRun {
-            uiLog.info("Device allow1HourDeferralButtons: \(allow1HourDeferralButtons, privacy: .public)")
+            uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
         }
-        return allow1HourDeferralButtons
+        return allow1HourDeferralButton
     }
 
     func allow24HourDeferral() -> Bool {
-        let allow24HourDeferralButtons = getNumberOfHoursBetween() > imminentWindowTime
+        let allow24HourDeferralButton = getNumberOfHoursBetween() > imminentWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgePrimaryState.afterFirstRun {
-            uiLog.info("Device allow24HourDeferralButtons: \(allow24HourDeferralButtons, privacy: .public)")
+            uiLog.info("Device allow24HourDeferralButton: \(allow24HourDeferralButton, privacy: .public)")
         }
-        return allow24HourDeferralButtons
+        return allow24HourDeferralButton
     }
 
     func allowCustomDeferral() -> Bool {
-        let allowCustomDeferralButtons = getNumberOfHoursBetween() > approachingWindowTime
+        let allowCustomDeferralButton = getNumberOfHoursBetween() > approachingWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgePrimaryState.afterFirstRun {
-            uiLog.info("Device allowCustomDeferralButtons: \(allowCustomDeferralButtons, privacy: .public)")
+            uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
         }
-        return allowCustomDeferralButtons
+        return allowCustomDeferralButton
     }
 
     func centerNudge() {
