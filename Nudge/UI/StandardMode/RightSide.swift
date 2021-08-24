@@ -31,6 +31,7 @@ struct StandardModeRightSide: View {
     var body: some View {
         let darkMode = colorScheme == .dark
         let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
+        let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
         // Right side of Nudge
         VStack {
             // mainHeader
@@ -105,29 +106,48 @@ struct StandardModeRightSide: View {
                     Spacer()
                 }
                 .frame(width: 510)
-                
+
                 // mainContentText
-                ScrollView(.vertical) {
-                    VStack {
-                        HStack {
-                            Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
-                                .font(.callout)
-                                .font(.body)
-                                .fontWeight(.regular)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer()
+                if !screenShotExists && !forceScreenShotIconMode() {
+                    ScrollView(.vertical) {
+                        VStack {
+                            HStack {
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                    .font(.callout)
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                            }
                         }
                     }
+                    .frame(minHeight: 245.0)
+                    .frame(maxHeight: 245.0)
+                    .frame(width: 510)
+                } else {
+                    ScrollView(.vertical) {
+                        VStack {
+                            HStack {
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                    .font(.callout)
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                            }
+                        }
+                    }
+                    .frame(minHeight: 125.0)
+                    .frame(maxHeight: 125.0)
+                    .frame(width: 510)
                 }
-                .frame(minHeight: 125.0)
-                .frame(maxHeight: 125.0)
-                .frame(width: 510)
 
                 HStack {
                     Spacer()
                     // screenShot
-                    if FileManager.default.fileExists(atPath: screenShotPath) {
+                    if screenShotExists {
                         Button {
                             self.showSSDetail.toggle()
                         } label: {
