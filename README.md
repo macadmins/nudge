@@ -1,7 +1,7 @@
 # Nudge (macadmin's Slack #nudge)
 <img src="/assets/NudgeIcon.png" width=25% height=25%>
 
-Nudge is application for enforcing macOS updates, written in Swift/SwiftUI 5.2. In order to use the newest features of Swift, Nudge will only work on macOS 11.0 and higher.
+Nudge is application for enforcing macOS updates, written in Swift 5.5 and SwiftUI 5.2. In order to use the newest features of Swift, Nudge will only work on macOS 11.0 and higher.
 
 This is a replacement for the original Nudge, which was written in Python 2/3. If you need to enforce macOS updates for earlier versions, it is recommend to use [nudge-python](https://github.com/macadmins/nudge-python).
 
@@ -15,7 +15,8 @@ Some enhancements to the SwiftUI version over nudge-python
 
 ## OS support
 The following operating system and versions have been tested.
-- 11.0, 11.0.1, 11.1, 11.2, 11.2.1
+- 11.0, 11.0.1, 11.1, 11.2, 11.2.1, 11.2.2, 11.2.3, 11.3, 11.3.1, 11.4, 11.5, 11.5.1, 11.5.2
+- 12.0 beta
 
 ## Troubleshooting
 Before submitting any issues Nudge, please ensure you using the latest version. You can find the version you are using by running Nudge and clicking on the `?` button at the top left.
@@ -178,7 +179,15 @@ Example LaunchAgent
 ```
 
 ## Localization
-By default, Nudge only supports the English (en) locale. If you need additional localizations, you will need the following:
+By default, Nudge supports the following locales:
+- English
+- French
+- Spanish
+- German
+- Swedish
+- Dutch
+
+If you need additional localizations, you will need the following:
 
 - Localization.strings for locale of the left side of Nudge and the `Additional Machine Details` view
 - Preferences file
@@ -309,33 +318,23 @@ Nudge offers significant customization, which might be overwhelming. But don't w
 In this example, Nudge will do the following:
 
 - Open up in `simpleMode`
-- Enforce Big Sur version `11.2.1` to the following operating systems
-  - 11.0, 11.0.1, 11.1, 11.2
+- Enforce Big Sur version `11.5.2` to the following operating systems
+  - all big sur releases
   - an enforcement date of February 28th, 2021
-- The `More Info` button will open up to [Apple's Big Sur 11.2.1 English release notes](https://support.apple.com/en-us/HT211896#macos1121)
+- The `More Info` button will open up to [Apple's Big Sur English release notes](https://support.apple.com/en-us/HT211896)
 
 #### JSON
 ```json
 {
   "userInterface": {
-    "simpleMode": false
+    "simpleMode": true
   },
   "osVersionRequirements": [
     {
-      "aboutUpdateURLs": [
-        {
-          "_language": "en",
-          "aboutUpdateURL": "https://support.apple.com/en-us/HT211896#macos1121"
-        }
-      ],
-      "requiredInstallationDate": "2021-02-28T00:00:00Z",
-      "requiredMinimumOSVersion": "11.2.1",
-      "targetedOSVersions": [
-        "11.0",
-        "11.0.1",
-        "11.1",
-        "11.2"
-      ]
+      "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
+      "requiredInstallationDate": "2021-08-28T00:00:00Z",
+      "requiredMinimumOSVersion": "11.5.2",
+      "targetedOSVersionsRule": "11"
     }
   ]
 }
@@ -353,34 +352,20 @@ In this example, Nudge will do the following:
       <key>osVersionRequirements</key>
       <array>
         <dict>
-          <key>aboutUpdateURLs</key>
-          <array>
-            <dict>
-              <key>_language</key>
-              <string>en</string>
-              <key>aboutUpdateURL</key>
-              <string>https://support.apple.com/en-us/HT211896#macos1121</string>
-            </dict>
-          </array>
-          <key>majorUpgradeAppPath</key>
-          <string>/Applications/Install macOS Big Sur.app</string>
+          <key>aboutUpdateURL</key>
+          <string>https://support.apple.com/en-us/HT211896</string>
           <key>requiredInstallationDate</key>
-          <date>2021-02-28T00:00:00Z</date>
+          <date>2021-08-28T00:00:00Z</date>
           <key>requiredMinimumOSVersion</key>
-          <string>11.2.1</string>
-          <key>targetedOSVersions</key>
-          <array>
-              <string>11.0</string>
-              <string>11.0.1</string>
-              <string>11.1</string>
-              <string>11.2</string>
-          </array>
+          <string>11.5.2</string>
+          <key>targetedOSVersionsRule</key>
+          <string>11</string>
         </dict>
       </array>
       <key>userInterface</key>
       <dict>
         <key>simpleMode</key>
-        <false/>
+        <true/>
       </dict>
     </dict>
   </array>
