@@ -445,7 +445,12 @@ struct Utils {
             uiLog.notice("\(msg, privacy: .public)")
         }
         if actionButtonPath != nil {
-            NSWorkspace.shared.open(URL(string: actionButtonPath!)!)
+            if !actionButtonPath!.isEmpty {
+                NSWorkspace.shared.open(URL(string: actionButtonPath!)!)
+            } else {
+                let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
+                prefsProfileLog.warning("\(msg, privacy: .public)")
+            }
         } else if requireMajorUpgrade() && majorUpgradeAppPathExists {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
