@@ -155,7 +155,7 @@ func needToActivateNudge() -> Bool {
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
         nudgePrimaryState.lastRefreshTime = Date()
-        if nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate() {
+        if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
             // Loop through all the running applications and hide them
             for runningApplication in runningApplications {
                 let appName = runningApplication.bundleIdentifier ?? ""

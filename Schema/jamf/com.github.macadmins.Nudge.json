@@ -19,6 +19,11 @@
 						"title": "acceptableApplications"
 					}
 				},
+				"aggressiveUserExperience": {
+					"default": true,
+					"description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
+					"type": "boolean"
+				},
 				"asyncronousSoftwareUpdate": {
 					"default": true,
 					"description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",

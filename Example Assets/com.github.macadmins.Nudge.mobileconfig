@@ -25,6 +25,8 @@
           <array>
             <string>us.zoom.xos</string>
           </array>
+          <key>aggressiveUserExperience</key>
+          <true/>
           <key>asyncronousSoftwareUpdate</key>
           <true/>
           <key>attemptToFetchMajorUpgrade</key>
