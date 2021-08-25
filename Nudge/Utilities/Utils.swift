@@ -23,7 +23,10 @@ extension String {
 
 struct Utils {
     func activateNudge() {
-        let msg = "Re-activating Nudge"
+        var msg = "Re-activating Nudge"
+        if demoModeEnabled() {
+            msg = "Activating Nudge"
+        }
         utilsLog.info("\(msg, privacy: .public)")
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
@@ -32,27 +35,36 @@ struct Utils {
     }
 
     func allow1HourDeferral() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
         let allow1HourDeferralButton = getNumberOfHoursBetween() > 0
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
-        if !nudgePrimaryState.afterFirstRun {
+        if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
         }
         return allow1HourDeferralButton
     }
 
     func allow24HourDeferral() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
         let allow24HourDeferralButton = getNumberOfHoursBetween() > imminentWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
-        if !nudgePrimaryState.afterFirstRun {
+        if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow24HourDeferralButton: \(allow24HourDeferralButton, privacy: .public)")
         }
         return allow24HourDeferralButton
     }
 
     func allowCustomDeferral() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
         let allowCustomDeferralButton = getNumberOfHoursBetween() > approachingWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
-        if !nudgePrimaryState.afterFirstRun {
+        if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
         }
         return allowCustomDeferralButton
@@ -86,18 +98,23 @@ struct Utils {
 
     func debugUIModeEnabled() -> Bool {
         let debugUIModeArgumentPassed = CommandLine.arguments.contains("-debug-ui-mode")
-        if debugUIModeArgumentPassed {
-            let msg = "-debug-ui-mode argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.afterFirstRun {
+            if debugUIModeArgumentPassed {
+                let msg = "-debug-ui-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return debugUIModeArgumentPassed
     }
 
     func demoModeEnabled() -> Bool {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
-        if demoModeArgumentPassed {
-            let msg = "-demo-mode argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.hasLoggedDemoMode {
+            if demoModeArgumentPassed {
+                nudgeLogState.hasLoggedDemoMode = true
+                let msg = "-demo-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return demoModeArgumentPassed
     }
@@ -111,9 +128,12 @@ struct Utils {
 
     func forceScreenShotIconModeEnabled() -> Bool {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
-        if forceScreenShotIconMode {
-            let msg = "-force-screenshot-icon argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.hasLoggedScreenshotIconMode {
+            if forceScreenShotIconMode {
+                nudgeLogState.hasLoggedScreenshotIconMode = true
+                let msg = "-force-screenshot-icon argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return forceScreenShotIconMode
     }
@@ -261,6 +281,9 @@ struct Utils {
     }
 
     func getNumberOfDaysBetween() -> Int {
+        if Utils().demoModeEnabled() {
+            return 0
+        }
        let currentCal = Calendar.current
        let fromDate = currentCal.startOfDay(for: getCurrentDate())
        let toDate = currentCal.startOfDay(for: requiredInstallationDate)
@@ -342,6 +365,9 @@ struct Utils {
     }
 
     func logUserDeferrals(resetCount: Bool = false) {
+        if Utils().demoModeEnabled() {
+            return
+        }
         if resetCount {
             nudgePrimaryState.userDeferrals = 0
             nudgeDefaults.set(nudgePrimaryState.userDeferrals, forKey: "userDeferrals")
@@ -352,6 +378,9 @@ struct Utils {
     }
 
     func logUserQuitDeferrals(resetCount: Bool = false) {
+        if Utils().demoModeEnabled() {
+            return
+        }
         if resetCount {
             nudgePrimaryState.userQuitDeferrals = 0
             nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
@@ -388,6 +417,9 @@ struct Utils {
     }
 
     func pastRequiredInstallationDate() -> Bool {
+        if demoModeEnabled() {
+            return false
+        }
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
         if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
             nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
@@ -397,6 +429,9 @@ struct Utils {
     }
 
     func requireDualQuitButtons() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
         if singleQuitButton {
             uiLog.info("Single quit button configured")
             return false
@@ -420,9 +455,12 @@ struct Utils {
 
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
-        if simpleModeEnabled {
-            let msg = "-simple-mode argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.hasLoggedSimpleMode {
+            if simpleModeEnabled {
+                nudgeLogState.hasLoggedSimpleMode = true
+                let msg = "-simple-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return simpleModeEnabled
     }

@@ -90,7 +90,7 @@ struct SimpleMode: View {
                 HStack(spacing: 3.5) {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
-                    if viewObserved.daysRemaining <= 0 {
+                    if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
                         Text(String(viewObserved.daysRemaining))
                             .foregroundColor(.red)
                             .font(.title2)

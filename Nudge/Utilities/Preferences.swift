@@ -11,6 +11,7 @@ let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
 var nudgePrimaryState = ViewState()
+var nudgeLogState = LogState()
 
 // Get the language
 func getDesiredLanguage() -> String {
@@ -129,7 +130,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 // Compare current language against the available updateURLs
 func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
     if Utils().demoModeEnabled() {
-        return "https://support.apple.com/en-us/HT201541"
+        return "https://apple.com"
     }
     if let update = OSVerReq?.aboutUpdateURL {
         return update

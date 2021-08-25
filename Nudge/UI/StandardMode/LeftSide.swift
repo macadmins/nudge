@@ -97,7 +97,7 @@ struct StandardModeLeftSide: View {
                 HStack{
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
-                    if viewObserved.daysRemaining <= 0 {
+                    if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
                         Text(String(viewObserved.daysRemaining))
                             .foregroundColor(.red)
                             .fontWeight(.bold)

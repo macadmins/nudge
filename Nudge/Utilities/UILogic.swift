@@ -10,6 +10,19 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
+    if Utils().simpleModeEnabled() {
+        let msg = "Device in simple mode"
+        uiLog.debug("\(msg, privacy: .public)")
+    }
+
+    if Utils().demoModeEnabled() {
+        let msg = "Device in demo mode"
+        uiLog.debug("\(msg, privacy: .public)")
+        nudgePrimaryState.userDeferrals = 0
+        nudgePrimaryState.userQuitDeferrals = 0
+        return
+    }
+
     if Utils().newNudgeEvent() {
         let msg = "New Nudge event detected - resetting all deferral values"
         uiLog.notice("\(msg, privacy: .public)")
@@ -41,18 +54,9 @@ func nudgeStartLogic() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            if Utils().demoModeEnabled() {
-                let msg = "Device in demo mode"
-                uiLog.debug("\(msg, privacy: .public)")
-                if Utils().simpleModeEnabled() {
-                    let msg = "Device in simple mode"
-                    uiLog.debug("\(msg, privacy: .public)")
-                }
-            } else {
-                let msg = "Device is fully updated"
-                uiLog.notice("\(msg, privacy: .public)")
-                Utils().exitNudge()
-            }
+            let msg = "Device is fully updated"
+            uiLog.notice("\(msg, privacy: .public)")
+            Utils().exitNudge()
         }
     } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
         let msg = "Device requires a minor update but enforceMinorUpdates is false"
@@ -74,6 +78,20 @@ func userHasClickedDeferralQuitButton(deferralTime: Date) {
 func needToActivateNudge() -> Bool {
     // Center Nudge
     Utils().centerNudge()
+    
+    // Demo Mode should activate one time and then never again
+    if Utils().demoModeEnabled() {
+        if !nudgeLogState.afterFirstRun {
+            let msg = "Launching demo mode UI"
+            uiLog.info("\(msg, privacy: .public)")
+            nudgeLogState.afterFirstRun = true
+            Utils().activateNudge()
+            return true
+        } else {
+            return false
+        }
+    }
+
     Utils().logUserSessionDeferrals()
     Utils().logUserDeferrals()
 
@@ -86,10 +104,10 @@ func needToActivateNudge() -> Bool {
     let timeDiff = Int((currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))
 
     // The first time the main timer contoller hits we don't care
-    if !nudgePrimaryState.afterFirstRun {
+    if !nudgeLogState.afterFirstRun {
         let msg = "Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)"
         uiLog.info("\(msg, privacy: .public)")
-        nudgePrimaryState.afterFirstRun = true
+        nudgeLogState.afterFirstRun = true
         nudgePrimaryState.lastRefreshTime = Date()
     }
 

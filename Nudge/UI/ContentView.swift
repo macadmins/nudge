@@ -12,7 +12,6 @@ import SwiftUI
 
 class ViewState: ObservableObject {
     @Published var allowButtons = true
-    @Published var afterFirstRun = false
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
@@ -31,6 +30,13 @@ class ViewState: ObservableObject {
     @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
     @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
     @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
+}
+
+class LogState {
+    var afterFirstRun = false
+    var hasLoggedDemoMode = false
+    var hasLoggedScreenshotIconMode = false
+    var hasLoggedSimpleMode = false
 }
 
 // BackgroundView
