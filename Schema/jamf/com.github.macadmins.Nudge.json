@@ -8,26 +8,53 @@
 			"properties": {
 				"acceptableApplicationBundleIDs": {
 					"description": "The bundle id of applications you allow without Nudge taking focus. You can specify a single bundle id or multiple.",
-					"type": "array",
-					"items": {
-						"options": {
-							"inputAttributes": {
-								"placeholder": "us.zoom.xos"
+					"anyOf": [
+					  {
+							"title": "Not Configured",
+					    "type": "null"
+				    },
+				    {
+				      "title": "Configured",
+							"type": "array",
+							"items": {
+								"options": {
+									"inputAttributes": {
+										"placeholder": "us.zoom.xos"
+									}
+								},
+								"type": "string",
+								"title": "acceptableApplications"
 							}
-						},
-						"type": "string",
-						"title": "acceptableApplications"
-					}
+				  	}
+					]
 				},
 				"aggressiveUserExperience": {
-					"default": true,
 					"description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
-					"type": "boolean"
+						"anyOf": [
+			        {
+								"title": "Not Configured",
+			          "type": "null"
+			        },
+			        {
+			          "title": "Configured",
+																"default": true,
+								"type": "boolean"
+			        }
+			     ]
 				},
 				"asyncronousSoftwareUpdate": {
-					"default": true,
 					"description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
-					"type": "boolean"
+						"anyOf": [
+			        {
+			          "type": "null",
+			          "title": "Not Configured"
+			        },
+			        {
+			          "title": "Configured",
+								"type": "boolean",
+								"default": true
+			        }
+			     ]
 				},
 				"attemptToFetchMajorUpgrade": {
 					"default": true,
