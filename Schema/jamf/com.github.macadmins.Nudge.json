@@ -30,8 +30,8 @@
 					"type": "boolean"
 				},
 				"attemptToFetchMajorUpgrade": {
-					"default": false,
-					"description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. Note: This feature is currently not implemented as of v1.0.",
+					"default": true,
+					"description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.",
 					"type": "boolean"
 				},
 				"enforceMinorUpdates": {
@@ -126,7 +126,7 @@
 						}
 					},
 					"targetedOSVersionsRule": {
-						"description": "The OS string rule for targeting nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0",
+						"description": "The OS string rule for targeting nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
 						"options": {
 							"inputAttributes": {
 								"placeholder": "default"
