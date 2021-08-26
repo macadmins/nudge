@@ -108,7 +108,7 @@
         <key>userInterface</key>
         <dict>
           <key>actionButtonPath</key>
-          <string>munki://updates</key>
+          <string>munki://updates</string>
           <key>fallbackLanguage</key>
           <string>en</string>
           <key>forceFallbackLanguage</key>
