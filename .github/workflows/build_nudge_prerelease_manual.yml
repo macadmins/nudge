@@ -1,21 +1,24 @@
 name: Manual build signed Nudge and upload signed package (prerelease)
 
+env:
+  NOTARY_APP_PASSWORD: ${{ secrets.NOTARY_APP_PASSWORD }}
+
 on: [workflow_dispatch]
 
 jobs:
   build:
-    runs-on: macos-11.0
+    runs-on: macos-11
 
     steps:
-    - name: Checkout python repo
+    - name: Checkout nudge repo
       uses: actions/checkout@v2
 
     - name: Install Apple Xcode certificates
       uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
       with:
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
-        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.APP_CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.APP_CERTIFICATES_P12_PASSWORD }}
 
     - name: Install Apple Installer certificates
       uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
@@ -26,12 +29,18 @@ jobs:
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
 
     - name: Run build package script
-      run: ./build_nudge.zsh "CREATE_PKG"
+      run: ./build_nudge.zsh "CREATE_PKG" "$NOTARY_APP_PASSWORD"
 
     - name: get environment variables
       id: get_env_var
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
+
+    - name: Generate changelog
+      id: changelog
+      uses: metcalfc/changelog-generator@e5306b306fa2e34f05258789e0e5c526c1bd4352 # v1.0.0
+      with:
+        myToken: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create Pre-Release
       id: create_pre_release
@@ -44,13 +53,16 @@ jobs:
         body: |
             # Notes
             This is a pre-release version of Nudge created by GitHub Actions.
-            Nudge.app has been signed application as well as the package.
+            Nudge.app has been signed and notarized. The package has been signed, notarized and stapled.
 
             By default Nudge looks for a `com.github.macadmins.Nudge.json` file located in `/Library/Preferences`. If you would like to use an alternative path, please read the [README](https://github.com/macadmins/nudge/blob/main/README.md) or the [WIKI](https://github.com/macadmins/nudge/wiki)
 
             ## About the LaunchAgent
             This is a basic launch agent that opens Nudge twice an hour, every 30 minutes.
             If you would like to reduce the amount of times Nudge launches per day, it is recommended to create your own LaunchAgent.
+
+            # Changes
+            ${{ steps.changelog.outputs.changelog }}
         draft: false
         prerelease: true
 

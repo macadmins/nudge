@@ -21,6 +21,12 @@
         <integer>1</integer>
         <key>optionalFeatures</key>
         <dict>
+          <key>acceptableApplicationBundleIDs</key>
+          <array>
+            <string>us.zoom.xos</string>
+          </array>
+          <key>aggressiveUserExperience</key>
+          <true/>
           <key>asyncronousSoftwareUpdate</key>
           <true/>
           <key>attemptToFetchMajorUpgrade</key>
@@ -63,20 +69,17 @@
             <key>majorUpgradeAppPath</key>
             <string>/Applications/Install macOS Big Sur.app</string>
             <key>requiredInstallationDate</key>
-            <date>2021-02-28T00:00:00Z</date>
+            <date>2021-08-28T00:00:00Z</date>
             <key>requiredMinimumOSVersion</key>
-            <string>11.2.1</string>
-            <key>targetedOSVersions</key>
-            <array>
-              <string>11.0</string>
-              <string>11.0.1</string>
-              <string>11.1</string>
-              <string>11.2</string>
-            </array>
+            <string>11.5.2</string>
+            <key>targetedOSVersionsRule</key>
+            <string>default</string>
           </dict>
         </array>
         <key>userExperience</key>
         <dict>
+          <key>allowUserQuitDeferrals</key>
+          <true/>
           <key>allowedDeferrals</key>
           <integer>1000000</integer>
           <key>allowedDeferralsUntilForcedSecondaryQuitButton</key>
@@ -104,6 +107,8 @@
         </dict>
         <key>userInterface</key>
         <dict>
+          <key>actionButtonPath</key>
+          <string>munki://updates</key>
           <key>fallbackLanguage</key>
           <string>en</string>
           <key>forceFallbackLanguage</key>
@@ -118,6 +123,8 @@
           <string>/somewhere/screenShotDark.png</string>
           <key>screenShotLightPath</key>
           <string>/somewhere/screenShotLight.png</string>
+          <key>showDeferralCount</key>
+          <true/>
           <key>simpleMode</key>
           <false/>
           <key>singleQuitButton</key>
@@ -129,6 +136,8 @@
               <string>en</string>
               <key>actionButtonText</key>
               <string>Update Device</string>
+              <key>customDeferralButtonText</key>
+              <string>Custom</string>
               <key>informationButtonText</key>
               <string>More Info</string>
               <key>mainContentHeader</key>
@@ -145,6 +154,10 @@ If you do not update your device, you may lose access to some items necessary fo
 To begin the update, simply click on the Update Device button and follow the provided steps.</string>
               <key>mainHeader</key>
               <string>Your device requires a security update</string>
+              <key>oneDayDeferralButtonText</key>
+              <string>One Day</string>
+              <key>oneHourDeferralButtonText</key>
+              <string>One Hour</string>
               <key>primaryQuitButtonText</key>
               <string>Later</string>
               <key>secondaryQuitButtonText</key>

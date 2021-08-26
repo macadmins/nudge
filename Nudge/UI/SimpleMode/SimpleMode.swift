@@ -10,29 +10,56 @@ import SwiftUI
 
 // SimpleMode
 struct SimpleMode: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
-    @State var allowButtons = true
-    @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var deferralCountUI = 0
-    @State var requireDualQuitButtons = false
+    @State var hasClickedCustomDeferralButton = false
     @State var hasClickedSecondaryQuitButton = false
+    @State var nudgeEventDate = Date()
+    @State var nudgeCustomEventDate = Date()
     
+    // Modal view for screenshot and deferral info
+    @State var showDeviceInfo = false
+    @State var showDeferView = false
+
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
         let darkMode = colorScheme == .dark
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         VStack {
+            VStack(alignment: .leading) {
+                HStack(alignment: .top) {
+                    Button(action: {
+                        Utils().userInitiatedDeviceInfo()
+                        self.showDeviceInfo.toggle()
+                    }) {
+                        Image(systemName: "questionmark.circle")
+                    }
+                    .padding(.leading, -2.0)
+                    .padding(.top, -3.0)
+                    .buttonStyle(.plain)
+                    .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    .sheet(isPresented: $showDeviceInfo) {
+                        DeviceInfo()
+                    }
+                    Spacer()
+                }
+            }
+            .frame(width: 894, height: 20)
+
             VStack(alignment: .center, spacing: 10) {
                 // Company Logo
                 HStack {
@@ -60,28 +87,43 @@ struct SimpleMode: View {
                 }
                 
                 // Days Remaining
-                HStack {
-                    Text("Days remaining to update:".localized(desiredLanguage: getDesiredLanguage()))
+                HStack(spacing: 3.5) {
+                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         .font(.title2)
-                    if self.daysRemaining <= 0 {
-                        Text(String(0))
+                    if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
+                        Text(String(viewObserved.daysRemaining))
+                            .foregroundColor(.red)
                             .font(.title2)
                             .fontWeight(.bold)
                     } else {
-                        Text(String(self.daysRemaining))
+                        Text(String(viewObserved.daysRemaining))
                             .font(.title2)
                             .fontWeight(.bold)
                     }
                 }
-
-                // Deferred Count
-                HStack {
-                    Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
-                    Text(String(self.deferralCountUI))
-                        .font(.title2)
-                        .fontWeight(.bold)
+                
+                // Deferral Count
+                if showDeferralCount {
+                    HStack{
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                            .font(.title2)
+                        Text(String(viewObserved.userDeferrals))
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                } else {
+                    HStack{
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                            .font(.title2)
+                        Text(String(viewObserved.userDeferrals))
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                    }
+                    .hidden()
                 }
+                Spacer()
 
                 // actionButton
                 Button(action: {
@@ -91,8 +133,8 @@ struct SimpleMode: View {
                         .frame(minWidth: 120)
                 }
                 .keyboardShortcut(.defaultAction)
+                Spacer()
             }
-            .frame(height: 390)
             
             // Bottom buttons
             HStack {
@@ -103,96 +145,121 @@ struct SimpleMode: View {
                             .foregroundColor(.secondary)
                     }
                     )
-                    .buttonStyle(PlainButtonStyle())
-                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
-                    .onHover { inside in
-                        if inside {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
+                        .buttonStyle(.plain)
+                        .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
+                        .onHover { inside in
+                            if inside {
+                                NSCursor.pointingHand.push()
+                            } else {
+                                NSCursor.pop()
+                            }
                         }
-                    }
+                    
                 }
 
                 // Separate the buttons with a spacer
                 Spacer()
 
-                if allowButtons || Utils().demoModeEnabled() {
+                if viewObserved.allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {} label: {
-                                Text(secondaryQuitButtonText)
-                            }
-                            .hidden()
-                        } else {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(secondaryQuitButtonText)
+                    if viewObserved.requireDualQuitButtons {
+                        HStack(spacing: 20) {
+                            if self.hasClickedSecondaryQuitButton == false {
+                                Button {
+                                    hasClickedSecondaryQuitButton = true
+                                    userHasClickedSecondaryQuitButton()
+                                } label: {
+                                    Text(secondaryQuitButtonText)
+                                }
+                                .padding(.leading, -200.0)
                             }
                         }
-                    } else {
-                        Button(action: {}, label: {
-                            Text(secondaryQuitButtonText)
-                        }
-                        )
-                        .hidden()
+                        .frame(maxHeight: 30)
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {
-                                Utils().userInitiatedExit()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                    if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
+                        HStack(spacing: 20) {
+                            if allowUserQuitDeferrals {
+                                Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
+                                    Button {
+                                        nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
+                                        updateDeferralUI()
+                                    } label: {
+                                        Text(primaryQuitButtonText)
+                                            .frame(minWidth: 35)
+                                    }
+                                    if Utils().allow1HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
+                                            updateDeferralUI()
+                                        } label: {
+                                            Text(oneHourDeferralButtonText)
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allow24HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
+                                            updateDeferralUI()
+                                        } label: {
+                                            Text(oneDayDeferralButtonText)
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allowCustomDeferral() {
+                                        Divider()
+                                        Button {
+                                            self.showDeferView.toggle()
+                                        } label: {
+                                            Text(customDeferralButtonText)
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                }
+                                .frame(maxWidth: 100)
+                            } else {
+                                Button {
+                                    Utils().userInitiatedExit()
+                                } label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: 35)
+                                }
                             }
-                        } else {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
-                            }
-                            .hidden()
                         }
-                    } else {
-                        Button {
-                            Utils().userInitiatedExit()
-                        } label: {
-                            Text(primaryQuitButtonText)
-                                .frame(minWidth: 35)
+                        .frame(maxHeight: 30)
+                        .sheet(isPresented: $showDeferView) {
+                        } content: {
+                            DeferView(viewObserved: viewObserved)
                         }
                     }
                 }
             }
             .frame(width: 860)
-            // https://www.hackingwithswift.com/books/ios-swiftui/running-code-when-our-app-launches
+            .padding(.bottom, -17.5)
         }
         .frame(width: 900, height: 450)
-        .onAppear() {
-            updateUI()
-        }
-        .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                self.deferralCountUI += 1
-            }
-            updateUI()
+    }
+    
+    var limitRange: ClosedRange<Date> {
+        if viewObserved.daysRemaining > 0 {
+            // Do not let the user defer past the point of the approachingWindowTime
+            return Date()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Date())!
+        } else {
+            return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
         }
     }
-    func updateUI() {
-        if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            self.requireDualQuitButtons = true
-        }
-        if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
-            self.allowButtons = false
-        }
-        self.daysRemaining = Utils().getNumberOfDaysBetween()
+
+    func updateDeferralUI() {
+        viewObserved.userQuitDeferrals += 1
+        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+        Utils().logUserQuitDeferrals()
+        Utils().logUserDeferrals()
+        Utils().userInitiatedExit()
     }
+    
 }
 
 #if DEBUG
@@ -200,13 +267,15 @@ struct SimpleMode: View {
 struct SimpleModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            ForEach(["en", "es"], id: \.self) { id in
+                SimpleMode(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            SimpleMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
-                .preferredColorScheme(.dark)
+            ZStack {
+                SimpleMode(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

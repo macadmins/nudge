@@ -10,19 +10,12 @@ import SwiftUI
 
 // StandardModeLeftSide
 struct StandardModeLeftSide: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var manager: PolicyManager
-    
-    // State variables
-    @State var daysRemaining = Utils().getNumberOfDaysBetween()
-    @State var deferralCountUI = 0
     
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
@@ -37,9 +30,9 @@ struct StandardModeLeftSide: View {
                 }) {
                     Image(systemName: "questionmark.circle")
                 }
-                .buttonStyle(PlainButtonStyle())
-                .padding(.top, -25.0)
-                // TODO: This is broken because of the padding
+                .padding(.leading, -3.5)
+                .padding(.top, 1.0)
+                .buttonStyle(.plain)
                 .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {
@@ -96,7 +89,7 @@ struct StandardModeLeftSide: View {
                 HStack{
                     Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
-                    Text(manager.current.description)
+                    Text(currentOSVersion)
                         .foregroundColor(.secondary)
                 }
 
@@ -104,21 +97,25 @@ struct StandardModeLeftSide: View {
                 HStack{
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                     Spacer()
-                    if self.daysRemaining <= 0 {
-                        Text(String(0))
-                            .foregroundColor(.secondary)
+                    if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
+                        Text(String(viewObserved.daysRemaining))
+                            .foregroundColor(.red)
+                            .fontWeight(.bold)
                     } else {
-                        Text(String(self.daysRemaining))
+                        Text(String(viewObserved.daysRemaining))
                             .foregroundColor(.secondary)
                     }
                 }
 
                 // Deferred Count
-                HStack{
-                    Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                    Spacer()
-                    Text(String(self.deferralCountUI))
-                        .foregroundColor(.secondary)
+                // Show by default, allow to be hidden via preference
+                if showDeferralCount {
+                    HStack{
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                        Spacer()
+                        Text(String(viewObserved.userDeferrals))
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             .frame(width: 250)
@@ -135,7 +132,7 @@ struct StandardModeLeftSide: View {
                             .foregroundColor(.secondary)
                     }
                     )
-                    .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                     .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
                     .onHover { inside in
                         if inside {
@@ -149,21 +146,10 @@ struct StandardModeLeftSide: View {
                 // Force the button to the left with a spacer
                 Spacer()
             }
-            .frame(width: 250, height: 50)
+            .padding(.top, 45.0)
+            .frame(width: 250, height: 35)
         }
         .frame(width: 300, height: 450)
-        .onAppear() {
-            updateUI()
-        }
-        .onReceive(nudgeRefreshCycleTimer) { _ in
-            if needToActivateNudge(deferralCountVar: deferralCount, lastRefreshTimeVar: lastRefreshTime) {
-                self.deferralCountUI += 1
-            }
-            updateUI()
-        }
-    }
-    func updateUI() {
-        self.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 
@@ -172,13 +158,15 @@ struct StandardModeLeftSide: View {
 struct StandardModeLeftSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            ForEach(["en", "es"], id: \.self) { id in
+                StandardModeLeftSide(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeLeftSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
-                .preferredColorScheme(.dark)
+            ZStack {
+                StandardModeLeftSide(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

@@ -8,27 +8,55 @@
 import AppKit
 import Foundation
 
-// This likely needs to be refactored into PolicyManager.swift, but I wanted all functions out of Nudge.swift for now
 // Start doing a basic check
 func nudgeStartLogic() {
+    if Utils().simpleModeEnabled() {
+        let msg = "Device in simple mode"
+        uiLog.debug("\(msg, privacy: .public)")
+    }
+
+    if Utils().demoModeEnabled() {
+        let msg = "Device in demo mode"
+        uiLog.debug("\(msg, privacy: .public)")
+        nudgePrimaryState.userDeferrals = 0
+        nudgePrimaryState.userQuitDeferrals = 0
+        return
+    }
+
+    if Utils().newNudgeEvent() {
+        let msg = "New Nudge event detected - resetting all deferral values"
+        uiLog.notice("\(msg, privacy: .public)")
+        Utils().logRequiredMinimumOSVersion()
+        Utils().logUserDeferrals(resetCount: true)
+        Utils().logUserQuitDeferrals(resetCount: true)
+        Utils().logUserSessionDeferrals(resetCount: true)
+        nudgeDefaults.removeObject(forKey: "deferRunUntil")
+    } else {
+        if nudgePrimaryState.userDeferrals >= 0 {
+            nudgePrimaryState.userDeferrals = nudgePrimaryState.userSessionDeferrals + nudgePrimaryState.userQuitDeferrals
+        }
+        Utils().logRequiredMinimumOSVersion()
+        Utils().logUserDeferrals()
+        Utils().logUserQuitDeferrals()
+        Utils().logUserSessionDeferrals()
+    }
+    if Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+        nudgePrimaryState.requireDualQuitButtons = true
+    }
+    if nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
+        let msg = "User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
+        uiLog.notice("\(msg, privacy: .public)")
+        Utils().exitNudge()
+    }
     if Utils().fullyUpdated() {
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         // https://zacwhite.com/2020/detecting-swiftui-previews/
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            if Utils().demoModeEnabled() {
-                let msg = "Device in demo mode"
-                uiLog.debug("\(msg, privacy: .public)")
-                if Utils().simpleModeEnabled() {
-                    let msg = "Device in simple mode"
-                    uiLog.debug("\(msg, privacy: .public)")
-                }
-            } else {
-                let msg = "Device is fully updated"
-                uiLog.notice("\(msg, privacy: .public)")
-                Utils().exitNudge()
-            }
+            let msg = "Device is fully updated"
+            uiLog.notice("\(msg, privacy: .public)")
+            Utils().exitNudge()
         }
     } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
         let msg = "Device requires a minor update but enforceMinorUpdates is false"
@@ -37,22 +65,35 @@ func nudgeStartLogic() {
     }
 }
 
-// These are initial variables that needToActivateNudge() will update within the timer controller
-// This type of logic is not indeal and should be redesigned.
-var lastRefreshTime = Utils().getInitialDate()
-var afterFirstRun = false
-var deferralCount = 1
-var hasLoggedDeferralCountPastThreshold = false
-var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
-
 func userHasClickedSecondaryQuitButton() {
     let msg = "User clicked secondaryQuitButton"
     uiLog.notice("\(msg, privacy: .public)")
 }
 
-func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Bool {
+func userHasClickedDeferralQuitButton(deferralTime: Date) {
+    let msg = "User initiated a deferral: \(deferralTime)"
+    uiLog.notice("\(msg, privacy: .public)")
+}
+
+func needToActivateNudge() -> Bool {
     // Center Nudge
     Utils().centerNudge()
+    
+    // Demo Mode should activate one time and then never again
+    if Utils().demoModeEnabled() {
+        if !nudgeLogState.afterFirstRun {
+            let msg = "Launching demo mode UI"
+            uiLog.info("\(msg, privacy: .public)")
+            nudgeLogState.afterFirstRun = true
+            Utils().activateNudge()
+            return true
+        } else {
+            return false
+        }
+    }
+
+    Utils().logUserSessionDeferrals()
+    Utils().logUserDeferrals()
 
     // If noTimers is true, just bail
     if noTimers {
@@ -60,19 +101,36 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     }
 
     let currentTime = Date().timeIntervalSince1970
-    let timeDiff = Int((currentTime - lastRefreshTimeVar.timeIntervalSince1970))
+    let timeDiff = Int((currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))
 
     // The first time the main timer contoller hits we don't care
-    if !afterFirstRun {
-        let msg = "Initializing nudgeRefreshCycle"
+    if !nudgeLogState.afterFirstRun {
+        let msg = "Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)"
         uiLog.info("\(msg, privacy: .public)")
-        _ = afterFirstRun = true
-        _ = lastRefreshTime = Date()
-        return false
+        nudgeLogState.afterFirstRun = true
+        nudgePrimaryState.lastRefreshTime = Date()
     }
 
     if Utils().getTimerController() > timeDiff  {
         return false
+    }
+    
+    nudgePrimaryState.deferralCountPastThreshhold = nudgePrimaryState.userDeferrals > allowedDeferrals
+    
+    if nudgePrimaryState.deferralCountPastThreshhold {
+        if !nudgePrimaryState.hasLoggedDeferralCountPastThreshhold {
+            let msg = "allowedDeferrals has been passed"
+            uiLog.warning("\(msg, privacy: .public)")
+            nudgePrimaryState.hasLoggedDeferralCountPastThreshhold = true
+        }
+    }
+    
+    if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+        if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
+            let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
+            uiLog.warning("\(msg, privacy: .public)")
+            nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
+        }
     }
 
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
@@ -88,32 +146,21 @@ func needToActivateNudge(deferralCountVar: Int, lastRefreshTimeVar: Date) -> Boo
     }
 
     // Don't nudge if acceptable apps are frontmostApplication
-    if acceptableApps.contains((frontmostApplication?.bundleIdentifier!)!) {
-        let msg = "acceptableApp is currently the frontmostApplication"
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
+        let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication"
         uiLog.info("\(msg, privacy: .public)")
         return false
     }
 
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
-        _ = deferralCount += 1
-        _ = lastRefreshTime = Date()
-        if !hasLoggedDeferralCountPastThresholdDualQuitButtons && (deferralCountVar > allowedDeferralsUntilForcedSecondaryQuitButton) {
-            let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
-            uiLog.warning("\(msg, privacy: .public)")
-            _ = hasLoggedDeferralCountPastThresholdDualQuitButtons = true
-        }
-        if deferralCountVar > allowedDeferrals  {
-            if !hasLoggedDeferralCountPastThreshold {
-                let msg = "allowedDeferrals has been passed"
-                uiLog.warning("\(msg, privacy: .public)")
-            }
-            _ = hasLoggedDeferralCountPastThreshold = true
+        nudgePrimaryState.lastRefreshTime = Date()
+        if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
             // Loop through all the running applications and hide them
             for runningApplication in runningApplications {
                 let appName = runningApplication.bundleIdentifier ?? ""
                 let appBundle = runningApplication.bundleURL
-                if acceptableApps.contains(appName) {
+                if builtInAcceptableApplicationBundleIDs.contains(appName) || customAcceptableApplicationBundleIDs.contains(appName) {
                     continue
                 }
                 if majorUpgradeAppPathExists {

@@ -23,12 +23,51 @@ extension String {
 
 struct Utils {
     func activateNudge() {
-        let msg = "Re-activating Nudge"
+        var msg = "Re-activating Nudge"
+        if demoModeEnabled() {
+            msg = "Activating Nudge"
+        }
         utilsLog.info("\(msg, privacy: .public)")
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
         NSApp.activate(ignoringOtherApps: true)
         NSApp.windows[0].makeKeyAndOrderFront(self)
+    }
+
+    func allow1HourDeferral() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
+        let allow1HourDeferralButton = getNumberOfHoursBetween() > 0
+        // TODO: Technically we should also log when this value changes in the middle of a nudge run
+        if !nudgeLogState.afterFirstRun {
+            uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
+        }
+        return allow1HourDeferralButton
+    }
+
+    func allow24HourDeferral() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
+        let allow24HourDeferralButton = getNumberOfHoursBetween() > imminentWindowTime
+        // TODO: Technically we should also log when this value changes in the middle of a nudge run
+        if !nudgeLogState.afterFirstRun {
+            uiLog.info("Device allow24HourDeferralButton: \(allow24HourDeferralButton, privacy: .public)")
+        }
+        return allow24HourDeferralButton
+    }
+
+    func allowCustomDeferral() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
+        let allowCustomDeferralButton = getNumberOfHoursBetween() > approachingWindowTime
+        // TODO: Technically we should also log when this value changes in the middle of a nudge run
+        if !nudgeLogState.afterFirstRun {
+            uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
+        }
+        return allowCustomDeferralButton
     }
 
     func centerNudge() {
@@ -57,11 +96,25 @@ struct Utils {
         return NSImage(data: imageData as Data)!
     }
 
+    func debugUIModeEnabled() -> Bool {
+        let debugUIModeArgumentPassed = CommandLine.arguments.contains("-debug-ui-mode")
+        if !nudgeLogState.afterFirstRun {
+            if debugUIModeArgumentPassed {
+                let msg = "-debug-ui-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
+        }
+        return debugUIModeArgumentPassed
+    }
+
     func demoModeEnabled() -> Bool {
         let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
-        if demoModeArgumentPassed {
-            let msg = "-demo-mode argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.hasLoggedDemoMode {
+            if demoModeArgumentPassed {
+                nudgeLogState.hasLoggedDemoMode = true
+                let msg = "-demo-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return demoModeArgumentPassed
     }
@@ -69,15 +122,18 @@ struct Utils {
     func exitNudge() {
         let msg = "Nudge is terminating due to condition met"
         uiLog.notice("\(msg, privacy: .public)")
-        shouldExit = true
-        AppKit.NSApp.terminate(nil)
+        nudgePrimaryState.shouldExit = true
+        exit(0)
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
-        if forceScreenShotIconMode {
-            let msg = "-force-screenshot-icon argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.hasLoggedScreenshotIconMode {
+            if forceScreenShotIconMode {
+                nudgeLogState.hasLoggedScreenshotIconMode = true
+                let msg = "-force-screenshot-icon argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return forceScreenShotIconMode
     }
@@ -156,14 +212,20 @@ struct Utils {
 
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedMajorOSVersion {
+            nudgePrimaryState.hasLoggedMajorOSVersion = true
+            utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
+        }
         return MajorOSVersion
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
-        utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
+            nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
+            utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
+        }
         return majorRequiredNudgeOSVersion
     }
 
@@ -219,6 +281,9 @@ struct Utils {
     }
 
     func getNumberOfDaysBetween() -> Int {
+        if Utils().demoModeEnabled() {
+            return 0
+        }
        let currentCal = Calendar.current
        let fromDate = currentCal.startOfDay(for: getCurrentDate())
        let toDate = currentCal.startOfDay(for: requiredInstallationDate)
@@ -280,7 +345,10 @@ struct Utils {
 
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
-        utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
+        if timerCycle != nudgePrimaryState.timerCycle {
+            utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
+            nudgePrimaryState.timerCycle = timerCycle
+        }
         return timerCycle
     }
 
@@ -296,6 +364,49 @@ struct Utils {
         }
     }
 
+    func logUserDeferrals(resetCount: Bool = false) {
+        if Utils().demoModeEnabled() {
+            return
+        }
+        if resetCount {
+            nudgePrimaryState.userDeferrals = 0
+            nudgeDefaults.set(nudgePrimaryState.userDeferrals, forKey: "userDeferrals")
+        } else {
+            nudgeDefaults.set(nudgePrimaryState.userDeferrals, forKey: "userDeferrals")
+        }
+        
+    }
+
+    func logUserQuitDeferrals(resetCount: Bool = false) {
+        if Utils().demoModeEnabled() {
+            return
+        }
+        if resetCount {
+            nudgePrimaryState.userQuitDeferrals = 0
+            nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
+        } else {
+            nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
+        }
+    }
+
+    func logUserSessionDeferrals(resetCount: Bool = false) {
+        if resetCount {
+            nudgePrimaryState.userSessionDeferrals = 0
+            nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
+        } else {
+            nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
+        }
+        
+    }
+
+    func logRequiredMinimumOSVersion() {
+        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+    }
+
+    func newNudgeEvent() -> Bool {
+        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+    }
+
     func openMoreInfo() {
         guard let url = URL(string: aboutUpdateURL) else {
             return
@@ -306,39 +417,61 @@ struct Utils {
     }
 
     func pastRequiredInstallationDate() -> Bool {
+        if demoModeEnabled() {
+            return false
+        }
         let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
-        utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
+            nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
+            utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+        }
         return pastRequiredInstallationDate
     }
 
     func requireDualQuitButtons() -> Bool {
+        if demoModeEnabled() {
+            return true
+        }
         if singleQuitButton {
             uiLog.info("Single quit button configured")
             return false
         }
         let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
-        uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
+        if !nudgePrimaryState.hasLoggedRequireDualQuitButtons {
+            nudgePrimaryState.hasLoggedRequireDualQuitButtons = true
+            uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
+        }
         return requireDualQuitButtons
     }
 
     func requireMajorUpgrade() -> Bool {
-        if requiredMinimumOSVersion == "0.0" {
-            let msg = "Device requireMajorUpgrade: false"
-            utilsLog.info("\(msg, privacy: .public)")
-            return false
+        let requireMajorUpdate = versionGreaterThan(currentVersion: String(getMajorRequiredNudgeOSVersion()), newVersion: String(getMajorOSVersion()))
+        if !nudgePrimaryState.hasLoggedRequireMajorUgprade {
+            nudgePrimaryState.hasLoggedRequireMajorUgprade = true
+            utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         }
-        let requireMajorUpdate = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
-        utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         return requireMajorUpdate
     }
 
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
-        if simpleModeEnabled {
-            let msg = "-simple-mode argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+        if !nudgeLogState.hasLoggedSimpleMode {
+            if simpleModeEnabled {
+                nudgeLogState.hasLoggedSimpleMode = true
+                let msg = "-simple-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
         }
         return simpleModeEnabled
+    }
+
+    func unsafeSoftwareUpdate() -> Bool {
+        let runningUnsafeSoftwareUpdateOSVersion = versionLessThan(currentVersion: currentOSVersion, newVersion: "11.4")
+        if runningUnsafeSoftwareUpdateOSVersion {
+            return true
+        } else {
+            return false
+        }
     }
 
     func updateDevice(userClicked: Bool = true) {
@@ -349,7 +482,14 @@ struct Utils {
             let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
             uiLog.notice("\(msg, privacy: .public)")
         }
-        if requireMajorUpgrade() && majorUpgradeAppPathExists {
+        if actionButtonPath != nil {
+            if !actionButtonPath!.isEmpty {
+                NSWorkspace.shared.open(URL(string: actionButtonPath!)!)
+            } else {
+                let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
+                prefsProfileLog.warning("\(msg, privacy: .public)")
+            }
+        } else if requireMajorUpgrade() && majorUpgradeAppPathExists {
             NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
@@ -360,8 +500,8 @@ struct Utils {
     func userInitiatedExit() {
         let msg = "User clicked primaryQuitButton"
         uiLog.notice("\(msg, privacy: .public)")
-        shouldExit = true
-        AppKit.NSApp.terminate(nil)
+        nudgePrimaryState.shouldExit = true
+        exit(0)
     }
 
     func userInitiatedDeviceInfo() {

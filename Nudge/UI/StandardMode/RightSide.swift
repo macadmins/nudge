@@ -10,29 +10,28 @@ import SwiftUI
 
 // StandardModeRightSide
 struct StandardModeRightSide: View {
+    @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-    @EnvironmentObject var manager: PolicyManager
     
     // State variables
-    @State var allowButtons = true
     @State var hasClickedSecondaryQuitButton = false
-    @State var requireDualQuitButtons = false
+    @State var nudgeEventDate = Date()
+    @State var nudgeCustomEventDate = Date()
     
-    // Modal view for screenshot and device info
+    // Modal view for screenshot and deferral info
     @State var showSSDetail = false
+    @State var showDeferView = false
     
     // Get the screen frame
     var screen = NSScreen.main?.visibleFrame
-    
-    // Setup the main refresh timer that controls the child refresh logic
-    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
     // Nudge UI
     var body: some View {
         let darkMode = colorScheme == .dark
         let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
+        let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
         // Right side of Nudge
         VStack {
             // mainHeader
@@ -107,25 +106,48 @@ struct StandardModeRightSide: View {
                     Spacer()
                 }
                 .frame(width: 510)
-                
+
                 // mainContentText
-                HStack {
-                    Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
-                        .font(.callout)
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Spacer()
+                if !screenShotExists && !forceScreenShotIconMode() {
+                    ScrollView(.vertical) {
+                        VStack {
+                            HStack {
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                    .font(.callout)
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                            }
+                        }
+                    }
+                    .frame(minHeight: 245.0)
+                    .frame(maxHeight: 245.0)
+                    .frame(width: 510)
+                } else {
+                    ScrollView(.vertical) {
+                        VStack {
+                            HStack {
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                    .font(.callout)
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .multilineTextAlignment(.leading)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                            }
+                        }
+                    }
+                    .frame(minHeight: 125.0)
+                    .frame(maxHeight: 125.0)
+                    .frame(width: 510)
                 }
-                .frame(minHeight: 125.0)
-                .frame(maxHeight: 125.0)
-                .frame(width: 510)
-                
+
                 HStack {
                     Spacer()
                     // screenShot
-                    if FileManager.default.fileExists(atPath: screenShotPath) {
+                    if screenShotExists {
                         Button {
                             self.showSSDetail.toggle()
                         } label: {
@@ -135,7 +157,7 @@ struct StandardModeRightSide: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxHeight: 120)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(.plain)
                         .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                         .sheet(isPresented: $showSSDetail) {
                             ScreenShotZoom()
@@ -158,7 +180,7 @@ struct StandardModeRightSide: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(maxHeight: 120)
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(.plain)
                             .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                             .sheet(isPresented: $showSSDetail) {
                                 ScreenShotZoom()
@@ -180,7 +202,7 @@ struct StandardModeRightSide: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(maxHeight: 120)
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .buttonStyle(.plain)
                             .hidden()
                             .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                             .sheet(isPresented: $showSSDetail) {
@@ -200,54 +222,75 @@ struct StandardModeRightSide: View {
                 // Separate the buttons with a spacer
                 Spacer()
                 
-                if allowButtons || Utils().demoModeEnabled() {
+                if viewObserved.allowButtons || Utils().demoModeEnabled() {
                     // secondaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {} label: {
-                                Text(secondaryQuitButtonText)
-                            }
-                            .hidden()
-                        } else {
+                    if viewObserved.requireDualQuitButtons {
+                        if self.hasClickedSecondaryQuitButton == false {
                             Button {
                                 hasClickedSecondaryQuitButton = true
                                 userHasClickedSecondaryQuitButton()
                             } label: {
                                 Text(secondaryQuitButtonText)
                             }
+                            .padding(.leading, -200.0)
                         }
-                    } else {
-                        Button {} label: {
-                            Text(secondaryQuitButtonText)
-                        }
-                        .hidden()
                     }
                     
                     // primaryQuitButton
-                    if requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton {
-                            Button {
-                                Utils().userInitiatedExit()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
+                    if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
+                        HStack(spacing: 20) {
+                            if allowUserQuitDeferrals {
+                                Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
+                                    Button {
+                                        nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
+                                        updateDeferralUI()
+                                    } label: {
+                                        Text(primaryQuitButtonText)
+                                            .frame(minWidth: 35)
+                                    }
+                                    if Utils().allow1HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
+                                            updateDeferralUI()
+                                        } label: {
+                                            Text(oneHourDeferralButtonText)
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allow24HourDeferral() {
+                                        Button {
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
+                                            updateDeferralUI()
+                                        } label: {
+                                            Text(oneDayDeferralButtonText)
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                    if Utils().allowCustomDeferral() {
+                                        Divider()
+                                        Button {
+                                            self.showDeferView.toggle()
+                                        } label: {
+                                            Text(customDeferralButtonText)
+                                                .frame(minWidth: 35)
+                                        }
+                                    }
+                                }
+                                .frame(maxWidth: 100)
+                            } else {
+                                Button {
+                                    Utils().userInitiatedExit()
+                                } label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: 35)
+                                }
                             }
-                        } else {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: 35)
-                            }
-                            .hidden()
                         }
-                    } else {
-                        Button {
-                            Utils().userInitiatedExit()
-                        } label: {
-                            Text(primaryQuitButtonText)
-                                .frame(minWidth: 35)
+                        .sheet(isPresented: $showDeferView) {
+                        } content: {
+                            DeferView(viewObserved: viewObserved)
                         }
                     }
                 }
@@ -255,21 +298,14 @@ struct StandardModeRightSide: View {
             .frame(width: 510)
         }
         .frame(width: 600, height: 450)
-        .onReceive(nudgeRefreshCycleTimer) { _ in
-            updateUI()
-        }
-        .onAppear() {
-            updateUI()
-        }
     }
-    
-    func updateUI() {
-        if Utils().requireDualQuitButtons() || hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            self.requireDualQuitButtons = true
-        }
-        if Utils().pastRequiredInstallationDate() || hasLoggedDeferralCountPastThreshold {
-            self.allowButtons = false
-        }
+
+    func updateDeferralUI() {
+        viewObserved.userQuitDeferrals += 1
+        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+        Utils().logUserQuitDeferrals()
+        Utils().logUserDeferrals()
+        Utils().userInitiatedExit()
     }
 }
 
@@ -278,13 +314,15 @@ struct StandardModeRightSide: View {
 struct StandardModeRightSidePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+            ForEach(["en", "es"], id: \.self) { id in
+                StandardModeRightSide(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardModeRightSide().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
-                .preferredColorScheme(.dark)
+            ZStack {
+                StandardModeRightSide(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

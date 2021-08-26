@@ -1,5 +1,9 @@
 {
   "optionalFeatures": {
+    "acceptableApplicationBundleIDs": [
+      "us.zoom.xos"
+    ],
+    "aggressiveUserExperience": true,
     "asyncronousSoftwareUpdate": true,
     "attemptToFetchMajorUpgrade": true,
     "enforceMinorUpdates": true
@@ -26,17 +30,13 @@
         }
       ],
       "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
-      "requiredInstallationDate": "2021-02-28T00:00:00Z",
-      "requiredMinimumOSVersion": "11.2.1",
-      "targetedOSVersions": [
-        "11.0",
-        "11.0.1",
-        "11.1",
-        "11.2"
-      ]
+      "requiredInstallationDate": "2021-08-28T00:00:00Z",
+      "requiredMinimumOSVersion": "11.5.2",
+      "targetedOSVersionsRule": "default"
     }
   ],
   "userExperience": {
+    "allowUserQuitDeferrals": true,
     "allowedDeferrals": 1000000,
     "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
     "approachingRefreshCycle": 6000,
@@ -51,6 +51,7 @@
     "randomDelay": false
   },
   "userInterface": {
+    "actionButtonPath": "munki://updates",
     "fallbackLanguage": "en",
     "forceFallbackLanguage": false,
     "forceScreenShotIcon": false,
@@ -58,18 +59,22 @@
     "iconLightPath": "/somewhere/logoLight.png",
     "screenShotDarkPath": "/somewhere/screenShotDark.png",
     "screenShotLightPath": "/somewhere/screenShotLight.png",
+    "showDeferralCount": true,
     "simpleMode": false,
     "singleQuitButton": false,
     "updateElements": [
       {
         "_language": "en",
         "actionButtonText": "Update Device",
+        "customDeferralButtonText": "Custom",
         "informationButtonText": "More Info",
         "mainContentHeader": "Your device will restart during this update",
         "mainContentNote": "Important Notes",
         "mainContentSubHeader": "Updates can take around 30 minutes to complete",
         "mainContentText": "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.",
         "mainHeader": "Your device requires a security update",
+        "oneDayDeferralButtonText": "One Day",
+        "oneHourDeferralButtonText": "One Hour",
         "primaryQuitButtonText": "Later",
         "secondaryQuitButtonText": "I understand",
         "subHeader": "A friendly reminder from your local IT team"

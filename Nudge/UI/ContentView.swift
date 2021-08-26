@@ -10,47 +10,102 @@ import SwiftUI
 // https://stackoverflow.com/a/66039864
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
-struct ContentView: View {
-    @EnvironmentObject var manager: PolicyManager
-    @State var simpleModePreview: Bool
+class ViewState: ObservableObject {
+    @Published var allowButtons = true
+    @Published var daysRemaining = Utils().getNumberOfDaysBetween()
+    @Published var deferralCountPastThreshhold = false
+    @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
+    @Published var hasLoggedDeferralCountPastThreshhold = false
+    @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
+    @Published var hasLoggedMajorOSVersion = false
+    @Published var hasLoggedMajorRequiredOSVersion = false
+    @Published var hasLoggedPastRequiredInstallationDate = false
+    @Published var hasLoggedRequireDualQuitButtons = false
+    @Published var hasLoggedRequireMajorUgprade = false
+    @Published var lastRefreshTime = Utils().getInitialDate()
+    @Published var requireDualQuitButtons = false
+    @Published var shouldExit = false
+    @Published var timerCycle = 0
+    @Published var userDeferrals = nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
+    @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
+    @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
+    @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
+}
+
+class LogState {
+    var afterFirstRun = false
+    var hasLoggedDemoMode = false
+    var hasLoggedScreenshotIconMode = false
+    var hasLoggedSimpleMode = false
+}
+
+// BackgroundView
+struct BackgroundView: View {
+    @ObservedObject var viewObserved: ViewState
     var body: some View {
-        if simpleMode() || simpleModePreview {
-            SimpleMode().background(
-                HostingWindowFinder {window in
-                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-                    window?.center() // center
-                    window?.isMovable = false // not movable
-                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-                }
-            )
+        if simpleMode() {
+            SimpleMode(viewObserved: viewObserved)
         } else {
-            StandardMode().background(
-                HostingWindowFinder {window in
-                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-                    window?.center() // center
-                    window?.isMovable = false // not movable
-                    NSApp.activate(ignoringOtherApps: true) // bring to forefront upon launch
-                }
-            )
+            StandardMode(viewObserved: viewObserved)
         }
+    }
+}
+
+struct ContentView: View {
+    @StateObject var viewState = nudgePrimaryState
+    // Setup the main refresh timer that controls the child refresh logic
+    let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
+
+    var body: some View {
+        BackgroundView(viewObserved: viewState).background(
+            HostingWindowFinder { window in
+                window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                window?.center() // center
+                window?.isMovable = false // not movable
+                _ = needToActivateNudge()
+            }
+        )
+        .edgesIgnoringSafeArea(.all)
+        .onAppear(perform: nudgeStartLogic)
+        .onAppear() {
+            updateUI()
+        }
+        .onReceive(nudgeRefreshCycleTimer) { _ in
+            if needToActivateNudge() {
+                viewState.userSessionDeferrals += 1
+                viewState.userDeferrals = viewState.userSessionDeferrals + viewState.userQuitDeferrals
+            }
+            updateUI()
+        }
+    }
+    func updateUI() {
+        if Utils().requireDualQuitButtons() || viewState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+            viewState.requireDualQuitButtons = true
+        }
+        if Utils().pastRequiredInstallationDate() || viewState.deferralCountPastThreshhold {
+            viewState.allowButtons = false
+        }
+        viewState.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(simpleModePreview: true).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+        StandardMode(viewObserved: nudgePrimaryState)
             .preferredColorScheme(.light)
-        ContentView(simpleModePreview: false).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
+        ZStack {
+            StandardMode(viewObserved: nudgePrimaryState)
+                .preferredColorScheme(.dark)
+        }
+        SimpleMode(viewObserved: nudgePrimaryState)
             .preferredColorScheme(.light)
-        ContentView(simpleModePreview: true).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
-            .preferredColorScheme(.dark)
-        ContentView(simpleModePreview: false).environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2")))
-            .preferredColorScheme(.dark)
+        ZStack {
+            SimpleMode(viewObserved: nudgePrimaryState)
+                .preferredColorScheme(.dark)
+        }
     }
 }
 #endif

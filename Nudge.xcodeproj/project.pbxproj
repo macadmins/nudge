@@ -3,24 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0348CD2925D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json in Resources */ = {isa = PBXBuildFile; fileRef = 0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */; };
 		035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */ = {isa = PBXBuildFile; fileRef = 035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */; };
 		0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */; };
-		0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972625CE26CE0019FC8F /* PolicyManager.swift */; };
 		0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */; };
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
+		636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B9C0126CACCAB0007BE3B /* DeferView.swift */; };
 		636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
 		639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */; };
-		639B6B1425DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */; };
 		639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3A25DF200C00E38EC1 /* Preferences.swift */; };
-		639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */; };
 		639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */; };
 		639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */; };
 		639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6B6D25DF3C3F00E38EC1 /* SimpleMode.swift */; };
@@ -55,22 +52,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.umad.json; sourceTree = "<group>"; };
 		035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.json; sourceTree = "<group>"; };
+		05DDB291263049DB006629B3 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
-		0BC9972625CE26CE0019FC8F /* PolicyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyManager.swift; sourceTree = "<group>"; };
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
 		5836861325DACFE90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5870FF6825CFE5FA0036D203 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		636B9C0126CACCAB0007BE3B /* DeferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferView.swift; sourceTree = "<group>"; };
 		636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesNudge.swift; sourceTree = "<group>"; };
 		636C4B7525D4306A0004A791 /* UILogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogic.swift; sourceTree = "<group>"; };
+		6397293C26CDBA4C00BDAF42 /* Nudge-Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Nudge-Debug.entitlements"; sourceTree = "<group>"; };
 		639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.mobileconfig; sourceTree = "<group>"; };
-		639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = com.github.macadmins.Nudge.umad.mobileconfig; sourceTree = "<group>"; };
 		639B6B3A25DF200C00E38EC1 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesUMAD.swift; sourceTree = "<group>"; };
 		639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotZoom.swift; sourceTree = "<group>"; };
 		639B6B6D25DF3C3F00E38EC1 /* SimpleMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMode.swift; sourceTree = "<group>"; };
@@ -79,6 +75,7 @@
 		639E198125CD885D008F618B /* PreferencesStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStructure.swift; sourceTree = "<group>"; };
 		639E198925CD9E21008F618B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63B6FDBF25D785010038E81C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		63C3C13F26C2C822009510E3 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D0E225C9E9A400236281 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		63D7D0E425C9E9A400236281 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -124,9 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */,
-				639B6B1325DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig */,
 				035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */,
-				0348CD2825D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json */,
 			);
 			path = "Example Assets";
 			sourceTree = "<group>";
@@ -135,7 +130,6 @@
 			isa = PBXGroup;
 			children = (
 				636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */,
-				639B6B3F25DF215A00E38EC1 /* DefaultPreferencesUMAD.swift */,
 				639E198125CD885D008F618B /* PreferencesStructure.swift */,
 			);
 			path = Preferences;
@@ -159,7 +153,8 @@
 			children = (
 				63D7D0E225C9E9A400236281 /* Main.swift */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
-				0BC9972625CE26CE0019FC8F /* PolicyManager.swift */,
+				636B9C0126CACCAB0007BE3B /* DeferView.swift */,
+				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				639B6B5625DF376300E38EC1 /* StandardMode */,
 				639B6B5525DF375800E38EC1 /* SimpleMode */,
 			);
@@ -178,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				63D7D12625C9F1EE00236281 /* StandardMode.swift */,
-				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				639B6B5F25DF37F000E38EC1 /* ScreenShotZoom.swift */,
 				639B6BA125DF41DB00E38EC1 /* LeftSide.swift */,
 				639B6BA625DF432D00E38EC1 /* RightSide.swift */,
@@ -217,6 +211,7 @@
 				63D7D0E625C9E9A500236281 /* Assets.xcassets */,
 				63D7D0EB25C9E9A500236281 /* Info.plist */,
 				63D7D0EC25C9E9A500236281 /* Nudge.entitlements */,
+				6397293C26CDBA4C00BDAF42 /* Nudge-Debug.entitlements */,
 				63D7D0E825C9E9A500236281 /* Preview Content */,
 			);
 			path = Nudge;
@@ -312,7 +307,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					63D7D0DE25C9E9A400236281 = {
 						CreatedOnToolsVersion = 12.4;
@@ -328,7 +323,7 @@
 				};
 			};
 			buildConfigurationList = 63D7D0DA25C9E9A400236281 /* Build configuration list for PBXProject "Nudge" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -336,6 +331,9 @@
 				fr,
 				es,
 				de,
+				sv,
+				Base,
+				nl,
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -358,8 +356,6 @@
 				5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
 				639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */,
-				0348CD2925D8BDEB00201F3D /* com.github.macadmins.Nudge.umad.json in Resources */,
-				639B6B1425DC9ED900E38EC1 /* com.github.macadmins.Nudge.umad.mobileconfig in Resources */,
 				035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,7 +382,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
-				639B6B4025DF215A00E38EC1 /* DefaultPreferencesUMAD.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */,
@@ -399,8 +394,8 @@
 				639E198225CD885D008F618B /* PreferencesStructure.swift in Sources */,
 				639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* Main.swift in Sources */,
-				0BC9972725CE26CE0019FC8F /* PolicyManager.swift in Sources */,
 				639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */,
+				636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */,
 				639B6BA225DF41DB00E38EC1 /* LeftSide.swift in Sources */,
 				639B6BA725DF432D00E38EC1 /* RightSide.swift in Sources */,
 			);
@@ -446,6 +441,8 @@
 				5870FF6825CFE5FA0036D203 /* fr */,
 				63B6FDBF25D785010038E81C /* es */,
 				068D23D025DC27EA00FE05A5 /* de */,
+				05DDB291263049DB006629B3 /* sv */,
+				63C3C13F26C2C822009510E3 /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -575,12 +572,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Nudge/Nudge.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Nudge/Nudge-Debug.entitlements";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.0;
+				CURRENT_PROJECT_VERSION = 1.1.0;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Nudge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -588,7 +587,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.Nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -603,11 +602,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Nudge/Nudge.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.0;
+				CURRENT_PROJECT_VERSION = 1.1.0;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Nudge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -615,7 +616,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.Nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -629,9 +630,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
 				INFOPLIST_FILE = NudgeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -642,6 +645,7 @@
 				MARKETING_VERSION = 0.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.NudgeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nudge.app/Contents/MacOS/Nudge";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -653,9 +657,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Installer";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
 				INFOPLIST_FILE = NudgeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -666,6 +672,7 @@
 				MARKETING_VERSION = 0.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.NudgeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nudge.app/Contents/MacOS/Nudge";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -676,9 +683,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
 				INFOPLIST_FILE = NudgeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -688,6 +697,7 @@
 				MARKETING_VERSION = 0.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.NudgeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Nudge;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -698,9 +708,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1.0.0;
+				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
 				INFOPLIST_FILE = NudgeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -710,6 +722,7 @@
 				MARKETING_VERSION = 0.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.NudgeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Nudge;
 				VERSIONING_SYSTEM = "apple-generic";

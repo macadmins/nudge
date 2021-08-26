@@ -10,11 +10,12 @@ import SwiftUI
 
 // Standard Mode
 struct StandardMode: View {
+    @ObservedObject var viewObserved: ViewState
     // Nudge UI
     var body: some View {
         HStack {
             // Left side of Nudge
-            StandardModeLeftSide()
+            StandardModeLeftSide(viewObserved: viewObserved)
 
             // Vertical Line
             VStack{
@@ -25,7 +26,8 @@ struct StandardMode: View {
             .frame(height: 525)
             
             // Right side of Nudge
-            StandardModeRightSide()
+            StandardModeRightSide(viewObserved: viewObserved)
+                .padding(.bottom, -60.0)
         }
         .frame(width: 900, height: 450)
     }
@@ -36,13 +38,15 @@ struct StandardMode: View {
 struct StandardModePreviews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(["en", "es", "fr"], id: \.self) { id in
-                StandardMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
+            ForEach(["en", "es"], id: \.self) { id in
+                StandardMode(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
-            StandardMode().environmentObject(PolicyManager(withVersion:  try! OSVersion("11.2") ))
-                .preferredColorScheme(.dark)
+            ZStack {
+                StandardMode(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

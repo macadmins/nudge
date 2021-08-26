@@ -6,14 +6,32 @@
 			"title": "optionalFeatures",
 			"type": "object",
 			"properties": {
+				"acceptableApplicationBundleIDs": {
+					"description": "The bundle id of applications you allow without Nudge taking focus. You can specify a single bundle id or multiple.",
+					"type": "array",
+					"items": {
+						"options": {
+							"inputAttributes": {
+								"placeholder": "us.zoom.xos"
+							}
+						},
+						"type": "string",
+						"title": "acceptableApplications"
+					}
+				},
+				"aggressiveUserExperience": {
+					"default": true,
+					"description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
+					"type": "boolean"
+				},
 				"asyncronousSoftwareUpdate": {
 					"default": true,
 					"description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
 					"type": "boolean"
 				},
 				"attemptToFetchMajorUpgrade": {
-					"default": false,
-					"description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. Note: This feature is currently not implemented as of v1.0.",
+					"default": true,
+					"description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.",
 					"type": "boolean"
 				},
 				"enforceMinorUpdates": {
@@ -68,10 +86,10 @@
 						}
 					},
 					"majorUpgradeAppPath": {
-						"description": "The app path for a major upgrade. Note: This logic is not fully written as it cannot be tested until the next major Operating System is released. A future version of Nudge will finalize support for this feature.",
+						"description": "The app path for a major upgrade. Note: Nudge v1.0.1 or higher is required for this feature.",
 						"options": {
 							"inputAttributes": {
-								"placeholder": "/Applications/Install macOS Big Sur.app"
+								"placeholder": "/Applications/Install macOS Monterey.app"
 							}
 						},
 						"type": "string"
@@ -95,7 +113,7 @@
 						"type": "string"
 					},
 					"targetedOSVersions": {
-						"description": "The versions of macOS that require a security update. You can specify single version or multiple versions.",
+						"description": "The versions of macOS that require a security update. You can specify single version or multiple versions. This key is only used with Nudge v1.0 and will not be honored in v1.1",
 						"type": "array",
 						"items": {
 							"options": {
@@ -106,6 +124,15 @@
 							"type": "string",
 							"title": "targetedOSVersion"
 						}
+					},
+					"targetedOSVersionsRule": {
+						"description": "The OS string rule for targeting nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
+						"options": {
+							"inputAttributes": {
+								"placeholder": "default"
+							}
+						},
+						"type": "string"
 					}
 				}
 			}
@@ -119,6 +146,11 @@
 					"default": 1000000,
 					"description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before the \"aggressive user experience\" is enabled. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
 					"type": "integer"
+				},
+				"allowUserQuitDeferrals": {
+					"default": true,
+					"description": "Allows users to customize their deferral window on top of the LaunchAgent launch timing.",
+					"type": "boolean"
 				},
 				"allowedDeferralsUntilForcedSecondaryQuitButton": {
 					"default": 14,
@@ -182,6 +214,15 @@
 			"title": "userInterface",
 			"type": "object",
 			"properties": {
+				"actionButtonPath": {
+					"description": "A path to a URI for opening alternative actions, like jamf self service items",
+					"options": {
+						"inputAttributes": {
+							"placeholder": "jamfselfservice://remediate"
+						}
+					},
+					"type": "string"
+				},
 				"fallbackLanguage": {
 					"default": "en",
 					"description": "The language to revert to if no localizations are available for the device's current language.",
@@ -238,6 +279,11 @@
 					},
 					"type": "string"
 				},
+				"showDeferralCount": {
+					"default": true,
+					"description": "Enables or disables the deferral count of the current Nudge event.",
+					"type": "boolean"
+				},
 				"simpleMode": {
 					"default": false,
 					"description": "Enables Nudge to launch in the simplified user experience.",
@@ -256,6 +302,7 @@
 						"title": "updateElement - Dictionary",
 						"properties": {
 							"_language": {
+								"default": "en",
 								"description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
 								"options": {
 									"inputAttributes": {
@@ -268,8 +315,20 @@
 								"description": "Modifies the actionButton, also known as the \"Update Device\" button",
 								"type": "string"
 							},
+							"customDeferralButtonText": {
+								"description": "Modifies the customDeferralButtonText, also known as the \"Custom\" button",
+								"type": "string"
+							},
 							"informationButtonText": {
 								"description": "Modifies the informationButton, also known as the \"More Info\" button",
+								"type": "string"
+							},
+							"oneDayDeferralButtonText": {
+								"description": "Modifies the oneDayDeferralButtonText, also known as the \"One Day\" button",
+								"type": "string"
+							},
+							"oneHourDeferralButtonText": {
+								"description": "Modifies the oneHourDeferralButtonText, also known as the \"One Hour\" button",
 								"type": "string"
 							},
 							"mainContentHeader": {

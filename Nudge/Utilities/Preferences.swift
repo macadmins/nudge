@@ -10,7 +10,8 @@ import Foundation
 let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let language = NSLocale.current.languageCode!
-var shouldExit = false
+var nudgePrimaryState = ViewState()
+var nudgeLogState = LogState()
 
 // Get the language
 func getDesiredLanguage() -> String {
@@ -53,6 +54,9 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
 // Mutate the profile into our required construct and then compare currentOS against targetedOSVersions
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
+    var fullMatch = OSVersionRequirement()
+    var partialMatch = OSVersionRequirement()
+    var defaultMatch = OSVersionRequirement()
     if Utils().demoModeEnabled() {
         return nil
     }
@@ -63,39 +67,62 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         }
     }
     if !requirements.isEmpty {
-        if requirements.count >= 2 {
-            let v1ErrorMsg = "Multiple hashes may result in undefined behavior. Please deploy a single hash for OS enforcement at this time."
-            prefsProfileLog.error("\(v1ErrorMsg, privacy: .public)")
-        }
         for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0")  {
-                return subPreferences
+            if subPreferences.targetedOSVersionsRule == currentOSVersion {
+                fullMatch = subPreferences
+            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+            } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
+                partialMatch = subPreferences
+            } else if subPreferences.targetedOSVersionsRule == "default" {
+                defaultMatch = subPreferences
+            } else {
+                defaultMatch = subPreferences
             }
         }
     } else {
         let msg = "profile osVersionRequirements key is empty"
         prefsProfileLog.info("\(msg, privacy: .public)")
     }
+    if fullMatch.requiredMinimumOSVersion != nil {
+        return fullMatch
+    } else if partialMatch.requiredMinimumOSVersion != nil {
+        return partialMatch
+    } else if defaultMatch.requiredMinimumOSVersion != nil {
+        return defaultMatch
+    }
     return nil
 }
 // Loop through JSON osVersionRequirements preferences and then compare currentOS against targetedOSVersions
 func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
+    var fullMatch = OSVersionRequirement()
+    var partialMatch = OSVersionRequirement()
+    var defaultMatch = OSVersionRequirement()
     if Utils().demoModeEnabled() {
         return nil
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
-        if requirements.count >= 2 {
-            let v1ErrorMsg = "Multiple hashes may result in undefined behavior. Please deploy a single hash for OS enforcement at this time."
-            prefsJSONLog.error("\(v1ErrorMsg, privacy: .public)")
-        }
         for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersions?.contains(currentOSVersion) == true || Utils().versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: subPreferences.requiredMinimumOSVersion ?? "0.0") {
-                return subPreferences
+            if subPreferences.targetedOSVersionsRule == currentOSVersion {
+                fullMatch = subPreferences
+            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+            } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
+                partialMatch = subPreferences
+            } else if subPreferences.targetedOSVersionsRule == "default" {
+                defaultMatch = subPreferences
+            } else if subPreferences.targetedOSVersionsRule == nil {
+                defaultMatch = subPreferences
             }
         }
     } else {
         let msg = "json osVersionRequirements key is empty"
         prefsJSONLog.info("\(msg, privacy: .public)")
+    }
+    if fullMatch.requiredMinimumOSVersion != nil {
+        return fullMatch
+    } else if partialMatch.requiredMinimumOSVersion != nil {
+        return partialMatch
+    } else if defaultMatch.requiredMinimumOSVersion != nil {
+        return defaultMatch
     }
     return nil
 }
@@ -103,7 +130,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 // Compare current language against the available updateURLs
 func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
     if Utils().demoModeEnabled() {
-        return "https://support.apple.com/en-us/HT201541"
+        return "https://apple.com"
     }
     if let update = OSVerReq?.aboutUpdateURL {
         return update

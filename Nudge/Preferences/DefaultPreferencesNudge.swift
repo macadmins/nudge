@@ -9,12 +9,15 @@ import Foundation
 
 // Globals
 let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+var fetchMajorUpgradeSuccessful = false
 
 // optionalFeatures
 let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
+let aggressiveUserExperience = optionalFeaturesProfile?["aggressiveUserExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserExperience ?? true
+let customAcceptableApplicationBundleIDs = optionalFeaturesProfile?["acceptableApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.acceptableApplicationBundleIDs ?? [""]
 let asyncronousSoftwareUpdate = optionalFeaturesProfile?["asyncronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asyncronousSoftwareUpdate ?? true
-let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? false
+let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 
 // osVersionRequirements
@@ -29,6 +32,7 @@ let aboutUpdateURL = getAboutUpdateURL(OSVerReq: osVersionRequirementsProfile) ?
 // userExperience
 let userExperienceProfile = getUserExperienceProfile()
 let userExperienceJSON = getUserExperienceJSON()
+let allowUserQuitDeferrals = userExperienceProfile?["allowUserQuitDeferrals"] as? Bool ?? userExperienceJSON?.allowUserQuitDeferrals ?? true
 let allowedDeferrals = userExperienceProfile?["allowedDeferrals"] as? Int ?? userExperienceJSON?.allowedDeferrals ?? 1000000
 let allowedDeferralsUntilForcedSecondaryQuitButton = userExperienceProfile?["allowedDeferralsUntilForcedSecondaryQuitButton"] as? Int ?? userExperienceJSON?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let approachingRefreshCycle = userExperienceProfile?["approachingRefreshCycle"] as? Int ?? userExperienceJSON?.approachingRefreshCycle ?? 6000
@@ -47,6 +51,7 @@ let userInterfaceProfile = getUserInterfaceProfile()
 let userInterfaceJSON = getUserInterfaceJSON()
 let userInterfaceUpdateElementsProfile = getUserInterfaceUpdateElementsProfile()
 let userInterfaceUpdateElementsJSON = getUserInterfaceUpdateElementsJSON()
+let actionButtonPath = userInterfaceProfile?["actionButtonPath"] as? String ?? userInterfaceJSON?.actionButtonPath ?? nil
 let fallbackLanguage = userInterfaceProfile?["fallbackLanguage"] as? String ?? userInterfaceJSON?.fallbackLanguage ?? "en"
 let forceFallbackLanguage = userInterfaceProfile?["forceFallbackLanguage"] as? Bool ?? userInterfaceJSON?.forceFallbackLanguage ?? false
 let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? userInterfaceJSON?.iconDarkPath ?? ""
@@ -61,11 +66,23 @@ let mainContentSubHeader = userInterfaceUpdateElementsProfile?["mainContentSubHe
 let mainContentText = userInterfaceUpdateElementsProfile?["mainContentText"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.".localized(desiredLanguage: getDesiredLanguage())
 let primaryQuitButtonText = userInterfaceUpdateElementsProfile?["primaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.primaryQuitButtonText ?? "Later".localized(desiredLanguage: getDesiredLanguage())
 let secondaryQuitButtonText = userInterfaceUpdateElementsProfile?["secondaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ?? "I understand".localized(desiredLanguage: getDesiredLanguage())
+let showDeferralCount = userInterfaceProfile?["showDeferralCount"] as? Bool ?? userInterfaceJSON?.showDeferralCount ?? true
 let singleQuitButton = userInterfaceProfile?["singleQuitButton"] as? Bool ?? userInterfaceJSON?.singleQuitButton ?? false
 let subHeader = userInterfaceUpdateElementsProfile?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
+let customDeferralButtonText = userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralButtonText ?? "Custom".localized(desiredLanguage: getDesiredLanguage())
+let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ?? "One Day".localized(desiredLanguage: getDesiredLanguage())
+let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour".localized(desiredLanguage: getDesiredLanguage())
 
 // Other important defaults
-let acceptableApps = [
-    "com.apple.loginwindow",
-    "com.apple.systempreferences"
-]
+#if DEBUG
+    let builtInAcceptableApplicationBundleIDs = [
+        "com.apple.loginwindow",
+        "com.apple.systempreferences",
+        "com.apple.dt.Xcode"
+    ]
+#else
+    let builtInAcceptableApplicationBundleIDs = [
+        "com.apple.loginwindow",
+        "com.apple.systempreferences"
+    ]
+#endif

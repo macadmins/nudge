@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  Nudge
+
+  Created by Per Olofsson on 2021-06-07.
+  
+*/
+
+//// Additional Device Information
+"Additional Device Information" = "Utökad information";
+// Username
+"Username:" = "Användarnamn:";
+// Serial Number
+"Serial Number:" = "Serienummer:";
+// Architecture
+"Architecture:" = "Arkitektur:";
+// Nudge Version
+"Version:" = "Version:";
+// Language
+"Language:" = "Språk:";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "Nuvarande OS-version:";
+// Required OS Version
+"Required OS Version:" = "Krävd OS-version:";
+// Days Remaining To Update
+"Days Remaining To Update:" = "Kvarstående dagar:";
+// Deferred Count
+"Deferred Count:" = "Uppskjuten antal gånger:";
+// More Info
+"More Info" = "Mer information";
+
+// Help buttons
+"Click to close" = "Klicka för att stänga";
+"Click for additional device information" = "Klicka för mer information";
+"Click to zoom into screenshot" = "Klicka för att zooma in";
+"Click for more information about the security update" = "Klicka för mer information om säkerhetsuppdateringen";
+
+//// Right side of Nudge
+"Update Device" = "Uppdatera";
+"Your device will restart during this update" = "Din dator kommer att startas om under uppdateringen";
+"Important Notes" = "Viktig information";
+"Updates can take around 30 minutes to complete" = "Uppdateringar kan ta ca 30 minuter";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Ett system med de senaste uppdateringarna krävs för att IT ska kunna säkerställa att din dator är skyddad.\n\nOm du inte uppdaterar systemet kommer du kanske inte kunna komma åt nödvändinga resurser.\n\nFör att påbörja uppdateringen, klicka på Uppdatera och följ stegen.";
+"Your device requires a security update" = "En säkerhetsuppdatering behövs på din dator";
+"Your device requires a security update (Demo Mode)" = "En säkerhetsuppdatering behövs på din dator (demoläge)";
+"Later" = "Senare";
+"I understand" = "Jag förstår";
+"A friendly reminder from your local IT team" = "En påminnelse från IT";
+"Defer" = "Uppskjuta";
+"One Hour" = "En timme";
+"One Day" = "En dag";
+"Custom" = "Personifiera";

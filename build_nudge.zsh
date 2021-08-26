@@ -3,6 +3,7 @@
 # Build script for Nudge
 
 # Variables
+CODE_SIGN_IDENTITY="Developer ID Application: Clever DevOps Co. (9GQZ7KUFR6)"
 SIGNING_IDENTITY="Developer ID Installer: Clever DevOps Co. (9GQZ7KUFR6)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
 MP_BINDIR="/tmp/munki-pkg"
@@ -11,7 +12,9 @@ TOOLSDIR=$(dirname $0)
 BUILDSDIR="$TOOLSDIR/build"
 OUTPUTSDIR="$TOOLSDIR/outputs"
 MP_ZIP="/tmp/munki-pkg.zip"
-XCODE_BUILD_PATH="/Applications/Xcode_12.4.app/Contents/Developer/usr/bin/xcodebuild"
+XCODE_BUILD_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/xcodebuild"
+XCODE_NOTARY_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/notarytool"
+XCODE_STAPLER_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/stapler"
 CURRENT_NUDGE_MAIN_BUILD_VERSION=$(/usr/libexec/PlistBuddy -c Print:CFBundleVersion $TOOLSDIR/Nudge/Info.plist)
 DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
 
@@ -23,6 +26,7 @@ AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$DATE"
 # Create files to use for build process info
 echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
 
+ls -la /Applications
 # build nudge
 echo "Building Nudge"
 if [ -e $XCODE_BUILD_PATH ]; then
@@ -30,7 +34,7 @@ if [ -e $XCODE_BUILD_PATH ]; then
 else
   XCODE_BUILD="xcodebuild"
 fi
-$XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY="Apple Distribution: Clever DevOps Co. (9GQZ7KUFR6)"
+$XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
 XCB_RESULT="$?"
 if [ "${XCB_RESULT}" != "0" ]; then
     echo "Error running xcodebuild: ${XCB_RESULT}" 1>&2
@@ -41,6 +45,14 @@ if ! [ -n "$1" ]; then
   echo "Did not pass option to create package"
   exit 0
 fi
+
+# Setup notary item
+$XCODE_NOTARY_PATH store-credentials --apple-id "macadmins@cleverdevops.com" --team-id "9GQZ7KUFR6" --password "$2" nudge
+
+# Zip application for notary
+/usr/bin/ditto -c -k --keepParent "${BUILDSDIR}/Release/Nudge.app" "${BUILDSDIR}/Release/Nudge.zip"
+# Notarize nudge application
+$XCODE_NOTARY_PATH submit "${BUILDSDIR}/Release/Nudge.zip" --keychain-profile "nudge" --wait
 
 # Create outputs folder
 if [ -e $OUTPUTSDIR ]; then
@@ -55,8 +67,10 @@ if [ -e $NUDGE_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_PKG_PATH
 fi
 /bin/mkdir -p "$NUDGE_PKG_PATH/payload/Applications/Utilities"
+/bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
 /bin/mv "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
 
 # Download specific version of munki-pkg
 echo "Downloading munki-pkg tool from github..."
@@ -98,6 +112,9 @@ PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
+  # Notarize nudge package
+  $XCODE_NOTARY_PATH submit "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+  $XCODE_STAPLER_PATH staple "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
   # Move the signed pkg
   /bin/mv "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
 fi
