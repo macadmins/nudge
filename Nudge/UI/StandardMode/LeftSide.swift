@@ -17,6 +17,9 @@ struct StandardModeLeftSide: View {
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
     
+    let logowidth  : CGFloat = 200
+    let logoheight : CGFloat = 150
+    
     // Nudge UI
     var body: some View {
         let darkMode = colorScheme == .dark
@@ -32,7 +35,6 @@ struct StandardModeLeftSide: View {
                         }) {
                             Image(systemName: "questionmark.circle")
                         }
-                        //.padding(.leading, -3.5)
                         .padding(.top, 1.0)
                         .buttonStyle(.plain)
                         .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
@@ -48,7 +50,6 @@ struct StandardModeLeftSide: View {
                         }
                         Spacer()
                     }
-                    //.frame(width: 280)
 
                     // Company Logo
                     Group {
@@ -57,16 +58,15 @@ struct StandardModeLeftSide: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .scaledToFit()
-                                .frame(width: 200, height: 150)
+                                .frame(width: logowidth, height: logoheight)
                         } else {
                             Image(systemName: "applelogo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .scaledToFit()
-                                .frame(width: 200, height: 150)
+                                .frame(width: logowidth, height: logoheight)
                         }
                     }
-                    //.frame(width: 250)
 
                     // Horizontal line
                     HStack{
@@ -74,7 +74,7 @@ struct StandardModeLeftSide: View {
                             .fill(Color.gray.opacity(0.5))
                             .frame(height: 1)
                     }
-                    .frame(width: geometry.size.width*0.75)
+                    .frame(width: geometry.size.width*0.8)
 
                     VStack(alignment: .center, spacing: 10) {
                         // Required OS Version
@@ -120,7 +120,7 @@ struct StandardModeLeftSide: View {
                             }
                         }
                     }
-                    .frame(width: 250)
+                    .frame(width: geometry.size.width*0.8)
                 }
 
                 // Force buttons to the bottom with a spacer
@@ -149,14 +149,11 @@ struct StandardModeLeftSide: View {
                     // Force the button to the left with a spacer
                     Spacer()
                 }
-                //.padding(.top, 45.0)
                 .frame(width: geometry.size.width*0.8)
                 .offset(y: 15)
-                //.border(Color.blue)
             }
         }
-        .frame(width: 280)
-        //.border(Color.red)
+        .frame(width: 280, alignment: .center)
     }
 }
 
