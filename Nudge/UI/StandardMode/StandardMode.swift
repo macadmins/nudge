@@ -16,6 +16,7 @@ struct StandardMode: View {
         HStack {
             // Left side of Nudge
             StandardModeLeftSide(viewObserved: viewObserved)
+                .frame(width: 300)
 
             // Vertical Line
             VStack{
