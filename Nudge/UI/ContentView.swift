@@ -80,6 +80,7 @@ struct ContentView: View {
             updateUI()
         }
     }
+    
     func updateUI() {
         if Utils().requireDualQuitButtons() || viewState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
             viewState.requireDualQuitButtons = true

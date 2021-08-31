@@ -20,140 +20,143 @@ struct StandardModeLeftSide: View {
     let logowidth  : CGFloat = 200
     let logoheight : CGFloat = 150
     
+    let contentWidthPadding : CGFloat = 25
+    let bottomPadding  : CGFloat = 10
+    
     // Nudge UI
     var body: some View {
         let darkMode = colorScheme == .dark
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         // Left side of Nudge
-        GeometryReader { geometry in
-            VStack {
-                VStack(alignment: .center, spacing: 20) {
-                    HStack {
-                        Button(action: {
-                            Utils().userInitiatedDeviceInfo()
-                            self.showDeviceInfo.toggle()
-                        }) {
-                            Image(systemName: "questionmark.circle")
-                        }
-                        .padding(.top, 1.0)
-                        .buttonStyle(.plain)
-                        .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
-                        .onHover { inside in
-                            if inside {
-                                NSCursor.pointingHand.push()
-                            } else {
-                                NSCursor.pop()
-                            }
-                        }
-                        .sheet(isPresented: $showDeviceInfo) {
-                            DeviceInfo()
-                        }
-                        Spacer()
-                    }
-
-                    // Company Logo
-                    Group {
-                        if FileManager.default.fileExists(atPath: companyLogoPath) {
-                            Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .scaledToFit()
-                                .frame(width: logowidth, height: logoheight)
-                        } else {
-                            Image(systemName: "applelogo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .scaledToFit()
-                                .frame(width: logowidth, height: logoheight)
-                        }
-                    }
-
-                    // Horizontal line
-                    HStack{
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.5))
-                            .frame(height: 1)
-                    }
-                    .frame(width: geometry.size.width*0.8)
-
-                    VStack(alignment: .center, spacing: 10) {
-                        // Required OS Version
-                        HStack{
-                            Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
-                                .fontWeight(.bold)
-                            Spacer()
-                            Text(String(requiredMinimumOSVersion))
-                                .foregroundColor(.secondary)
-                                .fontWeight(.bold)
-                        }
-
-                        // Current OS Version
-                        HStack{
-                            Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
-                            Spacer()
-                            Text(currentOSVersion)
-                                .foregroundColor(.secondary)
-                        }
-
-                        // Days Remaining
-                        HStack{
-                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                            Spacer()
-                            if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
-                                Text(String(viewObserved.daysRemaining))
-                                    .foregroundColor(.red)
-                                    .fontWeight(.bold)
-                            } else {
-                                Text(String(viewObserved.daysRemaining))
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-
-                        // Deferred Count
-                        // Show by default, allow to be hidden via preference
-                        if showDeferralCount {
-                            HStack{
-                                Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
-                                Spacer()
-                                Text(String(viewObserved.userDeferrals))
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    .frame(width: geometry.size.width*0.8)
-                }
-
-                // Force buttons to the bottom with a spacer
-                Spacer()
-
-                // More Info
+        VStack {
+            VStack(alignment: .center, spacing: 20) {
                 HStack {
-                    // informationButton
-                    if aboutUpdateURL != "" {
-                        Button(action: Utils().openMoreInfo, label: {
-                            Text(informationButtonText)
-                                .foregroundColor(.secondary)
-                        }
-                        )
-                            .buttonStyle(.plain)
-                        .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
-                        .onHover { inside in
-                            if inside {
-                                NSCursor.pointingHand.push()
-                            } else {
-                                NSCursor.pop()
-                            }
-                        }
-                        
+                    Button(action: {
+                        Utils().userInitiatedDeviceInfo()
+                        self.showDeviceInfo.toggle()
+                    }) {
+                        Image(systemName: "questionmark.circle")
                     }
-                    // Force the button to the left with a spacer
+                    .padding(.top, 1.0)
+                    .buttonStyle(.plain)
+                    .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    .sheet(isPresented: $showDeviceInfo) {
+                        DeviceInfo()
+                    }
                     Spacer()
                 }
-                .frame(width: geometry.size.width*0.8)
-                .offset(y: 15)
+
+                // Company Logo
+                Group {
+                    if FileManager.default.fileExists(atPath: companyLogoPath) {
+                        Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
+                            .frame(width: logowidth, height: logoheight)
+                    } else {
+                        Image(systemName: "applelogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
+                            .frame(width: logowidth, height: logoheight)
+                    }
+                }
+
+                // Horizontal line
+                HStack{
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(height: 1)
+                }
+                .padding(.leading,contentWidthPadding)
+                .padding(.trailing,contentWidthPadding)
+
+                VStack(alignment: .center, spacing: 10) {
+                    // Required OS Version
+                    HStack{
+                        Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
+                            .fontWeight(.bold)
+                        Spacer()
+                        Text(String(requiredMinimumOSVersion))
+                            .foregroundColor(.secondary)
+                            .fontWeight(.bold)
+                    }
+
+                    // Current OS Version
+                    HStack{
+                        Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
+                        Spacer()
+                        Text(currentOSVersion)
+                            .foregroundColor(.secondary)
+                    }
+
+                    // Days Remaining
+                    HStack{
+                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                        Spacer()
+                        if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
+                            Text(String(viewObserved.daysRemaining))
+                                .foregroundColor(.red)
+                                .fontWeight(.bold)
+                        } else {
+                            Text(String(viewObserved.daysRemaining))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
+                    // Deferred Count
+                    // Show by default, allow to be hidden via preference
+                    if showDeferralCount {
+                        HStack{
+                            Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
+                            Spacer()
+                            Text(String(viewObserved.userDeferrals))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                .padding(.leading,contentWidthPadding)
+                .padding(.trailing,contentWidthPadding)
             }
+
+            // Force buttons to the bottom with a spacer
+            Spacer()
+
+            // More Info
+            HStack {
+                // informationButton
+                if aboutUpdateURL != "" {
+                    Button(action: Utils().openMoreInfo, label: {
+                        Text(informationButtonText)
+                            .foregroundColor(.secondary)
+                    }
+                    )
+                        .buttonStyle(.plain)
+                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    
+                }
+                // Force the button to the left with a spacer
+                Spacer()
+            }
+            .padding(.leading,contentWidthPadding)
+            .padding(.trailing,contentWidthPadding)
         }
-        .frame(width: 280, alignment: .center)
+        .padding(.bottom, bottomPadding)
     }
 }
 

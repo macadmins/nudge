@@ -11,12 +11,16 @@ import SwiftUI
 // Standard Mode
 struct StandardMode: View {
     @ObservedObject var viewObserved: ViewState
+    
+    // enforce a fixed width for the left hand side
+    let leftSideWidth : CGFloat = 300
+    
     // Nudge UI
     var body: some View {
         HStack {
             // Left side of Nudge
             StandardModeLeftSide(viewObserved: viewObserved)
-                .frame(width: 300)
+                .frame(width: leftSideWidth)
 
             // Vertical Line
             VStack{
@@ -24,13 +28,10 @@ struct StandardMode: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 1)
             }
-            .frame(height: 525)
             
             // Right side of Nudge
             StandardModeRightSide(viewObserved: viewObserved)
-                .padding(.bottom, -60.0)
         }
-        .frame(width: 900, height: 450)
     }
 }
 

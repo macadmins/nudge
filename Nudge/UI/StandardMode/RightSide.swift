@@ -24,8 +24,17 @@ struct StandardModeRightSide: View {
     @State var showSSDetail = false
     @State var showDeferView = false
     
-    // Get the screen frame
-    var screen = NSScreen.main?.visibleFrame
+    // Some constants for defining element positioning and whatnot
+    let contentWidthPadding     : CGFloat = 25
+    let bottomPadding           : CGFloat = 10
+    let topPadding              : CGFloat = 18
+    let contentHeight           : CGFloat = 245
+    let contentBackgroundHeight : CGFloat = 350
+    let screenshotMaxHeight     : CGFloat = 120
+    let buttonTextMinWidth      : CGFloat = 35
+    
+    let hourTimeInterval        : CGFloat = 3600
+    let dayTimeInterval         : CGFloat = 86400
     
     // Nudge UI
     var body: some View {
@@ -34,6 +43,7 @@ struct StandardModeRightSide: View {
         let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
         // Right side of Nudge
         VStack {
+            Spacer()
             // mainHeader
             VStack(alignment: .center) {
                 HStack {
@@ -57,10 +67,12 @@ struct StandardModeRightSide: View {
                     Spacer()
                 }
             }
-            .frame(width: 510)
+            .padding(.leading, contentWidthPadding)
+            .padding(.trailing, contentWidthPadding)
             
             // I'm kind of impressed with myself
             VStack {
+                VStack {
                 Spacer()
                     .frame(height: 10)
                 // mainContentHeader / mainContentSubHeader
@@ -87,7 +99,6 @@ struct StandardModeRightSide: View {
                     }
                     .keyboardShortcut(.defaultAction)
                 }
-                .frame(width: 510)
                 
                 // Horizontal line
                 HStack{
@@ -95,7 +106,6 @@ struct StandardModeRightSide: View {
                         .fill(Color.gray.opacity(0.5))
                         .frame(height: 1)
                 }
-                .frame(width: 510)
                 
                 // mainContentNote
                 HStack {
@@ -105,44 +115,22 @@ struct StandardModeRightSide: View {
                         .foregroundColor(Color.red)
                     Spacer()
                 }
-                .frame(width: 510)
 
                 // mainContentText
-                if !screenShotExists && !forceScreenShotIconMode() {
-                    ScrollView(.vertical) {
-                        VStack {
-                            HStack {
-                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
-                                    .font(.callout)
-                                    .font(.body)
-                                    .fontWeight(.regular)
-                                    .multilineTextAlignment(.leading)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                Spacer()
-                            }
+                ScrollView(.vertical) {
+                    VStack {
+                        HStack {
+                            Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                .font(.callout)
+                                .font(.body)
+                                .fontWeight(.regular)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
                         }
                     }
-                    .frame(minHeight: 245.0)
-                    .frame(maxHeight: 245.0)
-                    .frame(width: 510)
-                } else {
-                    ScrollView(.vertical) {
-                        VStack {
-                            HStack {
-                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
-                                    .font(.callout)
-                                    .font(.body)
-                                    .fontWeight(.regular)
-                                    .multilineTextAlignment(.leading)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                Spacer()
-                            }
-                        }
-                    }
-                    .frame(minHeight: 125.0)
-                    .frame(maxHeight: 125.0)
-                    .frame(width: 510)
                 }
+                .frame(height: contentHeight)
 
                 HStack {
                     Spacer()
@@ -155,7 +143,7 @@ struct StandardModeRightSide: View {
                                 .resizable()
                                 .scaledToFit()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: 120)
+                                .frame(maxHeight: screenshotMaxHeight)
                         }
                         .buttonStyle(.plain)
                         .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
@@ -178,7 +166,7 @@ struct StandardModeRightSide: View {
                                     .resizable()
                                     .scaledToFit()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: 120)
+                                    .frame(maxHeight: screenshotMaxHeight)
                             }
                             .buttonStyle(.plain)
                             .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
@@ -200,7 +188,7 @@ struct StandardModeRightSide: View {
                                     .resizable()
                                     .scaledToFit()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: 120)
+                                    .frame(maxHeight: screenshotMaxHeight)
                             }
                             .buttonStyle(.plain)
                             .hidden()
@@ -212,10 +200,13 @@ struct StandardModeRightSide: View {
                     }
                     Spacer()
                 }
+                }
+                .padding(.leading, contentWidthPadding)
+                .padding(.trailing, contentWidthPadding)
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
-            .frame(width: 550, height: 350)
+            .frame(height: contentBackgroundHeight)
                 
             // Bottom buttons
             HStack {
@@ -246,26 +237,26 @@ struct StandardModeRightSide: View {
                                         updateDeferralUI()
                                     } label: {
                                         Text(primaryQuitButtonText)
-                                            .frame(minWidth: 35)
+                                            .frame(minWidth: buttonTextMinWidth)
                                     }
                                     if Utils().allow1HourDeferral() {
                                         Button {
-                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
-                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(hourTimeInterval), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                             updateDeferralUI()
                                         } label: {
                                             Text(oneHourDeferralButtonText)
-                                                .frame(minWidth: 35)
+                                                .frame(minWidth: buttonTextMinWidth)
                                         }
                                     }
                                     if Utils().allow24HourDeferral() {
                                         Button {
-                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
-                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
+                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(dayTimeInterval), forKey: "deferRunUntil")
+                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                             updateDeferralUI()
                                         } label: {
                                             Text(oneDayDeferralButtonText)
-                                                .frame(minWidth: 35)
+                                                .frame(minWidth: buttonTextMinWidth)
                                         }
                                     }
                                     if Utils().allowCustomDeferral() {
@@ -274,7 +265,7 @@ struct StandardModeRightSide: View {
                                             self.showDeferView.toggle()
                                         } label: {
                                             Text(customDeferralButtonText)
-                                                .frame(minWidth: 35)
+                                                .frame(minWidth: buttonTextMinWidth)
                                         }
                                     }
                                 }
@@ -284,7 +275,7 @@ struct StandardModeRightSide: View {
                                     Utils().userInitiatedExit()
                                 } label: {
                                     Text(primaryQuitButtonText)
-                                        .frame(minWidth: 35)
+                                        .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
                         }
@@ -295,9 +286,11 @@ struct StandardModeRightSide: View {
                     }
                 }
             }
-            .frame(width: 510)
         }
-        .frame(width: 600, height: 450)
+        .padding(.top, topPadding)
+        .padding(.bottom, bottomPadding)
+        .padding(.leading, contentWidthPadding)
+        .padding(.trailing, contentWidthPadding)
     }
 
     func updateDeferralUI() {
