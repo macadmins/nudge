@@ -15,24 +15,14 @@ struct StandardModeRightSide: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
     
-    // State variables
-    @State var hasClickedSecondaryQuitButton = false
-    @State var nudgeEventDate = Date()
-    @State var nudgeCustomEventDate = Date()
-    
     // Modal view for screenshot and deferral info
     @State var showSSDetail = false
-    @State var showDeferView = false
     
     // Some constants for defining element positioning and whatnot
     let contentWidthPadding     : CGFloat = 25
     let bottomPadding           : CGFloat = 10
     let topPadding              : CGFloat = 28
     let screenshotMaxHeight     : CGFloat = 120
-    let buttonTextMinWidth      : CGFloat = 35
-    
-    let hourTimeInterval        : CGFloat = 3600
-    let dayTimeInterval         : CGFloat = 86400
     
     // Nudge UI
     var body: some View {

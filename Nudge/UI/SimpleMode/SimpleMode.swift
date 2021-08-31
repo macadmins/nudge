@@ -39,7 +39,7 @@ struct SimpleMode: View {
             AdditionalInfoButton()
                         
             VStack(alignment: .center, spacing: 10) {
-                
+                Spacer()
                 // Company Logo
                 CompanyLogo(width: logoWidth, height: logoHeight)
 
@@ -99,31 +99,13 @@ struct SimpleMode: View {
                 .keyboardShortcut(.defaultAction)
                 Spacer()
             }
+            .frame(alignment: .center)
             
             // Bottom buttons
             HStack {
                 // informationButton
-                if aboutUpdateURL != "" {
-                    Button(action: Utils().openMoreInfo, label: {
-                        Text(informationButtonText)
-                            .foregroundColor(.secondary)
-                    }
-                    )
-                        .buttonStyle(.plain)
-                        .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
-                        .onHover { inside in
-                            if inside {
-                                NSCursor.pointingHand.push()
-                            } else {
-                                NSCursor.pop()
-                            }
-                        }
-                    
-                }
-
-                // Separate the buttons with a spacer
-                Spacer()
-
+                InformationButton()
+                
                 if viewObserved.allowButtons || Utils().demoModeEnabled() {
                     primaryQuitButton(viewObserved: viewObserved)
                 }

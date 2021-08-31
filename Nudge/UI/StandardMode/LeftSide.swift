@@ -14,9 +14,6 @@ struct StandardModeLeftSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     
-    // Modal view for screenshot and device info
-    @State var showDeviceInfo = false
-    
     let logoWidth  : CGFloat = 200
     let logoHeight : CGFloat = 150
     
@@ -97,30 +94,10 @@ struct StandardModeLeftSide: View {
             Spacer()
 
             // More Info
-            HStack {
-                // informationButton
-                if aboutUpdateURL != "" {
-                    Button(action: Utils().openMoreInfo, label: {
-                        Text(informationButtonText)
-                            .foregroundColor(.secondary)
-                    }
-                    )
-                        .buttonStyle(.plain)
-                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
-                    .onHover { inside in
-                        if inside {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
-                        }
-                    }
-                    
-                }
-                // Force the button to the left with a spacer
-                Spacer()
-            }
-            .padding(.leading,contentWidthPadding)
-            .padding(.trailing,contentWidthPadding)
+            // informationButton
+            InformationButton()
+                .padding(.leading,contentWidthPadding)
+                .padding(.trailing,contentWidthPadding)
         }
         .padding(.bottom, bottomPadding)
     }
