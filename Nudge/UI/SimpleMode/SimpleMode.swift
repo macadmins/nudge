@@ -68,13 +68,13 @@ struct SimpleMode: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .scaledToFit()
-                            .frame(width: 200, height: 150)
+                            .frame(minWidth: 200, idealWidth: 200, maxWidth: 200, minHeight: 150, idealHeight: 150, maxHeight: 150)
                     } else {
                         Image(systemName: "applelogo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .scaledToFit()
-                            .frame(width: 200, height: 150)
+                            .frame(minWidth: 200, idealWidth: 200, maxWidth: 200, minHeight: 150, idealHeight: 150, maxHeight: 150)
                     }
                 }
                 .frame(width: 300, height: 225)
