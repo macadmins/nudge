@@ -17,59 +17,25 @@ struct StandardModeLeftSide: View {
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
     
-    let logowidth  : CGFloat = 200
-    let logoheight : CGFloat = 150
+    let logoWidth  : CGFloat = 200
+    let logoHeight : CGFloat = 150
     
     let contentWidthPadding : CGFloat = 25
     let bottomPadding  : CGFloat = 10
     
     // Nudge UI
     var body: some View {
-        let darkMode = colorScheme == .dark
-        let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
+        //let darkMode = colorScheme == .dark
+        //let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         // Left side of Nudge
         VStack {
             VStack(alignment: .center, spacing: 20) {
-                HStack {
-                    Button(action: {
-                        Utils().userInitiatedDeviceInfo()
-                        self.showDeviceInfo.toggle()
-                    }) {
-                        Image(systemName: "questionmark.circle")
-                    }
-                    .padding(.top, 1.0)
-                    .buttonStyle(.plain)
-                    .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
-                    .onHover { inside in
-                        if inside {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
-                        }
-                    }
-                    .sheet(isPresented: $showDeviceInfo) {
-                        DeviceInfo()
-                    }
-                    Spacer()
-                }
-
+                // display the (?) info button
+                AdditionalInfoButton()
+                
                 // Company Logo
-                Group {
-                    if FileManager.default.fileExists(atPath: companyLogoPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .scaledToFit()
-                            .frame(width: logowidth, height: logoheight)
-                    } else {
-                        Image(systemName: "applelogo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .scaledToFit()
-                            .frame(width: logowidth, height: logoheight)
-                    }
-                }
-
+                CompanyLogo(width: logoWidth, height: logoHeight)
+                
                 // Horizontal line
                 HStack{
                     Rectangle()

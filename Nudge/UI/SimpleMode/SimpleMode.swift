@@ -24,60 +24,24 @@ struct SimpleMode: View {
     // Modal view for screenshot and deferral info
     @State var showDeviceInfo = false
     @State var showDeferView = false
-
-    // Get the screen frame
-    var screen = NSScreen.main?.visibleFrame
+    
+    let bottomPadding  : CGFloat = 10
+    let contentWidthPadding     : CGFloat = 25
+    
+    let logoWidth  : CGFloat = 200
+    let logoHeight : CGFloat = 150
     
     // Nudge UI
     var body: some View {
-        let darkMode = colorScheme == .dark
-        let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
-        VStack {
-            VStack(alignment: .leading) {
-                HStack(alignment: .top) {
-                    Button(action: {
-                        Utils().userInitiatedDeviceInfo()
-                        self.showDeviceInfo.toggle()
-                    }) {
-                        Image(systemName: "questionmark.circle")
-                    }
-                    .padding(.leading, -2.0)
-                    .padding(.top, -3.0)
-                    .buttonStyle(.plain)
-                    .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
-                    .onHover { inside in
-                        if inside {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
-                        }
-                    }
-                    .sheet(isPresented: $showDeviceInfo) {
-                        DeviceInfo()
-                    }
-                    Spacer()
-                }
-            }
-            .frame(width: 894, height: 20)
 
+        VStack {
+            // display the (?) info button
+            AdditionalInfoButton()
+                        
             VStack(alignment: .center, spacing: 10) {
+                
                 // Company Logo
-                HStack {
-                    if FileManager.default.fileExists(atPath: companyLogoPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .scaledToFit()
-                            .frame(width: 200, height: 150)
-                    } else {
-                        Image(systemName: "applelogo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .scaledToFit()
-                            .frame(width: 200, height: 150)
-                    }
-                }
-                .frame(width: 300, height: 225)
+                CompanyLogo(width: logoWidth, height: logoHeight)
 
                 // mainHeader
                 HStack {
@@ -161,86 +125,13 @@ struct SimpleMode: View {
                 Spacer()
 
                 if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    // secondaryQuitButton
-                    if viewObserved.requireDualQuitButtons {
-                        HStack(spacing: 20) {
-                            if self.hasClickedSecondaryQuitButton == false {
-                                Button {
-                                    hasClickedSecondaryQuitButton = true
-                                    userHasClickedSecondaryQuitButton()
-                                } label: {
-                                    Text(secondaryQuitButtonText)
-                                }
-                                .padding(.leading, -200.0)
-                            }
-                        }
-                        .frame(maxHeight: 30)
-                    }
-                    
-                    // primaryQuitButton
-                    if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
-                        HStack(spacing: 20) {
-                            if allowUserQuitDeferrals {
-                                Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
-                                    Button {
-                                        nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
-                                        updateDeferralUI()
-                                    } label: {
-                                        Text(primaryQuitButtonText)
-                                            .frame(minWidth: 35)
-                                    }
-                                    if Utils().allow1HourDeferral() {
-                                        Button {
-                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(3600), forKey: "deferRunUntil")
-                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(3600))
-                                            updateDeferralUI()
-                                        } label: {
-                                            Text(oneHourDeferralButtonText)
-                                                .frame(minWidth: 35)
-                                        }
-                                    }
-                                    if Utils().allow24HourDeferral() {
-                                        Button {
-                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(86400), forKey: "deferRunUntil")
-                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(86400))
-                                            updateDeferralUI()
-                                        } label: {
-                                            Text(oneDayDeferralButtonText)
-                                                .frame(minWidth: 35)
-                                        }
-                                    }
-                                    if Utils().allowCustomDeferral() {
-                                        Divider()
-                                        Button {
-                                            self.showDeferView.toggle()
-                                        } label: {
-                                            Text(customDeferralButtonText)
-                                                .frame(minWidth: 35)
-                                        }
-                                    }
-                                }
-                                .frame(maxWidth: 100)
-                            } else {
-                                Button {
-                                    Utils().userInitiatedExit()
-                                } label: {
-                                    Text(primaryQuitButtonText)
-                                        .frame(minWidth: 35)
-                                }
-                            }
-                        }
-                        .frame(maxHeight: 30)
-                        .sheet(isPresented: $showDeferView) {
-                        } content: {
-                            DeferView(viewObserved: viewObserved)
-                        }
-                    }
+                    primaryQuitButton(viewObserved: viewObserved)
                 }
             }
-            .frame(width: 860)
-            .padding(.bottom, -17.5)
+            .padding(.bottom, bottomPadding)
+            .padding(.leading, contentWidthPadding)
+            .padding(.trailing, contentWidthPadding)
         }
-        .frame(width: 900, height: 450)
     }
     
     var limitRange: ClosedRange<Date> {

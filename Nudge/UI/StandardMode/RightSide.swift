@@ -210,76 +210,7 @@ struct StandardModeRightSide: View {
                 Spacer()
                 
                 if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    // secondaryQuitButton
-                    if viewObserved.requireDualQuitButtons {
-                        if self.hasClickedSecondaryQuitButton == false {
-                            Button {
-                                hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            } label: {
-                                Text(secondaryQuitButtonText)
-                            }
-                            .padding(.leading, -200.0)
-                        }
-                    }
-                    
-                    // primaryQuitButton
-                    if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
-                        HStack(spacing: 20) {
-                            if allowUserQuitDeferrals {
-                                Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
-                                    Button {
-                                        nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
-                                        updateDeferralUI()
-                                    } label: {
-                                        Text(primaryQuitButtonText)
-                                            .frame(minWidth: buttonTextMinWidth)
-                                    }
-                                    if Utils().allow1HourDeferral() {
-                                        Button {
-                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(hourTimeInterval), forKey: "deferRunUntil")
-                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
-                                            updateDeferralUI()
-                                        } label: {
-                                            Text(oneHourDeferralButtonText)
-                                                .frame(minWidth: buttonTextMinWidth)
-                                        }
-                                    }
-                                    if Utils().allow24HourDeferral() {
-                                        Button {
-                                            nudgeDefaults.set(nudgeEventDate.addingTimeInterval(dayTimeInterval), forKey: "deferRunUntil")
-                                            userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
-                                            updateDeferralUI()
-                                        } label: {
-                                            Text(oneDayDeferralButtonText)
-                                                .frame(minWidth: buttonTextMinWidth)
-                                        }
-                                    }
-                                    if Utils().allowCustomDeferral() {
-                                        Divider()
-                                        Button {
-                                            self.showDeferView.toggle()
-                                        } label: {
-                                            Text(customDeferralButtonText)
-                                                .frame(minWidth: buttonTextMinWidth)
-                                        }
-                                    }
-                                }
-                                .frame(maxWidth: 100)
-                            } else {
-                                Button {
-                                    Utils().userInitiatedExit()
-                                } label: {
-                                    Text(primaryQuitButtonText)
-                                        .frame(minWidth: buttonTextMinWidth)
-                                }
-                            }
-                        }
-                        .sheet(isPresented: $showDeferView) {
-                        } content: {
-                            DeferView(viewObserved: viewObserved)
-                        }
-                    }
+                    primaryQuitButton(viewObserved: viewObserved)
                 }
             }
         }
