@@ -27,9 +27,7 @@ struct StandardModeRightSide: View {
     // Some constants for defining element positioning and whatnot
     let contentWidthPadding     : CGFloat = 25
     let bottomPadding           : CGFloat = 10
-    let topPadding              : CGFloat = 18
-    let contentHeight           : CGFloat = 245
-    let contentBackgroundHeight : CGFloat = 350
+    let topPadding              : CGFloat = 28
     let screenshotMaxHeight     : CGFloat = 120
     let buttonTextMinWidth      : CGFloat = 35
     
@@ -130,7 +128,6 @@ struct StandardModeRightSide: View {
                         }
                     }
                 }
-                .frame(height: contentHeight)
 
                 HStack {
                     Spacer()
@@ -206,7 +203,6 @@ struct StandardModeRightSide: View {
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
-            .frame(height: contentBackgroundHeight)
                 
             // Bottom buttons
             HStack {
