@@ -22,8 +22,6 @@ struct StandardModeLeftSide: View {
     
     // Nudge UI
     var body: some View {
-        //let darkMode = colorScheme == .dark
-        //let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         // Left side of Nudge
         VStack {
             VStack(alignment: .center, spacing: 20) {

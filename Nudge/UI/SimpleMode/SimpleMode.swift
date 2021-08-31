@@ -14,17 +14,7 @@ struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-    
-    // State variables
-    @State var hasClickedCustomDeferralButton = false
-    @State var hasClickedSecondaryQuitButton = false
-    @State var nudgeEventDate = Date()
-    @State var nudgeCustomEventDate = Date()
-    
-    // Modal view for screenshot and deferral info
-    @State var showDeviceInfo = false
-    @State var showDeferView = false
-    
+        
     let bottomPadding  : CGFloat = 10
     let contentWidthPadding     : CGFloat = 25
     
