@@ -105,24 +105,6 @@ struct SimpleMode: View {
             .padding(.trailing, contentWidthPadding)
         }
     }
-    
-    var limitRange: ClosedRange<Date> {
-        if viewObserved.daysRemaining > 0 {
-            // Do not let the user defer past the point of the approachingWindowTime
-            return Date()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Date())!
-        } else {
-            return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
-        }
-    }
-
-    func updateDeferralUI() {
-        viewObserved.userQuitDeferrals += 1
-        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-        Utils().logUserQuitDeferrals()
-        Utils().logUserDeferrals()
-        Utils().userInitiatedExit()
-    }
-    
 }
 
 #if DEBUG

@@ -209,14 +209,6 @@ struct StandardModeRightSide: View {
         .padding(.leading, contentWidthPadding)
         .padding(.trailing, contentWidthPadding)
     }
-
-    func updateDeferralUI() {
-        viewObserved.userQuitDeferrals += 1
-        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-        Utils().logUserQuitDeferrals()
-        Utils().logUserDeferrals()
-        Utils().userInitiatedExit()
-    }
 }
 
 #if DEBUG

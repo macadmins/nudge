@@ -9,20 +9,19 @@ import SwiftUI
 import Foundation
 
 struct PrimaryQuitButton: View {
-    
     @ObservedObject var viewObserved: ViewState
-    
+
     @State var hasClickedSecondaryQuitButton = false
     @State var showDeferView = false
-    
+
     @State var nudgeEventDate = Date()
     @State var nudgeCustomEventDate = Date()
-    
+
     let buttonTextMinWidth: CGFloat = 35
-    
+
     let hourTimeInterval: CGFloat = 3600
     let dayTimeInterval: CGFloat = 86400
-    
+
     func updateDeferralUI() {
         viewObserved.userQuitDeferrals += 1
         viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
@@ -30,7 +29,7 @@ struct PrimaryQuitButton: View {
         Utils().logUserDeferrals()
         Utils().userInitiatedExit()
     }
-    
+
     var body: some View {
         // Bottom buttons
         HStack {
