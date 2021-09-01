@@ -99,22 +99,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var viewState = nudgePrimaryState
     
-    let declaredWindowHeight: CGFloat = 450
-    let declaredWindowWidth: CGFloat = 900
+    var declaredWindowHeight: CGFloat = 450
+    var declaredWindowWidth: CGFloat = 900
     
     var body: some Scene {
         WindowGroup {
             if Utils().debugUIModeEnabled() {
                 VSplitView {
-                    ContentView()
+                    ContentView(viewObserved: viewState)
                         .frame(width: declaredWindowWidth, height: declaredWindowHeight)
-                    ContentView(forceSimpleMode: true)
+                    ContentView(viewObserved: viewState, forceSimpleMode: true)
                         .frame(width: declaredWindowWidth, height: declaredWindowHeight)
                 }
                 .frame(height: declaredWindowHeight*2)
             } else {
-                ContentView()
+                ContentView(viewObserved: viewState)
                     .frame(width: declaredWindowWidth, height: declaredWindowHeight)
             }
         }
