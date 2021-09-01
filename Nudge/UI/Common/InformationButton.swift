@@ -34,8 +34,21 @@ struct InformationButton: View {
     }
 }
 
+#if DEBUG
+// Xcode preview for both light and dark mode
 struct InformationButton_Previews: PreviewProvider {
     static var previews: some View {
-        InformationButton()
+        Group {
+            ForEach(["en", "es"], id: \.self) { id in
+                InformationButton()
+                    .preferredColorScheme(.light)
+                    .environment(\.locale, .init(identifier: id))
+            }
+            ZStack {
+                InformationButton()
+                    .preferredColorScheme(.dark)
+            }
+        }
     }
 }
+#endif

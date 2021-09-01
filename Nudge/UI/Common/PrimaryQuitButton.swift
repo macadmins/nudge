@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-struct primaryQuitButton: View {
+struct PrimaryQuitButton: View {
     
     @ObservedObject var viewObserved: ViewState
     
@@ -110,4 +110,21 @@ struct primaryQuitButton: View {
     }
 }
 
-
+#if DEBUG
+// Xcode preview for both light and dark mode
+struct PrimaryQuitButton_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            ForEach(["en", "es"], id: \.self) { id in
+                PrimaryQuitButton(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.light)
+                    .environment(\.locale, .init(identifier: id))
+            }
+            ZStack {
+                PrimaryQuitButton(viewObserved: nudgePrimaryState)
+                    .preferredColorScheme(.dark)
+            }
+        }
+    }
+}
+#endif

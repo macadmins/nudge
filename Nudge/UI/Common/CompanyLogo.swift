@@ -46,3 +46,22 @@ struct CompanyLogo: View {
     }
 }
 
+#if DEBUG
+// Xcode preview for both light and dark mode
+struct CompanyLogo_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            ForEach(["en", "es"], id: \.self) { id in
+                CompanyLogo(width: 200, height: 150)
+                    .preferredColorScheme(.light)
+                    .environment(\.locale, .init(identifier: id))
+            }
+            ZStack {
+                CompanyLogo(width: 200, height: 150)
+                    .preferredColorScheme(.dark)
+            }
+        }
+    }
+}
+#endif
+

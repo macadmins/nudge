@@ -37,7 +37,7 @@ struct StandardMode: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct StandardModePreviews: PreviewProvider {
+struct StandardMode_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in

@@ -80,7 +80,7 @@ struct DeferView: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct DeviceViewPreview: PreviewProvider {
+struct DeferView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in

@@ -97,7 +97,7 @@ struct SimpleMode: View {
                 InformationButton()
                 
                 if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    primaryQuitButton(viewObserved: viewObserved)
+                    PrimaryQuitButton(viewObserved: viewObserved)
                 }
             }
             .padding(.bottom, bottomPadding)
@@ -127,7 +127,7 @@ struct SimpleMode: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct SimpleModePreviews: PreviewProvider {
+struct SimpleMode_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
