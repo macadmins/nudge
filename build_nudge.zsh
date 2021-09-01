@@ -26,7 +26,6 @@ AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$DATE"
 # Create files to use for build process info
 echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
 
-ls -la /Applications
 # build nudge
 echo "Building Nudge"
 if [ -e $XCODE_BUILD_PATH ]; then
@@ -39,11 +38,6 @@ XCB_RESULT="$?"
 if [ "${XCB_RESULT}" != "0" ]; then
     echo "Error running xcodebuild: ${XCB_RESULT}" 1>&2
     exit 1
-fi
-
-if ! [ -n "$1" ]; then
-  echo "Did not pass option to create package"
-  exit 0
 fi
 
 # Setup notary item
@@ -59,6 +53,13 @@ if [ -e $OUTPUTSDIR ]; then
   /bin/rm -rf $OUTPUTSDIR
 fi
 /bin/mkdir -p "$OUTPUTSDIR"
+
+if ! [ -n "$1" ]; then
+  echo "Did not pass option to create package"
+  # Move notarized zip to outputs folder
+  /bin/mv "${BUILDSDIR}/Release/Nudge.zip" "$OUTPUTSDIR"
+  exit 0
+fi
 
 # move the app to the payload folder
 echo "Moving Nudge.app to payload folder"
