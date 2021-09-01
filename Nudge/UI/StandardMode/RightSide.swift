@@ -193,16 +193,6 @@ struct StandardModeRightSide: View {
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
-                
-            // Bottom buttons
-            HStack {
-                // Separate the buttons with a spacer
-                Spacer()
-                
-                if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    PrimaryQuitButton(viewObserved: viewObserved)
-                }
-            }
         }
         .padding(.top, topPadding)
         .padding(.bottom, bottomPadding)

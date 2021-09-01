@@ -14,13 +14,13 @@ struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
-        
+
     let bottomPadding: CGFloat = 10
     let contentWidthPadding: CGFloat = 25
     
     let logoWidth: CGFloat = 200
     let logoHeight: CGFloat = 150
-    
+
     // Nudge UI
     var body: some View {
         VStack {

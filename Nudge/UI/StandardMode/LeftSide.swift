@@ -90,12 +90,6 @@ struct StandardModeLeftSide: View {
 
             // Force buttons to the bottom with a spacer
             Spacer()
-
-            // More Info
-            // informationButton
-            InformationButton()
-                .padding(.leading,contentWidthPadding)
-                .padding(.trailing,contentWidthPadding)
         }
         .padding(.bottom, bottomPadding)
     }
