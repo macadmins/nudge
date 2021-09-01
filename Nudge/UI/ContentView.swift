@@ -15,6 +15,7 @@ class ViewState: ObservableObject {
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
+    @Published var hasClickedSecondaryQuitButton = false
     @Published var hasLoggedDeferralCountPastThreshhold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
     @Published var hasLoggedMajorOSVersion = false

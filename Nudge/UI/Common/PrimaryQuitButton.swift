@@ -11,7 +11,6 @@ import Foundation
 struct PrimaryQuitButton: View {
     @ObservedObject var viewObserved: ViewState
 
-    @State var hasClickedSecondaryQuitButton = false
     @State var showDeferView = false
 
     @State var nudgeEventDate = Date()
@@ -36,9 +35,9 @@ struct PrimaryQuitButton: View {
             // secondaryQuitButton
             if viewObserved.requireDualQuitButtons {
                 HStack(spacing: 20) {
-                    if self.hasClickedSecondaryQuitButton == false {
+                    if viewObserved.hasClickedSecondaryQuitButton == false {
                         Button {
-                            hasClickedSecondaryQuitButton = true
+                            viewObserved.hasClickedSecondaryQuitButton = true
                             userHasClickedSecondaryQuitButton()
                         } label: {
                             Text(secondaryQuitButtonText)
@@ -49,7 +48,7 @@ struct PrimaryQuitButton: View {
                 .frame(maxHeight: 30)
             }
             // primaryQuitButton
-            if viewObserved.requireDualQuitButtons == false || hasClickedSecondaryQuitButton {
+            if viewObserved.requireDualQuitButtons == false || viewObserved.hasClickedSecondaryQuitButton {
                 HStack(spacing: 20) {
                     if allowUserQuitDeferrals {
                         Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
