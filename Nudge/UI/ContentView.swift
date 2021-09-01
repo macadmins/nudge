@@ -15,6 +15,7 @@ class ViewState: ObservableObject {
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
+    @Published var hasClickedSecondaryQuitButton = false
     @Published var hasLoggedDeferralCountPastThreshhold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
     @Published var hasLoggedMajorOSVersion = false
@@ -41,9 +42,10 @@ class LogState {
 
 // BackgroundView
 struct BackgroundView: View {
+    var forceSimpleMode: Bool = false
     @ObservedObject var viewObserved: ViewState
     var body: some View {
-        if simpleMode() {
+        if simpleMode() || forceSimpleMode {
             SimpleMode(viewObserved: viewObserved)
         } else {
             StandardMode(viewObserved: viewObserved)
@@ -52,12 +54,13 @@ struct BackgroundView: View {
 }
 
 struct ContentView: View {
-    @StateObject var viewState = nudgePrimaryState
+    @ObservedObject var viewObserved: ViewState
+    var forceSimpleMode: Bool = false
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
     var body: some View {
-        BackgroundView(viewObserved: viewState).background(
+        BackgroundView(forceSimpleMode: forceSimpleMode, viewObserved: viewObserved).background(
             HostingWindowFinder { window in
                 window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
                 window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
@@ -74,20 +77,21 @@ struct ContentView: View {
         }
         .onReceive(nudgeRefreshCycleTimer) { _ in
             if needToActivateNudge() {
-                viewState.userSessionDeferrals += 1
-                viewState.userDeferrals = viewState.userSessionDeferrals + viewState.userQuitDeferrals
+                viewObserved.userSessionDeferrals += 1
+                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
             }
             updateUI()
         }
     }
+    
     func updateUI() {
-        if Utils().requireDualQuitButtons() || viewState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
-            viewState.requireDualQuitButtons = true
+        if Utils().requireDualQuitButtons() || viewObserved.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+            viewObserved.requireDualQuitButtons = true
         }
-        if Utils().pastRequiredInstallationDate() || viewState.deferralCountPastThreshhold {
-            viewState.allowButtons = false
+        if Utils().pastRequiredInstallationDate() || viewObserved.deferralCountPastThreshhold {
+            viewObserved.allowButtons = false
         }
-        viewState.daysRemaining = Utils().getNumberOfDaysBetween()
+        viewObserved.daysRemaining = Utils().getNumberOfDaysBetween()
     }
 }
 
