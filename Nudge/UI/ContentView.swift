@@ -41,9 +41,10 @@ class LogState {
 
 // BackgroundView
 struct BackgroundView: View {
+    var forceSimpleMode: Bool = false
     @ObservedObject var viewObserved: ViewState
     var body: some View {
-        if simpleMode() {
+        if simpleMode() || forceSimpleMode {
             SimpleMode(viewObserved: viewObserved)
         } else {
             StandardMode(viewObserved: viewObserved)
@@ -52,12 +53,13 @@ struct BackgroundView: View {
 }
 
 struct ContentView: View {
+    var forceSimpleMode: Bool = false
     @StateObject var viewState = nudgePrimaryState
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 
     var body: some View {
-        BackgroundView(viewObserved: viewState).background(
+        BackgroundView(forceSimpleMode: forceSimpleMode, viewObserved: viewState).background(
             HostingWindowFinder { window in
                 window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
                 window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button

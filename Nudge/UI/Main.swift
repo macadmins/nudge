@@ -109,10 +109,10 @@ struct Main: App {
                 VSplitView {
                     ContentView()
                         .frame(width: declaredWindowWidth, height: declaredWindowHeight)
-                    ContentView()
+                    ContentView(forceSimpleMode: true)
                         .frame(width: declaredWindowWidth, height: declaredWindowHeight)
                 }
-                //.frame(height: declaredWindowHeight*2)
+                .frame(height: declaredWindowHeight*2)
             } else {
                 ContentView()
                     .frame(width: declaredWindowWidth, height: declaredWindowHeight)
