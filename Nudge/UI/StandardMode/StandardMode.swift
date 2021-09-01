@@ -13,7 +13,7 @@ struct StandardMode: View {
     @ObservedObject var viewObserved: ViewState
     
     // enforce a fixed width for the left hand side
-    let leftSideWidth : CGFloat = 300
+    let leftSideWidth: CGFloat = 300
     
     // Nudge UI
     var body: some View {

@@ -14,11 +14,11 @@ struct StandardModeLeftSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     
-    let logoWidth  : CGFloat = 200
-    let logoHeight : CGFloat = 150
+    let logoWidth: CGFloat = 200
+    let logoHeight: CGFloat = 150
     
     let contentWidthPadding : CGFloat = 25
-    let bottomPadding  : CGFloat = 10
+    let bottomPadding: CGFloat = 10
     
     // Nudge UI
     var body: some View {

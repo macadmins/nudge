@@ -100,8 +100,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    let declaredWindowHeight : CGFloat = 450
-    let declaredWindowWidth  : CGFloat = 900
+    let declaredWindowHeight: CGFloat = 450
+    let declaredWindowWidth: CGFloat = 900
     
     var body: some Scene {
         WindowGroup {

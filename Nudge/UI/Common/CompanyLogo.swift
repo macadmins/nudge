@@ -12,11 +12,11 @@ struct CompanyLogo: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     
-    let defaultWidth : CGFloat = 200
-    let defaultHeight : CGFloat = 150
+    let defaultWidth: CGFloat = 200
+    let defaultHeight: CGFloat = 150
     
-    var logoWidth  : CGFloat
-    var logoHeight : CGFloat
+    var logoWidth: CGFloat
+    var logoHeight: CGFloat
     
     init(width: CGFloat?, height: CGFloat?) {
         logoWidth = width ?? defaultWidth

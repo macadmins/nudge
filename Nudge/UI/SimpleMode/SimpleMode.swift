@@ -15,11 +15,11 @@ struct SimpleMode: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
         
-    let bottomPadding  : CGFloat = 10
-    let contentWidthPadding     : CGFloat = 25
+    let bottomPadding: CGFloat = 10
+    let contentWidthPadding: CGFloat = 25
     
-    let logoWidth  : CGFloat = 200
-    let logoHeight : CGFloat = 150
+    let logoWidth: CGFloat = 200
+    let logoHeight: CGFloat = 150
     
     // Nudge UI
     var body: some View {

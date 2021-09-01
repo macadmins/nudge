@@ -19,10 +19,10 @@ struct StandardModeRightSide: View {
     @State var showSSDetail = false
     
     // Some constants for defining element positioning and whatnot
-    let contentWidthPadding     : CGFloat = 25
-    let bottomPadding           : CGFloat = 10
-    let topPadding              : CGFloat = 28
-    let screenshotMaxHeight     : CGFloat = 120
+    let contentWidthPadding: CGFloat = 25
+    let bottomPadding: CGFloat = 10
+    let topPadding: CGFloat = 28
+    let screenshotMaxHeight: CGFloat = 120
     
     // Nudge UI
     var body: some View {
