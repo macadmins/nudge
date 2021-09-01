@@ -23,15 +23,15 @@ struct SimpleMode: View {
     
     // Nudge UI
     var body: some View {
-
         VStack {
             // display the (?) info button
             AdditionalInfoButton()
-                        
+
             VStack(alignment: .center, spacing: 10) {
                 Spacer()
                 // Company Logo
                 CompanyLogo(width: logoWidth, height: logoHeight)
+                Spacer()
 
                 // mainHeader
                 HStack {
@@ -39,7 +39,7 @@ struct SimpleMode: View {
                         .font(.title)
                         .fontWeight(.bold)
                 }
-                
+ 
                 // Days Remaining
                 HStack(spacing: 3.5) {
                     Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
@@ -55,7 +55,7 @@ struct SimpleMode: View {
                             .fontWeight(.bold)
                     }
                 }
-                
+
                 // Deferral Count
                 if showDeferralCount {
                     HStack{
@@ -90,7 +90,7 @@ struct SimpleMode: View {
                 Spacer()
             }
             .frame(alignment: .center)
-            
+
             // Bottom buttons
             HStack {
                 // informationButton
