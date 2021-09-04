@@ -28,21 +28,11 @@ struct CompanyLogo: View {
         let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
         
         // Company Logo
-        Group {
-            if FileManager.default.fileExists(atPath: companyLogoPath) {
-                Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .scaledToFit()
-                    .frame(width: logoWidth, height: logoHeight)
-            } else {
-                Image(systemName: "applelogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .scaledToFit()
-                    .frame(width: logoWidth, height: logoHeight)
-            }
-        }
+        Image(nsImage: Utils().createImageData(fileImagePath: companyLogoPath))
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
+            .frame(width: logoWidth, height: logoHeight)
     }
 }
 

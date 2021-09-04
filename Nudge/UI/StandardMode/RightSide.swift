@@ -28,7 +28,7 @@ struct StandardModeRightSide: View {
     var body: some View {
         let darkMode = colorScheme == .dark
         let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
-        let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
+        let screenShotExists = Utils().pathIsFileOrURL(path: screenShotPath)
         // Right side of Nudge
         VStack {
             Spacer()
@@ -126,7 +126,7 @@ struct StandardModeRightSide: View {
                         Button {
                             self.showSSDetail.toggle()
                         } label: {
-                            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath, returnErrorImage: false))
                                 .resizable()
                                 .scaledToFit()
                                 .aspectRatio(contentMode: .fit)

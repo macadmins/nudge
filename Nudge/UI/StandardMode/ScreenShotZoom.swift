@@ -44,31 +44,24 @@ struct ScreenShotZoom: View {
             
             HStack {
                 Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
-                    if FileManager.default.fileExists(atPath: screenShotPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
-                    } else {
-                        Image("CompanyScreenshotIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
-                    }
+                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath, returnErrorImage: false))
+                        .resizable()
+                        .scaledToFit()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 512)
                 }
                 )
                     .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
+                    .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
                     }
                 }
-            }
+            
             // Vertically align Screenshot to center
             Spacer()
         }

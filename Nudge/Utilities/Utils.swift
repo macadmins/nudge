@@ -21,6 +21,29 @@ extension String {
     }
 }
 
+extension URLSession {
+    func synchronousDataTask(urlrequest: URLRequest) -> (data: Data?, response: URLResponse?, error: Error?) {
+        var data: Data?
+        var response: URLResponse?
+        var error: Error?
+
+        let semaphore = DispatchSemaphore(value: 0)
+
+        let dataTask = self.dataTask(with: urlrequest) {
+            data = $0
+            response = $1
+            error = $2
+
+            semaphore.signal()
+        }
+        dataTask.resume()
+
+        _ = semaphore.wait(timeout: .distantFuture)
+
+        return (data, response, error)
+    }
+}
+
 struct Utils {
     func activateNudge() {
         var msg = "Re-activating Nudge"
@@ -82,37 +105,67 @@ struct Utils {
         return dateFormatter.date(from: dateString) ?? Date()
     }
     
-    func createImageData(fileImagePath: String, imgWidth: CGFloat? = .infinity, imgHeight: CGFloat? = .infinity) -> NSImage {
+    func pathIsFileOrURL(path: String) -> Bool {
+        //var returnValue : Bool = false
+        if FileManager.default.fileExists(atPath: path) {
+            return true
+        }
+        if path.hasPrefix("http") {
+            // check that the URL resource is available
+            utilsLog.debug("Checking Availability for \(path, privacy: .public)")
+            var request = URLRequest(url: URL(string: path)!)
+            request.httpMethod = "HEAD"
+            
+            let (_, response, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+            
+            if let httpResponse = response as? HTTPURLResponse, error == nil {
+                utilsLog.debug("Status Code \(httpResponse.statusCode, privacy: .public)")
+                if httpResponse.statusCode == 200 {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    func createImageData(fileImagePath: String, imgWidth: CGFloat? = .infinity, imgHeight: CGFloat? = .infinity, returnErrorImage: Bool = true) -> NSImage {
         // accept image as local file path or as URL and return NSImage
         // can pass in width and height as optional values otherwise return the image as is.
         
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         
         // need to declare literal empty string first otherwise the runtime whinges about an NSURL instance with an empty URL string. I know!
-        var urlPath = NSURL(string: "")!
-        var imageData = NSData()
+        var urlPath = URL(string: "")
+        var imageData = Data()
+        var image = NSImage()
+        
+        let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
+        var errorImage = NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+        if !returnErrorImage {
+            errorImage = NSImage()
+        }
         
         // checking for anything starting with http
         // which means we create the image from URL directly not as fileURL
         if fileImagePath.hasPrefix("http") {
-            urlPath = NSURL(string: fileImagePath)!
+            //return errorImage
+            urlPath = URL(string: fileImagePath)!
         } else {
-            urlPath = NSURL(fileURLWithPath: fileImagePath)
+            urlPath = URL(fileURLWithPath: fileImagePath)
         }
-          
-        // wrap everything in a try block.IF the URL or filepath is unreadable then return a default
+        
+        // wrap everything in a try block. If the URL or filepath is unreadable then return a default image
         do {
-            imageData = try NSData(contentsOf: urlPath as URL)
+            imageData = try Data(contentsOf: urlPath! as URL)
         } catch {
-            uiLog.error("Error accessing file \(fileImagePath). Incorrect permissions")
-            let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
-            return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+            uiLog.error("Error accessing file \(fileImagePath, privacy: .public). Resource not available")
+            return errorImage
         }
         
         // We have our image data - time to process it and return with specified dimensions
-        let image : NSImage = NSImage(data: imageData as Data)!
+        image = NSImage(data: imageData as Data) ?? errorImage
         
-        if let rep = NSImage(data: imageData as Data)!
+        if let rep = NSImage(data: imageData as Data)?
             .bestRepresentation(for: NSRect(x: 0, y: 0, width: imgWidth!, height: imgHeight!), context: nil, hints: nil) {
             image.size = rep.size
             image.addRepresentation(rep)
