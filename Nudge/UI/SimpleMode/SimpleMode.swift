@@ -26,6 +26,7 @@ struct SimpleMode: View {
         VStack {
             // display the (?) info button
             AdditionalInfoButton()
+                .padding(3)
 
             VStack(alignment: .center, spacing: 10) {
                 Spacer()

@@ -27,6 +27,7 @@ struct StandardModeLeftSide: View {
             VStack(alignment: .center, spacing: 20) {
                 // display the (?) info button
                 AdditionalInfoButton()
+                    .padding(3)
                 
                 // Company Logo
                 CompanyLogo(width: logoWidth, height: logoHeight)
