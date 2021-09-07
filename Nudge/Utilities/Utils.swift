@@ -81,26 +81,11 @@ struct Utils {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         return dateFormatter.date(from: dateString) ?? Date()
     }
-    
-    func createImageData(fileImagePath: String, imgWidth: CGFloat? = .infinity, imgHeight: CGFloat? = .infinity) -> NSImage {
-        // accept image as local file path or as URL and return NSImage
-        // can pass in width and height as optional values otherwise return the image as is.
-        
+
+    func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
-        
-        // need to declare literal empty string first otherwise the runtime whinges about an NSURL instance with an empty URL string. I know!
-        var urlPath = NSURL(string: "")!
+        let urlPath = NSURL(fileURLWithPath: fileImagePath)
         var imageData = NSData()
-        
-        // checking for anything starting with http
-        // which means we create the image from URL directly not as fileURL
-        if fileImagePath.hasPrefix("http") {
-            urlPath = NSURL(string: fileImagePath)!
-        } else {
-            urlPath = NSURL(fileURLWithPath: fileImagePath)
-        }
-          
-        // wrap everything in a try block.IF the URL or filepath is unreadable then return a default
         do {
             imageData = try NSData(contentsOf: urlPath as URL)
         } catch {
@@ -108,16 +93,7 @@ struct Utils {
             let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
             return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
         }
-        
-        // We have our image data - time to process it and return with specified dimensions
-        let image : NSImage = NSImage(data: imageData as Data)!
-        
-        if let rep = NSImage(data: imageData as Data)!
-            .bestRepresentation(for: NSRect(x: 0, y: 0, width: imgWidth!, height: imgHeight!), context: nil, hints: nil) {
-            image.size = rep.size
-            image.addRepresentation(rep)
-        }
-        return image
+        return NSImage(data: imageData as Data)!
     }
 
     func debugUIModeEnabled() -> Bool {
