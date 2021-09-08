@@ -38,35 +38,42 @@ struct DeferView: View {
                         NSCursor.pop()
                     }
                 }
-                .frame(width: 30, height: 30)
+                // pulls the button away from the very edge of the view. Value of 4 seems a nice distance
+                .padding(4)
                 Spacer()
             }
-            // We have two DatePickers because DatePicker is non-ideal
-            DatePicker("", selection: $nudgeCustomEventDate, in: limitRange)
-                .datePickerStyle(.graphical)
-                .labelsHidden()
-                .frame(width: 280, height: 140, alignment: .center)
-            DatePicker("", selection: $nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
-                .labelsHidden()
-                .frame(maxWidth: 100)
-            Divider()
-            HStack {
-                Button {
-                    nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
-                    userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
-                    viewObserved.shouldExit = true
-                    viewObserved.userQuitDeferrals += 1
-                    viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-                    Utils().logUserQuitDeferrals()
-                    Utils().logUserDeferrals()
-                    Utils().userInitiatedExit()
-                } label: {
-                    Text("Defer")
-                        .frame(minWidth: 35)
-                }
+            
+            VStack() {
+                // We have two DatePickers because DatePicker is non-ideal
+                DatePicker("", selection: $nudgeCustomEventDate, in: limitRange)
+                    .datePickerStyle(.graphical)
+                    .labelsHidden()
+                DatePicker("", selection: $nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
+                    .labelsHidden()
+                    .frame(maxWidth: 100)
             }
+            // make space left and right of the stack
+            .padding(.leading, 30)
+            .padding(.trailing, 30)
+            
+            Divider()
+            
+            Button {
+                nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
+                userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
+                viewObserved.shouldExit = true
+                viewObserved.userQuitDeferrals += 1
+                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+                Utils().logUserQuitDeferrals()
+                Utils().logUserDeferrals()
+                Utils().userInitiatedExit()
+            } label: {
+                Text("Defer")
+                    .frame(minWidth: 35)
+            }
+            // a bit of space at the bottom to raise the Defer button away from the very edge
+            .padding(.bottom, 10)
         }
-        .frame(width: 350, height: 275)
     }
     var limitRange: ClosedRange<Date> {
         if viewObserved.daysRemaining > 0 {
@@ -80,7 +87,7 @@ struct DeferView: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct DeviceViewPreview: PreviewProvider {
+struct DeferView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in

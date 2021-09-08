@@ -11,31 +11,50 @@ import SwiftUI
 // Standard Mode
 struct StandardMode: View {
     @ObservedObject var viewObserved: ViewState
+
+    // enforce a fixed width for the left hand side
+    let leftSideWidth: CGFloat = 300
+
+    let bottomPadding: CGFloat = 10
+    let contentWidthPadding: CGFloat = 25
+
     // Nudge UI
     var body: some View {
-        HStack {
-            // Left side of Nudge
-            StandardModeLeftSide(viewObserved: viewObserved)
+        VStack {
+            HStack {
+                // Left side of Nudge
+                StandardModeLeftSide(viewObserved: viewObserved)
+                    .frame(width: leftSideWidth)
 
-            // Vertical Line
-            VStack{
-                Rectangle()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 1)
+                // Vertical Line
+                VStack{
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 1)
+                }
+                
+                // Right side of Nudge
+                StandardModeRightSide(viewObserved: viewObserved)
             }
-            .frame(height: 525)
-            
-            // Right side of Nudge
-            StandardModeRightSide(viewObserved: viewObserved)
-                .padding(.bottom, -60.0)
+            // Bottom buttons
+            HStack {
+                // informationButton
+                InformationButton()
+                
+                if viewObserved.allowButtons || Utils().demoModeEnabled() {
+                    PrimaryQuitButton(viewObserved: viewObserved)
+                }
+            }
+            .padding(.bottom, bottomPadding)
+            .padding(.leading, contentWidthPadding)
+            .padding(.trailing, contentWidthPadding)
         }
-        .frame(width: 900, height: 450)
     }
 }
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct StandardModePreviews: PreviewProvider {
+struct StandardMode_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in

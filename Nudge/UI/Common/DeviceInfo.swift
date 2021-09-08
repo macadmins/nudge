@@ -91,7 +91,7 @@ struct DeviceInfo: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct DeviceInfoPreview: PreviewProvider {
+struct DeviceInfo_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in

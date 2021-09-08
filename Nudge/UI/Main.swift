@@ -99,19 +99,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var viewState = nudgePrimaryState
+    
+    var declaredWindowHeight: CGFloat = 450
+    var declaredWindowWidth: CGFloat = 900
+    
     var body: some Scene {
         WindowGroup {
             if Utils().debugUIModeEnabled() {
                 VSplitView {
-                    ContentView()
-                        .frame(width: 900, height: 450)
-                    ContentView()
-                        .frame(width: 900, height: 450)
+                    ContentView(viewObserved: viewState)
+                        .frame(width: declaredWindowWidth, height: declaredWindowHeight)
+                    ContentView(viewObserved: viewState, forceSimpleMode: true)
+                        .frame(width: declaredWindowWidth, height: declaredWindowHeight)
                 }
-                .frame(height: 900)
+                .frame(height: declaredWindowHeight*2)
             } else {
-                ContentView()
-                    .frame(width: 900, height: 450)
+                ContentView(viewObserved: viewState)
+                    .frame(width: declaredWindowWidth, height: declaredWindowHeight)
             }
         }
         // Hide Title Bar
