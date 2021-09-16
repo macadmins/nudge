@@ -1,5 +1,5 @@
 {
-  "description": "Preference settings for Nudge (com.github.macadmins.Nudge)",
+  "description": "Preference settings for Nudge (com.github.macadmins.Nudge). See: https://github.com/macadmins/nudge",
   "title": "Nudge",
   "properties": {
     "optionalFeatures": {
@@ -15,7 +15,7 @@
           "type": "object",
           "properties": {
             "acceptableApplicationBundleIDs": {
-              "description": "The bundle id of applications you allow without Nudge taking focus. You can specify a single bundle id or multiple.",
+              "description": "The application Bundle ID which Nudge allows without taking focus. (You can specify one or more Bundle ID.)",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -65,7 +65,7 @@
               ]
             },
             "attemptToFetchMajorUpgrade": {
-              "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.",
+              "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
               "anyOf": [
                 {
                   "type": "null",
@@ -186,7 +186,7 @@
                 ]
               },
               "majorUpgradeAppPath": {
-                "description": "The app path for a major upgrade. Note: Nudge v1.0.1 or higher is required for this feature.",
+                "description": "The app path for a major upgrade. (Note: Requires Nudge v1.0.1 or higher.)",
                 "anyOf": [
                   {
                     "type": "null",
@@ -204,7 +204,7 @@
                 ]
               },
               "requiredInstallationDate": {
-                "description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-03-31T00:00:00Z",
+                "description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-09-15T00:00:00Z",
                 "anyOf": [
                   {
                     "type": "null",
@@ -215,14 +215,14 @@
                     "type": "string",
                     "options": {
                       "inputAttributes": {
-                        "placeholder": "2021-08-31T00:00:00Z"
+                        "placeholder": "2021-09-15T00:00:00Z"
                       }
                     }
                   }
                 ]
               },
               "requiredMinimumOSVersion": {
-                "description": "The required minimum operating system version. Note: When passing versions such as 11.2.0 it will be normalized to 11.2. It is recommended to leave the trailing zero from the version number.",
+                "description": "The required minimum operating system version. Note: When passing versions such as `11.2.0`, it will be normalized to `11.2`. It is recommended to remove the trailing zero from the version number.",
                 "anyOf": [
                   {
                     "type": "null",
@@ -262,7 +262,7 @@
                 ]
               },
               "targetedOSVersionsRule": {
-                "description": "The OS string rule for targeting nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
+                "description": "The OS string rule for targeting Nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
                 "anyOf": [
                   {
                     "type": "null",
@@ -296,22 +296,8 @@
           "title": "Configured",
           "type": "object",
           "properties": {
-            "allowedDeferrals": {
-              "description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before the \"aggressive user experience\" is enabled. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
-              "anyOf": [
-                {
-                  "title": "Not Configured",
-                  "type": "null"
-                },
-                {
-                  "title": "Configured",
-                  "default": 1000000,
-                  "type": "integer"
-                }
-              ]
-            },
             "allowUserQuitDeferrals": {
-              "description": "Allows users to customize their deferral window on top of the LaunchAgent launch timing.",
+              "description": "Allows the user to specify when they will next be prompted by Nudge. (Set to `False` to maintain v1.0.0 behavior.) When using this feature, Nudge will no longer adhere to your LaunchAgent logic as the user is specifying their own execution time for the next Nudge event.(See: `~/Library/Preferences/com.github.macadmins.Nudge.plist`.)",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -324,8 +310,27 @@
                 }
               ]
             },
+            "allowedDeferrals": {
+              "description": "The number of times a user can defer Nudge (change it from the currently active window) before the \"aggressive user experience\" is enabled.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": 1000000,
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "1000000"
+                    }
+                  }
+                }
+              ]
+            },
             "allowedDeferralsUntilForcedSecondaryQuitButton": {
-              "description": "The amount of times a user can defer Nudge (change it from the currently active window) in the current user session before both quit buttons need to be actioned. Note: The deferral count is only tied to the active Nudge session. If a user closes out of Nudge and the LaunchAgent re-triggers, the deferral count will re-start.",
+              "description": "The number of times a user can defer Nudge (change it from the currently active window) before both quit buttons need to be actioned.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -334,12 +339,17 @@
                 {
                   "title": "Configured",
                   "default": 14,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "14"
+                    }
+                  }
                 }
               ]
             },
             "approachingRefreshCycle": {
-              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key approachingWindowTime to know when to trigger this timer.",
+              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key `approachingWindowTime` to know when to trigger this timer.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -348,12 +358,17 @@
                 {
                   "title": "Configured",
                   "default": 6000,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "6000"
+                    }
+                  }
                 }
               ]
             },
             "approachingWindowTime": {
-              "description": "The amount of time in hours Nudge will use to determine that the requiredInstallationDate is \"approaching\".",
+              "description": "The amount of time in hours Nudge will use to determine that the `requiredInstallationDate` is \"approaching\".",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -362,12 +377,17 @@
                 {
                   "title": "Configured",
                   "default": 72,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "72"
+                    }
+                  }
                 }
               ]
             },
             "elapsedRefreshCycle": {
-              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the requiredInstallationDate has expired.",
+              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the `requiredInstallationDate` has expired.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -376,12 +396,17 @@
                 {
                   "title": "Configured",
                   "default": 300,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "300"
+                    }
+                  }
                 }
               ]
             },
             "imminentRefreshCycle": {
-              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key imminentWindowTime to know when to trigger this timer.",
+              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key `imminentWindowTime` to know when to trigger this timer.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -390,12 +415,17 @@
                 {
                   "title": "Configured",
                   "default": 600,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "600"
+                    }
+                  }
                 }
               ]
             },
             "imminentWindowTime": {
-              "description": "The amount of time in hours Nudge will use to determine that the requiredInstallationDate is \"imminent\".",
+              "description": "The amount of time in hours Nudge will use to determine that the `requiredInstallationDate` is \"imminent\".",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -404,12 +434,17 @@
                 {
                   "title": "Configured",
                   "default": 24,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "24"
+                    }
+                  }
                 }
               ]
             },
             "initialRefreshCycle": {
-              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered for all Nudge launches until the approachingWindowTime has been passed.",
+              "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered for all Nudge launches until the `approachingWindowTime` has been passed.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -418,12 +453,17 @@
                 {
                   "title": "Configured",
                   "default": 18000,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "18000"
+                    }
+                  }
                 }
               ]
             },
             "maxRandomDelayInSeconds": {
-              "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling randomDelay",
+              "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling `randomDelay`.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -432,12 +472,17 @@
                 {
                   "title": "Configured",
                   "default": 1200,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "1200"
+                    }
+                  }
                 }
               ]
             },
             "noTimers": {
-              "description": "This will disable all functionality related to the userExperience preference domain.",
+              "description": "This will disable all functionality related to the `userExperience` preference domain.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -446,7 +491,12 @@
                 {
                   "title": "Configured",
                   "default": false,
-                  "type": "boolean"
+                  "type": "boolean",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "false"
+                    }
+                  }
                 }
               ]
             },
@@ -460,7 +510,12 @@
                 {
                   "title": "Configured",
                   "default": 60,
-                  "type": "integer"
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "60"
+                    }
+                  }
                 }
               ]
             },
@@ -474,7 +529,12 @@
                 {
                   "title": "Configured",
                   "default": false,
-                  "type": "boolean"
+                  "type": "boolean",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "false"
+                    }
+                  }
                 }
               ]
             }
@@ -495,7 +555,7 @@
           "type": "object",
           "properties": {
             "actionButtonPath": {
-              "description": "A path to a URI for opening alternative actions, like jamf self service items",
+              "description": "A path to a URI for opening alternative actions, like Jamf self service items.",
               "anyOf": [
                 {
                   "type": "null",
@@ -506,7 +566,7 @@
                   "type": "string",
                   "options": {
                     "inputAttributes": {
-                      "placeholder": "jamfselfservice://remediate"
+                      "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
                     }
                   }
                 }
@@ -532,7 +592,7 @@
               ]
             },
             "forceFallbackLanguage": {
-              "description": "Force the custom localizations to the value of fallbackLanguage.",
+              "description": "Force the custom localizations to the value of `fallbackLanguage`.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -715,7 +775,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Update Device"
+                              }
+                            }
                           }
                         ]
                       },
@@ -728,7 +793,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Custom"
+                              }
+                            }
                           }
                         ]
                       },
@@ -741,7 +811,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "More Info"
+                              }
+                            }
                           }
                         ]
                       },
@@ -754,7 +829,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "One Day"
+                              }
+                            }
                           }
                         ]
                       },
@@ -767,7 +847,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "One Hour"
+                              }
+                            }
                           }
                         ]
                       },
@@ -780,7 +865,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Your device will restart during this update"
+                              }
+                            }
                           }
                         ]
                       },
@@ -793,7 +883,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Important Notes"
+                              }
+                            }
                           }
                         ]
                       },
@@ -806,12 +901,17 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Updates can take around 30 minutes to complete"
+                              }
+                            }
                           }
                         ]
                       },
                       "mainContentText": {
-                        "description": "Modifies the mainContentText. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device. If you do not update your device, you may lose access to some items necessary for your day-to-day tasks. To begin the update, simply click on the button below and follow the provided steps.\" text. Note: The python version of Nudge required three paragraphs. With the Swift version, this is no longer necessary. Simply pass two newlines (\\n\\n) to start a new paragraph. You can have as many or as few as you want, with the only limitation being window space.",
+                        "description": "Modifies the `mainContentText`. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device.\" text. (See the Wiki for information on adding line breaks.)",
                         "anyOf": [
                           {
                             "type": "null",
@@ -819,12 +919,17 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "A fully up-to-date device …"
+                              }
+                            }
                           }
                         ]
                       },
                       "mainHeader": {
-                        "description": "Modifies the mainHeader. This is the \"Your device requires a security update\" text.",
+                        "description": "Modifies the `mainHeader`. This is the \"Your device requires a security update\" text.",
                         "anyOf": [
                           {
                             "type": "null",
@@ -832,12 +937,17 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Your device requires a security update"
+                              }
+                            }
                           }
                         ]
                       },
                       "primaryQuitButtonText": {
-                        "description": "Modifies the primaryQuitButton, also known as the \"Later\" button.",
+                        "description": "Modifies the `primaryQuitButton`, also known as the \"Later\" button.",
                         "anyOf": [
                           {
                             "type": "null",
@@ -845,12 +955,17 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Later"
+                              }
+                            }
                           }
                         ]
                       },
                       "secondaryQuitButtonText": {
-                        "description": "Modifies the secondaryQuitButton, also known as the \"I understand\" button.",
+                        "description": "Modifies the `secondaryQuitButton`, also known as the \"I understand\" button.",
                         "anyOf": [
                           {
                             "type": "null",
@@ -858,12 +973,17 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "I understand"
+                              }
+                            }
                           }
                         ]
                       },
                       "subHeader": {
-                        "description": "Modifies the subHeader. This is the \"A friendly reminder from your local IT team\" text.",
+                        "description": "Modifies the `subHeader`. This is the \"A friendly reminder from your local IT team\" text.",
                         "anyOf": [
                           {
                             "type": "null",
@@ -871,7 +991,12 @@
                           },
                           {
                             "title": "Configured",
-                            "type": "string"
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "A friendly reminder from your local IT team"
+                              }
+                            }
                           }
                         ]
                       }
