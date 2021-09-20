@@ -31,7 +31,9 @@ echo "Building Nudge"
 if [ -e $XCODE_BUILD_PATH ]; then
   XCODE_BUILD="$XCODE_BUILD_PATH"
 else
-  XCODE_BUILD="xcodebuild"
+  ls -la /Applications
+  echo "Could not find required Xcode build. Exiting..."
+  exit 1
 fi
 $XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
 XCB_RESULT="$?"
