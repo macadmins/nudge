@@ -31,15 +31,15 @@ Alternatively you can run the `-version` argument through the command line
 ## Tools that work with Nudge
 Any MDM that supports the installation of packages (.pkgs) and profiles (.mobileconfig) can deploy and enforce Nudge.
 
-## Nudge functionality overview
-- Nudge consists of the following three components:
+## Nudge Functionality Overview
+Nudge consists of the following three components:
 1. Nudge.app installed to `/Applications/Utilities/Nudge.app`
 1. A LaunchAgent installed to `/Library/LaunchAgents`
 1. A Preference file, either in JSON or mobileconfig format
 
-- Rather than trying to install updates via `softwareupdate`, Nudge merely prompts users to install updates via Apple approved/tested methods - System Preferences and major application upgrades (Ex: `Install macOS Monterey.app`).
+Rather than trying to install updates via `softwareupdate`, Nudge merely prompts users to install updates via Apple approved/tested methods - System Preferences and major application upgrades (Ex: `Install macOS Monterey.app`).
 
-- With the optionally provided LaunchAgent package, Nudge will open every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
+With the optionally provided LaunchAgent package, Nudge will open every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
 
 # Deploy Nudge
 After installing Nudge through the package, you can attempt to open Nudge through `Finder` - but you will quickly realize that it immediately closed.
