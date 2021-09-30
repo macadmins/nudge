@@ -126,11 +126,12 @@ While the `-json-url` argument is mainly designed for web-hosted URLs, you can a
 "file:///Users/`id -n -u`/Downloads/com.github.macadmins.Nudge.json"
 ```
 
+See also [Testing and resetting Nudge](https://github.com/macadmins/nudge/wiki/User-Deferrals#testing-and-resetting-nudge).
 
 
 ### Setting the json-url in mobileconfig profile
 
-Using PayloadType com.github.macadmins.Nudge in a mobileconfig, use the json-url
+Using PayloadType `com.github.macadmins.Nudge` in a mobileconfig, use the `json-url`
 ```
 <key>PayloadContent</key>
 <dict>
@@ -202,9 +203,9 @@ If you need additional localizations, you will need the following:
 
 The following example would add support for the French (fr) locale.
 
-** Note: **There is already a French localization string to fill the rest of the UI
+**Note:** There is already a French localization string to fill the rest of the UI
 
-JSON
+### JSON
 ```json
 {
   "userInterface": {
@@ -240,7 +241,7 @@ JSON
 }
 ```
 
-Mobile Config
+### Mobile Config
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -320,7 +321,7 @@ Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour 
 ## Configuration
 Nudge offers significant customization, which might be overwhelming. But don't worry, you don't have to customize everything. :smile:
 
-[For a full listing of the available preferences, please see the wiki](https://github.com/macadmins/nudge/wiki/Preferences)
+For a full listing of the available preferences, please see the [wiki](https://github.com/macadmins/nudge/wiki/Preferences).
 
 ### Small Example
 In this example, Nudge will do the following:
