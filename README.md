@@ -116,14 +116,14 @@ The following example uses the JSON included in the Nudge GitHub repository. (Yo
 
 While the `-json-url` argument is mainly designed for web-hosted URLs, you can actually pass it a `file://` path as well if you want to deploy JSON to a location other than `/Library/Preferences` or simply want to test your workflow:
 
-1. Save the [sample JSON](https://raw.githubusercontent.com/macadmins/nudge/main/Example%20Assets/com.github.macadmins.Nudge.json) to your Downloads folder
+1. Save the [sample JSON](https://raw.githubusercontent.com/macadmins/nudge/main/Example%20Assets/com.github.macadmins.Nudge.json) to your Downloads folder as `com.github.macadmins.Nudge.json`
 1. Modify with your preferred editor
-1. Execute the following command:
+1. Execute the following command
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
 -json-url \
-"file:///~/Downloads/com.github.macadmins.Nudge.json"
+"file:///Users/`id -n -u`/Downloads/com.github.macadmins.Nudge.json"
 ```
 
 
