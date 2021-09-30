@@ -102,7 +102,11 @@ Nudge has support for both a local JSON and a remote JSON.
 By default, Nudge will look for a JSON located at `/Library/Preferences/com.github.macadmins.Nudge.json`
 
 ### Using the `-json-url` argument
-In order to download a JSON from a website, simple pass the `-json-url` argument.
+To download a hosted JSON file, simply pass the `-json-url` argument.
+
+**Note:** Spaces must be converted to `%20`, just as a standard URL. (This is required both for web-hosted and local assets.)
+
+The following example uses the JSON included in the Nudge GitHub repository. (You can safely ignore any warnings indicating "There is no application set to open the URL `munki://updates`. )
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
@@ -120,7 +124,7 @@ Save the [sample JSON](https://raw.githubusercontent.com/macadmins/nudge/main/Ex
 "file:///~/Downloads/com.github.macadmins.Nudge.json"
 ```
 
-**Note:** Spaces must be converted to `%20`, just as a standard url. This is required both for web and local assets
+
 
 ### Setting the json-url in mobileconfig profile
 
