@@ -12,9 +12,9 @@ TOOLSDIR=$(dirname $0)
 BUILDSDIR="$TOOLSDIR/build"
 OUTPUTSDIR="$TOOLSDIR/outputs"
 MP_ZIP="/tmp/munki-pkg.zip"
-XCODE_BUILD_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/xcodebuild"
-XCODE_NOTARY_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/notarytool"
-XCODE_STAPLER_PATH="/Applications/Xcode_13.0.app/Contents/Developer/usr/bin/stapler"
+XCODE_BUILD_PATH="/Applications/Xcode_13.0_beta.app/Contents/Developer/usr/bin/xcodebuild"
+XCODE_NOTARY_PATH="/Applications/Xcode_13.0_beta.app/Contents/Developer/usr/bin/notarytool"
+XCODE_STAPLER_PATH="/Applications/Xcode_13.0_beta.app/Contents/Developer/usr/bin/stapler"
 CURRENT_NUDGE_MAIN_BUILD_VERSION=$(/usr/libexec/PlistBuddy -c Print:CFBundleVersion $TOOLSDIR/Nudge/Info.plist)
 DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
 
@@ -31,7 +31,9 @@ echo "Building Nudge"
 if [ -e $XCODE_BUILD_PATH ]; then
   XCODE_BUILD="$XCODE_BUILD_PATH"
 else
-  XCODE_BUILD="xcodebuild"
+  ls -la /Applications
+  echo "Could not find required Xcode build. Exiting..."
+  exit 1
 fi
 $XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
 XCB_RESULT="$?"

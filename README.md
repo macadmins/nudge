@@ -31,15 +31,15 @@ Alternatively you can run the `-version` argument through the command line
 ## Tools that work with Nudge
 Any MDM that supports the installation of packages (.pkgs) and profiles (.mobileconfig) can deploy and enforce Nudge.
 
-## Nudge functionality overview
-- Nudge consists of the following three components
- - Nudge.app installed to `/Applications/Utilities/Nudge.app`
- - a LaunchAgent installed to `/Library/LaunchAgents`
- - a Preference file, either in JSON or mobileconfig format
+## Nudge Functionality Overview
+Nudge consists of the following three components:
+1. Nudge.app installed to `/Applications/Utilities/Nudge.app`
+1. A LaunchAgent installed to `/Library/LaunchAgents`
+1. A Preference file, either in JSON or mobileconfig format
 
-- Rather than trying to install updates via `softwareupdate`, Nudge merely prompts users to install updates via Apple approved/tested methods - System Preferences and major application upgrades (Ex: `Install macOS Big Sur.app`).
+Rather than trying to install updates via `softwareupdate`, Nudge merely prompts users to install updates via Apple approved/tested methods - System Preferences and major application upgrades (Ex: `Install macOS Monterey.app`).
 
-- With the optionally provided LaunchAgent package, Nudge will open every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
+With the optionally provided LaunchAgent package, Nudge will open every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
 
 # Deploy Nudge
 After installing Nudge through the package, you can attempt to open Nudge through `Finder` - but you will quickly realize that it immediately closed.
@@ -101,8 +101,12 @@ Nudge has support for both a local JSON and a remote JSON.
 
 By default, Nudge will look for a JSON located at `/Library/Preferences/com.github.macadmins.Nudge.json`
 
-### Using the -json-url argument
-In order to download a JSON from a website, simple pass the `-json-url` argument.
+### Using the `-json-url` argument
+To download a hosted JSON file, simply pass the `-json-url` argument.
+
+**Note:** Spaces must be converted to `%20`, just as a standard URL. (This is required both for web-hosted and local assets.)
+
+The following example uses the JSON included in the Nudge GitHub repository. (You can safely ignore any warnings indicating "There is no application set to open the URL `munki://updates`. )
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
@@ -110,19 +114,24 @@ In order to download a JSON from a website, simple pass the `-json-url` argument
 "https://raw.githubusercontent.com/macadmins/nudge/main/Example%20Assets/com.github.macadmins.Nudge.json"
 ```
 
-While the `-json-url` argument is mainly designed for web urls, you can actually pass it a `file://` path as well if you don't want to deploy a json to `/Library/Preferences` or simply want to test your workflow.
+While the `-json-url` argument is mainly designed for web-hosted URLs, you can actually pass it a `file://` path as well if you want to deploy JSON to a location other than `/Library/Preferences` or simply want to test your workflow:
+
+1. Save the [sample JSON](https://raw.githubusercontent.com/macadmins/nudge/main/Example%20Assets/com.github.macadmins.Nudge.json) to your Downloads folder as `com.github.macadmins.Nudge.json`
+1. Modify with your preferred editor
+1. Execute the following command
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
 -json-url \
-"file:///Users/YOURUSERNAME/Downloads/nudge/Example%20Assets/com.github.macadmins.Nudge.json"`
+"file:///Users/`id -n -u`/Downloads/com.github.macadmins.Nudge.json"
 ```
 
-** Note: ** Spaces must be converted to `%20`, just as a standard url. This is required both for web and local assets
+See also [Testing and resetting Nudge](https://github.com/macadmins/nudge/wiki/User-Deferrals#testing-and-resetting-nudge).
+
 
 ### Setting the json-url in mobileconfig profile
 
-Using PayloadType com.github.macadmins.Nudge in a mobileconfig, use the json-url
+Using PayloadType `com.github.macadmins.Nudge` in a mobileconfig, use the `json-url`
 ```
 <key>PayloadContent</key>
 <dict>
@@ -194,9 +203,9 @@ If you need additional localizations, you will need the following:
 
 The following example would add support for the French (fr) locale.
 
-** Note: **There is already a French localization string to fill the rest of the UI
+**Note:** There is already a French localization string to fill the rest of the UI
 
-JSON
+### JSON
 ```json
 {
   "userInterface": {
@@ -232,7 +241,7 @@ JSON
 }
 ```
 
-Mobile Config
+### Mobile Config
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -312,7 +321,7 @@ Pour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour 
 ## Configuration
 Nudge offers significant customization, which might be overwhelming. But don't worry, you don't have to customize everything. :smile:
 
-[For a full listing of the available preferences, please see the wiki](https://github.com/macadmins/nudge/wiki/Preferences)
+For a full listing of the available preferences, please see the [wiki](https://github.com/macadmins/nudge/wiki/Preferences).
 
 ### Small Example
 In this example, Nudge will do the following:
