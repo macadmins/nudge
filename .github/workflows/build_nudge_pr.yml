@@ -2,8 +2,7 @@ name: Build signed Nudge for pull requests
 
 on:
   pull_request_target:
-    branches:
-    - main
+    types: [labeled]
 
 jobs:
   build:
