@@ -98,6 +98,10 @@
 		63D7D10025C9E9A500236281 /* NudgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeUITests.swift; sourceTree = "<group>"; };
 		63D7D10225C9E9A500236281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63D7D12625C9F1EE00236281 /* StandardMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardMode.swift; sourceTree = "<group>"; };
+		9FE5E58A270F487D00F18981 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		9FE5E58B270F488700F18981 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9FE5E58C270F488C00F18981 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9FE5E58D270F489300F18981 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -354,6 +358,10 @@
 				sv,
 				Base,
 				nl,
+				"zh-Hans",
+				ko,
+				ja,
+				"pt-BR",
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -467,6 +475,10 @@
 				068D23D025DC27EA00FE05A5 /* de */,
 				05DDB291263049DB006629B3 /* sv */,
 				63C3C13F26C2C822009510E3 /* nl */,
+				9FE5E58A270F487D00F18981 /* zh-Hans */,
+				9FE5E58B270F488700F18981 /* ko */,
+				9FE5E58C270F488C00F18981 /* ja */,
+				9FE5E58D270F489300F18981 /* pt-BR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

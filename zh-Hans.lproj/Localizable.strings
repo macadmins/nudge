@@ -1,0 +1,55 @@
+/* 
+  Localizable.strings
+  Nudge
+
+  Added by Joseph Chilcote (h/t Leonard Jin and Crystal Bian for the translations) on 10/6/21.
+  
+*/
+
+//// Additional Device Information
+"Additional Device Information" = "额外设备信息";
+// Username
+"Username:" = "用户名:";
+// Serial Number
+"Serial Number:" = "序列号:";
+// Architecture
+"Architecture:" = "架构:";
+// Nudge Version
+"Version:" = "版本:";
+// Language
+"Language:" = "语言:";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "当前系统版本:";
+// Required OS Version
+"Required OS Version:" = "需要的系统版本:";
+// Days Remaining To Update
+"Days Remaining To Update:" = "剩余天数更新:";
+// Deferred Count
+"Deferred Count:" = "已推迟次数:";
+// More Info
+"More Info" = "更多信息";
+
+// Help buttons
+"Click to close" = "点击以关闭";
+"Click for additional device information" = "点击以获取更多设备信息";
+"Click to zoom into screenshot" = "点击放大截图";
+"Click for more information about the security update" = "点击以获取关于安全更新的更多信息";
+
+//// Right side of Nudge
+"Update Device" = "更新设备";
+"Your device will restart during this update" = "你的设备将会在更新过程中重启";
+"Important Notes" = "重要信息";
+"Updates can take around 30 minutes to complete" = "更新将会花费大约30分钟";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "更新至最新的软件以确保 IT 可以精准的保护设备安全。\n\n如未及时完成更新，您将会无法访问日常工作所需的网页或程序。\n \n立刻更新，请点击【更新设备】并根据提供的步骤完成更新。";
+"Your device requires a security update" = "您的设备需要安全更新";
+"Your device requires a security update (Demo Mode)" = "您的设备需要安全更新（演示模式)";
+"Later" = "稍后";
+"Later" = "我同意";
+"I understand" = "我同意";
+"A friendly reminder from your local IT team" = "IT团队的友好提醒";
+"Defer" = "推迟";
+"One Hour" = "一小时";
+"One Day" = "一天";
+"Custom" = "自定义";
