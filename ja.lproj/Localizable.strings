@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  Nudge
+
+  Added by Joseph Chilcote (h/t David Birkett for the translations) on 10/6/21.
+  
+*/
+
+//// Additional Device Information
+"Additional Device Information" = "デバイスの追加情報";
+// Username
+"Username:" = "ユーザー名：";
+// Serial Number
+"Serial Number:" = "シリアルナンバー：";
+// Architecture
+"Architecture:" = "アーキテクチャ：";
+// Nudge Version
+"Version:" = "バージョン：";
+// Language
+"Language:" = "言語：";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "現在のOSのバージョン：";
+// Required OS Version
+"Required OS Version:" = "必要とされるOSのバージョン：";
+// Days Remaining To Update
+"Days Remaining To Update:" = "更新までの残り日数：";
+// Deferred Count
+"Deferred Count:" = "延期した回数：";
+// More Info
+"More Info" = "詳細情報";
+
+// Help buttons
+"Click to close" = "クリックしてクローズ";
+"Click for additional device information" = "クリックしてデバイスの追加情報を確認";
+"Click to zoom into screenshot" = "クリックしスクリーンショットを拡大";
+"Click for more information about the security update" = "クリックしてセキュリティ更新の詳細情報を確認";
+
+//// Right side of Nudge
+"Update Device" = "デバイスの更新";
+"Your device will restart during this update" = "デバイスは更新中に再起動します";
+"Important Notes" = "重要";
+"Updates can take around 30 minutes to complete" = "更新の完了には約30分かかります";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "ITが正確にあなたのデバイスを守るためには、完全に最新のデバイスが必要です。\n\nデバイスを更新しない場合、日々のタスクに必要ばアクセスが失われる可能性があります。\n\n更新を開始するには、デバイスの更新ボタンをクリックするのみ、後は指示されたステップに従います。";
+"Your device requires a security update" = "あなたのデバイスは更新が必要です";
+"Your device requires a security update (Demo Mode)" = "あなたのデバイスはセキュリティの更新が必要です(デモモード)";
+"Later" = "後で";
+"I understand" = "わかりました";
+"A friendly reminder from your local IT team" = "ローカルITチームからのリマインドです";
+"Defer" = "延期";
+"One Hour" = "１時間";
+"One Day" = "１日";
+"Custom" = "カスタム";
