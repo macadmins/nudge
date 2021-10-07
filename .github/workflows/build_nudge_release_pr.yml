@@ -30,3 +30,14 @@ jobs:
 
     - name: Run build package script
       run: ./build_nudge.zsh
+
+    - name: get environment variables
+      id: get_env_var
+      run: |
+         echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
+
+    - name: Upload packages
+      uses: actions/upload-artifact@v1
+      with:
+        name: packages
+        path: outputs/
