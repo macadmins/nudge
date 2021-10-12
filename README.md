@@ -189,12 +189,16 @@ Example LaunchAgent
 
 ## Localization
 By default, Nudge supports the following locales:
+- Chinese
+- Dutch
 - English
 - French
-- Spanish
 - German
+- Korean
+- Japanese
+- Portuguese
+- Spanish
 - Swedish
-- Dutch
 
 If you need additional localizations, you will need the following:
 
