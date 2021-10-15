@@ -1,7 +1,7 @@
 # Nudge (macadmin's Slack #nudge)
 <img src="/assets/NudgeIcon.png" width=25% height=25%>
 
-Nudge is application for enforcing macOS updates, written in Swift 5.5 and SwiftUI 5.2. In order to use the newest features of Swift, Nudge will only work on macOS 11.0 and higher.
+Nudge is an multi-linguistic application, offering custom user deferrals, which strongly encourages macOS updates. Written in Swift 5.5 and SwiftUI 5.2, Nudge will only work on macOS Big Sur 11 and later.
 
 This is a replacement for the original Nudge, which was written in Python 2/3. If you need to enforce macOS updates for earlier versions, it is recommend to use [nudge-python](https://github.com/macadmins/nudge-python).
 
@@ -29,7 +29,7 @@ Alternatively you can run the `-version` argument through the command line
 ```
 
 ## Tools that work with Nudge
-Any MDM that supports the installation of packages (.pkgs) and profiles (.mobileconfig) can deploy and enforce Nudge.
+Any MDM that supports the installation of packages (.pkgs) and profiles (.mobileconfig) can deploy Nudge.
 
 ## Nudge Functionality Overview
 Nudge consists of the following three components:
@@ -37,9 +37,9 @@ Nudge consists of the following three components:
 1. A LaunchAgent installed to `/Library/LaunchAgents`
 1. A Preference file, either in JSON or mobileconfig format
 
-Rather than trying to install updates via `softwareupdate`, Nudge merely prompts users to install updates via Apple approved/tested methods - System Preferences and major application upgrades (Ex: `Install macOS Monterey.app`).
+Rather than trying to install updates via the macOS built-in `softwareupdate` binary, Nudge prompts users to install updates via Apple approved/tested methods: **System Preferences > Software Update**  and major application upgrades via the standalone macOS installer (Ex: `Install macOS Monterey.app`).
 
-With the optionally provided LaunchAgent package, Nudge will open every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
+With the optionally provided LaunchAgent package, Nudge will open every 30 minutes, at the top and bottom of each hour. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
 
 # Deploy Nudge
 After installing Nudge through the package, you can attempt to open Nudge through `Finder` - but you will quickly realize that it immediately closed.
@@ -47,7 +47,7 @@ After installing Nudge through the package, you can attempt to open Nudge throug
 This is because Nudge has not been configured! Please read on to learn how to engage with Nudge through the command line.
 
 ## Command Line Arguments
-[For a full listing of the available command line arguments, please see the wiki](https://github.com/macadmins/nudge/wiki/Command-Line-Arguments)
+For a full listing of the available command line arguments, please see the [wiki](https://github.com/macadmins/nudge/wiki/Command-Line-Arguments).
 
 To open Nudge through the command-line application, open `Terminal` and run the following command:
 
@@ -118,7 +118,7 @@ While the `-json-url` argument is mainly designed for web-hosted URLs, you can a
 
 1. Save the [sample JSON](https://raw.githubusercontent.com/macadmins/nudge/main/Example%20Assets/com.github.macadmins.Nudge.json) to your Downloads folder as `com.github.macadmins.Nudge.json`
 1. Modify with your preferred editor
-1. Execute the following command
+1. Execute the following command:
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
@@ -146,9 +146,9 @@ Using PayloadType `com.github.macadmins.Nudge` in a mobileconfig, use the `json-
 ## Scheduling Nudge to run
 Every release of Nudge comes with an optional LaunchAgent package.
 
-This LaunchAgent will open Nudge every 30 minutes, at the 0 and 30 minute mark. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
+This LaunchAgent will open Nudge every 30 minutes, at the top and bottom of each hour. If you find this behavior too aggressive, you will need to create your own LaunchAgent.
 
-Example LaunchAgent
+### Example LaunchAgent
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -331,10 +331,8 @@ For a full listing of the available preferences, please see the [wiki](https://g
 In this example, Nudge will do the following:
 
 - Open up in `simpleMode`
-- Enforce Big Sur version `11.5.2` to the following operating systems
-  - all big sur releases
-  - an enforcement date of February 28th, 2021
-- The `More Info` button will open up to [Apple's Big Sur English release notes](https://support.apple.com/en-us/HT211896)
+- Prompt users running any version of macOS Big Sur to upgrade to version `11.6` by 30-Sep-2021
+- The `More Info` button will open up to [Apple's macOS Big Sur English release notes](https://support.apple.com/en-us/HT211896)
 
 #### JSON
 ```json
@@ -345,8 +343,8 @@ In this example, Nudge will do the following:
   "osVersionRequirements": [
     {
       "aboutUpdateURL": "https://support.apple.com/en-us/HT211896",
-      "requiredInstallationDate": "2021-08-28T00:00:00Z",
-      "requiredMinimumOSVersion": "11.5.2",
+      "requiredInstallationDate": "2021-09-30T00:00:00Z",
+      "requiredMinimumOSVersion": "11.6",
       "targetedOSVersionsRule": "11"
     }
   ]
@@ -368,9 +366,9 @@ In this example, Nudge will do the following:
           <key>aboutUpdateURL</key>
           <string>https://support.apple.com/en-us/HT211896</string>
           <key>requiredInstallationDate</key>
-          <date>2021-08-28T00:00:00Z</date>
+          <date>2021-09-30T00:00:00Z</date>
           <key>requiredMinimumOSVersion</key>
-          <string>11.5.2</string>
+          <string>11.6</string>
           <key>targetedOSVersionsRule</key>
           <string>11</string>
         </dict>
