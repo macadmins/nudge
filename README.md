@@ -117,14 +117,24 @@ The following example uses the JSON included in the Nudge GitHub repository. (Yo
 While the `-json-url` argument is mainly designed for web-hosted URLs, you can actually pass it a `file://` path as well if you want to deploy JSON to a location other than `/Library/Preferences` or simply want to test your workflow:
 
 1. Save the [sample JSON](https://raw.githubusercontent.com/macadmins/nudge/main/Example%20Assets/com.github.macadmins.Nudge.json) to your Downloads folder as `com.github.macadmins.Nudge.json`
-1. Modify with your preferred editor
-1. Execute the following command:
+1. Modify and save with your preferred editor
+    - Change `requiredInstallationDate` to a date in the future (or in the past)
+    - Change `requiredMinimumOSVersion` to a value greater than (or less than) the output of `sw_vers -productVersion`
+    - Review `actionButtonPath`
+        - **Munki:** See [Munki Links](https://github.com/munki/munki/wiki/Munki-Links)
+        - **Jamf Pro:** See [Jamf Self Service for macOS URL Schemes](https://docs.jamf.com/10.32.0/jamf-pro/administrator-guide/Jamf_Self_Service_for_macOS_URL_Schemes.html)
+        - **Nudge v1.0.0 behavior:** To open **System Preferences > Software Update**, delete the entire `actionButtonPath` line.
+1. Execute the following command in [Terminal](https://support.apple.com/guide/terminal/keyboard-shortcuts-trmlshtcts/mac):
 
 ```
 /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge \
 -json-url \
 "file:///Users/`id -n -u`/Downloads/com.github.macadmins.Nudge.json"
 ```
+
+4. Press <kbd>Control</kbd> + <kbd>C</kbd> to break
+5. Repeat Steps 2 through 4, modifying the values of `requiredInstallationDate`, `requiredMinimumOSVersion`, and `actionButtonPath` as desired
+
 
 See also [Testing and resetting Nudge](https://github.com/macadmins/nudge/wiki/User-Deferrals#testing-and-resetting-nudge).
 
