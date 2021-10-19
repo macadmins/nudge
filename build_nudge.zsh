@@ -3,6 +3,7 @@
 # Build script for Nudge
 
 # Variables
+XCODE_PATH="/Applications/Xcode_13.1.app"
 CODE_SIGN_IDENTITY="Developer ID Application: Clever DevOps Co. (9GQZ7KUFR6)"
 SIGNING_IDENTITY="Developer ID Installer: Clever DevOps Co. (9GQZ7KUFR6)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
@@ -12,9 +13,9 @@ TOOLSDIR=$(dirname $0)
 BUILDSDIR="$TOOLSDIR/build"
 OUTPUTSDIR="$TOOLSDIR/outputs"
 MP_ZIP="/tmp/munki-pkg.zip"
-XCODE_BUILD_PATH="/Applications/Xcode_13.1.app/Contents/Developer/usr/bin/xcodebuild"
-XCODE_NOTARY_PATH="/Applications/Xcode_13.1.app/Contents/Developer/usr/bin/notarytool"
-XCODE_STAPLER_PATH="/Applications/Xcode_13.1.app/Contents/Developer/usr/bin/stapler"
+XCODE_BUILD_PATH="$XCODE_PATH/Contents/Developer/usr/bin/xcodebuild"
+XCODE_NOTARY_PATH="$XCODE_PATH/Contents/Developer/usr/bin/notarytool"
+XCODE_STAPLER_PATH="$XCODE_PATH/Contents/Developer/usr/bin/stapler"
 CURRENT_NUDGE_MAIN_BUILD_VERSION=$(/usr/libexec/PlistBuddy -c Print:CFBundleVersion $TOOLSDIR/Nudge/Info.plist)
 DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
 
@@ -25,6 +26,9 @@ AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$DATE"
 
 # Create files to use for build process info
 echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
+
+# Ensure Xcode is set to run-time
+sudo xcode-select -s "$XCODE_PATH"
 
 # build nudge
 echo "Building Nudge"
