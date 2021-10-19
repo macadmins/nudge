@@ -13,14 +13,18 @@ For more information about installation, deployment and the user experience, ple
 #### Light
 <img src="/assets/simple_mode/demo_simple_light_1.png" width=75% height=75%>
 <img src="/assets/simple_mode/demo_simple_light_2.png" width=75% height=75%>
+
 #### Dark
 <img src="/assets/simple_mode/demo_simple_dark_1.png" width=75% height=75%>
 <img src="/assets/simple_mode/demo_simple_dark_2.png" width=75% height=75%>
+
 ### Localized (Spanish)
 #### Light
 <img src="/assets/simple_mode/demo_simple_light_localized.png" width=75% height=75%>
+
 #### Dark
 <img src="/assets/simple_mode/demo_simple_dark_localized.png" width=75% height=75%>
+
 ## standardMode
 ### English
 #### Light
@@ -30,6 +34,7 @@ For more information about installation, deployment and the user experience, ple
 <img src="/assets/standard_mode/demo_light_2_no_icon.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_light_3.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_light_4.png" width=75% height=75%>
+
 #### Dark
 <img src="/assets/standard_mode/demo_dark_1_icon.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_dark_1_no_icon.png" width=75% height=75%>
@@ -37,10 +42,12 @@ For more information about installation, deployment and the user experience, ple
 <img src="/assets/standard_mode/demo_dark_2_no_icon.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_dark_3.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_dark_4.png" width=75% height=75%>
+
 ### Localized (Spanish)
 #### Light
 <img src="/assets/standard_mode/demo_light_2_localized.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_light_4_icon_localized.png" width=75% height=75%>
+
 #### Dark
 <img src="/assets/standard_mode/demo_dark_2_icon_localized.png" width=75% height=75%>
 <img src="/assets/standard_mode/demo_dark_4_localized.png" width=75% height=75%>
