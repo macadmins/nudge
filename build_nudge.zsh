@@ -12,9 +12,9 @@ TOOLSDIR=$(dirname $0)
 BUILDSDIR="$TOOLSDIR/build"
 OUTPUTSDIR="$TOOLSDIR/outputs"
 MP_ZIP="/tmp/munki-pkg.zip"
-XCODE_BUILD_PATH="/Applications/Xcode_13.0_beta.app/Contents/Developer/usr/bin/xcodebuild"
-XCODE_NOTARY_PATH="/Applications/Xcode_13.0_beta.app/Contents/Developer/usr/bin/notarytool"
-XCODE_STAPLER_PATH="/Applications/Xcode_13.0_beta.app/Contents/Developer/usr/bin/stapler"
+XCODE_BUILD_PATH="/Applications/Xcode_13.1.app/Contents/Developer/usr/bin/xcodebuild"
+XCODE_NOTARY_PATH="/Applications/Xcode_13.1.app/Contents/Developer/usr/bin/notarytool"
+XCODE_STAPLER_PATH="/Applications/Xcode_13.1.app/Contents/Developer/usr/bin/stapler"
 CURRENT_NUDGE_MAIN_BUILD_VERSION=$(/usr/libexec/PlistBuddy -c Print:CFBundleVersion $TOOLSDIR/Nudge/Info.plist)
 DATE=$(/bin/date -u "+%m%d%Y%H%M%S")
 
