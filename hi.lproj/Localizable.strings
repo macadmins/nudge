@@ -1,0 +1,54 @@
+/*
+ Localizable.strings
+ Nudge
+ 
+ Created by Bhavesh Roy on 10/19/21.
+ 
+ */
+
+//// Additional Device Information
+"Additional Device Information" = "डिवाइस की अतिरिक्त जानकारी";
+// Username
+"Username:" = "उपयोगकर्ता का नाम:";
+// Serial Number
+"Serial Number:" = "सीरीयल नम्बर:";
+// Architecture
+"Architecture:" = "आर्किटेक्चर:";
+// Nudge Version
+"Version:" = "“संस्करण:";
+// Language
+"Language:" = "भाषा:";
+
+//// Left side of Nudge
+// Current OS Version
+"Current OS Version:" = "वर्तमान OS संस्करण:";
+// Required OS Version
+"Required OS Version:" = "आवश्यक OS संस्करण:";
+// Days Remaining To Update
+"Days Remaining To Update:" = "अप्डेट के अवशिष्ट दिन:";
+// Deferred Count
+"Deferred Count:" = "विलम्बित करने की संख्या:";
+// More Info
+"More Info" = "अधिकतर जानकारी";
+
+// Help buttons
+"Click to close" = "बंद करने के लिए क्लिक करे";
+"Click for additional device information" = "उपकरण  की अधिकतर जानकारी के लिए क्लिक करे";
+"Click to zoom into screenshot" = "स्क्रीन्शाट को ज़ूम करने क्लिक करे";
+"Click for more information about the security update" = "सिक्यरिटी अप्डेट की अधिक जानकारी के लिए क्लिक करे";
+
+//// Right side of Nudge
+"Update Device" = "उपकरण को अपडेट करें";
+"Your device will restart during this update" = "आपका उपकरण इस अपडेट के समय पुनः शुरु होगा";
+"Important Notes" = "आवश्यक जानकारी";
+"Updates can take around 30 minutes to complete" = "अप्डेट पूरा होने को लगभग ३० मिनट लग सकते है";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "पुरी तरह अपडेटेड उपकरण आवश्यक है IT  द्वारा आपके उपकरण को सुरक्षित रखने के लिए \n\n यदि उपकरण को अपडेट नही किया तो आप अपने कुछ मूल्यवान नित्य उपयोगी वस्तुएँ खो सकते हैं जो दैन दिन उपयोग के लिए आवश्यक होते है \n\n अपडेट करने के लिए केवल अपडेट बटन दबाये  और निर्देशों का पालन करें।";
+"Your device requires a security update" = "आपके के उपकरण  को सिक्यरिटी अप्डेट की अवशक्ता है";
+"Your device requires a security update (Demo Mode)" = "आपके के उपकरण  को सिक्यरिटी अप्डेट की अवशता है ( डेमो मोड़)";
+"Later" = "बाद मे";
+"I understand" = "में समज़ गया";
+"A friendly reminder from your local IT team" = "आपके स्थानीय IT से मित्रवत अनुस्मारक";
+"Defer" = "विलम्बित";
+"One Hour" = "एक घंटा";
+"One Day" = "एक दिन";
+"Custom" = "अपने अनुकूल";
