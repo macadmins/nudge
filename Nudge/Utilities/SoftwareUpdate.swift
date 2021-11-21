@@ -46,14 +46,15 @@ class SoftwareUpdate {
 
     func Download() {
         softwareupdateDownloadLog.notice("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
-
+        softwareupdateDownloadLog.notice("attemptToFetchMajorUpgrade: \(attemptToFetchMajorUpgrade, privacy: .public)")
+        
         if Utils().getCPUTypeString() == "Apple Silicon" && Utils().requireMajorUpgrade() == false {
             let msg = "Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM."
             softwareupdateListLog.debug("\(msg, privacy: .public)")
             return
         }
         
-        if Utils().requireMajorUpgrade() {
+        if Utils().requireMajorUpgrade() && attemptToFetchMajorUpgrade  {
             let msg = "device requires major upgrade - attempting download"
             softwareupdateListLog.notice("\(msg, privacy: .public)")
             let task = Process()
