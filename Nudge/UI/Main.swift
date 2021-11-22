@@ -88,12 +88,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         self.runSoftwareUpdate()
         if Utils().requireMajorUpgrade() {
-            if attemptToFetchMajorUpgrade == true && fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false || majorUpgradeBackupAppPathExists == false) {
+            if attemptToFetchMajorUpgrade == true && fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
                 let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
                 uiLog.error("\(msg, privacy: .public)")
                 nudgePrimaryState.shouldExit = true
                 exit(0)
-            } else if attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false || majorUpgradeBackupAppPathExists == false) {
+            } else if attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
                 let msg = "Unable to find major upgrade application, exiting Nudge"
                 uiLog.error("\(msg, privacy: .public)")
                 nudgePrimaryState.shouldExit = true
