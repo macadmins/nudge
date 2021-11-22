@@ -96,6 +96,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     prefsProfileLog.warning("\(msg, privacy: .public)")
                     return
                 }
+            }
+
             if attemptToFetchMajorUpgrade == true && fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
                 let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
                 uiLog.error("\(msg, privacy: .public)")
