@@ -54,6 +54,10 @@ class SoftwareUpdate {
         }
         
         if Utils().requireMajorUpgrade() {
+            if actionButtonPath != nil {
+                return
+            }
+
             if attemptToFetchMajorUpgrade == true {
                 if majorUpgradeAppPathExists {
                     let msg = "found major upgrade application - skipping download"
