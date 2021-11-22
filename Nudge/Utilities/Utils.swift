@@ -497,8 +497,14 @@ struct Utils {
                 let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
                 prefsProfileLog.warning("\(msg, privacy: .public)")
             }
-        } else if requireMajorUpgrade() && majorUpgradeAppPathExists {
-            NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+        } else if requireMajorUpgrade() {
+            if majorUpgradeAppPathExists {
+                NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+            } else if majorUpgradeBackupAppPathExists {
+                NSWorkspace.shared.open(URL(fileURLWithPath: getBackupMajorUpgradeAppPath()))
+            } else { // Backup if all of these checks fail
+                NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+            }
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
