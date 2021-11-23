@@ -139,13 +139,21 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersionNormalized)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersionNormalized))"
             utilsLog.notice("\(msg, privacy: .public)")
             return true
         } else {
             return false
+        }
+    }
+
+    func getBackupMajorUpgradeAppPath() -> String {
+        if getMajorRequiredNudgeOSVersion() == 12 {
+            return "/Applications/Install macOS Monterey.app"
+        } else { // TODO: Update this for next year with another else if
+            return "/Applications/Install macOS Monterey.app"
         }
     }
     
@@ -220,7 +228,7 @@ struct Utils {
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = requiredMinimumOSVersionNormalized.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
         if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
             nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
@@ -400,11 +408,11 @@ struct Utils {
     }
 
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        nudgeDefaults.set(requiredMinimumOSVersionNormalized, forKey: "requiredMinimumOSVersion")
     }
 
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: requiredMinimumOSVersionNormalized, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     func openMoreInfo() {
@@ -489,8 +497,14 @@ struct Utils {
                 let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
                 prefsProfileLog.warning("\(msg, privacy: .public)")
             }
-        } else if requireMajorUpgrade() && majorUpgradeAppPathExists {
-            NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+        } else if requireMajorUpgrade() {
+            if majorUpgradeAppPathExists {
+                NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+            } else if majorUpgradeBackupAppPathExists {
+                NSWorkspace.shared.open(URL(fileURLWithPath: getBackupMajorUpgradeAppPath()))
+            } else { // Backup if all of these checks fail
+                NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+            }
         } else {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))

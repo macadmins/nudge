@@ -1,6 +1,6 @@
 //
-//  primaryQuitButton.swift
-//  primaryQuitButton
+//  QuitButtons.swift
+//  QuitButtons
 //
 //  Created by Bart Reardon on 31/8/21.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-struct PrimaryQuitButton: View {
+struct QuitButtons: View {
     @ObservedObject var viewObserved: ViewState
 
     @State var showDeferView = false
@@ -30,7 +30,6 @@ struct PrimaryQuitButton: View {
     }
 
     var body: some View {
-        // Bottom buttons
         HStack {
             // secondaryQuitButton
             if viewObserved.requireDualQuitButtons {
@@ -110,16 +109,16 @@ struct PrimaryQuitButton: View {
 
 #if DEBUG
 // Xcode preview for both light and dark mode
-struct PrimaryQuitButton_Previews: PreviewProvider {
+struct QuitButtons_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             ForEach(["en", "es"], id: \.self) { id in
-                PrimaryQuitButton(viewObserved: nudgePrimaryState)
+                QuitButtons(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.light)
                     .environment(\.locale, .init(identifier: id))
             }
             ZStack {
-                PrimaryQuitButton(viewObserved: nudgePrimaryState)
+                QuitButtons(viewObserved: nudgePrimaryState)
                     .preferredColorScheme(.dark)
             }
         }

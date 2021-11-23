@@ -25,8 +25,10 @@ let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
 let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
 let majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
+let majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
 let requiredInstallationDate = osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
 let requiredMinimumOSVersion = osVersionRequirementsProfile?.requiredMinimumOSVersion ?? osVersionRequirementsJSON?.requiredMinimumOSVersion ?? "0.0"
+let requiredMinimumOSVersionNormalized = try! OSVersion(requiredMinimumOSVersion).description
 let aboutUpdateURL = getAboutUpdateURL(OSVerReq: osVersionRequirementsProfile) ?? getAboutUpdateURL(OSVerReq: osVersionRequirementsJSON) ?? ""
 
 // userExperience
