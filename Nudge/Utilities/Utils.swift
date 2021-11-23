@@ -139,9 +139,9 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersionNormalized)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersionNormalized))"
             utilsLog.notice("\(msg, privacy: .public)")
             return true
         } else {
@@ -228,7 +228,7 @@ struct Utils {
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = requiredMinimumOSVersionNormalized.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
         if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
             nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
@@ -408,11 +408,11 @@ struct Utils {
     }
 
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        nudgeDefaults.set(requiredMinimumOSVersionNormalized, forKey: "requiredMinimumOSVersion")
     }
 
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: requiredMinimumOSVersionNormalized, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     func openMoreInfo() {

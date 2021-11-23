@@ -75,7 +75,7 @@ class SoftwareUpdate {
                 softwareupdateListLog.notice("\(msg, privacy: .public)")
                 let task = Process()
                 task.launchPath = "/usr/sbin/softwareupdate"
-                task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersion]
+                task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersionNormalized]
                 
                 let outputPipe = Pipe()
                 let errorPipe = Pipe()
