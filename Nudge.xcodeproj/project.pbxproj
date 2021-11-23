@@ -10,7 +10,7 @@
 		035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */ = {isa = PBXBuildFile; fileRef = 035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */; };
 		0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */; };
 		0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */; };
-		41AD2B0026DE65B1004C52B1 /* PrimaryQuitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2AFF26DE65B1004C52B1 /* PrimaryQuitButton.swift */; };
+		41AD2B0026DE65B1004C52B1 /* QuitButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */; };
 		41AD2B0226DE6947004C52B1 /* AdditionalInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */; };
 		41AD2B0426DE6A6B004C52B1 /* CompanyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */; };
 		41AD2B0626DEDB61004C52B1 /* InformationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0526DEDB61004C52B1 /* InformationButton.swift */; };
@@ -61,7 +61,7 @@
 		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
-		41AD2AFF26DE65B1004C52B1 /* PrimaryQuitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryQuitButton.swift; sourceTree = "<group>"; };
+		41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitButtons.swift; sourceTree = "<group>"; };
 		41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoButton.swift; sourceTree = "<group>"; };
 		41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogo.swift; sourceTree = "<group>"; };
 		41AD2B0526DEDB61004C52B1 /* InformationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationButton.swift; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 				636B9C0126CACCAB0007BE3B /* DeferView.swift */,
 				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				41AD2B0526DEDB61004C52B1 /* InformationButton.swift */,
-				41AD2AFF26DE65B1004C52B1 /* PrimaryQuitButton.swift */,
+				41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -414,7 +414,7 @@
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
-				41AD2B0026DE65B1004C52B1 /* PrimaryQuitButton.swift in Sources */,
+				41AD2B0026DE65B1004C52B1 /* QuitButtons.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */,
 				639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */,
 				63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */,
