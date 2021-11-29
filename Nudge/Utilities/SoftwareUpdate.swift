@@ -54,40 +54,63 @@ class SoftwareUpdate {
         }
         
         if Utils().requireMajorUpgrade() {
-            let msg = "device requires major upgrade - attempting download"
-            softwareupdateListLog.notice("\(msg, privacy: .public)")
-            let task = Process()
-            task.launchPath = "/usr/sbin/softwareupdate"
-            task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersion]
-            
-            let outputPipe = Pipe()
-            let errorPipe = Pipe()
-            
-            task.standardOutput = outputPipe
-            task.standardError = errorPipe
-            
-            do {
-                try task.run()
-            } catch {
-                let msg = "Error downloading software updates"
-                softwareupdateListLog.error("\(msg, privacy: .public)")
+            if actionButtonPath != nil {
+                return
             }
-            
-            task.waitUntilExit()
-            
-            let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-            let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-            
-            let output = String(decoding: outputData, as: UTF8.self)
-            let _ = String(decoding: errorData, as: UTF8.self)
-            
-            if task.terminationStatus != 0 {
-                softwareupdateDownloadLog.error("Error downloading software updates: \(output, privacy: .public)")
-            } else {
-                fetchMajorUpgradeSuccessful = true
-                let msg = "softwareupdate successfully downloaded available update application"
+
+            if attemptToFetchMajorUpgrade == true {
+                if majorUpgradeAppPathExists {
+                    let msg = "found major upgrade application - skipping download"
+                    softwareupdateListLog.notice("\(msg, privacy: .public)")
+                    return
+                }
+
+                if majorUpgradeBackupAppPathExists {
+                    let msg = "found backup major upgrade application - skipping download"
+                    softwareupdateListLog.notice("\(msg, privacy: .public)")
+                    return
+                }
+                
+                let msg = "device requires major upgrade - attempting download"
                 softwareupdateListLog.notice("\(msg, privacy: .public)")
-                softwareupdateDownloadLog.info("\(output, privacy: .public)")
+                let task = Process()
+                task.launchPath = "/usr/sbin/softwareupdate"
+                task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersionNormalized]
+                
+                let outputPipe = Pipe()
+                let errorPipe = Pipe()
+                
+                task.standardOutput = outputPipe
+                task.standardError = errorPipe
+                
+                do {
+                    try task.run()
+                } catch {
+                    let msg = "Error downloading software updates"
+                    softwareupdateListLog.error("\(msg, privacy: .public)")
+                }
+                
+                task.waitUntilExit()
+                
+                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+                let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+                
+                let output = String(decoding: outputData, as: UTF8.self)
+                let _ = String(decoding: errorData, as: UTF8.self)
+                
+                if task.terminationStatus != 0 {
+                    softwareupdateDownloadLog.error("Error downloading software updates: \(output, privacy: .public)")
+                } else {
+                    let msg = "softwareupdate successfully downloaded available update application - updating application paths"
+                    softwareupdateListLog.notice("\(msg, privacy: .public)")
+                    softwareupdateDownloadLog.info("\(output, privacy: .public)")
+                    fetchMajorUpgradeSuccessful = true
+                    majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
+                    majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
+                }
+            } else {
+                    let msg = "device requires major upgrade but attemptToFetchMajorUpgrade is False - skipping download"
+                    softwareupdateListLog.notice("\(msg, privacy: .public)")
             }
         } else {
             let softwareupdateList = self.List()

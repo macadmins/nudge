@@ -145,6 +145,14 @@ func needToActivateNudge() -> Bool {
         }
     }
 
+    if majorUpgradeBackupAppPathExists {
+        if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
+            let msg = "majorUpgradeApp is currently the frontmostApplication"
+            uiLog.info("\(msg, privacy: .public)")
+            return false
+        }
+    }
+
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
         let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication"

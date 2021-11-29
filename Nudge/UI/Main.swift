@@ -87,11 +87,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             sleep(UInt32(randomDelaySeconds))
         }
         self.runSoftwareUpdate()
-        if Utils().requireMajorUpgrade() && fetchMajorUpgradeSuccessful == false && majorUpgradeAppPathExists == false {
-            let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
-            uiLog.notice("\(msg, privacy: .public)")
-            nudgePrimaryState.shouldExit = true
-            exit(0)
+        if Utils().requireMajorUpgrade() {
+            if actionButtonPath != nil {
+                if !actionButtonPath!.isEmpty {
+                    return
+                } else {
+                    let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action required for major upgrades"
+                    prefsProfileLog.warning("\(msg, privacy: .public)")
+                    return
+                }
+            }
+
+            if attemptToFetchMajorUpgrade == true && fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
+                let msg = "Unable to fetch major upgrade and application missing, exiting Nudge"
+                uiLog.error("\(msg, privacy: .public)")
+                nudgePrimaryState.shouldExit = true
+                exit(0)
+            } else if attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
+                let msg = "Unable to find major upgrade application, exiting Nudge"
+                uiLog.error("\(msg, privacy: .public)")
+                nudgePrimaryState.shouldExit = true
+                exit(0)
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ struct StandardMode: View {
                 InformationButton()
                 
                 if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    PrimaryQuitButton(viewObserved: viewObserved)
+                    QuitButtons(viewObserved: viewObserved)
                 }
             }
             .padding(.bottom, bottomPadding)

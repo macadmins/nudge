@@ -61,135 +61,136 @@ struct StandardModeRightSide: View {
             // I'm kind of impressed with myself
             VStack {
                 VStack {
-                Spacer()
-                    .frame(height: 10)
-                // mainContentHeader / mainContentSubHeader
-                HStack(alignment: .center) {
-                    VStack(alignment: .leading, spacing: 1) {
-                        HStack {
-                            Text(mainContentHeader)
-                                 .font(.callout)
-                                .fontWeight(.bold)
-                            Spacer()
-                        }
-                        HStack {
-                            Text(mainContentSubHeader)
-                                .font(.callout)
-                            Spacer()
-                        }
-                    }
                     Spacer()
-                    // actionButton
-                    Button(action: {
-                        Utils().updateDevice()
-                    }) {
-                        Text(actionButtonText)
-                    }
-                    .keyboardShortcut(.defaultAction)
-                }
-                
-                // Horizontal line
-                HStack{
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(height: 1)
-                }
-                
-                // mainContentNote
-                HStack {
-                    Text(mainContentNote)
-                        .font(.callout)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.red)
-                    Spacer()
-                }
-
-                // mainContentText
-                ScrollView(.vertical) {
-                    VStack {
-                        HStack {
-                            Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
-                                .font(.callout)
-                                .font(.body)
-                                .fontWeight(.regular)
-                                .multilineTextAlignment(.leading)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer()
-                        }
-                    }
-                }
-
-                HStack {
-                    Spacer()
-                    // screenShot
-                    if screenShotExists {
-                        Button {
-                            self.showSSDetail.toggle()
-                        } label: {
-                            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                                .resizable()
-                                .scaledToFit()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: screenshotMaxHeight)
-                        }
-                        .buttonStyle(.plain)
-                        .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
-                        .sheet(isPresented: $showSSDetail) {
-                            ScreenShotZoom()
-                        }
-                        .onHover { inside in
-                            if inside {
-                                NSCursor.pointingHand.push()
-                            } else {
-                                NSCursor.pop()
+                        .frame(height: 10)
+                    // mainContentHeader / mainContentSubHeader
+                    HStack(alignment: .center) {
+                        VStack(alignment: .leading, spacing: 1) {
+                            HStack {
+                                Text(mainContentHeader)
+                                    .font(.callout)
+                                    .fontWeight(.bold)
+                                Spacer()
+                            }
+                            HStack {
+                                Text(mainContentSubHeader)
+                                    .font(.callout)
+                                Spacer()
                             }
                         }
-                    } else {
-                        if forceScreenShotIconMode() {
-                            Button {
-                                self.showSSDetail.toggle()
-                            } label: {
-                                Image("CompanyScreenshotIcon")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: screenshotMaxHeight)
+                        Spacer()
+                        // actionButton
+                        Button(action: {
+                            Utils().updateDevice()
+                        }) {
+                            Text(actionButtonText)
+                        }
+                        .keyboardShortcut(.defaultAction)
+                    }
+                
+                    // Horizontal line
+                    HStack{
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.5))
+                            .frame(height: 1)
+                    }
+                
+                    // mainContentNote
+                    HStack {
+                        Text(mainContentNote)
+                            .font(.callout)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.red)
+                        Spacer()
+                    }
+
+                    // mainContentText
+                    ScrollView(.vertical) {
+                        VStack {
+                            HStack {
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                    .font(.callout)
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .multilineTextAlignment(.leading)
+                                Spacer()
                             }
-                            .buttonStyle(.plain)
-                            .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
-                            .sheet(isPresented: $showSSDetail) {
+                        }
+                    }
+                
+                    if screenShotExists || forceScreenShotIconMode() {
+                        HStack {
+                            Spacer()
+                            // screenShot
+                            if screenShotExists {
+                                Button {
+                                    self.showSSDetail.toggle()
+                                } label: {
+                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                                        .resizable()
+                                        .scaledToFit()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxHeight: screenshotMaxHeight)
+                                }
+                                .buttonStyle(.plain)
+                                .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
+                                .sheet(isPresented: $showSSDetail) {
                                 ScreenShotZoom()
-                            }
-                            .onHover { inside in
-                                if inside {
-                                    NSCursor.pointingHand.push()
+                                }
+                                .onHover { inside in
+                                    if inside {
+                                        NSCursor.pointingHand.push()
+                                    } else {
+                                        NSCursor.pop()
+                                    }
+                                }
+                            } else {
+                                if forceScreenShotIconMode() {
+                                    Button {
+                                        self.showSSDetail.toggle()
+                                    } label: {
+                                        Image("CompanyScreenshotIcon")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxHeight: screenshotMaxHeight)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
+                                    .sheet(isPresented: $showSSDetail) {
+                                    ScreenShotZoom()
+                                    }
+                                    .onHover { inside in
+                                        if inside {
+                                            NSCursor.pointingHand.push()
+                                        } else {
+                                            NSCursor.pop()
+                                        }
+                                    }
                                 } else {
-                                    NSCursor.pop()
+                                    Button {
+                                        self.showSSDetail.toggle()
+                                    } label: {
+                                        Image("CompanyScreenshotIcon")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxHeight: screenshotMaxHeight)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .hidden()
+                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
+                                    .sheet(isPresented: $showSSDetail) {
+                                    ScreenShotZoom()
+                                    }
                                 }
                             }
-                        } else {
-                            Button {
-                                self.showSSDetail.toggle()
-                            } label: {
-                                Image("CompanyScreenshotIcon")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: screenshotMaxHeight)
-                            }
-                            .buttonStyle(.plain)
-                            .hidden()
-                            .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
-                            .sheet(isPresented: $showSSDetail) {
-                                ScreenShotZoom()
-                            }
+                            Spacer()
                         }
                     }
-                    Spacer()
                 }
-                }
-                .padding(.leading, contentWidthPadding)
-                .padding(.trailing, contentWidthPadding)
+                    .padding(.leading, contentWidthPadding)
+                    .padding(.trailing, contentWidthPadding)
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
