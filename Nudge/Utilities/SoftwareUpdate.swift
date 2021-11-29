@@ -101,10 +101,12 @@ class SoftwareUpdate {
                 if task.terminationStatus != 0 {
                     softwareupdateDownloadLog.error("Error downloading software updates: \(output, privacy: .public)")
                 } else {
-                    fetchMajorUpgradeSuccessful = true
-                    let msg = "softwareupdate successfully downloaded available update application"
+                    let msg = "softwareupdate successfully downloaded available update application - updating application paths"
                     softwareupdateListLog.notice("\(msg, privacy: .public)")
                     softwareupdateDownloadLog.info("\(output, privacy: .public)")
+                    fetchMajorUpgradeSuccessful = true
+                    majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
+                    majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
                 }
             } else {
                     let msg = "device requires major upgrade but attemptToFetchMajorUpgrade is False - skipping download"
