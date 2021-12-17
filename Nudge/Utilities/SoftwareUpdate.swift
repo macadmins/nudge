@@ -86,7 +86,7 @@ class SoftwareUpdate {
                 do {
                     try task.run()
                 } catch {
-                    let msg = "Error downloading software updates"
+                    let msg = "Error downloading software update"
                     softwareupdateListLog.error("\(msg, privacy: .public)")
                 }
                 
@@ -99,7 +99,7 @@ class SoftwareUpdate {
                 let _ = String(decoding: errorData, as: UTF8.self)
                 
                 if task.terminationStatus != 0 {
-                    softwareupdateDownloadLog.error("Error downloading software updates: \(output, privacy: .public)")
+                    softwareupdateDownloadLog.error("Error downloading software update: \(output, privacy: .public)")
                 } else {
                     let msg = "softwareupdate successfully downloaded available update application - updating application paths"
                     softwareupdateListLog.notice("\(msg, privacy: .public)")
@@ -114,13 +114,18 @@ class SoftwareUpdate {
             }
         } else {
             let softwareupdateList = self.List()
+            var updateLabel = ""
+            for update in softwareupdateList.components(separatedBy: "\n") {
+                if update.contains("Label:") {
+                    updateLabel = update.components(separatedBy: ": ")[1]
+                }
+            }
             
-            if softwareupdateList.contains("restart") {
-                let msg = "softwareupdate found available updates requiring a restart - attempting download"
-                softwareupdateListLog.notice("\(msg, privacy: .public)")
+            if softwareupdateList.contains(requiredMinimumOSVersionNormalized) && updateLabel.isEmpty == false {
+                softwareupdateListLog.notice("softwareupdate found \(updateLabel, privacy: .public) available for download - attempting download")
                 let task = Process()
                 task.launchPath = "/usr/sbin/softwareupdate"
-                task.arguments = ["--download", "--all"]
+                task.arguments = ["--download", "\(updateLabel)"]
                 
                 let outputPipe = Pipe()
                 let errorPipe = Pipe()
@@ -131,7 +136,7 @@ class SoftwareUpdate {
                 do {
                     try task.run()
                 } catch {
-                    let msg = "Error downloading software updates"
+                    let msg = "Error downloading software update"
                     softwareupdateListLog.error("\(msg, privacy: .public)")
                 }
                 
@@ -146,13 +151,12 @@ class SoftwareUpdate {
                 if task.terminationStatus != 0 {
                     softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")
                 } else {
-                    let msg = "softwareupdate successfully downloaded available updates"
+                    let msg = "softwareupdate successfully downloaded available update"
                     softwareupdateListLog.notice("\(msg, privacy: .public)")
                     softwareupdateDownloadLog.info("\(output, privacy: .public)")
                 }
             } else {
-                let msg = "softwareupdate did not find any available updates requiring a restart - skipping download"
-                softwareupdateListLog.notice("\(msg, privacy: .public)")
+                softwareupdateListLog.notice("softwareupdate did not find \(requiredMinimumOSVersionNormalized, privacy: .public) available for download - skipping download attempt")
             }
         }
     }
