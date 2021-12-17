@@ -473,15 +473,6 @@ struct Utils {
         return simpleModeEnabled
     }
 
-    func unsafeSoftwareUpdate() -> Bool {
-        let runningUnsafeSoftwareUpdateOSVersion = versionLessThan(currentVersion: currentOSVersion, newVersion: "11.4")
-        if runningUnsafeSoftwareUpdateOSVersion {
-            return true
-        } else {
-            return false
-        }
-    }
-
     func updateDevice(userClicked: Bool = true) {
         if userClicked {
             let msg = "User clicked updateDevice"
