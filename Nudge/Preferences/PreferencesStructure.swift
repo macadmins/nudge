@@ -59,7 +59,7 @@ extension NudgePreferences {
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs: [String]?
-    var aggressiveUserExperience, asyncronousSoftwareUpdate, attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool?
+    var aggressiveUserExperience, asynchronousSoftwareUpdate, attemptToFetchMajorUpgrade, enforceMinorUpdates: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -83,14 +83,14 @@ extension OptionalFeatures {
     func with(
         acceptableApplicationBundleIDs: [String]?? = nil,
         aggressiveUserExperience: Bool?? = nil,
-        asyncronousSoftwareUpdate: Bool?? = nil,
+        asynchronousSoftwareUpdate: Bool?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
         enforceMinorUpdates: Bool?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
-            asyncronousSoftwareUpdate: asyncronousSoftwareUpdate ?? self.asyncronousSoftwareUpdate,
+            asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates
         )

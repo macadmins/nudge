@@ -64,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        if asyncronousSoftwareUpdate && Utils().requireMajorUpgrade() == false {
+        if asynchronousSoftwareUpdate && Utils().requireMajorUpgrade() == false {
             DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
                 SoftwareUpdate().Download()
             })

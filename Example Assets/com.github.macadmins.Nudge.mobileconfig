@@ -27,7 +27,7 @@
           </array>
           <key>aggressiveUserExperience</key>
           <true/>
-          <key>asyncronousSoftwareUpdate</key>
+          <key>asynchronousSoftwareUpdate</key>
           <true/>
           <key>attemptToFetchMajorUpgrade</key>
           <true/>

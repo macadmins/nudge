@@ -50,7 +50,7 @@
                 }
               ]
             },
-            "asyncronousSoftwareUpdate": {
+            "asynchronousSoftwareUpdate": {
               "description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
               "anyOf": [
                 {

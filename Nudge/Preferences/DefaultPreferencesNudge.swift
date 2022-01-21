@@ -16,7 +16,7 @@ let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
 let aggressiveUserExperience = optionalFeaturesProfile?["aggressiveUserExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserExperience ?? true
 let customAcceptableApplicationBundleIDs = optionalFeaturesProfile?["acceptableApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.acceptableApplicationBundleIDs ?? [""]
-let asyncronousSoftwareUpdate = optionalFeaturesProfile?["asyncronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asyncronousSoftwareUpdate ?? true
+let asynchronousSoftwareUpdate = optionalFeaturesProfile?["asynchronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asynchronousSoftwareUpdate ?? true
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 
