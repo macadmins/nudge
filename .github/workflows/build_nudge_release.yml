@@ -19,6 +19,8 @@ jobs:
     steps:
     - name: Checkout nudge repo
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Install Apple Xcode certificates
       uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
