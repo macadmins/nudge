@@ -4,7 +4,7 @@
       "us.zoom.xos"
     ],
     "aggressiveUserExperience": true,
-    "asyncronousSoftwareUpdate": true,
+    "asynchronousSoftwareUpdate": true,
     "attemptToFetchMajorUpgrade": true,
     "enforceMinorUpdates": true
   },
