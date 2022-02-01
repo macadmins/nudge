@@ -9,7 +9,7 @@
 //// Additional Device Information
 "Additional Device Information" = "Информация об устройстве";
 // Username
-"Username:" = "Username:";
+"Username:" = "Логин:";
 // Serial Number
 "Serial Number:" = "Серийный номер:";
 // Architecture
