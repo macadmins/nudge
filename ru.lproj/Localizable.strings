@@ -44,7 +44,7 @@
 "Updates can take around 30 minutes to complete" = "Обновления обычно занимают примерно 30 минут";
 "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Обновления нужны, чтобы IT-команда могла защитить Mac и данные.\n\nЕсли вы не обновите устройство, есть риск потерять доступ к важным для работы сервисам.\n\nЧтобы начать обновление, просто нажмите кнопку установки.";
 "Your device requires a security update" = "Требуется обновление безопасности macOS";
-"Your device requires a security update (Demo Mode)" = "Требуется обновление безопасности macOS (Demo mode)";
+"Your device requires a security update (Demo Mode)" = "Требуется обновление безопасности macOS (демо-режим)";
 "Later" = "Потом";
 "I understand" = "Я понимаю";
 "A friendly reminder from your local IT team" = "Напоминание от команды IT";
