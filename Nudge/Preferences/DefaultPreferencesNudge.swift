@@ -19,6 +19,7 @@ let customAcceptableApplicationBundleIDs = optionalFeaturesProfile?["acceptableA
 let asynchronousSoftwareUpdate = optionalFeaturesProfile?["asynchronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asynchronousSoftwareUpdate ?? true
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
+let disableSoftwareUpdateWorkflow = optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ?? optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ?? false
 
 // osVersionRequirements
 let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
