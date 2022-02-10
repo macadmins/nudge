@@ -99,6 +99,7 @@
 		63D7D10025C9E9A500236281 /* NudgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeUITests.swift; sourceTree = "<group>"; };
 		63D7D10225C9E9A500236281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63D7D12625C9F1EE00236281 /* StandardMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardMode.swift; sourceTree = "<group>"; };
+		6C3AB84027A6CAD6000AA917 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9F549327270F4B2C00D8EB37 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9F549329270F4B3900D8EB37 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9FF36CEA270F5169003C1BCB /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -364,6 +365,7 @@
 				zh,
 				pt,
 				hi,
+				ru,
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -482,6 +484,7 @@
 				9FF36CEA270F5169003C1BCB /* zh */,
 				9FF36CEB270F5183003C1BCB /* pt */,
 				634075C927206ED70066DFDD /* hi */,
+				6C3AB84027A6CAD6000AA917 /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -615,7 +618,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.1.4;
+				CURRENT_PROJECT_VERSION = 1.1.5;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
 				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -626,7 +629,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.Nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -644,7 +647,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.1.4;
+				CURRENT_PROJECT_VERSION = 1.1.5;
 				DEVELOPMENT_ASSET_PATHS = "\"Nudge/Preview Content\"";
 				DEVELOPMENT_TEAM = 9GQZ7KUFR6;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -655,7 +658,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.macadmins.Nudge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
