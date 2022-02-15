@@ -93,7 +93,7 @@
               ]
             },
             "disableSoftwareUpdateWorkflow": {
-              "description": "When disableSoftwareUpdateWorkflow is true, nudge will not attempt to run the softwareupdate process. Defaults to false.",
+              "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
               "anyOf": [
                 {
                   "type": "null",
