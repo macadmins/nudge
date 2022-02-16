@@ -115,7 +115,8 @@ class SoftwareUpdate {
         } else {
             if disableSoftwareUpdateWorkflow {
                 let msg = "Skip running softwareupdate because it's disabled by a preference."
-                uiLog.info("\(msg, privacy: .public)")
+                softwareupdateListLog.notice("\(msg, privacy: .public)")
+                return
             }
             let softwareupdateList = self.List()
             var updateLabel = ""
