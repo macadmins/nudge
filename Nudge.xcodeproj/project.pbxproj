@@ -61,6 +61,7 @@
 		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
+		29F8A21127BE8BE700B84805 /* no */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = no; path = no.lproj/Localizable.strings; sourceTree = "<group>"; };
 		41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitButtons.swift; sourceTree = "<group>"; };
 		41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoButton.swift; sourceTree = "<group>"; };
 		41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogo.swift; sourceTree = "<group>"; };
@@ -366,6 +367,8 @@
 				pt,
 				hi,
 				ru,
+				no,
+				nb,
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -485,6 +488,7 @@
 				9FF36CEB270F5183003C1BCB /* pt */,
 				634075C927206ED70066DFDD /* hi */,
 				6C3AB84027A6CAD6000AA917 /* ru */,
+				29F8A21127BE8BE700B84805 /* no */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
