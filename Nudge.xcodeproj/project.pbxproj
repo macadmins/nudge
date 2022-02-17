@@ -66,7 +66,6 @@
 		41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoButton.swift; sourceTree = "<group>"; };
 		41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogo.swift; sourceTree = "<group>"; };
 		41AD2B0526DEDB61004C52B1 /* InformationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationButton.swift; sourceTree = "<group>"; };
-		41BED0EA27BEEC7A00070CAA /* Storyboards */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Storyboards; sourceTree = "<group>"; };
 		41BED0EE27BEF05000070CAA /* Blur.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Blur.storyboard; path = Nudge/UI/Storyboards/Blur.storyboard; sourceTree = "<group>"; };
 		5836861325DACFE90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
@@ -181,7 +180,6 @@
 		639B6B5425DF374600E38EC1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				41BED0EA27BEEC7A00070CAA /* Storyboards */,
 				41AD2AFE26DE657D004C52B1 /* Common */,
 				63D7D0E225C9E9A400236281 /* Main.swift */,
 				63D7D0E425C9E9A400236281 /* ContentView.swift */,
