@@ -91,12 +91,14 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
+                window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
                 
                 if blurscreen { // load the blur background storyboard and sent it to the back
                     let storyBoard = NSStoryboard(name: "Blur", bundle: nil)  as NSStoryboard
                     var blurBackground: Background?
                     blurBackground = (storyBoard.instantiateController(withIdentifier: "Background") as? Background)!
                     blurBackground?.showWindow(self)
+                    blurBackground?.window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
                     blurBackground?.sendBack()
                     NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
                 }
