@@ -82,8 +82,6 @@ struct ContentView: View {
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
-    var blurscreen = false // demo purposes - obviously don't set this here - make it part of the state and add some logic around when to set it
-
     var body: some View {
         BackgroundView(forceSimpleMode: forceSimpleMode, viewObserved: viewObserved).background(
             HostingWindowFinder { window in
@@ -94,8 +92,9 @@ struct ContentView: View {
                 window?.isMovable = false // not movable
                 window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
                 
-                if blurscreen { // load the blur background storyboard and sent it to the back
-                    let storyBoard = NSStoryboard(name: "Blur", bundle: nil)  as NSStoryboard
+                // load the blur background storyboard and sent it to the back if we are past the required install date
+                if Utils().pastRequiredInstallationDate() {
+                    let storyBoard = NSStoryboard(name: "backgroundBlur", bundle: nil)  as NSStoryboard
                     viewObserved.bluredBackground = (storyBoard.instantiateController(withIdentifier: "Background") as? Background)!
                     viewObserved.bluredBackground?.showWindow(self)
                     viewObserved.bluredBackground?.window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces

@@ -14,7 +14,7 @@
 		41AD2B0226DE6947004C52B1 /* AdditionalInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */; };
 		41AD2B0426DE6A6B004C52B1 /* CompanyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */; };
 		41AD2B0626DEDB61004C52B1 /* InformationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0526DEDB61004C52B1 /* InformationButton.swift */; };
-		41BED0EF27BEF05000070CAA /* Blur.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41BED0EE27BEF05000070CAA /* Blur.storyboard */; };
+		41BED0EF27BEF05000070CAA /* backgroundBlur.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41BED0EE27BEF05000070CAA /* backgroundBlur.storyboard */; };
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
@@ -66,7 +66,7 @@
 		41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoButton.swift; sourceTree = "<group>"; };
 		41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogo.swift; sourceTree = "<group>"; };
 		41AD2B0526DEDB61004C52B1 /* InformationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationButton.swift; sourceTree = "<group>"; };
-		41BED0EE27BEF05000070CAA /* Blur.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Blur.storyboard; path = Nudge/UI/Storyboards/Blur.storyboard; sourceTree = "<group>"; };
+		41BED0EE27BEF05000070CAA /* backgroundBlur.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = backgroundBlur.storyboard; path = Nudge/UI/Storyboards/backgroundBlur.storyboard; sourceTree = "<group>"; };
 		5836861325DACFE90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 		63D7D0D625C9E9A400236281 = {
 			isa = PBXGroup;
 			children = (
-				41BED0EE27BEF05000070CAA /* Blur.storyboard */,
+				41BED0EE27BEF05000070CAA /* backgroundBlur.storyboard */,
 				031B0F2125D8AE3200E68A28 /* Example Assets */,
 				5870FF6425CFE5EC0036D203 /* Localizable.strings */,
 				63D7D0E125C9E9A400236281 /* Nudge */,
@@ -387,7 +387,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41BED0EF27BEF05000070CAA /* Blur.storyboard in Resources */,
+				41BED0EF27BEF05000070CAA /* backgroundBlur.storyboard in Resources */,
 				63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */,
 				5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
