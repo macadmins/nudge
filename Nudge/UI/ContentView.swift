@@ -53,11 +53,35 @@ struct BackgroundView: View {
     }
 }
 
+// class to control the blurred background
+// TODO: paramatise so it can be initialled for all screens, not just main
+class Background: NSWindowController {
+        
+    override func windowDidLoad() {
+        super.windowDidLoad()
+                
+        if let backgroundWindow = self.window {
+            let mainDisplayRect = NSScreen.main?.frame
+            backgroundWindow.contentRect(forFrameRect: mainDisplayRect!)
+            backgroundWindow.setFrame((NSScreen.main?.frame)!, display: true)
+            backgroundWindow.setFrameOrigin((NSScreen.main?.frame.origin)!)
+            backgroundWindow.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) - 1 ))
+        }
+    }
+
+    func sendBack() {
+        self.window?.orderBack(self)
+    }
+    
+}
+
 struct ContentView: View {
     @ObservedObject var viewObserved: ViewState
     var forceSimpleMode: Bool = false
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
+    
+    var blurscreen = true // demo purposes - obviously don't set this here - make it part of the state and add some logic around when to set it
 
     var body: some View {
         BackgroundView(forceSimpleMode: forceSimpleMode, viewObserved: viewObserved).background(
@@ -67,6 +91,16 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
+                
+                if blurscreen { // load the blur background storyboard and sent it to the back
+                    let storyBoard = NSStoryboard(name: "Blur", bundle: nil)  as NSStoryboard
+                    var blurBackground: Background?
+                    blurBackground = (storyBoard.instantiateController(withIdentifier: "Background") as? Background)!
+                    blurBackground?.showWindow(self)
+                    blurBackground?.sendBack()
+                    NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
+                }
+                
                 _ = needToActivateNudge()
             }
         )
