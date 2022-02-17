@@ -62,6 +62,7 @@
     "showDeferralCount": true,
     "simpleMode": false,
     "singleQuitButton": false,
+    "importantTextColor": "red",
     "updateElements": [
       {
         "_language": "en",

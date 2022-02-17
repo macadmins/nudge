@@ -316,6 +316,7 @@ struct UserInterface: Codable {
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var showDeferralCount, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
+    var importantTextColor: String?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -348,7 +349,8 @@ extension UserInterface {
         showDeferralCount: Bool?? = nil,
         simpleMode: Bool?? = nil,
         singleQuitButton: Bool?? = nil,
-        updateElements: [UpdateElement]?? = nil
+        updateElements: [UpdateElement]?? = nil,
+        importantTextColor: String?? = nil
     ) -> UserInterface {
         return UserInterface(
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
@@ -362,7 +364,8 @@ extension UserInterface {
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.simpleMode,
-            updateElements: updateElements ?? self.updateElements
+            updateElements: updateElements ?? self.updateElements,
+            importantTextColor: importantTextColor ?? self.importantTextColor
         )
     }
 

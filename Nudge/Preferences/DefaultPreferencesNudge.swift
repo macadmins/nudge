@@ -61,6 +61,7 @@ let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? userInter
 let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? userInterfaceJSON?.iconLightPath ?? ""
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? userInterfaceJSON?.screenShotDarkPath ?? ""
 let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? userInterfaceJSON?.screenShotLightPath ?? ""
+let importantTextColor = userInterfaceProfile?["importantTextColor"] as? String ?? userInterfaceJSON?.importantTextColor ?? "red"
 let actionButtonText = userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.actionButtonText ?? "Update Device".localized(desiredLanguage: getDesiredLanguage())
 let informationButtonText = userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.informationButtonText ?? "More Info".localized(desiredLanguage: getDesiredLanguage())
 let mainContentHeader = userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentHeader ?? "Your device will restart during this update".localized(desiredLanguage: getDesiredLanguage())

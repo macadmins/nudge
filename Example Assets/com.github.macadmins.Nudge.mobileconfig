@@ -129,6 +129,8 @@
           <false/>
           <key>singleQuitButton</key>
           <false/>
+          <key>importantTextColor</key>
+          <string>red</string>
           <key>updateElements</key>
           <array>
             <dict>

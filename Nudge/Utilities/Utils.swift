@@ -21,6 +21,12 @@ extension String {
     }
 }
 
+extension StringProtocol {
+    subscript(offset: Int) -> Character {
+        self[index(startIndex, offsetBy: offset)]
+    }
+}
+
 struct Utils {
     func activateNudge() {
         var msg = "Re-activating Nudge"
@@ -500,6 +506,63 @@ struct Utils {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
+    }
+    
+    func isValidColourHex(_ hexvalue: String) -> Bool {
+        let hexRegEx = "^#([a-fA-F0-9]{6})$"
+        let hexPred = NSPredicate(format:"SELF MATCHES %@", hexRegEx)
+        return hexPred.evaluate(with: hexvalue)
+    }
+
+    func stringToColour(_ colourValue: String) -> Color {
+        
+        var returnColor: Color
+        
+        //let colourHash = String(item[1])
+        if isValidColourHex(colourValue) {
+            
+            // valid hex = #000000 format
+        
+            let colourRedValue = "\(colourValue[1])\(colourValue[2])"
+            let colourRed = Double(Int(colourRedValue, radix: 16)!)/255
+            
+            let colourGreenValue = "\(colourValue[3])\(colourValue[4])"
+            let colourGreen = Double(Int(colourGreenValue, radix: 16)!)/255
+            
+            let colourBlueValue = "\(colourValue[5])\(colourValue[6])"
+            let colourBlue = Double(Int(colourBlueValue, radix: 16)!)/255
+            
+            returnColor = Color(red: colourRed, green: colourGreen, blue: colourBlue)
+            
+        } else {
+            switch colourValue {
+                case "black":
+                    returnColor = Color.black
+                case "blue":
+                    returnColor = Color.blue
+                case "gray":
+                    returnColor = Color.gray
+                case "green":
+                    returnColor = Color.green
+                case "orange":
+                    returnColor = Color.orange
+                case "pink":
+                    returnColor = Color.pink
+                case "purple":
+                    returnColor = Color.purple
+                case "red":
+                    returnColor = Color.red
+                case "white":
+                    returnColor = Color.white
+                case "yellow":
+                    returnColor = Color.yellow
+                default:
+                    returnColor = Color.primary
+            }
+        }
+        
+        return returnColor
+        
     }
 
     func userInitiatedExit() {

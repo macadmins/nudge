@@ -100,7 +100,7 @@ struct StandardModeRightSide: View {
                         Text(mainContentNote)
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(Color.red)
+                            .foregroundColor(Utils().stringToColour(importantTextColor))
                         Spacer()
                     }
 
