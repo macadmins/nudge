@@ -81,7 +81,7 @@ struct ContentView: View {
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
     
-    var blurscreen = true // demo purposes - obviously don't set this here - make it part of the state and add some logic around when to set it
+    var blurscreen = false // demo purposes - obviously don't set this here - make it part of the state and add some logic around when to set it
 
     var body: some View {
         BackgroundView(forceSimpleMode: forceSimpleMode, viewObserved: viewObserved).background(
