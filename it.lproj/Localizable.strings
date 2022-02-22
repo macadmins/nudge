@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings
+  Nudge
+
+  Created by Nicola Lecchi on 2022-18-02.
+  
+*/
+
+ //// Additional Device Information
+ "Additional Device Information" = "Informazioni aggiuntive sul dispositivo";
+ // Username
+ "Username:" = "Nome utente:";
+ // Serial Number
+ "Serial Number:" = "Numero di serie:";
+ // Architecture
+ "Architecture:" = "Architettura:";
+ // Nudge Version
+ "Version:" = "Versione:";
+ // Language
+ "Language:" = "Lingua:";
+
+ //// Left side of Nudge
+ // Current OS Version
+ "Current OS Version:" = "Sistema operativo attuale:";
+ // Required OS Version
+ "Required OS Version:" = "Sistema operativo richiesto:";
+ // Days Remaining To Update
+ "Days Remaining To Update:" = "Giorni rimanenti per l'aggiornamento:";
+ // Deferred Count
+ "Deferred Count:" = "Conteggio posticipi:";
+ // More Info
+ "More Info" = "Informazioni ulteriori";
+
+ // Help buttons
+ "Click to close" = "Seleziona per chiudere";
+ "Click for additional device information" = "Seleziona per ulteriori informazioni sul dispositivo";
+ "Click to zoom into screenshot" = "Seleziona per ingrandire lo screenshot";
+ "Click for more information about the security update" = "Selezionare per ulteriori informazioni sull'aggiornamento di sicurezza";
+
+ //// Right side of Nudge
+ "Update Device" = "Aggiorna dispositivo";
+ "Your device will restart during this update" = "Il dispositivo si riavvierà durante questo aggiornamento";
+ "Important Notes" = "Note importanti";
+ "Updates can take around 30 minutes to complete" = "Il completamento degli aggiornamenti richiede circa 30 minuti";
+ "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Et datamaskin med de siste oppdateringene kreves for at IT skal kunne sikre at datamaskinen din er beskyttet.\n\nHvis du ikke oppdaterer datamaskinen, kan det hende du ikke får tilgang til de nødvendige ressursene.\n\nFor å starte oppdateringen, klikk på Oppdater og følg trinnene.";
+ "Your device requires a security update" = "Il tuo dispositivo richiede un aggiornamento di sicurezza";
+ "Your device requires a security update (Demo Mode)" = "Il tuo dispositivo richiede un aggiornamento di sicurezza (modalità demo)";
+ "Later" = "Dopo";
+ "I understand" = "Ho capito";
+ "A friendly reminder from your local IT team" = "Un cortese promemoria dal tuo team IT locale";
+ "Defer" = "Posticipa";
+ "One Hour" = "Un'ora'";
+ "One Day" = "Un giorno";
+ "Custom" = "Personalizzato";
