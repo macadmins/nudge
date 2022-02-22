@@ -62,23 +62,15 @@ struct StandardModeLeftSide: View {
 
                     // Days or Hours Remaining
                     HStack{
-                        if 24 >= viewObserved.hoursRemaining {
-                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                        } else {
-                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                        }
-                        Spacer()
                         if 0 >= viewObserved.daysRemaining && !Utils().demoModeEnabled() {
-                            if 24 >= viewObserved.hoursRemaining {
-                                Text(String(viewObserved.daysRemaining))
-                                    .foregroundColor(.red)
-                                    .fontWeight(.bold)
-                            } else {
-                                Text(String(viewObserved.hoursRemaining))
-                                    .foregroundColor(.red)
-                                    .fontWeight(.bold)
-                            }
+                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                            Spacer()
+                            Text(String(viewObserved.hoursRemaining))
+                                .foregroundColor(.red)
+                                .fontWeight(.bold)
                         } else {
+                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                            Spacer()
                             Text(String(viewObserved.daysRemaining))
                                 .foregroundColor(.secondary)
                         }
