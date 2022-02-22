@@ -14,6 +14,7 @@ struct StandardModeRightSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     // Modal view for screenshot and deferral info
     @State var showSSDetail = false
@@ -100,7 +101,7 @@ struct StandardModeRightSide: View {
                         Text(mainContentNote)
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(Color.red)
+                            .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
                         Spacer()
                     }
 

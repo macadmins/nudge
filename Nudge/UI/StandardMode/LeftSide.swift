@@ -13,6 +13,7 @@ struct StandardModeLeftSide: View {
     @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let logoWidth: CGFloat = 200
     let logoHeight: CGFloat = 150
@@ -66,7 +67,7 @@ struct StandardModeLeftSide: View {
                             Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                             Spacer()
                             Text(String(viewObserved.hoursRemaining))
-                                .foregroundColor(.red)
+                                .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
                                 .fontWeight(.bold)
                         } else {
                             Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))

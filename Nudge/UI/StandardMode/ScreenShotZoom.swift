@@ -12,6 +12,7 @@ import SwiftUI
 struct ScreenShotZoom: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     var body: some View {
         let darkMode = colorScheme == .dark
@@ -25,7 +26,7 @@ struct ScreenShotZoom: View {
                     Image(systemName: "xmark.circle")
                         .resizable()
                         .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
+                        .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
                 }
                 .buttonStyle(.plain)
                 .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
