@@ -26,6 +26,8 @@
 "Required OS Version:" = "Påkrevd OS-versjon:";
 // Days Remaining To Update
 "Days Remaining To Update:" = "Resterende dager:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "Resterende timer:";
 // Deferred Count
 "Deferred Count:" = "Utsatt antall ganger:";
 // More Info

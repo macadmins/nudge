@@ -26,6 +26,8 @@
 "Required OS Version:" = "Version du système d'exploitation requise :";
 // Days Remaining To Update
 "Days Remaining To Update:" = "Jours restants :";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "Heures restants :";
 // Deferred Count
 "Deferred Count:" = "Décompte différé :";
 // More Info
