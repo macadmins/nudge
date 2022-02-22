@@ -115,6 +115,7 @@ extension OptionalFeatures {
 struct OSVersionRequirement: Codable {
     var aboutUpdateURL: String?
     var aboutUpdateURLs: [AboutUpdateURL]?
+    var actionButtonPath: String?
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
@@ -144,6 +145,7 @@ extension OSVersionRequirement {
         }
         self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.aboutUpdateURLs = generatedAboutUpdateURLs
+        self.actionButtonPath = fromDictionary["actionButtonPath"] as? String
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
@@ -167,6 +169,7 @@ extension OSVersionRequirement {
     func with(
         aboutUpdateURL: String?? = nil,
         aboutUpdateURLs: [AboutUpdateURL]?? = nil,
+        actionButtonPath: String?? = nil,
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
@@ -175,6 +178,7 @@ extension OSVersionRequirement {
         return OSVersionRequirement(
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
+            actionButtonPath: actionButtonPath ?? self.actionButtonPath,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
