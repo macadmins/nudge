@@ -300,6 +300,9 @@ struct Utils {
     }
 
     func getNumberOfHoursBetween() -> Int {
+        if Utils().demoModeEnabled() {
+            return 24
+        }
         return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
     }
 

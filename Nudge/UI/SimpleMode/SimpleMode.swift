@@ -41,19 +41,19 @@ struct SimpleMode: View {
                         .fontWeight(.bold)
                 }
  
-                // Days Remaining
+                // Days or Hours Remaining
                 HStack(spacing: 3.5) {
-                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
-                    if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
-                        Text(String(viewObserved.daysRemaining))
+                    if 0 >= viewObserved.daysRemaining && !Utils().demoModeEnabled() {
+                        Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                        Spacer()
+                        Text(String(viewObserved.hoursRemaining))
                             .foregroundColor(.red)
-                            .font(.title2)
                             .fontWeight(.bold)
                     } else {
+                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                        Spacer()
                         Text(String(viewObserved.daysRemaining))
-                            .font(.title2)
-                            .fontWeight(.bold)
+                            .foregroundColor(.secondary)
                     }
                 }
 

@@ -26,6 +26,8 @@
 "Required OS Version:" = "Требуемая версия:";
 // Days Remaining To Update
 "Days Remaining To Update:" = "Осталось дней:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "Осталось Часов:";
 // Deferred Count
 "Deferred Count:" = "Откладывали раз:";
 // More Info

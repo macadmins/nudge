@@ -26,6 +26,8 @@
 "Required OS Version:" = "आवश्यक OS संस्करण:";
 // Days Remaining To Update
 "Days Remaining To Update:" = "अप्डेट के अवशिष्ट दिन:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "अप्डेट के अवशिष्ट घंटे:";
 // Deferred Count
 "Deferred Count:" = "विलम्बित करने की संख्या:";
 // More Info
