@@ -66,6 +66,8 @@
                 <string>https://support.apple.com/de-de/HT211896</string>
               </dict>
             </array>
+            <key>actionButtonPath</key>
+            <string>munki://updates</string>
             <key>majorUpgradeAppPath</key>
             <string>/Applications/Install macOS Big Sur.app</string>
             <key>requiredInstallationDate</key>
