@@ -31,7 +31,7 @@ class ViewState: ObservableObject {
     @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
     @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
     @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
-    @Published var bluredBackground: Background?
+    @Published var bluredBackground =  BlurWindowController()
 }
 
 class LogState {
@@ -92,13 +92,9 @@ struct ContentView: View {
                 window?.isMovable = false // not movable
                 window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
                 
-                // load the blur background storyboard and sent it to the back if we are past the required install date
+                // load the blur background and send it to the back if we are past the required install date
                 if Utils().pastRequiredInstallationDate() {
-                    let storyBoard = NSStoryboard(name: "backgroundBlur", bundle: nil)  as NSStoryboard
-                    viewObserved.bluredBackground = (storyBoard.instantiateController(withIdentifier: "Background") as? Background)!
-                    viewObserved.bluredBackground?.showWindow(self)
-                    viewObserved.bluredBackground?.window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
-                    viewObserved.bluredBackground?.sendBack()
+                    viewObserved.bluredBackground.showWindow(self)
                     NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
                 }
                 
