@@ -11,6 +11,9 @@ import Foundation
 let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
 var fetchMajorUpgradeSuccessful = false
 
+// Features can be placed in multiple primary keys
+let actionButtonPath = osVersionRequirementsProfile?.actionButtonPath ?? osVersionRequirementsJSON?.actionButtonPath ?? userInterfaceProfile?["actionButtonPath"] as? String ?? userInterfaceJSON?.actionButtonPath ?? nil
+
 // optionalFeatures
 let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
@@ -54,7 +57,6 @@ let userInterfaceProfile = getUserInterfaceProfile()
 let userInterfaceJSON = getUserInterfaceJSON()
 let userInterfaceUpdateElementsProfile = getUserInterfaceUpdateElementsProfile()
 let userInterfaceUpdateElementsJSON = getUserInterfaceUpdateElementsJSON()
-let actionButtonPath = userInterfaceProfile?["actionButtonPath"] as? String ?? userInterfaceJSON?.actionButtonPath ?? nil
 let fallbackLanguage = userInterfaceProfile?["fallbackLanguage"] as? String ?? userInterfaceJSON?.fallbackLanguage ?? "en"
 let forceFallbackLanguage = userInterfaceProfile?["forceFallbackLanguage"] as? Bool ?? userInterfaceJSON?.forceFallbackLanguage ?? false
 let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? userInterfaceJSON?.iconDarkPath ?? ""

@@ -15,6 +15,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
+    func applicationDidResignActive(_ notification: Notification) {
+        // TODO: This function can be used to force nudge right back in front
+        // NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func applicationWillResignActive(_ notification: Notification) {
+        // TODO: This function can be used to force nudge right back in front
+        // NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func applicationWillBecomeActive(_ notification: Notification) {
+        // TODO: Perhaps move some of the ContentView logic into this - Ex: updateUI()
+        // NSApp.deactivate()
+    }
+
+    func applicationDidBecomeActive(_ notification: Notification) {
+        // TODO: Perhaps move some of the ContentView logic into this - Ex: centering UI, full screen
+        // NSApp.deactivate()
+    }
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Listen for keyboard events
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {

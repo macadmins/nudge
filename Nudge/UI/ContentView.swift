@@ -23,6 +23,7 @@ class ViewState: ObservableObject {
     @Published var hasLoggedPastRequiredInstallationDate = false
     @Published var hasLoggedRequireDualQuitButtons = false
     @Published var hasLoggedRequireMajorUgprade = false
+    @Published var hoursRemaining = Utils().getNumberOfHoursBetween()
     @Published var lastRefreshTime = Utils().getInitialDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
@@ -123,6 +124,7 @@ struct ContentView: View {
             viewObserved.allowButtons = false
         }
         viewObserved.daysRemaining = Utils().getNumberOfDaysBetween()
+        viewObserved.hoursRemaining = Utils().getNumberOfHoursBetween()
     }
 }
 

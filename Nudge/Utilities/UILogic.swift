@@ -103,7 +103,7 @@ func needToActivateNudge() -> Bool {
     let currentTime = Date().timeIntervalSince1970
     let timeDiff = Int((currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))
 
-    // The first time the main timer contoller hits we don't care
+    // The first time the main timer controller hits we don't care
     if !nudgeLogState.afterFirstRun {
         let msg = "Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)"
         uiLog.info("\(msg, privacy: .public)")

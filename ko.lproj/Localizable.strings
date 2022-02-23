@@ -25,7 +25,9 @@
 // Required OS Version
 "Required OS Version:" = "운영체제의 필수 버전:";
 // Days Remaining To Update
-"Days Remaining To Update:" = "업데이트까지 남은 시일:";
+"Days Remaining To Update:" = "업데이트까지 남은 일수:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "업데이트까지 남은 시간:";
 // Deferred Count
 "Deferred Count:" = "지연된 횟수:";
 // More Info

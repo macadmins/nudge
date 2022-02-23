@@ -26,6 +26,8 @@
 "Required OS Version:" = "必要とされるOSのバージョン:";
 // Days Remaining To Update
 "Days Remaining To Update:" = "更新までの残り日数:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "更新までの残り時間:";
 // Deferred Count
 "Deferred Count:" = "延期した回数:";
 // More Info
