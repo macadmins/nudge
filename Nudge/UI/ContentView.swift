@@ -36,6 +36,7 @@ class ViewState: ObservableObject {
 }
 
 class LogState {
+    var afterFirstLaunch = false
     var afterFirstRun = false
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
@@ -91,14 +92,12 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
-                window?.collectionBehavior = NSWindow.CollectionBehavior.canJoinAllSpaces
-                
+                window?.collectionBehavior = [.canJoinAllSpaces] // can join everywhere
                 // load the blur background and send it to the back if we are past the required install date
                 if Utils().pastRequiredInstallationDate() {
                     viewObserved.bluredBackground.showWindow(self)
                     NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
                 }
-                
                 _ = needToActivateNudge()
             }
         )

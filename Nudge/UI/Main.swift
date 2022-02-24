@@ -14,28 +14,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
-    
-    func applicationDidResignActive(_ notification: Notification) {
-        // TODO: This function can be used to force nudge right back in front
-        // NSApp.activate(ignoringOtherApps: true)
-    }
 
     func applicationWillResignActive(_ notification: Notification) {
-        // TODO: This function can be used to force nudge right back in front
-        // NSApp.activate(ignoringOtherApps: true)
+        // TODO: This function can be used to stop nudge from resigning its activation state
+        // print("applicationWillResignActive")
+    }
+    
+    func applicationDidResignActive(_ notification: Notification) {
+        // TODO: This function can be used to force nudge right back in front if a user moves to another app
+        // print("applicationDidResignActive")
     }
 
     func applicationWillBecomeActive(_ notification: Notification) {
         // TODO: Perhaps move some of the ContentView logic into this - Ex: updateUI()
-        // NSApp.deactivate()
+        // print("applicationWillBecomeActive")
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
         // TODO: Perhaps move some of the ContentView logic into this - Ex: centering UI, full screen
-        // NSApp.deactivate()
+        // print("applicationDidBecomeActive")
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // print("applicationDidFinishLaunching")
+        if !nudgeLogState.afterFirstLaunch {
+            nudgeLogState.afterFirstLaunch = true
+            if NSWorkspace.shared.isActiveSpaceFullScreen() {
+                NSApp.hide(self)
+                // NSApp.windows.first?.resignKey()
+                // NSApp.unhideWithoutActivation()
+                // NSApp.deactivate()
+                // NSApp.unhideAllApplications(nil)
+                // NSApp.hideOtherApplications(self)
+            }
+        }
         // Listen for keyboard events
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
             if self.detectBannedShortcutKeys(with: $0) {
@@ -95,6 +107,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // Random Delay logic
     func applicationWillFinishLaunching(_ notification: Notification) {
+        // print("applicationWillFinishLaunching")
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
             uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")

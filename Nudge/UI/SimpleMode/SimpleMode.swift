@@ -14,6 +14,7 @@ struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
 
     let bottomPadding: CGFloat = 10
     let contentWidthPadding: CGFloat = 25
@@ -50,12 +51,12 @@ struct SimpleMode: View {
                     } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
                             Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                             Text(String(viewObserved.hoursRemaining))
-                                .foregroundColor(.red)
+                                .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
                                 .fontWeight(.bold)
                     } else {
                         Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         Text(String(viewObserved.daysRemaining))
-                            .foregroundColor(.red)
+                            .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
                             .fontWeight(.bold)
 
                     }

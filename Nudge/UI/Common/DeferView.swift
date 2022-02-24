@@ -13,6 +13,7 @@ struct DeferView: View {
     @ObservedObject var viewObserved: ViewState
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     @State var nudgeCustomEventDate = Date()
     
@@ -26,7 +27,7 @@ struct DeferView: View {
                     Image(systemName: "xmark.circle")
                         .resizable()
                         .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
+                        .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
                 }
                 .keyboardShortcut(.escape)
                 .buttonStyle(.plain)
