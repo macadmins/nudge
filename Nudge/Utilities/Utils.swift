@@ -561,3 +561,8 @@ extension FixedWidthInteger {
         return Self.bitWidth/UInt8.bitWidth
     }
 }
+
+extension Color {
+    static let accessibleSecondaryLight = Color(red: 100 / 255, green: 100 / 255, blue: 100 / 255)
+    static let accessibleSecondaryDark = Color(red: 150 / 255, green: 150 / 255, blue: 150 / 255)
+}

@@ -12,6 +12,7 @@ import SwiftUI
 struct DeviceInfo: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @Environment(\.colorScheme) var colorScheme
     
     // State variables
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
@@ -55,31 +56,31 @@ struct DeviceInfo: View {
                 HStack{
                     Text("Username:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.systemConsoleUsername)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Serial Number
                 HStack{
                     Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.serialNumber)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Architecture
                 HStack{
                     Text("Architecture:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.cpuType)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Language
                 HStack{
                     Text("Language:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(language)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Nudge Version
                 HStack{
                     Text("Version:".localized(desiredLanguage: getDesiredLanguage()))
                     Text(self.nudgeVersion)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
             }
             

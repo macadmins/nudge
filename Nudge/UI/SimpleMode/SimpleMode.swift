@@ -47,7 +47,7 @@ struct SimpleMode: View {
                     if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
                         Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         Text(String(viewObserved.daysRemaining))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
                             Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                             Text(String(viewObserved.hoursRemaining))
@@ -68,7 +68,7 @@ struct SimpleMode: View {
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
                         Text(String(viewObserved.userDeferrals))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }
@@ -77,7 +77,7 @@ struct SimpleMode: View {
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
                         Text(String(viewObserved.userDeferrals))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }

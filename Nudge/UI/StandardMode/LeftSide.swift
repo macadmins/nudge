@@ -49,7 +49,7 @@ struct StandardModeLeftSide: View {
                             .fontWeight(.bold)
                         Spacer()
                         Text(String(requiredMinimumOSVersionNormalized))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .fontWeight(.bold)
                     }
 
@@ -58,7 +58,7 @@ struct StandardModeLeftSide: View {
                         Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                         Spacer()
                         Text(currentOSVersion)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     }
 
                     // Days or Hours Remaining
@@ -67,7 +67,7 @@ struct StandardModeLeftSide: View {
                             Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                             Spacer()
                             Text(String(viewObserved.daysRemaining))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
                                 Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                                 Spacer()
@@ -91,7 +91,7 @@ struct StandardModeLeftSide: View {
                             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             Spacer()
                             Text(String(viewObserved.userDeferrals))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         }
                     }
                 }
