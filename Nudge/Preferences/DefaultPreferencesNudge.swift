@@ -23,6 +23,16 @@ let asynchronousSoftwareUpdate = optionalFeaturesProfile?["asynchronousSoftwareU
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 let disableSoftwareUpdateWorkflow = optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ?? optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ?? false
+//Example scenario 1 - requiredInstallationDate has passed:
+//if firstLoginDate (or buildDate) >= requiredInstallationDate then newRequiredInstallationDate = firstLoginDate + newBuildGracePeriod
+//
+//Example Scenario 2 - firstLoginDate is within approachingWindowTime:
+//if firstLoginDate (or buildDate) is >= (requiredInstallationDate - approachingWindowTime) then newRequiredInstallationDate = RequiredInstallationDate + newBuildGracePeriod
+// TODO: probably move this to osVersionRequirements
+let allowInitialGracePeriod = false
+let intialGracePeriodLaunchHours = 1
+let intialGracePeriodPath = "/var/db/.AppleSetupDone"
+let initialGracePeriodExtensionHours = 6
 
 // osVersionRequirements
 let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
