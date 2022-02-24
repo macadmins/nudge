@@ -51,12 +51,12 @@ struct SimpleMode: View {
                     } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
                             Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                             Text(String(viewObserved.hoursRemaining))
-                                .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
+                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                                 .fontWeight(.bold)
                     } else {
                         Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         Text(String(viewObserved.daysRemaining))
-                            .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
+                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                             .fontWeight(.bold)
 
                     }

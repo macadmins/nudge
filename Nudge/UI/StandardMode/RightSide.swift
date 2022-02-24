@@ -102,7 +102,7 @@ struct StandardModeRightSide: View {
                         Text(mainContentNote)
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(differentiateWithoutColor ? Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255) : .red)
+                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                         Spacer()
                     }
 
@@ -112,8 +112,6 @@ struct StandardModeRightSide: View {
                             HStack {
                                 Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
                                     .font(.callout)
-                                    .font(.body)
-                                    .fontWeight(.regular)
                                     .multilineTextAlignment(.leading)
                                 Spacer()
                             }

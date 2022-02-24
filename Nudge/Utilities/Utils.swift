@@ -563,6 +563,8 @@ extension FixedWidthInteger {
 }
 
 extension Color {
+    static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)
+    static let accessibleRed = Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255)
     static let accessibleSecondaryLight = Color(red: 100 / 255, green: 100 / 255, blue: 100 / 255)
     static let accessibleSecondaryDark = Color(red: 150 / 255, green: 150 / 255, blue: 150 / 255)
 }
