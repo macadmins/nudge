@@ -57,6 +57,7 @@ struct StandardModeRightSide: View {
             }
             .padding(.leading, contentWidthPadding)
             .padding(.trailing, contentWidthPadding)
+            .padding(.bottom, bottomPadding)
             
             // I'm kind of impressed with myself
             VStack {
