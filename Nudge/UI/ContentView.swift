@@ -35,6 +35,7 @@ class ViewState: ObservableObject {
 }
 
 class LogState {
+    var afterFirstLaunch = false
     var afterFirstRun = false
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
@@ -68,6 +69,7 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
+                // window?.collectionBehavior = [.canJoinAllSpaces] // can join everywhere
                 _ = needToActivateNudge()
             }
         )

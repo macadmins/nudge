@@ -76,8 +76,24 @@ func userHasClickedDeferralQuitButton(deferralTime: Date) {
 }
 
 func needToActivateNudge() -> Bool {
+    let frontmostApplication = NSWorkspace.shared.frontmostApplication
+    let runningApplications = NSWorkspace.shared.runningApplications
+
     // Center Nudge
     Utils().centerNudge()
+
+    // Don't nudge if acceptable apps are frontmostApplication
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
+        if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
+            let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) running in full screen and first launch"
+            uiLog.info("\(msg, privacy: .public)")
+            return false
+        } else {
+            let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication"
+            uiLog.info("\(msg, privacy: .public)")
+            return false
+        }
+    }
     
     // Demo Mode should activate one time and then never again
     if Utils().demoModeEnabled() {
@@ -133,9 +149,6 @@ func needToActivateNudge() -> Bool {
         }
     }
 
-    let frontmostApplication = NSWorkspace.shared.frontmostApplication
-    let runningApplications = NSWorkspace.shared.runningApplications
-
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
@@ -151,13 +164,6 @@ func needToActivateNudge() -> Bool {
             uiLog.info("\(msg, privacy: .public)")
             return false
         }
-    }
-
-    // Don't nudge if acceptable apps are frontmostApplication
-    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
-        let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication"
-        uiLog.info("\(msg, privacy: .public)")
-        return false
     }
 
     // If we get here, Nudge if not frontmostApplication
@@ -189,4 +195,25 @@ func needToActivateNudge() -> Bool {
         return true
     }
     return false
+}
+
+// https://github.com/brackeen/calculate-widget/blob/master/Calculate/NSWindow%2BMoveToActiveSpace.swift#L64
+extension NSWorkspace {
+    func isActiveSpaceFullScreen() -> Bool {
+        guard let winInfoArray = CGWindowListCopyWindowInfo([.excludeDesktopElements, .optionOnScreenOnly], kCGNullWindowID) as? Array<[String : Any]> else {
+            return false
+        }
+        for winInfo in winInfoArray {
+            guard let windowLayer = winInfo[kCGWindowLayer as String] as? NSNumber, windowLayer == 0 else {
+                continue
+            }
+            guard let boundsDict = winInfo[kCGWindowBounds as String] as? [String : Any], let bounds = CGRect(dictionaryRepresentation: boundsDict as CFDictionary) else {
+                continue
+            }
+            if bounds.size == NSScreen.main?.frame.size {
+                return true
+            }
+        }
+        return false
+    }
 }
