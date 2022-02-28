@@ -406,24 +406,21 @@ struct Utils {
                 if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
                     let gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
                     let gracePeriodPathCreationTimeInHours = Int(Utils().getCurrentDate().timeIntervalSince(gracePeriodPathCreationDate) / 3600)
-                    
-                    // Exit Scenario
-                    if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
-                        let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
-                        uiLog.info("\(msg, privacy: .public)")
-                        nudgePrimaryState.shouldExit = true
-                        exit(0)
-                    }
+                    let msg = "allowGracePeriods is set to true"
+                    uiLog.info("\(msg, privacy: .public)")
+                    if (getCurrentDate() > requiredInstallationDate) || gracePeriodInstallDelay > getNumberOfHoursRemaining() {
+                        // Exit Scenario
+                        if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
+                            let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
+                            uiLog.info("\(msg, privacy: .public)")
+                            nudgePrimaryState.shouldExit = true
+                            exit(0)
+                        }
 
-                    // Launch Scenario
-                    let requiredInstallationDatePassed = getCurrentDate() > requiredInstallationDate
-                    if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
-                        if (imminentWindowTime > getNumberOfHoursRemaining()) && !requiredInstallationDatePassed { // Scenario 1 - within imminentWindowTime
-                            requiredInstallationDate = requiredInstallationDate.addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
-                            uiLog.notice("Device within imminentWindowTime - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
-                        } else if requiredInstallationDatePassed { // Scenario 2 - requiredInstallationDate has passed
-                            requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
-                            uiLog.notice("Device passed requiredInstallationDate - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
+                        // Launch Scenario
+                        if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
+                            requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(gracePeriodInstallDelay + gracePeriodLaunchDelay) * 3600)
+                            uiLog.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
                         }
                     }
                 } else {
