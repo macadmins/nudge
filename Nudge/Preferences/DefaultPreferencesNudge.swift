@@ -24,7 +24,6 @@ let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUp
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 let disableSoftwareUpdateWorkflow = optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ?? optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ?? false
 
-
 // osVersionRequirements
 let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
 let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
