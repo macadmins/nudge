@@ -442,7 +442,7 @@
                 },
                 {
                   "title": "Configured",
-                  "default": 24,
+                  "default": 23,
                   "type": "integer",
                   "options": {
                     "inputAttributes": {
