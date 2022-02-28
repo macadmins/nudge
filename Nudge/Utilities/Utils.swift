@@ -403,7 +403,6 @@ struct Utils {
     func gracePeriodLogic() {
         if allowGracePeriods && !demoModeEnabled() {
             if FileManager.default.fileExists(atPath: gracePeriodPath) {
-                print("yes")
                 if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
                     let gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
                     let gracePeriodPathCreationTimeInHours = Int(Utils().getCurrentDate().timeIntervalSince(gracePeriodPathCreationDate) / 3600)
@@ -423,7 +422,7 @@ struct Utils {
                             requiredInstallationDate = requiredInstallationDate.addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
                             uiLog.notice("Device within imminentWindowTime - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
                         } else if requiredInstallationDatePassed { // Scenario 2 - requiredInstallationDate has passed
-                            requiredInstallationDate = getCurrentDate().addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
+                            requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
                             uiLog.notice("Device passed requiredInstallationDate - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
                         }
                     }
