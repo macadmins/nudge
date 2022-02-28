@@ -406,9 +406,10 @@ struct Utils {
                 if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
                     let gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
                     let gracePeriodPathCreationTimeInHours = Int(Utils().getCurrentDate().timeIntervalSince(gracePeriodPathCreationDate) / 3600)
+                    let combinedGracePeriod = gracePeriodInstallDelay + gracePeriodLaunchDelay
                     let msg = "allowGracePeriods is set to true"
                     uiLog.info("\(msg, privacy: .public)")
-                    if (getCurrentDate() > requiredInstallationDate) || gracePeriodInstallDelay > getNumberOfHoursRemaining() {
+                    if (getCurrentDate() > requiredInstallationDate) || combinedGracePeriod > getNumberOfHoursRemaining() {
                         // Exit Scenario
                         if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
                             let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
@@ -419,7 +420,7 @@ struct Utils {
 
                         // Launch Scenario
                         if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
-                            requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(gracePeriodInstallDelay + gracePeriodLaunchDelay) * 3600)
+                            requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
                             uiLog.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
                         }
                     }
