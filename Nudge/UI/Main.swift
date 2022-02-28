@@ -105,18 +105,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // Random Delay logic
+    // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        if let attributes = try? FileManager.default.attributesOfItem(atPath: intialGracePeriodPath) as [FileAttributeKey: Any],
-            let creationDate = attributes[FileAttributeKey.creationDate] as? Date {
-            if intialGracePeriodLaunchHours > Int(Utils().getCurrentDate().timeIntervalSince(creationDate) / 3600) {
-                let msg = "Detected newly provisioned machine, exiting Nudge"
-                uiLog.error("\(msg, privacy: .public)")
-                nudgePrimaryState.shouldExit = true
-                exit(0)
-            }
-        }
+        Utils().gracePeriodLogic()
+
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
             uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")

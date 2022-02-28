@@ -10,6 +10,31 @@ import Foundation
 import SystemConfiguration
 import SwiftUI
 
+extension Color {
+    static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)
+    static let accessibleRed = Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255)
+    static let accessibleSecondaryLight = Color(red: 100 / 255, green: 100 / 255, blue: 100 / 255)
+    static let accessibleSecondaryDark = Color(red: 150 / 255, green: 150 / 255, blue: 150 / 255)
+}
+
+extension Date {
+   func getFormattedDate(format: String) -> String {
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = format
+        return dateformat.string(from: self)
+    }
+}
+
+extension FixedWidthInteger {
+    // https://stackoverflow.com/a/63539782
+    var byteWidth:Int {
+        return self.bitWidth/UInt8.bitWidth
+    }
+    static var byteWidth:Int {
+        return Self.bitWidth/UInt8.bitWidth
+    }
+}
+
 // https://stackoverflow.com/questions/29985614/how-can-i-change-locale-programmatically-with-swift
 // Apple recommends against this, but this is super frustrating since Nudge does dynamic UIs
 extension String {
@@ -38,7 +63,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allow1HourDeferralButton = getNumberOfHoursBetween() > 0
+        let allow1HourDeferralButton = getNumberOfHoursRemaining() > 0
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
@@ -50,7 +75,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allow24HourDeferralButton = getNumberOfHoursBetween() > imminentWindowTime
+        let allow24HourDeferralButton = getNumberOfHoursRemaining() > imminentWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow24HourDeferralButton: \(allow24HourDeferralButton, privacy: .public)")
@@ -62,7 +87,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allowCustomDeferralButton = getNumberOfHoursBetween() > approachingWindowTime
+        let allowCustomDeferralButton = getNumberOfHoursRemaining() > approachingWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
@@ -299,7 +324,7 @@ struct Utils {
        return numberOfDays.day!
     }
 
-    func getNumberOfHoursBetween() -> Int {
+    func getNumberOfHoursRemaining() -> Int {
         if Utils().demoModeEnabled() {
             return 24
         }
@@ -364,19 +389,58 @@ struct Utils {
     }
 
     func getTimerControllerInt() -> Int {
-        if 0 >= getNumberOfHoursBetween() {
+        if 0 >= getNumberOfHoursRemaining() {
             return elapsedRefreshCycle
-        } else if imminentWindowTime >= getNumberOfHoursBetween() {
+        } else if imminentWindowTime >= getNumberOfHoursRemaining() {
             return imminentRefreshCycle
-        } else if approachingWindowTime >= getNumberOfHoursBetween() {
+        } else if approachingWindowTime >= getNumberOfHoursRemaining() {
             return approachingRefreshCycle
         } else {
             return initialRefreshCycle
         }
     }
 
+    func gracePeriodLogic() {
+        if allowGracePeriods && !demoModeEnabled() {
+            if FileManager.default.fileExists(atPath: gracePeriodPath) {
+                print("yes")
+                if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
+                    let gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
+                    let gracePeriodPathCreationTimeInHours = Int(Utils().getCurrentDate().timeIntervalSince(gracePeriodPathCreationDate) / 3600)
+                    
+                    // Exit Scenario
+                    if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
+                        let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
+                        uiLog.info("\(msg, privacy: .public)")
+                        nudgePrimaryState.shouldExit = true
+                        exit(0)
+                    }
+
+                    // Launch Scenario
+                    let requiredInstallationDatePassed = getCurrentDate() > requiredInstallationDate
+                    if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
+                        if (imminentWindowTime > getNumberOfHoursRemaining()) && !requiredInstallationDatePassed { // Scenario 1 - within imminentWindowTime
+                            requiredInstallationDate = requiredInstallationDate.addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
+                            uiLog.notice("Device within imminentWindowTime - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
+                        } else if requiredInstallationDatePassed { // Scenario 2 - requiredInstallationDate has passed
+                            requiredInstallationDate = getCurrentDate().addingTimeInterval(Double(gracePeriodInstallDelay) * 3600)
+                            uiLog.notice("Device passed requiredInstallationDate - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
+                        }
+                    }
+                } else {
+                    let msg = "allowGracePeriods is set to true, but gracePeriodPath creation date logic failed - bypassing allowGracePeriods logic"
+                    uiLog.error("\(msg, privacy: .public)")
+                }
+            } else {
+               let msg = "allowGracePeriods is set to true, but gracePeriodPath was not found - bypassing allowGracePeriods logic"
+               uiLog.error("\(msg, privacy: .public)")
+           }
+        }
+    }
+
     func logUserDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
+            nudgePrimaryState.userDeferrals = 0
             return
         }
         if resetCount {
@@ -390,6 +454,7 @@ struct Utils {
 
     func logUserQuitDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
+            nudgePrimaryState.userQuitDeferrals = 0
             return
         }
         if resetCount {
@@ -401,6 +466,10 @@ struct Utils {
     }
 
     func logUserSessionDeferrals(resetCount: Bool = false) {
+        if Utils().demoModeEnabled() {
+            nudgePrimaryState.userSessionDeferrals = 0
+            return
+        }
         if resetCount {
             nudgePrimaryState.userSessionDeferrals = 0
             nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
@@ -550,21 +619,4 @@ struct Utils {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) != .orderedDescending
     }
-}
-
-extension FixedWidthInteger {
-    // https://stackoverflow.com/a/63539782
-    var byteWidth:Int {
-        return self.bitWidth/UInt8.bitWidth
-    }
-    static var byteWidth:Int {
-        return Self.bitWidth/UInt8.bitWidth
-    }
-}
-
-extension Color {
-    static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)
-    static let accessibleRed = Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255)
-    static let accessibleSecondaryLight = Color(red: 100 / 255, green: 100 / 255, blue: 100 / 255)
-    static let accessibleSecondaryDark = Color(red: 150 / 255, green: 150 / 255, blue: 150 / 255)
 }
