@@ -40,6 +40,7 @@ class LogState {
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
+    var hasLoggedUnitTestingMode = false
 }
 
 // BackgroundView

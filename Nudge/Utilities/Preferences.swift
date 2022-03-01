@@ -25,7 +25,7 @@ func getDesiredLanguage() -> String {
 // optionalFeatures
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getOptionalFeaturesProfile() -> [String:Any]? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures") {
@@ -38,7 +38,7 @@ func getOptionalFeaturesProfile() -> [String:Any]? {
 }
 
 func getOptionalFeaturesJSON() -> OptionalFeatures? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let optionalFeatures = nudgeJSONPreferences?.optionalFeatures {
@@ -57,7 +57,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     var fullMatch = OSVersionRequirement()
     var partialMatch = OSVersionRequirement()
     var defaultMatch = OSVersionRequirement()
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     var requirements = [OSVersionRequirement]()
@@ -97,7 +97,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     var fullMatch = OSVersionRequirement()
     var partialMatch = OSVersionRequirement()
     var defaultMatch = OSVersionRequirement()
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
@@ -129,7 +129,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 
 // Compare current language against the available updateURLs
 func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return "https://apple.com"
     }
     if let update = OSVerReq?.aboutUpdateURL {
@@ -148,7 +148,7 @@ func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
 // userExperience
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getUserExperienceProfile() -> [String:Any]? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let userExperience = nudgeDefaults.dictionary(forKey: "userExperience") {
@@ -161,7 +161,7 @@ func getUserExperienceProfile() -> [String:Any]? {
 }
 
 func getUserExperienceJSON() -> UserExperience? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let userExperience = nudgeJSONPreferences?.userExperience {
@@ -177,7 +177,7 @@ func getUserExperienceJSON() -> UserExperience? {
 // userInterface
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getUserInterfaceProfile() -> [String:Any]? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let userInterface = nudgeDefaults.dictionary(forKey: "userInterface") {
@@ -190,7 +190,7 @@ func getUserInterfaceProfile() -> [String:Any]? {
 }
 
 func getUserInterfaceJSON() -> UserInterface? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     if let userInterface = nudgeJSONPreferences?.userInterface {
@@ -221,7 +221,7 @@ func simpleMode() -> Bool {
 // Mutate the profile into our required construct
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     let updateElements = userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
@@ -240,7 +240,7 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
 
 // Loop through JSON userInterface -> updateElements preferences and then compare language
 func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
-    if Utils().demoModeEnabled() {
+    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
     let updateElements = getUserInterfaceJSON()?.updateElements
@@ -261,6 +261,8 @@ func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
 func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)".localized(desiredLanguage: getDesiredLanguage())
+    } else if Utils().unitTestingEnabled() {
+        return "Your device requires a security update (Unit Testing Mode)".localized(desiredLanguage: getDesiredLanguage())
     } else {
         return userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
     }

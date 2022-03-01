@@ -46,6 +46,9 @@ extension String {
     }
 }
 
+var demoModeArgumentPassed = false
+var unitTestingArgumentPassed = false
+
 struct Utils {
     func activateNudge() {
         var msg = "Re-activating Nudge"
@@ -133,7 +136,7 @@ struct Utils {
     }
 
     func demoModeEnabled() -> Bool {
-        let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
+        demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if !nudgeLogState.hasLoggedDemoMode {
             if demoModeArgumentPassed {
                 nudgeLogState.hasLoggedDemoMode = true
@@ -142,6 +145,18 @@ struct Utils {
             }
         }
         return demoModeArgumentPassed
+    }
+
+    func unitTestingEnabled() -> Bool {
+        unitTestingArgumentPassed = CommandLine.arguments.contains("-unit-testing")
+        if !nudgeLogState.hasLoggedUnitTestingMode {
+            if demoModeArgumentPassed {
+                nudgeLogState.hasLoggedUnitTestingMode = true
+                let msg = "-unit-testing argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
+        }
+        return unitTestingArgumentPassed
     }
 
     func exitNudge() {
@@ -164,9 +179,9 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersionNormalized)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersionNormalized))"
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
             utilsLog.notice("\(msg, privacy: .public)")
             return true
         } else {
@@ -253,7 +268,7 @@ struct Utils {
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersionNormalized.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
         if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
             nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
@@ -291,7 +306,7 @@ struct Utils {
             return nil
         }
         
-        if Utils().demoModeEnabled() {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
             return nil
         }
         
@@ -324,11 +339,14 @@ struct Utils {
        return numberOfDays.day!
     }
 
-    func getNumberOfHoursRemaining() -> Int {
+    func getNumberOfHoursRemaining(currentDate: Date = Utils().getCurrentDate()) -> Int {
         if Utils().demoModeEnabled() {
             return 24
         }
-        return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
+        if unitTestingEnabled() {
+            return Int(PrefsWrapper.requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
+        }
+        return Int(requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
     }
 
     func getPatchOSVersion() -> Int {
@@ -346,7 +364,7 @@ struct Utils {
     }
 
     func getSerialNumber() -> String {
-        if Utils().demoModeEnabled() {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
                 return "C00000000000"
         }
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
@@ -400,28 +418,31 @@ struct Utils {
         }
     }
 
-    func gracePeriodLogic() {
-        if allowGracePeriods && !demoModeEnabled() {
-            if FileManager.default.fileExists(atPath: gracePeriodPath) {
+    func gracePeriodLogic(currentDate: Date = Utils().getCurrentDate(), testFileDate: Date? = nil) -> Date {
+        if (allowGracePeriods || PrefsWrapper.allowGracePeriods) && !demoModeEnabled() {
+            if FileManager.default.fileExists(atPath: gracePeriodPath) || unitTestingEnabled() {
                 if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
-                    let gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
-                    let gracePeriodPathCreationTimeInHours = Int(Utils().getCurrentDate().timeIntervalSince(gracePeriodPathCreationDate) / 3600)
+                   var gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
+                    if testFileDate != nil {
+                        gracePeriodPathCreationDate = testFileDate!
+                    }
+                    let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
                     let combinedGracePeriod = gracePeriodInstallDelay + gracePeriodLaunchDelay
                     let msg = "allowGracePeriods is set to true"
                     uiLog.info("\(msg, privacy: .public)")
-                    if (getCurrentDate() > requiredInstallationDate) || combinedGracePeriod > getNumberOfHoursRemaining() {
+                    if (currentDate > PrefsWrapper.requiredInstallationDate) || combinedGracePeriod > getNumberOfHoursRemaining(currentDate: currentDate) {
                         // Exit Scenario
                         if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
                             let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
                             uiLog.info("\(msg, privacy: .public)")
                             nudgePrimaryState.shouldExit = true
-                            exit(0)
                         }
 
                         // Launch Scenario
                         if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
                             requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
                             uiLog.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
+                            return requiredInstallationDate
                         }
                     }
                 } else {
@@ -433,6 +454,7 @@ struct Utils {
                uiLog.error("\(msg, privacy: .public)")
            }
         }
+        return PrefsWrapper.requiredInstallationDate
     }
 
     func logUserDeferrals(resetCount: Bool = false) {
@@ -477,11 +499,11 @@ struct Utils {
     }
 
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(requiredMinimumOSVersionNormalized, forKey: "requiredMinimumOSVersion")
+        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
 
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersionNormalized, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     func openMoreInfo() {

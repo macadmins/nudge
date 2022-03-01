@@ -92,7 +92,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func runSoftwareUpdate() {
-        if Utils().demoModeEnabled() {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
             return
         }
 
@@ -108,7 +108,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        Utils().gracePeriodLogic()
+        _ = Utils().gracePeriodLogic()
+        if nudgePrimaryState.shouldExit {
+            exit(0)
+        }
 
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
