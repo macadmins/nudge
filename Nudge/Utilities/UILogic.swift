@@ -194,7 +194,9 @@ func needToActivateNudge() -> Bool {
                 })
             }
             Utils().activateNudge()
-            Utils().updateDevice(userClicked: false)
+            if !Utils().unitTestingEnabled() {
+                Utils().updateDevice(userClicked: false)
+            }
         } else {
             Utils().activateNudge()
         }
