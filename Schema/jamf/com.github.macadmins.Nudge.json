@@ -310,6 +310,20 @@
           "title": "Configured",
           "type": "object",
           "properties": {
+            "allowGracePeriods": {
+              "description": "Allows a device to modify the requiredInstallationDate logic and launch behavior. Useful for new device provisioning.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
             "allowUserQuitDeferrals": {
               "description": "Allows the user to specify when they will next be prompted by Nudge. (Set to `False` to maintain v1.0.0 behavior.) When using this feature, Nudge will no longer adhere to your LaunchAgent logic as the user is specifying their own execution time for the next Nudge event.(See: `~/Library/Preferences/com.github.macadmins.Nudge.plist`.)",
               "anyOf": [
@@ -414,6 +428,63 @@
                   "options": {
                     "inputAttributes": {
                       "placeholder": "300"
+                    }
+                  }
+                }
+              ]
+            },
+            "gracePeriodInstallDelay": {
+              "description": "The amount of time in hours Nudge will extend the requiredInstallationDate for newly provisioned devices.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": 23,
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "24"
+                    }
+                  }
+                }
+              ]
+            },
+            "gracePeriodLaunchDelay": {
+              "description": "The amount of time in hours Nudge will bypass launching for newly provided devices.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": 1,
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "1"
+                    }
+                  }
+                }
+              ]
+            },
+            "gracePeriodPath": {
+              "description": "The path of the file Nudge will read and assess for allowGracePeriods.",
+              "anyOf": [
+                {
+                  "type": "null",
+                  "title": "Not Configured"
+                },
+                {
+                  "default": "/private/var/db/.AppleSetupDone",
+                  "title": "Configured",
+                  "type": "string",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "/private/var/db/.AppleSetupDone"
                     }
                   }
                 }

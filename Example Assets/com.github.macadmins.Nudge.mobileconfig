@@ -80,6 +80,8 @@
         </array>
         <key>userExperience</key>
         <dict>
+          <key>allowGracePeriods</key>
+          <false/>
           <key>allowUserQuitDeferrals</key>
           <true/>
           <key>allowedDeferrals</key>
@@ -92,6 +94,12 @@
           <integer>72</integer>
           <key>elapsedRefreshCycle</key>
           <integer>300</integer>
+          <key>gracePeriodInstallDelay</key>
+          <integer>23</integer>
+          <key>gracePeriodLaunchDelay</key>
+          <integer>1</integer>
+          <key>gracePeriodPath</key>
+          <string>/private/var/db/.AppleSetupDone</string>
           <key>imminentRefreshCycle</key>
           <integer>600</integer>
           <key>imminentWindowTime</key>

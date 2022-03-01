@@ -75,7 +75,7 @@ class SoftwareUpdate {
                 softwareupdateListLog.notice("\(msg, privacy: .public)")
                 let task = Process()
                 task.launchPath = "/usr/sbin/softwareupdate"
-                task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersionNormalized]
+                task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersion]
                 
                 let outputPipe = Pipe()
                 let errorPipe = Pipe()
@@ -126,7 +126,7 @@ class SoftwareUpdate {
                 }
             }
             
-            if softwareupdateList.contains(requiredMinimumOSVersionNormalized) && updateLabel.isEmpty == false {
+            if softwareupdateList.contains(requiredMinimumOSVersion) && updateLabel.isEmpty == false {
                 softwareupdateListLog.notice("softwareupdate found \(updateLabel, privacy: .public) available for download - attempting download")
                 let task = Process()
                 task.launchPath = "/usr/sbin/softwareupdate"
@@ -161,7 +161,7 @@ class SoftwareUpdate {
                     softwareupdateDownloadLog.info("\(output, privacy: .public)")
                 }
             } else {
-                softwareupdateListLog.notice("softwareupdate did not find \(requiredMinimumOSVersionNormalized, privacy: .public) available for download - skipping download attempt")
+                softwareupdateListLog.notice("softwareupdate did not find \(requiredMinimumOSVersion, privacy: .public) available for download - skipping download attempt")
             }
         }
     }

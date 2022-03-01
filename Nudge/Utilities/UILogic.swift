@@ -10,6 +10,12 @@ import Foundation
 
 // Start doing a basic check
 func nudgeStartLogic() {
+    if Utils().unitTestingEnabled() {
+        let msg = "App being ran in test mode"
+        uiLog.debug("\(msg, privacy: .public)")
+        return
+    }
+
     if Utils().simpleModeEnabled() {
         let msg = "Device in simple mode"
         uiLog.debug("\(msg, privacy: .public)")
