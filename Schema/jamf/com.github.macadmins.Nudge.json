@@ -199,6 +199,24 @@
                   }
                 ]
               },
+              "actionButtonPath": {
+                "description": "A path to a URI for opening alternative actions, like Jamf self service items.",
+                "anyOf": [
+                  {
+                    "type": "null",
+                    "title": "Not Configured"
+                  },
+                  {
+                    "title": "Configured",
+                    "type": "string",
+                    "options": {
+                      "inputAttributes": {
+                        "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
+                      }
+                    }
+                  }
+                ]
+              },
               "majorUpgradeAppPath": {
                 "description": "The app path for a major upgrade. (Note: Requires Nudge v1.0.1 or higher.)",
                 "anyOf": [
