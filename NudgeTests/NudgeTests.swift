@@ -15,7 +15,7 @@ class NudgeTests: XCTestCase {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         let formattedDate = dateFormatter.date(from: dateString) ?? Date()
-        return formattedDate.addingTimeInterval(Double(-6 * 3600))
+        return formattedDate
     }
 
     override func setUp() {
@@ -47,8 +47,7 @@ class NudgeTests: XCTestCase {
     }
 
     func testRequiredInstallationDateDemoMode() {
-        let testDate = coerceStringToDate(dateString: "1970-01-01T00:00:00Z")
-        defaultPreferencesForTests["requiredInstallationDate"] = testDate
+        defaultPreferencesForTests["requiredInstallationDate"] = Date(timeIntervalSince1970: 0)
         PrefsWrapper.prefsOverride = defaultPreferencesForTests
         XCTAssertEqual(
             Date(timeIntervalSince1970: 0),
