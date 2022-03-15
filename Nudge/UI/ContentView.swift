@@ -23,6 +23,7 @@ class ViewState: ObservableObject {
     @Published var hasLoggedPastRequiredInstallationDate = false
     @Published var hasLoggedRequireDualQuitButtons = false
     @Published var hasLoggedRequireMajorUgprade = false
+    @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()
     @Published var lastRefreshTime = Utils().getInitialDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
@@ -34,10 +35,12 @@ class ViewState: ObservableObject {
 }
 
 class LogState {
+    var afterFirstLaunch = false
     var afterFirstRun = false
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
+    var hasLoggedUnitTestingMode = false
 }
 
 // BackgroundView
@@ -67,6 +70,7 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
+                // window?.collectionBehavior = [.canJoinAllSpaces] // can join everywhere
                 _ = needToActivateNudge()
             }
         )
@@ -92,6 +96,7 @@ struct ContentView: View {
             viewObserved.allowButtons = false
         }
         viewObserved.daysRemaining = Utils().getNumberOfDaysBetween()
+        viewObserved.hoursRemaining = Utils().getNumberOfHoursRemaining()
     }
 }
 

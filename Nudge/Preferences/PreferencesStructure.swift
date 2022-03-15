@@ -115,6 +115,7 @@ extension OptionalFeatures {
 struct OSVersionRequirement: Codable {
     var aboutUpdateURL: String?
     var aboutUpdateURLs: [AboutUpdateURL]?
+    var actionButtonPath: String?
     var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
@@ -144,6 +145,7 @@ extension OSVersionRequirement {
         }
         self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.aboutUpdateURLs = generatedAboutUpdateURLs
+        self.actionButtonPath = fromDictionary["actionButtonPath"] as? String
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
@@ -167,6 +169,7 @@ extension OSVersionRequirement {
     func with(
         aboutUpdateURL: String?? = nil,
         aboutUpdateURLs: [AboutUpdateURL]?? = nil,
+        actionButtonPath: String?? = nil,
         majorUpgradeAppPath: String?? = nil,
         requiredInstallationDate: Date?? = nil,
         requiredMinimumOSVersion: String?? = nil,
@@ -175,6 +178,7 @@ extension OSVersionRequirement {
         return OSVersionRequirement(
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
+            actionButtonPath: actionButtonPath ?? self.actionButtonPath,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
@@ -241,10 +245,11 @@ extension AboutUpdateURL {
 
 // MARK: - UserExperience
 struct UserExperience: Codable {
-    var allowUserQuitDeferrals: Bool?
+    var allowGracePeriods, allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
-    var elapsedRefreshCycle, imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
-    var maxRandomDelayInSeconds: Int?
+    var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
+    var gracePeriodPath: String?
+    var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle, maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
@@ -269,12 +274,16 @@ extension UserExperience {
     }
 
     func with(
+        allowGracePeriods: Bool?? = nil,
         allowUserQuitDeferrals: Bool?? = nil,
         allowedDeferrals: Int?? = nil,
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
         elapsedRefreshCycle: Int?? = nil,
+        gracePeriodInstallDelay: Int?? = nil,
+        gracePeriodLaunchDelay: Int?? = nil,
+        gracePeriodPath: String?? = nil,
         imminentRefreshCycle: Int?? = nil,
         imminentWindowTime: Int?? = nil,
         initialRefreshCycle: Int?? = nil,
@@ -284,12 +293,16 @@ extension UserExperience {
         randomDelay: Bool?? = nil
     ) -> UserExperience {
         return UserExperience(
+            allowGracePeriods: allowGracePeriods ?? self.allowGracePeriods,
             allowUserQuitDeferrals: allowUserQuitDeferrals ?? self.allowUserQuitDeferrals,
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
+            gracePeriodInstallDelay: gracePeriodInstallDelay ?? self.gracePeriodInstallDelay,
+            gracePeriodLaunchDelay: gracePeriodLaunchDelay ?? self.gracePeriodLaunchDelay,
+            gracePeriodPath: gracePeriodPath ?? self.gracePeriodPath,
             imminentRefreshCycle: imminentRefreshCycle ?? self.imminentRefreshCycle,
             imminentWindowTime: imminentWindowTime ?? self.imminentWindowTime,
             initialRefreshCycle: initialRefreshCycle ?? self.initialRefreshCycle,

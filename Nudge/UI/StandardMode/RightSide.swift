@@ -14,6 +14,7 @@ struct StandardModeRightSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     // Modal view for screenshot and deferral info
     @State var showSSDetail = false
@@ -57,6 +58,7 @@ struct StandardModeRightSide: View {
             }
             .padding(.leading, contentWidthPadding)
             .padding(.trailing, contentWidthPadding)
+            .padding(.bottom, bottomPadding)
             
             // I'm kind of impressed with myself
             VStack {
@@ -100,7 +102,7 @@ struct StandardModeRightSide: View {
                         Text(mainContentNote)
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(Color.red)
+                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                         Spacer()
                     }
 
@@ -110,8 +112,6 @@ struct StandardModeRightSide: View {
                             HStack {
                                 Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
                                     .font(.callout)
-                                    .font(.body)
-                                    .fontWeight(.regular)
                                     .multilineTextAlignment(.leading)
                                 Spacer()
                             }

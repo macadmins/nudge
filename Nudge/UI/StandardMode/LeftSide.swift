@@ -13,6 +13,7 @@ struct StandardModeLeftSide: View {
     @ObservedObject var viewObserved: ViewState
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     let logoWidth: CGFloat = 200
     let logoHeight: CGFloat = 150
@@ -47,8 +48,8 @@ struct StandardModeLeftSide: View {
                         Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                             .fontWeight(.bold)
                         Spacer()
-                        Text(String(requiredMinimumOSVersionNormalized))
-                            .foregroundColor(.secondary)
+                        Text(String(requiredMinimumOSVersion))
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .fontWeight(.bold)
                     }
 
@@ -57,20 +58,29 @@ struct StandardModeLeftSide: View {
                         Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
                         Spacer()
                         Text(currentOSVersion)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     }
 
-                    // Days Remaining
+                    // Days or Hours Remaining
                     HStack{
-                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                        Spacer()
-                        if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
+                        if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
+                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                            Spacer()
                             Text(String(viewObserved.daysRemaining))
-                                .foregroundColor(.red)
-                                .fontWeight(.bold)
+                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
+                                Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                                Spacer()
+                                Text(String(viewObserved.hoursRemaining))
+                                    .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                                    .fontWeight(.bold)
                         } else {
+                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                            Spacer()
                             Text(String(viewObserved.daysRemaining))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                                .fontWeight(.bold)
+
                         }
                     }
 
@@ -81,7 +91,7 @@ struct StandardModeLeftSide: View {
                             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             Spacer()
                             Text(String(viewObserved.userDeferrals))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         }
                     }
                 }

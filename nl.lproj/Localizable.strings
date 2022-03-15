@@ -26,6 +26,8 @@
 "Required OS Version:" = "Vereiste OS Versie:";
 // Days Remaining To Update
 "Days Remaining To Update:" = "Aantal dagen tot update deadline:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "Aantal uren tot update deadline:";
 // Deferred Count
 "Deferred Count:" = "Aantal keren genegeerd:";
 // More Info

@@ -29,6 +29,7 @@
           "aboutUpdateURL": "https://support.apple.com/de-de/HT211896"
         }
       ],
+      "actionButtonPath": "munki://updates",
       "majorUpgradeAppPath": "/Applications/Install macOS Big Sur.app",
       "requiredInstallationDate": "2021-08-28T00:00:00Z",
       "requiredMinimumOSVersion": "11.5.2",
@@ -36,12 +37,16 @@
     }
   ],
   "userExperience": {
+    "allowGracePeriods": false,
     "allowUserQuitDeferrals": true,
     "allowedDeferrals": 1000000,
     "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
     "approachingRefreshCycle": 6000,
     "approachingWindowTime": 72,
     "elapsedRefreshCycle": 300,
+    "gracePeriodInstallDelay": 23,
+    "gracePeriodLaunchDelay": 1,
+    "gracePeriodPath": "/private/var/db/.AppleSetupDone",
     "imminentRefreshCycle": 600,
     "imminentWindowTime": 24,
     "initialRefreshCycle": 18000,

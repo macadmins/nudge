@@ -14,6 +14,7 @@ struct SimpleMode: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
+    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
 
     let bottomPadding: CGFloat = 10
     let contentWidthPadding: CGFloat = 25
@@ -41,19 +42,23 @@ struct SimpleMode: View {
                         .fontWeight(.bold)
                 }
  
-                // Days Remaining
+                // Days or Hours Remaining
                 HStack(spacing: 3.5) {
-                    Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                        .font(.title2)
-                    if viewObserved.daysRemaining <= 0 && !Utils().demoModeEnabled() {
+                    if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
+                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         Text(String(viewObserved.daysRemaining))
-                            .foregroundColor(.red)
-                            .font(.title2)
-                            .fontWeight(.bold)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
+                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                            Text(String(viewObserved.hoursRemaining))
+                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                                .fontWeight(.bold)
                     } else {
+                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         Text(String(viewObserved.daysRemaining))
-                            .font(.title2)
+                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                             .fontWeight(.bold)
+
                     }
                 }
 
@@ -63,7 +68,7 @@ struct SimpleMode: View {
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
                         Text(String(viewObserved.userDeferrals))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }
@@ -72,7 +77,7 @@ struct SimpleMode: View {
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage()))
                             .font(.title2)
                         Text(String(viewObserved.userDeferrals))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }

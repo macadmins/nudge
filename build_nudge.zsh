@@ -30,8 +30,6 @@ echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
 # Ensure Xcode is set to run-time
 sudo xcode-select -s "$XCODE_PATH"
 
-# build nudge
-echo "Building Nudge"
 if [ -e $XCODE_BUILD_PATH ]; then
   XCODE_BUILD="$XCODE_BUILD_PATH"
 else
@@ -39,6 +37,18 @@ else
   echo "Could not find required Xcode build. Exiting..."
   exit 1
 fi
+
+# Perform unit tests
+echo "Running Nudge unit tests"
+$XCODE_BUILD test -project "$TOOLSDIR/Nudge.xcodeproj" -scheme "Nudge - Debug" -destination 'platform=macos'
+XCBT_RESULT="$?"
+if [ "${XCBT_RESULT}" != "0" ]; then
+    echo "Error running xcodebuild: ${XCBT_RESULT}" 1>&2
+    exit 1
+fi
+
+# build nudge
+echo "Building Nudge"
 $XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
 XCB_RESULT="$?"
 if [ "${XCB_RESULT}" != "0" ]; then

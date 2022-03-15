@@ -26,6 +26,8 @@
 "Required OS Version:" = "需要的系统版本:";
 // Days Remaining To Update
 "Days Remaining To Update:" = "剩余天数更新:";
+// Hours Remaining To Update
+"Hours Remaining To Update:" = "剩餘時間更新:";
 // Deferred Count
 "Deferred Count:" = "已推迟次数:";
 // More Info

@@ -10,6 +10,31 @@ import Foundation
 import SystemConfiguration
 import SwiftUI
 
+extension Color {
+    static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)
+    static let accessibleRed = Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255)
+    static let accessibleSecondaryLight = Color(red: 100 / 255, green: 100 / 255, blue: 100 / 255)
+    static let accessibleSecondaryDark = Color(red: 150 / 255, green: 150 / 255, blue: 150 / 255)
+}
+
+extension Date {
+   func getFormattedDate(format: String) -> String {
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = format
+        return dateformat.string(from: self)
+    }
+}
+
+extension FixedWidthInteger {
+    // https://stackoverflow.com/a/63539782
+    var byteWidth:Int {
+        return self.bitWidth/UInt8.bitWidth
+    }
+    static var byteWidth:Int {
+        return Self.bitWidth/UInt8.bitWidth
+    }
+}
+
 // https://stackoverflow.com/questions/29985614/how-can-i-change-locale-programmatically-with-swift
 // Apple recommends against this, but this is super frustrating since Nudge does dynamic UIs
 extension String {
@@ -20,6 +45,9 @@ extension String {
         return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
     }
 }
+
+var demoModeArgumentPassed = false
+var unitTestingArgumentPassed = false
 
 struct Utils {
     func activateNudge() {
@@ -38,7 +66,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allow1HourDeferralButton = getNumberOfHoursBetween() > 0
+        let allow1HourDeferralButton = getNumberOfHoursRemaining() > 0
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
@@ -50,7 +78,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allow24HourDeferralButton = getNumberOfHoursBetween() > imminentWindowTime
+        let allow24HourDeferralButton = getNumberOfHoursRemaining() > imminentWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow24HourDeferralButton: \(allow24HourDeferralButton, privacy: .public)")
@@ -62,7 +90,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allowCustomDeferralButton = getNumberOfHoursBetween() > approachingWindowTime
+        let allowCustomDeferralButton = getNumberOfHoursRemaining() > approachingWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
@@ -108,7 +136,7 @@ struct Utils {
     }
 
     func demoModeEnabled() -> Bool {
-        let demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
+        demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if !nudgeLogState.hasLoggedDemoMode {
             if demoModeArgumentPassed {
                 nudgeLogState.hasLoggedDemoMode = true
@@ -117,6 +145,18 @@ struct Utils {
             }
         }
         return demoModeArgumentPassed
+    }
+
+    func unitTestingEnabled() -> Bool {
+        unitTestingArgumentPassed = CommandLine.arguments.contains("-unit-testing")
+        if !nudgeLogState.hasLoggedUnitTestingMode {
+            if demoModeArgumentPassed {
+                nudgeLogState.hasLoggedUnitTestingMode = true
+                let msg = "-unit-testing argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
+        }
+        return unitTestingArgumentPassed
     }
 
     func exitNudge() {
@@ -139,9 +179,9 @@ struct Utils {
     }
 
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersionNormalized)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersionNormalized))"
+            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
             utilsLog.notice("\(msg, privacy: .public)")
             return true
         } else {
@@ -228,7 +268,7 @@ struct Utils {
     }
 
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersionNormalized.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
         if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
             nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
@@ -266,7 +306,7 @@ struct Utils {
             return nil
         }
         
-        if Utils().demoModeEnabled() {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
             return nil
         }
         
@@ -299,8 +339,14 @@ struct Utils {
        return numberOfDays.day!
     }
 
-    func getNumberOfHoursBetween() -> Int {
-        return Int(requiredInstallationDate.timeIntervalSince(getCurrentDate()) / 3600 )
+    func getNumberOfHoursRemaining(currentDate: Date = Utils().getCurrentDate()) -> Int {
+        if Utils().demoModeEnabled() {
+            return 24
+        }
+        if unitTestingEnabled() {
+            return Int(PrefsWrapper.requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
+        }
+        return Int(requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
     }
 
     func getPatchOSVersion() -> Int {
@@ -318,7 +364,7 @@ struct Utils {
     }
 
     func getSerialNumber() -> String {
-        if Utils().demoModeEnabled() {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
                 return "C00000000000"
         }
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
@@ -361,19 +407,59 @@ struct Utils {
     }
 
     func getTimerControllerInt() -> Int {
-        if 0 >= getNumberOfHoursBetween() {
+        if 0 >= getNumberOfHoursRemaining() {
             return elapsedRefreshCycle
-        } else if imminentWindowTime >= getNumberOfHoursBetween() {
+        } else if imminentWindowTime >= getNumberOfHoursRemaining() {
             return imminentRefreshCycle
-        } else if approachingWindowTime >= getNumberOfHoursBetween() {
+        } else if approachingWindowTime >= getNumberOfHoursRemaining() {
             return approachingRefreshCycle
         } else {
             return initialRefreshCycle
         }
     }
 
+    func gracePeriodLogic(currentDate: Date = Utils().getCurrentDate(), testFileDate: Date? = nil) -> Date {
+        if (allowGracePeriods || PrefsWrapper.allowGracePeriods) && !demoModeEnabled() {
+            if FileManager.default.fileExists(atPath: gracePeriodPath) || unitTestingEnabled() {
+                if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
+                   var gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
+                    if testFileDate != nil {
+                        gracePeriodPathCreationDate = testFileDate!
+                    }
+                    let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
+                    let combinedGracePeriod = gracePeriodInstallDelay + gracePeriodLaunchDelay
+                    let msg = "allowGracePeriods is set to true"
+                    uiLog.info("\(msg, privacy: .public)")
+                    if (currentDate > PrefsWrapper.requiredInstallationDate) || combinedGracePeriod > getNumberOfHoursRemaining(currentDate: currentDate) {
+                        // Exit Scenario
+                        if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
+                            let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
+                            uiLog.info("\(msg, privacy: .public)")
+                            nudgePrimaryState.shouldExit = true
+                        }
+
+                        // Launch Scenario
+                        if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
+                            requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
+                            uiLog.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
+                            return requiredInstallationDate
+                        }
+                    }
+                } else {
+                    let msg = "allowGracePeriods is set to true, but gracePeriodPath creation date logic failed - bypassing allowGracePeriods logic"
+                    uiLog.error("\(msg, privacy: .public)")
+                }
+            } else {
+               let msg = "allowGracePeriods is set to true, but gracePeriodPath was not found - bypassing allowGracePeriods logic"
+               uiLog.error("\(msg, privacy: .public)")
+           }
+        }
+        return PrefsWrapper.requiredInstallationDate
+    }
+
     func logUserDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
+            nudgePrimaryState.userDeferrals = 0
             return
         }
         if resetCount {
@@ -387,6 +473,7 @@ struct Utils {
 
     func logUserQuitDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
+            nudgePrimaryState.userQuitDeferrals = 0
             return
         }
         if resetCount {
@@ -398,6 +485,10 @@ struct Utils {
     }
 
     func logUserSessionDeferrals(resetCount: Bool = false) {
+        if Utils().demoModeEnabled() {
+            nudgePrimaryState.userSessionDeferrals = 0
+            return
+        }
         if resetCount {
             nudgePrimaryState.userSessionDeferrals = 0
             nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
@@ -408,11 +499,11 @@ struct Utils {
     }
 
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(requiredMinimumOSVersionNormalized, forKey: "requiredMinimumOSVersion")
+        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
 
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersionNormalized, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     func openMoreInfo() {
@@ -546,15 +637,5 @@ struct Utils {
     func versionLessThanOrEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) != .orderedDescending
-    }
-}
-
-extension FixedWidthInteger {
-    // https://stackoverflow.com/a/63539782
-    var byteWidth:Int {
-        return self.bitWidth/UInt8.bitWidth
-    }
-    static var byteWidth:Int {
-        return Self.bitWidth/UInt8.bitWidth
     }
 }
