@@ -67,6 +67,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     let msg = "Nudge detected an attempt to close the application via CMD + W shortcut key."
                     uiLog.warning("\(msg, privacy: .public)")
                     return true
+                // Disable CMD + N - closes the Nudge window and breaks it
+                case [.command] where event.characters == "n":
+                    let msg = "Nudge detected an attempt to create a new window via CMD + N shortcut key."
+                    uiLog.warning("\(msg, privacy: .public)")
+                    return true
+                // Disable CMD + M - closes the Nudge window and breaks it
+                case [.command] where event.characters == "m":
+                    let msg = "Nudge detected an attempt to minimise the application via CMD + M shortcut key."
+                    uiLog.warning("\(msg, privacy: .public)")
+                    return true
                 // Disable CMD + Q -  fully closes Nudge
                 case [.command] where event.characters == "q":
                     let msg = "Nudge detected an attempt to close the application via CMD + Q shortcut key."
