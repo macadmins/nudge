@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+let windowDelegate = AppDelegate.WindowDelegate()
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -151,6 +152,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 nudgePrimaryState.shouldExit = true
                 exit(0)
             }
+        }
+    }
+    
+    class WindowDelegate: NSObject, NSWindowDelegate {
+        func windowDidMove(_ notification: Notification) {
+            Utils().centerNudge()
+        }
+        func windowDidChangeScreen(_ notification: Notification) {
+            Utils().centerNudge()
         }
     }
 }
