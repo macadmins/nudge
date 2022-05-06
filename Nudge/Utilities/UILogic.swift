@@ -87,6 +87,13 @@ func needToActivateNudge() -> Bool {
 
     // Center Nudge
     Utils().centerNudge()
+    
+    // Don't nudge if camera is on
+    if nudgePrimaryState.cameraOn && acceptableCameraUsage {
+        let msg = "camera is currently on"
+        uiLog.info("\(msg, privacy: .public)")
+        return false
+    }
 
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {

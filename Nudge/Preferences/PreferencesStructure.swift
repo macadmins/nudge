@@ -59,7 +59,8 @@ extension NudgePreferences {
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs: [String]?
-    var aggressiveUserExperience,
+    var acceptableCameraUsage,
+        aggressiveUserExperience,
         asynchronousSoftwareUpdate,
         attemptToFetchMajorUpgrade,
         disableSoftwareUpdateWorkflow,
@@ -86,6 +87,7 @@ extension OptionalFeatures {
 
     func with(
         acceptableApplicationBundleIDs: [String]?? = nil,
+        acceptableCameraUsage: Bool?? = nil,
         aggressiveUserExperience: Bool?? = nil,
         asynchronousSoftwareUpdate: Bool?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
@@ -94,6 +96,7 @@ extension OptionalFeatures {
     ) -> OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
+            acceptableCameraUsage: acceptableCameraUsage ?? self.acceptableCameraUsage,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
             asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
@@ -247,7 +250,7 @@ extension AboutUpdateURL {
 struct UserExperience: Codable {
     var allowGracePeriods, allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
-    var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
+    var cameraReferralTime, elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
     var gracePeriodPath: String?
     var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle, maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
@@ -280,6 +283,7 @@ extension UserExperience {
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
+        cameraReferralTime: Int?? = nil,
         elapsedRefreshCycle: Int?? = nil,
         gracePeriodInstallDelay: Int?? = nil,
         gracePeriodLaunchDelay: Int?? = nil,
@@ -299,6 +303,7 @@ extension UserExperience {
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
+            cameraReferralTime: cameraReferralTime ?? self.cameraReferralTime,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
             gracePeriodInstallDelay: gracePeriodInstallDelay ?? self.gracePeriodInstallDelay,
             gracePeriodLaunchDelay: gracePeriodLaunchDelay ?? self.gracePeriodLaunchDelay,
