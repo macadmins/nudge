@@ -460,6 +460,25 @@
                 }
               ]
             },
+            "cameraReferralTime": {
+              "description": "The amount of time in minutes Nudge will use to check for camera usage prior to Nudge launching. This has a CPU performance penalty for the initial launch of Nudge.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": 0,
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "0"
+                    }
+                  }
+                }
+              ]
+            },
             "elapsedRefreshCycle": {
               "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the `requiredInstallationDate` has expired.",
               "anyOf": [

@@ -45,6 +45,7 @@
     "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
     "approachingRefreshCycle": 6000,
     "approachingWindowTime": 72,
+    "cameraReferralTime": 0,
     "elapsedRefreshCycle": 300,
     "gracePeriodInstallDelay": 23,
     "gracePeriodLaunchDelay": 1,
