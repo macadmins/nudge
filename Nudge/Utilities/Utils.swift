@@ -64,6 +64,7 @@ struct Utils {
         // load the blur background and send it to the back if we are past the required install date
         // if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
         if aggressiveUserFullScreenExperience {
+            nudgePrimaryState.blurredBackground.loadWindow()
             nudgePrimaryState.blurredBackground.showWindow(self)
             NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
         }
