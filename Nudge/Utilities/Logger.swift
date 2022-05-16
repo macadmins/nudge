@@ -24,3 +24,88 @@ class NudgeLogger {
         loggingLog.debug("\(msg, privacy: .public)")
     }
 }
+
+class LogReader {
+    func Stream() {
+        let task = Process()
+        task.launchPath = "/usr/bin/log"
+        task.arguments = ["stream", "--predicate", "subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\"", "--style", "ndjson"]
+
+        let pipe = Pipe()
+        task.standardOutput = pipe
+        let outHandle = pipe.fileHandleForReading
+        outHandle.waitForDataInBackgroundAndNotify()
+
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name.NSFileHandleDataAvailable,
+            object: outHandle, queue: nil)
+        {
+            notification -> Void in
+            let data = outHandle.availableData
+            if data.count > 177 {
+                do {
+                    let jsonResult: NSDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                    if let eventMessage : NSString = jsonResult["eventMessage"] as? NSString {
+                        if eventMessage.contains("\"VDCAssistant_Power_State\" = On") {
+                            nudgePrimaryState.cameraOn = true
+                        }
+                        if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
+                            nudgePrimaryState.cameraOn = false
+                        }
+                    }
+                } catch {}
+                outHandle.waitForDataInBackgroundAndNotify()
+            } else {
+                outHandle.waitForDataInBackgroundAndNotify()
+            }
+        }
+        task.launch()
+    }
+
+    func Show() {
+        let task = Process()
+        task.launchPath = "/usr/bin/log"
+        task.arguments = ["show", "--last", "\(cameraReferralTime)m", "--predicate", "subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\"", "--style", "json"]
+
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+
+        task.standardOutput = outputPipe
+        task.standardError = errorPipe
+
+        do {
+            try task.run()
+        } catch {
+            let msg = "Error returning log show"
+            utilsLog.error("\(msg, privacy: .public)")
+        }
+
+        task.waitUntilExit()
+
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+
+        let error = String(decoding: errorData, as: UTF8.self)
+
+        if task.terminationStatus != 0 {
+            utilsLog.error("Error returning log show: \(error, privacy: .public)")
+        } else {
+            do {
+                let jsonResult: NSArray = try JSONSerialization.jsonObject(with: outputData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSArray
+                if let lastResult = jsonResult.lastObject as? NSDictionary {
+                    if let eventMessage : NSString = lastResult["eventMessage"] as? NSString {
+                        if eventMessage.contains("\"VDCAssistant_Power_State\" = On") {
+                            nudgePrimaryState.cameraOn = true
+                        }
+                        if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
+                            nudgePrimaryState.cameraOn = false
+                        }
+                    }
+                } else {
+                    utilsLog.info("No current camera activity")
+                }
+            } catch {}
+        }
+
+    }
+}

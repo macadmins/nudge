@@ -11,6 +11,20 @@ import Foundation
 let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
 var fetchMajorUpgradeSuccessful = false
 
+public class PrefsWrapper {
+    internal static var prefsOverride: [String:Any]?
+
+    public class var requiredInstallationDate: Date {
+        return prefsOverride?["requiredInstallationDate"] as? Date ?? osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
+    }
+    public class var requiredMinimumOSVersion: String {
+        return prefsOverride?["requiredMinimumOSVersion"] as? String ?? osVersionRequirementsProfile?.requiredMinimumOSVersion ?? osVersionRequirementsJSON?.requiredMinimumOSVersion ?? "0.0"
+    }
+    public class var allowGracePeriods: Bool {
+        return (prefsOverride?["allowGracePeriods"] as? Bool) ?? userExperienceProfile?["allowGracePeriods"] as? Bool ?? userExperienceJSON?.allowGracePeriods ?? false
+    }
+}
+
 // Features can be placed in multiple primary keys
 let actionButtonPath = osVersionRequirementsProfile?.actionButtonPath ?? osVersionRequirementsJSON?.actionButtonPath ?? userInterfaceProfile?["actionButtonPath"] as? String ?? userInterfaceJSON?.actionButtonPath ?? nil
 
@@ -19,6 +33,7 @@ let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
 let aggressiveUserExperience = optionalFeaturesProfile?["aggressiveUserExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserExperience ?? true
 let customAcceptableApplicationBundleIDs = optionalFeaturesProfile?["acceptableApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.acceptableApplicationBundleIDs ?? [""]
+let acceptableCameraUsage = optionalFeaturesProfile?["acceptableCameraUsage"] as? Bool ?? optionalFeaturesJSON?.acceptableCameraUsage ?? false
 let asynchronousSoftwareUpdate = optionalFeaturesProfile?["asynchronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asynchronousSoftwareUpdate ?? true
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
@@ -30,20 +45,26 @@ let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
 var majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
 var majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
-let requiredInstallationDate = osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
-let requiredMinimumOSVersion = osVersionRequirementsProfile?.requiredMinimumOSVersion ?? osVersionRequirementsJSON?.requiredMinimumOSVersion ?? "0.0"
-let requiredMinimumOSVersionNormalized = try! OSVersion(requiredMinimumOSVersion).description
+var requiredInstallationDate = PrefsWrapper.requiredInstallationDate
+let requiredMinimumOSVersion = try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
+let requiredMinimumOSVersionTest = try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
+
 let aboutUpdateURL = getAboutUpdateURL(OSVerReq: osVersionRequirementsProfile) ?? getAboutUpdateURL(OSVerReq: osVersionRequirementsJSON) ?? ""
 
 // userExperience
 let userExperienceProfile = getUserExperienceProfile()
 let userExperienceJSON = getUserExperienceJSON()
+let allowGracePeriods = PrefsWrapper.allowGracePeriods
 let allowUserQuitDeferrals = userExperienceProfile?["allowUserQuitDeferrals"] as? Bool ?? userExperienceJSON?.allowUserQuitDeferrals ?? true
 let allowedDeferrals = userExperienceProfile?["allowedDeferrals"] as? Int ?? userExperienceJSON?.allowedDeferrals ?? 1000000
 let allowedDeferralsUntilForcedSecondaryQuitButton = userExperienceProfile?["allowedDeferralsUntilForcedSecondaryQuitButton"] as? Int ?? userExperienceJSON?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let approachingRefreshCycle = userExperienceProfile?["approachingRefreshCycle"] as? Int ?? userExperienceJSON?.approachingRefreshCycle ?? 6000
 let approachingWindowTime = userExperienceProfile?["approachingWindowTime"] as? Int ?? userExperienceJSON?.approachingWindowTime ?? 72
+let cameraReferralTime = userExperienceProfile?["cameraReferralTime"] as? Int ?? userExperienceJSON?.cameraReferralTime ?? 0
 let elapsedRefreshCycle = userExperienceProfile?["elapsedRefreshCycle"] as? Int ?? userExperienceJSON?.elapsedRefreshCycle ?? 300
+let gracePeriodInstallDelay = userExperienceProfile?["gracePeriodInstallDelay"] as? Int ?? userExperienceJSON?.gracePeriodInstallDelay ?? 23
+let gracePeriodLaunchDelay = userExperienceProfile?["gracePeriodLaunchDelay"] as? Int ?? userExperienceJSON?.gracePeriodLaunchDelay ?? 1
+let gracePeriodPath = userExperienceProfile?["gracePeriodPath"] as? String ?? userExperienceJSON?.gracePeriodPath ?? "/private/var/db/.AppleSetupDone"
 let imminentRefreshCycle = userExperienceProfile?["imminentRefreshCycle"] as? Int ?? userExperienceJSON?.imminentRefreshCycle ?? 600
 let imminentWindowTime = userExperienceProfile?["imminentWindowTime"] as? Int ?? userExperienceJSON?.imminentWindowTime ?? 24
 let initialRefreshCycle = userExperienceProfile?["initialRefreshCycle"] as? Int ?? userExperienceJSON?.initialRefreshCycle ?? 18000

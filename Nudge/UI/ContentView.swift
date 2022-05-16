@@ -12,6 +12,7 @@ import SwiftUI
 
 class ViewState: ObservableObject {
     @Published var allowButtons = true
+    @Published var cameraOn = false
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
@@ -23,7 +24,7 @@ class ViewState: ObservableObject {
     @Published var hasLoggedPastRequiredInstallationDate = false
     @Published var hasLoggedRequireDualQuitButtons = false
     @Published var hasLoggedRequireMajorUgprade = false
-    @Published var hoursRemaining = Utils().getNumberOfHoursBetween()
+    @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()
     @Published var lastRefreshTime = Utils().getInitialDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
@@ -41,6 +42,7 @@ class LogState {
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
+    var hasLoggedUnitTestingMode = false
 }
 
 // BackgroundView
@@ -92,12 +94,13 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
-                window?.collectionBehavior = [.canJoinAllSpaces] // can join everywhere
                 // load the blur background and send it to the back if we are past the required install date
                 if Utils().pastRequiredInstallationDate() {
                     viewObserved.bluredBackground.showWindow(self)
                     NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)))
                 }
+                window?.collectionBehavior = [.canJoinAllSpaces]
+                window?.delegate = windowDelegate
                 _ = needToActivateNudge()
             }
         )
@@ -123,7 +126,7 @@ struct ContentView: View {
             viewObserved.allowButtons = false
         }
         viewObserved.daysRemaining = Utils().getNumberOfDaysBetween()
-        viewObserved.hoursRemaining = Utils().getNumberOfHoursBetween()
+        viewObserved.hoursRemaining = Utils().getNumberOfHoursRemaining()
     }
 }
 

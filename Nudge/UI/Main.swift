@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+let windowDelegate = AppDelegate.WindowDelegate()
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -67,6 +68,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     let msg = "Nudge detected an attempt to close the application via CMD + W shortcut key."
                     uiLog.warning("\(msg, privacy: .public)")
                     return true
+                // Disable CMD + N - closes the Nudge window and breaks it
+                case [.command] where event.characters == "n":
+                    let msg = "Nudge detected an attempt to create a new window via CMD + N shortcut key."
+                    uiLog.warning("\(msg, privacy: .public)")
+                    return true
+                // Disable CMD + M - closes the Nudge window and breaks it
+                case [.command] where event.characters == "m":
+                    let msg = "Nudge detected an attempt to minimise the application via CMD + M shortcut key."
+                    uiLog.warning("\(msg, privacy: .public)")
+                    return true
                 // Disable CMD + Q -  fully closes Nudge
                 case [.command] where event.characters == "q":
                     let msg = "Nudge detected an attempt to close the application via CMD + Q shortcut key."
@@ -92,7 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func runSoftwareUpdate() {
-        if Utils().demoModeEnabled() {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
             return
         }
 
@@ -105,14 +116,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // Random Delay logic
+    // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
+        _ = Utils().gracePeriodLogic()
+        if nudgePrimaryState.shouldExit {
+            exit(0)
+        }
+
         if randomDelay {
             let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
             uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
             sleep(UInt32(randomDelaySeconds))
         }
+        
+        // Check to see if camera was turned off or on in the last x amount of minutes
+        if cameraReferralTime > 0 && !nudgeLogState.afterFirstRun {
+            LogReader().Show()
+        }
+        // Stream camera status from here on out
+        LogReader().Stream()
+
         self.runSoftwareUpdate()
         if Utils().requireMajorUpgrade() {
             if actionButtonPath != nil {
@@ -136,6 +160,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 nudgePrimaryState.shouldExit = true
                 exit(0)
             }
+        }
+    }
+    
+    class WindowDelegate: NSObject, NSWindowDelegate {
+        func windowDidMove(_ notification: Notification) {
+            Utils().centerNudge()
+        }
+        func windowDidChangeScreen(_ notification: Notification) {
+            Utils().centerNudge()
         }
     }
 }

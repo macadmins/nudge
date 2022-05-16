@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct InformationButton: View {
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         HStack {
             // informationButton
             if aboutUpdateURL != "" {
                 Button(action: Utils().openMoreInfo, label: {
                     Text(informationButtonText)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 )
                     .buttonStyle(.plain)
