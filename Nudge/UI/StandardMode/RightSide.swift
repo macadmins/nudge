@@ -84,7 +84,6 @@ struct StandardModeRightSide: View {
                         // actionButton
                         Button(action: {
                             Utils().updateDevice()
-                            viewObserved.bluredBackground.close()
                         }) {
                             Text(actionButtonText)
                         }

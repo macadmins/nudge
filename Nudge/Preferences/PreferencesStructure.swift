@@ -61,6 +61,7 @@ struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs: [String]?
     var acceptableCameraUsage,
         aggressiveUserExperience,
+        aggressiveUserFullScreenExperience,
         asynchronousSoftwareUpdate,
         attemptToFetchMajorUpgrade,
         disableSoftwareUpdateWorkflow,
@@ -89,6 +90,7 @@ extension OptionalFeatures {
         acceptableApplicationBundleIDs: [String]?? = nil,
         acceptableCameraUsage: Bool?? = nil,
         aggressiveUserExperience: Bool?? = nil,
+        aggressiveUserFullScreenExperience: Bool?? = nil,
         asynchronousSoftwareUpdate: Bool?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
         disableSoftwareUpdateWorkflow: Bool?? = nil,
@@ -98,6 +100,7 @@ extension OptionalFeatures {
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
             acceptableCameraUsage: acceptableCameraUsage ?? self.acceptableCameraUsage,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
+            aggressiveUserFullScreenExperience: aggressiveUserFullScreenExperience ?? self.aggressiveUserFullScreenExperience,
             asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
