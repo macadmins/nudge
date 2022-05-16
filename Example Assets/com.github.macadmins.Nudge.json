@@ -1,9 +1,11 @@
 {
   "optionalFeatures": {
+    "acceptableCameraUsage": false,
     "acceptableApplicationBundleIDs": [
       "us.zoom.xos"
     ],
     "aggressiveUserExperience": true,
+    "aggressiveUserFullScreenExperience": true,
     "asynchronousSoftwareUpdate": true,
     "attemptToFetchMajorUpgrade": true,
     "enforceMinorUpdates": true

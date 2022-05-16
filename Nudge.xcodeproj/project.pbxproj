@@ -10,6 +10,7 @@
 		035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */ = {isa = PBXBuildFile; fileRef = 035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */; };
 		0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */; };
 		0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */; };
+		414550A827C65A4100D756E3 /* BackgroundBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414550A727C65A4100D756E3 /* BackgroundBlur.swift */; };
 		41AD2B0026DE65B1004C52B1 /* QuitButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */; };
 		41AD2B0226DE6947004C52B1 /* AdditionalInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */; };
 		41AD2B0426DE6A6B004C52B1 /* CompanyLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */; };
@@ -17,6 +18,7 @@
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5870FF6425CFE5EC0036D203 /* Localizable.strings */; };
+		6316F0E72832CA0700E1354D /* Schema in Resources */ = {isa = PBXBuildFile; fileRef = 6316F0E62832CA0700E1354D /* Schema */; };
 		636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B9C0126CACCAB0007BE3B /* DeferView.swift */; };
 		636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
@@ -62,6 +64,7 @@
 		0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersion.swift; sourceTree = "<group>"; };
 		0BC9972B25CE2DFC0019FC8F /* OSVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSVersionTests.swift; sourceTree = "<group>"; };
 		29AF939527BF8BBF009CD38D /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		414550A727C65A4100D756E3 /* BackgroundBlur.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundBlur.swift; sourceTree = "<group>"; };
 		41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitButtons.swift; sourceTree = "<group>"; };
 		41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInfoButton.swift; sourceTree = "<group>"; };
 		41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyLogo.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 		5870FF6325CFE5EC0036D203 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5870FF6825CFE5FA0036D203 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		630316C127C53143004E1F72 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6316F0E62832CA0700E1354D /* Schema */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Schema; sourceTree = "<group>"; };
 		634075C927206ED70066DFDD /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6362D3F72824368E00A4849E /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		636B9C0126CACCAB0007BE3B /* DeferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferView.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				41AD2B0126DE6947004C52B1 /* AdditionalInfoButton.swift */,
+				414550A727C65A4100D756E3 /* BackgroundBlur.swift */,
 				41AD2B0326DE6A6B004C52B1 /* CompanyLogo.swift */,
 				636B9C0126CACCAB0007BE3B /* DeferView.swift */,
 				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
@@ -213,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				031B0F2125D8AE3200E68A28 /* Example Assets */,
+				6316F0E62832CA0700E1354D /* Schema */,
 				5870FF6425CFE5EC0036D203 /* Localizable.strings */,
 				63D7D0E125C9E9A400236281 /* Nudge */,
 				63D7D0F425C9E9A500236281 /* NudgeTests */,
@@ -395,6 +401,7 @@
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
 				639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */,
 				035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */,
+				6316F0E72832CA0700E1354D /* Schema in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +436,7 @@
 				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				41AD2B0426DE6A6B004C52B1 /* CompanyLogo.swift in Sources */,
 				41AD2B0626DEDB61004C52B1 /* InformationButton.swift in Sources */,
+				414550A827C65A4100D756E3 /* BackgroundBlur.swift in Sources */,
 				5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */,
 				63D7D12725C9F1EE00236281 /* StandardMode.swift in Sources */,
 				639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */,

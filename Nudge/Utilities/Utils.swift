@@ -60,6 +60,14 @@ struct Utils {
         // Sheets do not count as windows though.
         NSApp.activate(ignoringOtherApps: true)
         NSApp.windows[0].makeKeyAndOrderFront(self)
+        
+        // load the blur background and send it to the back if we are past the required install date
+        // if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
+        if aggressiveUserFullScreenExperience {
+            nudgePrimaryState.blurredBackground.loadWindow()
+            nudgePrimaryState.blurredBackground.showWindow(self)
+            NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
+        }
     }
 
     func allow1HourDeferral() -> Bool {
@@ -516,10 +524,10 @@ struct Utils {
     }
 
     func pastRequiredInstallationDate() -> Bool {
+        var pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
         if demoModeEnabled() {
-            return false
+            pastRequiredInstallationDate = false
         }
-        let pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
         if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
             nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
             utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
@@ -591,6 +599,10 @@ struct Utils {
             NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
+        
+        // turn off blur and allow windows to come above Nudge
+        nudgePrimaryState.blurredBackground.close()
+        NSApp.windows[0].level = .normal
     }
 
     func userInitiatedExit() {

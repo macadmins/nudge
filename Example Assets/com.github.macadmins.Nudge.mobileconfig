@@ -21,11 +21,15 @@
         <integer>1</integer>
         <key>optionalFeatures</key>
         <dict>
+          <key>acceptableCameraUsage</key>
+          <false/>
           <key>acceptableApplicationBundleIDs</key>
           <array>
             <string>us.zoom.xos</string>
           </array>
           <key>aggressiveUserExperience</key>
+          <true/>
+          <key>aggressiveUserFullScreenExperience</key>
           <true/>
           <key>asynchronousSoftwareUpdate</key>
           <true/>

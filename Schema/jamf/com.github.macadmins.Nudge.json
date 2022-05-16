@@ -36,8 +36,36 @@
                 }
               ]
             },
+            "acceptableCameraUsage": {
+              "description": "When enabled, Nudge will not activate or re-activate when the camera is on.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
             "aggressiveUserExperience": {
               "description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": true,
+                  "type": "boolean"
+                }
+              ]
+            },
+            "aggressiveUserFullScreenExperience": {
+              "description": "When disabled, Nudge will not create a blurred background when the user is past the deferral window.",
               "anyOf": [
                 {
                   "title": "Not Configured",

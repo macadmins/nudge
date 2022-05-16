@@ -60,6 +60,7 @@ struct QuitButtons: View {
                             }
                             if Utils().allow1HourDeferral() {
                                 Button {
+                                    nudgeEventDate = Date()
                                     nudgeDefaults.set(nudgeEventDate.addingTimeInterval(hourTimeInterval), forKey: "deferRunUntil")
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                     updateDeferralUI()
@@ -70,6 +71,7 @@ struct QuitButtons: View {
                             }
                             if Utils().allow24HourDeferral() {
                                 Button {
+                                    nudgeEventDate = Date()
                                     nudgeDefaults.set(nudgeEventDate.addingTimeInterval(dayTimeInterval), forKey: "deferRunUntil")
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                     updateDeferralUI()
