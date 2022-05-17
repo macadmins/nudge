@@ -1,0 +1,15 @@
+{
+  "osVersionRequirements": [
+    {
+      "aboutUpdateURL": "https://apple.com",
+      "requiredInstallationDate": "2022-01-01T00:00:00Z",
+      "requiredMinimumOSVersion": "12.99.99",
+      "targetedOSVersionsRule": "default"
+    }
+  ],
+  "userExperience": {
+    "elapsedRefreshCycle": 10,
+    "nudgeRefreshCycle": 5,
+    "randomDelay": false
+  }
+}

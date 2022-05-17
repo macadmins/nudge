@@ -84,6 +84,9 @@ struct StandardModeRightSide: View {
                         // actionButton
                         Button(action: {
                             Utils().updateDevice()
+                            // turn off blur and allow windows to come above Nudge
+                            nudgePrimaryState.blurredBackground.close()
+                            NSApp.windows[0].level = .normal
                         }) {
                             Text(actionButtonText)
                         }

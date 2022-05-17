@@ -118,6 +118,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
+        if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
+            let msg = "Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist"
+            prefsProfileLog.warning("\(msg, privacy: .public)")
+            exit(0)
+        }
+
         // print("applicationWillFinishLaunching")
         _ = Utils().gracePeriodLogic()
         if nudgePrimaryState.shouldExit {

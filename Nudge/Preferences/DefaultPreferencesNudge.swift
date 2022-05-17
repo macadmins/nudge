@@ -105,11 +105,11 @@ let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDefe
     let builtInAcceptableApplicationBundleIDs = [
         "com.apple.loginwindow",
         "com.apple.systempreferences",
-        "com.apple.dt.Xcode"
+        "com.apple.dt.Xcode",
     ]
 #else
     let builtInAcceptableApplicationBundleIDs = [
         "com.apple.loginwindow",
-        "com.apple.systempreferences"
+        "com.apple.systempreferences",
     ]
 #endif

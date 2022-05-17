@@ -31,6 +31,7 @@
 		639B6BA725DF432D00E38EC1 /* RightSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639B6BA625DF432D00E38EC1 /* RightSide.swift */; };
 		639E198225CD885D008F618B /* PreferencesStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* PreferencesStructure.swift */; };
 		639E198A25CD9E21008F618B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198925CD9E21008F618B /* Utils.swift */; };
+		63C6A08E2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json in Resources */ = {isa = PBXBuildFile; fileRef = 63C6A08D2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json */; };
 		63D7D0E325C9E9A400236281 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* Main.swift */; };
 		63D7D0E525C9E9A400236281 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E425C9E9A400236281 /* ContentView.swift */; };
 		63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E625C9E9A500236281 /* Assets.xcassets */; };
@@ -92,6 +93,7 @@
 		639E198925CD9E21008F618B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63B6FDBF25D785010038E81C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		63C3C13F26C2C822009510E3 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		63C6A08D2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.tester.json; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D0E225C9E9A400236281 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		63D7D0E425C9E9A400236281 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				639B6B0E25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig */,
 				035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */,
+				63C6A08D2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json */,
 			);
 			path = "Example Assets";
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				5870FF6225CFE5EC0036D203 /* Localizable.strings in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
 				639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */,
+				63C6A08E2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json in Resources */,
 				035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */,
 				6316F0E72832CA0700E1354D /* Schema in Resources */,
 			);

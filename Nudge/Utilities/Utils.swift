@@ -63,6 +63,8 @@ struct Utils {
         
         // load the blur background and send it to the back if we are past the required install date
         if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
+            uiLog.info("Enabling blurred background")
+            nudgePrimaryState.blurredBackground.close()
             nudgePrimaryState.blurredBackground.loadWindow()
             nudgePrimaryState.blurredBackground.showWindow(self)
             NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
@@ -103,6 +105,18 @@ struct Utils {
             uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
         }
         return allowCustomDeferralButton
+    }
+
+    func bundleModeEnabled() -> Bool {
+        let bundleModeArgumentPassed = CommandLine.arguments.contains("-bundle-mode")
+        if !nudgeLogState.hasLoggedBundleMode {
+            if bundleModeArgumentPassed {
+                nudgeLogState.hasLoggedBundleMode = true
+                let msg = "-bundle-mode argument passed"
+                uiLog.debug("\(msg, privacy: .public)")
+            }
+        }
+        return bundleModeArgumentPassed
     }
 
     func centerNudge() {
@@ -292,6 +306,19 @@ struct Utils {
 
     func getNudgeJSONPreferences() -> NudgePreferences? {
         let url = Utils().getJSONUrl()
+        if bundleModeEnabled() {
+            if let url = Bundle.main.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
+                if let data = try? Data(contentsOf: url) {
+                    do {
+                        let decodedData = try NudgePreferences(data: data)
+                        return decodedData
+                    } catch {
+                        prefsJSONLog.error("\(error.localizedDescription, privacy: .public)")
+                        return nil
+                    }
+                }
+            }
+        }
         
         if url.contains("https://") || url.contains("http://") {
             if let json_url = URL(string: url) {
@@ -572,6 +599,8 @@ struct Utils {
     }
 
     func updateDevice(userClicked: Bool = true) {
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = true
         if userClicked {
             let msg = "User clicked updateDevice"
             uiLog.notice("\(msg, privacy: .public)")
@@ -579,29 +608,45 @@ struct Utils {
             let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
             uiLog.notice("\(msg, privacy: .public)")
         }
+        var url = String()
         if actionButtonPath != nil {
             if !actionButtonPath!.isEmpty {
-                NSWorkspace.shared.open(URL(string: actionButtonPath!)!)
+                url = actionButtonPath!
             } else {
                 let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
                 prefsProfileLog.warning("\(msg, privacy: .public)")
             }
+            return
         } else if requireMajorUpgrade() {
             if majorUpgradeAppPathExists {
-                NSWorkspace.shared.open(URL(fileURLWithPath: majorUpgradeAppPath))
+                url = majorUpgradeAppPath
             } else if majorUpgradeBackupAppPathExists {
-                NSWorkspace.shared.open(URL(fileURLWithPath: getBackupMajorUpgradeAppPath()))
+                url = getBackupMajorUpgradeAppPath()
             } else { // Backup if all of these checks fail
-                NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+                url = "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"
             }
         } else {
-            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"))
+            url = "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
         
-        // turn off blur and allow windows to come above Nudge
-        nudgePrimaryState.blurredBackground.close()
-        NSApp.windows[0].level = .normal
+        if url.contains("://") {
+            if userClicked {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                    NSWorkspace.shared.openApplication(at: URL(string: url)!, configuration: configuration)
+                })
+            } else {
+                NSWorkspace.shared.openApplication(at: URL(string: url)!, configuration: configuration)
+            }
+        } else {
+            if userClicked {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                    NSWorkspace.shared.openApplication(at: URL(fileURLWithPath: url), configuration: configuration)
+                })
+            } else {
+                NSWorkspace.shared.openApplication(at: URL(fileURLWithPath: url), configuration: configuration)
+            }
+        }
     }
 
     func userInitiatedExit() {
@@ -649,4 +694,34 @@ struct Utils {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) != .orderedDescending
     }
+}
+
+func memoize<Input: Hashable, Output>(_ function: @escaping (Input) -> Output) -> (Input) -> Output {
+    var storage = [Input: Output]()
+
+    return { input in
+        if let cached = storage[input] {
+            return cached
+        }
+
+        let result = function(input)
+        storage[input] = result
+        return result
+    }
+}
+
+func recursiveMemoize<Input: Hashable, Output>(_ function: @escaping ((Input) -> Output, Input) -> Output) -> (Input) -> Output {
+    var storage = [Input: Output]()
+    var memo: ((Input) -> Output)!
+
+    memo = { input in
+        if let cached = storage[input] {
+            return cached
+        }
+
+        let result = function(memo, input)
+        storage[input] = result
+        return result
+    }
+    return memo
 }

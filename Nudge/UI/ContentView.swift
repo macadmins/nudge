@@ -39,6 +39,7 @@ class ViewState: ObservableObject {
 class LogState {
     var afterFirstLaunch = false
     var afterFirstRun = false
+    var hasLoggedBundleMode = false
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
