@@ -601,13 +601,6 @@ struct Utils {
     func updateDevice(userClicked: Bool = true) {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
-        if userClicked {
-            let msg = "User clicked updateDevice"
-            uiLog.notice("\(msg, privacy: .public)")
-        } else {
-            let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
-            uiLog.notice("\(msg, privacy: .public)")
-        }
         var url = String()
         if actionButtonPath != nil {
             if !actionButtonPath!.isEmpty {
@@ -615,8 +608,8 @@ struct Utils {
             } else {
                 let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
                 prefsProfileLog.warning("\(msg, privacy: .public)")
+                return
             }
-            return
         } else if requireMajorUpgrade() {
             if majorUpgradeAppPathExists {
                 url = majorUpgradeAppPath
@@ -638,6 +631,29 @@ struct Utils {
             } else {
                 NSWorkspace.shared.openApplication(at: URL(string: url)!, configuration: configuration)
             }
+        } else if url.contains("/bin/bash") || url.contains("/bin/sh") || url.contains("/bin/zsh") {
+            let cmds = url.components(separatedBy: " ")
+            let task = Process()
+            task.launchPath = cmds.first!
+            task.arguments = [cmds.last!]
+
+            if userClicked {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                    do {
+                        try task.run()
+                    } catch {
+                        let msg = "Error running script"
+                        uiLog.error("\(msg, privacy: .public)")
+                    }
+                })
+            } else {
+                do {
+                    try task.run()
+                } catch {
+                    let msg = "Error running script"
+                    uiLog.error("\(msg, privacy: .public)")
+                }
+            }
         } else {
             if userClicked {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
@@ -646,6 +662,14 @@ struct Utils {
             } else {
                 NSWorkspace.shared.openApplication(at: URL(fileURLWithPath: url), configuration: configuration)
             }
+        }
+        
+        if userClicked {
+            let msg = "User clicked updateDevice"
+            uiLog.notice("\(msg, privacy: .public)")
+        } else {
+            let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
+            uiLog.notice("\(msg, privacy: .public)")
         }
     }
 
