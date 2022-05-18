@@ -123,6 +123,45 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             prefsProfileLog.warning("\(msg, privacy: .public)")
             exit(0)
         }
+        
+        if CommandLine.arguments.contains("-print-profile-config") {
+            var nudgeProfileConfig = [String:Any]()
+            nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.array(forKey: "optionalFeatures") as? [[String:AnyObject]]
+            nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]]
+            nudgeProfileConfig["userExperience"] = nudgeDefaults.array(forKey: "userExperience") as? [[String:AnyObject]]
+            nudgeProfileConfig["userInterface"] = nudgeDefaults.array(forKey: "userInterface") as? [[String:AnyObject]]
+            if nudgeProfileConfig.isEmpty {
+                print("Could not find profile preferences!")
+                exit(1)
+            } else {
+                do {
+                    let plistData = try PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0)
+                    let xmlPlistData = try XMLDocument.init(data: plistData, options: .nodePreserveAll)
+                    let prettyXMLData = xmlPlistData.xmlData(options: .nodePrettyPrint)
+                    let prettyXMLString = String(data: prettyXMLData, encoding: .utf8)
+                    print(prettyXMLString as AnyObject)
+                } catch {
+                    print("issue with profile data!")
+                    exit(1)
+                }
+            }
+            exit(0)
+        } else if CommandLine.arguments.contains("-print-json-config") {
+            let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences)
+            if ((nudgeJSONConfig) != nil) {
+                if let json = try? JSONSerialization.jsonObject(with: newJSONEncoder().encode(nudgeJSONPreferences), options: .mutableContainers),
+                   let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
+                    print(String(decoding: jsonData, as: UTF8.self))
+                } else {
+                    print("issue with JSON data!")
+                    exit(1)
+                }
+            } else {
+                print("Could not find JSON preferences!")
+                exit(1)
+            }
+            exit(0)
+        }
 
         // print("applicationWillFinishLaunching")
         _ = Utils().gracePeriodLogic()
