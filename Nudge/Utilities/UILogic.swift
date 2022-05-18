@@ -178,6 +178,11 @@ func needToActivateNudge() -> Bool {
             return false
         }
     }
+    
+    if frontmostApplication?.bundleIdentifier != nil {
+        let msg = "\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication"
+        uiLog.info("\(msg, privacy: .public)")
+    }
 
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
