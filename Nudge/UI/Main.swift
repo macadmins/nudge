@@ -38,7 +38,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        registerLocal()
         // print("applicationDidFinishLaunching")
         if !nudgeLogState.afterFirstLaunch {
             nudgeLogState.afterFirstLaunch = true
@@ -51,12 +50,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 // NSApp.hideOtherApplications(self)
             }
         }
-        NSWorkspace.shared.notificationCenter.addObserver(
-            self,
-            selector: #selector(enableApplicationLaunchListener(_:)),
-            name: NSWorkspace.didLaunchApplicationNotification,
-            object: nil
-        )
+        if attemptToBlockApplicationLaunches {
+            registerLocal()
+            NSWorkspace.shared.notificationCenter.addObserver(
+                self,
+                selector: #selector(enableApplicationLaunchListener(_:)),
+                name: NSWorkspace.didLaunchApplicationNotification,
+                object: nil
+            )
+        }
 
         // Listen for keyboard events
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
