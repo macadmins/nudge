@@ -63,8 +63,10 @@ struct OptionalFeatures: Codable {
         aggressiveUserExperience,
         aggressiveUserFullScreenExperience,
         asynchronousSoftwareUpdate,
-        attemptToFetchMajorUpgrade,
-        disableSoftwareUpdateWorkflow,
+        attemptToBlockApplicationLaunches,
+        attemptToFetchMajorUpgrade: Bool?
+    var blockedApplicationBundleIDs: [String]?
+    var disableSoftwareUpdateWorkflow,
         enforceMinorUpdates: Bool?
 }
 
@@ -92,7 +94,9 @@ extension OptionalFeatures {
         aggressiveUserExperience: Bool?? = nil,
         aggressiveUserFullScreenExperience: Bool?? = nil,
         asynchronousSoftwareUpdate: Bool?? = nil,
+        attemptToBlockApplicationLaunches: Bool?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
+        blockedApplicationBundleIDs: [String]?? = nil,
         disableSoftwareUpdateWorkflow: Bool?? = nil,
         enforceMinorUpdates: Bool?? = nil
     ) -> OptionalFeatures {
@@ -102,7 +106,9 @@ extension OptionalFeatures {
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
             aggressiveUserFullScreenExperience: aggressiveUserFullScreenExperience ?? self.aggressiveUserFullScreenExperience,
             asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
+            attemptToBlockApplicationLaunches: attemptToBlockApplicationLaunches ?? self.attemptToBlockApplicationLaunches,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
+            blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates
         )

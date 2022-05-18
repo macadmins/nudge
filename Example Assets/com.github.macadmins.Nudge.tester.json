@@ -1,4 +1,11 @@
 {
+  "optionalFeatures": {
+    "attemptToBlockApplicationLaunches": true,
+    "blockedApplicationBundleIDs": [
+      "com.microsoft.VSCode",
+      "us.zoom.xos"
+    ]
+  },
   "osVersionRequirements": [
     {
       "aboutUpdateURL": "https://apple.com",

@@ -36,7 +36,9 @@ let acceptableCameraUsage = optionalFeaturesProfile?["acceptableCameraUsage"] as
 let aggressiveUserExperience = optionalFeaturesProfile?["aggressiveUserExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserExperience ?? true
 let aggressiveUserFullScreenExperience = optionalFeaturesProfile?["aggressiveUserFullScreenExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserFullScreenExperience ?? true
 let asynchronousSoftwareUpdate = optionalFeaturesProfile?["asynchronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asynchronousSoftwareUpdate ?? true
+let attemptToBlockApplicationLaunches = optionalFeaturesProfile?["attemptToBlockApplicationLaunches"] as? Bool ?? optionalFeaturesJSON?.attemptToBlockApplicationLaunches ?? false
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
+let blockedApplicationBundleIDs = optionalFeaturesProfile?["blockedApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.blockedApplicationBundleIDs ?? [""]
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 let disableSoftwareUpdateWorkflow = optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ?? optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ?? false
 

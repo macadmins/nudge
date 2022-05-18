@@ -5,6 +5,7 @@
 //  Created by Erik Gomez on 2/2/21.
 //
 
+import UserNotifications
 import SwiftUI
 let windowDelegate = AppDelegate.WindowDelegate()
 
@@ -37,6 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        registerLocal()
         // print("applicationDidFinishLaunching")
         if !nudgeLogState.afterFirstLaunch {
             nudgeLogState.afterFirstLaunch = true
@@ -49,12 +51,90 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 // NSApp.hideOtherApplications(self)
             }
         }
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(enableApplicationLaunchListener(_:)),
+            name: NSWorkspace.didLaunchApplicationNotification,
+            object: nil
+        )
+
         // Listen for keyboard events
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
             if self.detectBannedShortcutKeys(with: $0) {
                 return nil
             } else {
                 return $0
+            }
+        }
+    }
+    
+    
+    @objc private func enableApplicationLaunchListener(_ notification: Notification) {
+        if !Utils().pastRequiredInstallationDate() {
+            return
+        }
+        let msg = "Application launched"
+        utilsLog.info("\(msg, privacy: .public)")
+        if notification.name == NSWorkspace.didLaunchApplicationNotification {
+            for runningApplication in NSWorkspace.shared.runningApplications {
+                let appBundleID = runningApplication.bundleIdentifier ?? ""
+                let appName = runningApplication.localizedName ?? ""
+                if appBundleID == "com.github.macadmins.Nudge" {
+                    continue
+                }
+                if blockedApplicationBundleIDs.contains(appBundleID) {
+                    let msg = "Found \(appName), terminating application"
+                    utilsLog.info("\(msg, privacy: .public)")
+                    scheduleLocal(applicationIdentifier: appName)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
+                        runningApplication.forceTerminate()
+                    })
+                }
+            }
+        }
+    }
+    
+    @objc func registerLocal() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .provisional, .sound]) { (granted, error) in
+            if granted {
+                let msg = "User granted notifications - application blocking status now available"
+                uiLog.info("\(msg, privacy: .public)")
+            } else {
+                let msg = "User denied notifications - application blocking status will be unavailable"
+                uiLog.info("\(msg, privacy: .public)")
+            }
+        }
+    }
+
+    @objc func scheduleLocal(applicationIdentifier: String) {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { (settings) in
+            let content = UNMutableNotificationContent()
+            content.title = "Application terminated".localized(desiredLanguage: getDesiredLanguage())
+            content.subtitle = "(\(applicationIdentifier))"
+            content.body = "Please update your device to use this application.".localized(desiredLanguage: getDesiredLanguage())
+            content.categoryIdentifier = "alert"
+            content.sound = UNNotificationSound.default
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.001, repeats: false)
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+            switch settings.authorizationStatus {
+                
+            case .authorized:
+                center.add(request)
+            case .denied:
+                let msg = "application terminated without user notification"
+                uiLog.info("\(msg, privacy: .public)")
+            case .notDetermined:
+                let msg = "application terminated without user notification status"
+                uiLog.info("\(msg, privacy: .public)")
+            case .provisional:
+                let msg = "application terminated with provisional user notification status"
+                uiLog.info("\(msg, privacy: .public)")
+                center.add(request)
+            @unknown default:
+                let msg = "application terminated with unknown user notification status"
+                uiLog.info("\(msg, privacy: .public)")
             }
         }
     }
