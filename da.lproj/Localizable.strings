@@ -54,3 +54,7 @@
 "One Hour" = "En time";
 "One Day" = "En dag";
 "Custom" = "Længere tid";
+
+// User Notification
+"Application terminated" = "Appen er afsluttet";
+"Please update your device to use this application" = "Opdater din Mac for at bruge denne app";

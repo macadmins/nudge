@@ -54,3 +54,7 @@
 "One Hour" = "1時間";
 "One Day" = "1日";
 "Custom" = "カスタム";
+
+// User Notification
+"Application terminated" = "アプリが終了しました";
+"Please update your device to use this application" = "このアプリを使用するには、デバイスを更新してください";

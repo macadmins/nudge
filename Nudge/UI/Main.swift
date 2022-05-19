@@ -115,7 +115,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let content = UNMutableNotificationContent()
             content.title = "Application terminated".localized(desiredLanguage: getDesiredLanguage())
             content.subtitle = "(\(applicationIdentifier))"
-            content.body = "Please update your device to use this application.".localized(desiredLanguage: getDesiredLanguage())
+            content.body = "Please update your device to use this application".localized(desiredLanguage: getDesiredLanguage())
             content.categoryIdentifier = "alert"
             content.sound = UNNotificationSound.default
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.001, repeats: false)

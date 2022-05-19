@@ -55,3 +55,7 @@
 "One Hour" = "Een uur";
 "One Day" = "Op een dag";
 "Custom" = "Personaliseren";
+
+// User Notification
+"Application terminated" = "App beëindigd";
+"Please update your device to use this application" = "Werk uw apparaat bij om deze app te gebruiken";

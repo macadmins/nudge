@@ -55,3 +55,7 @@
 "One Hour" = "一小时";
 "One Day" = "一天";
 "Custom" = "自定义";
+
+// User Notification
+"Application terminated" = "应用程序终止";
+"Please update your device to use this application" = "请更新您的设备以使用此应用";
