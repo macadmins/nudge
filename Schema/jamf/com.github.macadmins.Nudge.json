@@ -31,7 +31,7 @@
                       }
                     },
                     "type": "string",
-                    "title": "acceptableApplicationBundleID"
+                    "title": "acceptableApplicationBundleIDs"
                   }
                 }
               ]
@@ -92,6 +92,21 @@
                 }
               ]
             },
+            "attemptToBlockApplicationLaunches": {
+              "description": "When enabled, Nudge will attempt to block application launches after the required installation date. This key must be used in conjunction with blockedApplicationBundleIDs (Note: This key is only used with Nudge v1.1.7 and higher)",
+              "anyOf": [
+                {
+                  "type": "null",
+                  "title": "Not Configured"
+                },
+                {
+                  "title": "Configured",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "blocked
             "attemptToFetchMajorUpgrade": {
               "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
               "anyOf": [
@@ -106,6 +121,29 @@
                 }
               ]
             },
+            "blockedApplicationBundleIDs": {
+              "description": "The application Bundle ID which Nudge disallows from lauching after the required installation date. (You can specify one or more Bundle ID.)",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "type": "array",
+                  "items": {
+                    "options": {
+                      "inputAttributes": {
+                        "placeholder": "us.zoom.xos"
+                      }
+                    },
+                    "type": "string",
+                    "title": "blockedApplicationBundleIDs"
+                  }
+                }
+              ]
+            },
+
             "enforceMinorUpdates": {
               "description": "When enabled, Nudge will enforce minor updates. This should likely never be disabled.",
               "anyOf": [

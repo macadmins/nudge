@@ -24,17 +24,19 @@
           <key>acceptableCameraUsage</key>
           <false/>
           <key>acceptableApplicationBundleIDs</key>
-          <array>
-            <string>us.zoom.xos</string>
-          </array>
+          <array/>
           <key>aggressiveUserExperience</key>
           <true/>
           <key>aggressiveUserFullScreenExperience</key>
           <true/>
           <key>asynchronousSoftwareUpdate</key>
           <true/>
+          <key>attemptToBlockApplicationLaunches</key>
+          <false/>
           <key>attemptToFetchMajorUpgrade</key>
           <true/>
+          <key>blockedApplicationBundleIDs</key>
+          <array/>
           <key>enforceMinorUpdates</key>
           <true/>
         </dict>

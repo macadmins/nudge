@@ -1,13 +1,13 @@
 {
   "optionalFeatures": {
     "acceptableCameraUsage": false,
-    "acceptableApplicationBundleIDs": [
-      "us.zoom.xos"
-    ],
+    "acceptableApplicationBundleIDs": [],
     "aggressiveUserExperience": true,
     "aggressiveUserFullScreenExperience": true,
     "asynchronousSoftwareUpdate": true,
+    "attemptToBlockApplicationLaunches": false,
     "attemptToFetchMajorUpgrade": true,
+    "blockedApplicationBundleIDs": [],
     "enforceMinorUpdates": true
   },
   "osVersionRequirements": [
