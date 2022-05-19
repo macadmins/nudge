@@ -73,7 +73,7 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
-                window?.collectionBehavior = [.canJoinAllSpaces]
+                window?.collectionBehavior = [.canJoinAllSpaces, .fullScreenNone]
                 window?.delegate = windowDelegate
                 _ = needToActivateNudge()
             }
