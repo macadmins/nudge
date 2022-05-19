@@ -106,7 +106,6 @@
                 }
               ]
             },
-            "blocked
             "attemptToFetchMajorUpgrade": {
               "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
               "anyOf": [
