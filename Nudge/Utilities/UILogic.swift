@@ -200,8 +200,13 @@ func needToActivateNudge() -> Bool {
                         continue
                     }
                 }
+                
+                if appName == "com.github.macadmins.Nudge" {
+                    continue
+                }
                 // Taken from nudge-python as there was a race condition with NSWorkspace
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
+                    uiLog.info("\("Attempting to hide \(appName)", privacy: .public)")
                     runningApplication.hide()
                 })
             }
