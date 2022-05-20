@@ -127,7 +127,7 @@ struct Utils {
     func coerceStringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        return dateFormatter.date(from: dateString) ?? Date()
+        return dateFormatter.date(from: dateString) ?? Utils().getCurrentDate()
     }
 
     func createImageData(fileImagePath: String) -> NSImage {
@@ -254,7 +254,28 @@ struct Utils {
     }
 
     func getCurrentDate() -> Date {
-        Date()
+        // Date fixing stuff for non Gregorian calendars
+        let dateFormatterCurrent = DateFormatter()
+        let dateFormatterISO8601 = DateFormatter()
+        let dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        dateFormatterCurrent.dateFormat = dateFormat
+
+        dateFormatterISO8601.dateFormat = dateFormat
+        dateFormatterISO8601.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatterISO8601.calendar = Calendar(identifier: .iso8601)
+        dateFormatterISO8601.timeZone = TimeZone(identifier: "UTC")
+        switch Calendar.current.identifier {
+        case .buddhist, .japanese:
+            return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+        case .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
+            return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+        case .chinese, .republicOfChina: // TODO: These are untested
+            return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+        case .ethiopicAmeteAlem: // TODO: Need to figure out
+            return Date()
+        @unknown default:
+            return Date()
+        }
     }
 
     func getJSONUrl() -> String {
@@ -263,10 +284,36 @@ struct Utils {
         return jsonURL
     }
 
-    func getInitialDate() -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM-dd-yyyy"
-        return dateFormatter.date(from: "08-06-2020") ?? Date() // <3
+    func getFormattedDate(date: Date? = nil) -> Date {
+        var endDate = Date()
+        // Date fixing stuff for non Gregorian calendars
+        let dateFormatterCurrent = DateFormatter()
+        let dateFormatterISO8601 = DateFormatter()
+        let dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        dateFormatterCurrent.dateFormat = dateFormat
+
+        dateFormatterISO8601.dateFormat = dateFormat
+        dateFormatterISO8601.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatterISO8601.calendar = Calendar(identifier: .iso8601)
+        dateFormatterISO8601.timeZone = TimeZone(identifier: "UTC")
+        var initialDate = dateFormatterISO8601.date(from: "2020-08-06T00:00:00Z") ?? Date() // <3
+        if date != nil {
+            initialDate = date!
+        }
+        
+        switch Calendar.current.identifier {
+        case .gregorian, .buddhist, .iso8601, .japanese:
+            endDate = initialDate
+        case .coptic, .ethiopicAmeteMihret, .hebrew, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
+            endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
+        case .chinese, .republicOfChina: // TODO: These are untested
+            endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
+        case .ethiopicAmeteAlem: // TODO: Need to figure out
+            break
+        @unknown default:
+            break
+        }
+        return endDate
     }
 
     func getMajorOSVersion() -> Int {

@@ -105,8 +105,6 @@ class LogReader {
                             nudgePrimaryState.cameraOn = false
                         }
                     }
-                } else {
-                    utilsLog.info("No current camera activity")
                 }
             } catch {}
         }
@@ -147,8 +145,6 @@ class LogReader {
                             nudgePrimaryState.isScreenSharing = false
                         }
                     }
-                } else {
-                    utilsLog.info("No current camera activity")
                 }
             } catch {}
         }

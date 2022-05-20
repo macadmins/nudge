@@ -14,7 +14,7 @@ struct DeferView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     
-    @State var nudgeCustomEventDate = Date()
+    @State var nudgeCustomEventDate = Utils().getCurrentDate()
     
     var body: some View {
         VStack(alignment: .center) {
@@ -78,9 +78,9 @@ struct DeferView: View {
     var limitRange: ClosedRange<Date> {
         if viewObserved.daysRemaining > 0 {
             // Do not let the user defer past the point of the approachingWindowTime
-            return Date()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Date())!
+            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Utils().getCurrentDate())!
         } else {
-            return Date()...Calendar.current.date(byAdding: .day, value: 0, to: Date())!
+            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: 0, to: Utils().getCurrentDate())!
         }
     }
 }

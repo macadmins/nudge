@@ -26,7 +26,7 @@ class ViewState: ObservableObject {
     @Published var hasLoggedRequireMajorUgprade = false
     @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()
     @Published var isScreenSharing = false
-    @Published var lastRefreshTime = Utils().getInitialDate()
+    @Published var lastRefreshTime = Utils().getFormattedDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
     @Published var timerCycle = 0

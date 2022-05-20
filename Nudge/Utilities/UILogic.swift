@@ -45,7 +45,8 @@ func nudgeStartLogic() {
     if Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
         nudgePrimaryState.requireDualQuitButtons = true
     }
-    if nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
+    let deferralDate = nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime
+    if (deferralDate > Utils().getCurrentDate()) && !(deferralDate > requiredInstallationDate) && !Utils().pastRequiredInstallationDate() {
         uiLog.notice("\("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))", privacy: .public)")
         Utils().exitNudge()
     }
@@ -83,12 +84,16 @@ func needToActivateNudge() -> Bool {
     // Don't nudge if camera is on and prior to requiredInstallationDate
     if (nudgePrimaryState.cameraOn && acceptableCameraUsage) && !pastRequiredInstallationDate {
         uiLog.info("\("Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
+        nudgeLogState.afterFirstRun = true
+        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
         return false
     }
 
     // Don't nudge if screen sharing and prior to requiredInstallationDate
     if (nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage) && !pastRequiredInstallationDate {
         uiLog.info("\("Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
+        nudgeLogState.afterFirstRun = true
+        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
         return false
     }
 
@@ -96,9 +101,13 @@ func needToActivateNudge() -> Bool {
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
         if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
             uiLog.info("\("acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) running in full screen and first launch", privacy: .public)")
+            nudgeLogState.afterFirstRun = true
+            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
             return false
         } else {
             uiLog.info("\("acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
+            nudgeLogState.afterFirstRun = true
+            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
             return false
         }
     }
@@ -123,14 +132,14 @@ func needToActivateNudge() -> Bool {
         return false
     }
 
-    let currentTime = Date().timeIntervalSince1970
+    let currentTime = Utils().getCurrentDate().timeIntervalSince1970
     let timeDiff = Int((currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))
 
     // The first time the main timer controller hits we don't care
     if !nudgeLogState.afterFirstRun {
         uiLog.info("\("Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)", privacy: .public)")
         nudgeLogState.afterFirstRun = true
-        nudgePrimaryState.lastRefreshTime = Date()
+        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
     }
 
     if Utils().getTimerController() > timeDiff  {
@@ -174,7 +183,7 @@ func needToActivateNudge() -> Bool {
 
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
-        nudgePrimaryState.lastRefreshTime = Date()
+        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
         if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
             // Loop through all the running applications and hide them
             for runningApplication in runningApplications {

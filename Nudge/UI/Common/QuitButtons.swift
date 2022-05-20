@@ -13,8 +13,8 @@ struct QuitButtons: View {
 
     @State var showDeferView = false
 
-    @State var nudgeEventDate = Date()
-    @State var nudgeCustomEventDate = Date()
+    @State var nudgeEventDate = Utils().getCurrentDate()
+    @State var nudgeCustomEventDate = Utils().getCurrentDate()
 
     let buttonTextMinWidth: CGFloat = 35
 
@@ -60,7 +60,7 @@ struct QuitButtons: View {
                             }
                             if Utils().allow1HourDeferral() {
                                 Button {
-                                    nudgeEventDate = Date()
+                                    nudgeEventDate = Utils().getCurrentDate()
                                     nudgeDefaults.set(nudgeEventDate.addingTimeInterval(hourTimeInterval), forKey: "deferRunUntil")
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                     updateDeferralUI()
@@ -71,7 +71,7 @@ struct QuitButtons: View {
                             }
                             if Utils().allow24HourDeferral() {
                                 Button {
-                                    nudgeEventDate = Date()
+                                    nudgeEventDate = Utils().getCurrentDate()
                                     nudgeDefaults.set(nudgeEventDate.addingTimeInterval(dayTimeInterval), forKey: "deferRunUntil")
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                     updateDeferralUI()

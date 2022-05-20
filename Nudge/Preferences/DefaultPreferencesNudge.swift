@@ -49,7 +49,7 @@ let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
 var majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
 var majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
-var requiredInstallationDate = PrefsWrapper.requiredInstallationDate
+var requiredInstallationDate = Utils().getFormattedDate(date: PrefsWrapper.requiredInstallationDate)
 let requiredMinimumOSVersion = try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
 let requiredMinimumOSVersionTest = try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
 
