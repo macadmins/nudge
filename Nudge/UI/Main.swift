@@ -62,25 +62,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //        dnc.addObserver(forName: nil, object: nil, queue: nil) { notification in
 //            print("DistributedNotificationCenter: \(notification.name.rawValue), Object: \(notification)")
 //        }
-        
-        // TODO: Possible entry points for camera activity which don't seem to work
-        dnc.addObserver(
-            forName: NSNotification.Name("com.apple.camera.active"),
-            object: nil,
-            queue: .main
-        ) { notification in
-            utilsLog.info("\("Camera active", privacy: .public)")
-        }
-        dnc.addObserver(
-            forName: .init("com.apple.camera.active"),
-            object: nil,
-            queue: .main
-        ) { notification in
-            utilsLog.info("\("Camera active", privacy: .public)")
-        }
-        
-        // Observe screen locking. Maybe useful later
 
+        // Observe screen locking. Maybe useful later
         dnc.addObserver(
             forName: NSNotification.Name("com.apple.screenIsLocked"),
             object: nil,
@@ -315,8 +298,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         // Check to see if camera was turned off or on in the last x amount of minutes
-        if cameraReferralTime > 0 && !nudgeLogState.afterFirstRun {
-            LogReader().Show()
+        if logReferralTime > 0 && !nudgeLogState.afterFirstRun {
+            LogReader().cameraShow()
+            LogReader().screenSharingShow()
         }
         // Stream camera status from here on out
         LogReader().Stream()

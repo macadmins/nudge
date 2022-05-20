@@ -1,7 +1,8 @@
 {
   "optionalFeatures": {
-    "acceptableCameraUsage": false,
     "acceptableApplicationBundleIDs": [],
+    "acceptableCameraUsage": false,
+    "acceptableScreenSharingUsage": false,
     "aggressiveUserExperience": true,
     "aggressiveUserFullScreenExperience": true,
     "asynchronousSoftwareUpdate": true,
@@ -45,7 +46,6 @@
     "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
     "approachingRefreshCycle": 6000,
     "approachingWindowTime": 72,
-    "cameraReferralTime": 0,
     "elapsedRefreshCycle": 300,
     "gracePeriodInstallDelay": 23,
     "gracePeriodLaunchDelay": 1,
@@ -53,6 +53,7 @@
     "imminentRefreshCycle": 600,
     "imminentWindowTime": 24,
     "initialRefreshCycle": 18000,
+    "logReferralTime": 0,
     "maxRandomDelayInSeconds": 1200,
     "noTimers": false,
     "nudgeRefreshCycle": 60,

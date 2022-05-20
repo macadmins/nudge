@@ -95,6 +95,13 @@ func needToActivateNudge() -> Bool {
         return false
     }
 
+    // Don't nudge if screen sharing
+    if nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage {
+        let msg = "screen sharing is currently active"
+        uiLog.info("\(msg, privacy: .public)")
+        return false
+    }
+
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
         if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {

@@ -25,11 +25,13 @@ class NudgeLogger {
     }
 }
 
+// TODO: com.apple.donotdisturb with isScreenShared seems to cover Zoom, Google Meets via Chrome, QuickTime Player Recording and CMD+SHIFT+5 Recording.
+// TODO: This method does not seem to respect Google Meets tab or window sharing, probably because of what Chrome itself does here.
 class LogReader {
     func Stream() {
         let task = Process()
         task.launchPath = "/usr/bin/log"
-        task.arguments = ["stream", "--predicate", "subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\"", "--style", "ndjson"]
+        task.arguments = ["stream", "--predicate", "(subsystem contains \"com.apple.donotdisturb\" and composedMessage contains \"isScreenShared\") or (subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\")", "--style", "ndjson"]
 
         let pipe = Pipe()
         task.standardOutput = pipe
@@ -52,6 +54,12 @@ class LogReader {
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
                             nudgePrimaryState.cameraOn = false
                         }
+                        if eventMessage.contains("isScreenShared=1") {
+                            nudgePrimaryState.isScreenSharing = true
+                        }
+                        if eventMessage.contains("isScreenShared=0") {
+                            nudgePrimaryState.isScreenSharing = false
+                        }
                     }
                 } catch {}
                 outHandle.waitForDataInBackgroundAndNotify()
@@ -62,10 +70,10 @@ class LogReader {
         task.launch()
     }
 
-    func Show() {
+    func cameraShow() {
         let task = Process()
         task.launchPath = "/usr/bin/log"
-        task.arguments = ["show", "--last", "\(cameraReferralTime)m", "--predicate", "subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\"", "--style", "json"]
+        task.arguments = ["show", "--last", "\(logReferralTime)m", "--predicate", "subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\"", "--style", "json"]
 
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -106,6 +114,50 @@ class LogReader {
                 }
             } catch {}
         }
+    }
+    func screenSharingShow() {
+        let task = Process()
+        task.launchPath = "/usr/bin/log"
+        task.arguments = ["show", "--last", "\(logReferralTime)m", "--predicate", "subsystem contains \"com.apple.donotdisturb\" and composedMessage contains \"isScreenShared\"", "--style", "json"]
 
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+
+        task.standardOutput = outputPipe
+        task.standardError = errorPipe
+
+        do {
+            try task.run()
+        } catch {
+            let msg = "Error returning log show"
+            utilsLog.error("\(msg, privacy: .public)")
+        }
+
+        task.waitUntilExit()
+
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+
+        let error = String(decoding: errorData, as: UTF8.self)
+
+        if task.terminationStatus != 0 {
+            utilsLog.error("Error returning log show: \(error, privacy: .public)")
+        } else {
+            do {
+                let jsonResult: NSArray = try JSONSerialization.jsonObject(with: outputData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSArray
+                if let lastResult = jsonResult.lastObject as? NSDictionary {
+                    if let eventMessage : NSString = lastResult["eventMessage"] as? NSString {
+                        if eventMessage.contains("isScreenShared=1") {
+                            nudgePrimaryState.isScreenSharing = true
+                        }
+                        if eventMessage.contains("isScreenShared=0") {
+                            nudgePrimaryState.isScreenSharing = false
+                        }
+                    }
+                } else {
+                    utilsLog.info("No current camera activity")
+                }
+            } catch {}
+        }
     }
 }

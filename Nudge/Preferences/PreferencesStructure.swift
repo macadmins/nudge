@@ -60,6 +60,7 @@ extension NudgePreferences {
 struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs: [String]?
     var acceptableCameraUsage,
+        acceptableScreenSharingUsage,
         aggressiveUserExperience,
         aggressiveUserFullScreenExperience,
         asynchronousSoftwareUpdate,
@@ -91,6 +92,7 @@ extension OptionalFeatures {
     func with(
         acceptableApplicationBundleIDs: [String]?? = nil,
         acceptableCameraUsage: Bool?? = nil,
+        acceptableScreenSharingUsage: Bool?? = nil,
         aggressiveUserExperience: Bool?? = nil,
         aggressiveUserFullScreenExperience: Bool?? = nil,
         asynchronousSoftwareUpdate: Bool?? = nil,
@@ -103,6 +105,7 @@ extension OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
             acceptableCameraUsage: acceptableCameraUsage ?? self.acceptableCameraUsage,
+            acceptableScreenSharingUsage: acceptableScreenSharingUsage ?? self.acceptableScreenSharingUsage,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
             aggressiveUserFullScreenExperience: aggressiveUserFullScreenExperience ?? self.aggressiveUserFullScreenExperience,
             asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
@@ -259,9 +262,10 @@ extension AboutUpdateURL {
 struct UserExperience: Codable {
     var allowGracePeriods, allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
-    var cameraReferralTime, elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
+    var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
     var gracePeriodPath: String?
-    var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle, maxRandomDelayInSeconds: Int?
+    var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
+    var logReferralTime, maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
@@ -292,7 +296,6 @@ extension UserExperience {
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
-        cameraReferralTime: Int?? = nil,
         elapsedRefreshCycle: Int?? = nil,
         gracePeriodInstallDelay: Int?? = nil,
         gracePeriodLaunchDelay: Int?? = nil,
@@ -300,6 +303,7 @@ extension UserExperience {
         imminentRefreshCycle: Int?? = nil,
         imminentWindowTime: Int?? = nil,
         initialRefreshCycle: Int?? = nil,
+        logReferralTime: Int?? = nil,
         maxRandomDelayInSeconds: Int?? = nil,
         noTimers: Bool?? = nil,
         nudgeRefreshCycle: Int?? = nil,
@@ -312,7 +316,6 @@ extension UserExperience {
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
-            cameraReferralTime: cameraReferralTime ?? self.cameraReferralTime,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
             gracePeriodInstallDelay: gracePeriodInstallDelay ?? self.gracePeriodInstallDelay,
             gracePeriodLaunchDelay: gracePeriodLaunchDelay ?? self.gracePeriodLaunchDelay,
@@ -320,6 +323,7 @@ extension UserExperience {
             imminentRefreshCycle: imminentRefreshCycle ?? self.imminentRefreshCycle,
             imminentWindowTime: imminentWindowTime ?? self.imminentWindowTime,
             initialRefreshCycle: initialRefreshCycle ?? self.initialRefreshCycle,
+            logReferralTime: logReferralTime ?? self.logReferralTime,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,

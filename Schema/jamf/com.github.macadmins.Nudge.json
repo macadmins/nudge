@@ -50,6 +50,20 @@
                 }
               ]
             },
+            "acceptableScreenSharingUsage": {
+              "description": "When enabled, Nudge will not activate or re-activate when screen sharing is active.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
             "aggressiveUserExperience": {
               "description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
               "anyOf": [
@@ -497,25 +511,6 @@
                 }
               ]
             },
-            "cameraReferralTime": {
-              "description": "The amount of time in minutes Nudge will use to check for camera usage prior to Nudge launching. This has a CPU performance penalty for the initial launch of Nudge.",
-              "anyOf": [
-                {
-                  "title": "Not Configured",
-                  "type": "null"
-                },
-                {
-                  "title": "Configured",
-                  "default": 0,
-                  "type": "integer",
-                  "options": {
-                    "inputAttributes": {
-                      "placeholder": "0"
-                    }
-                  }
-                }
-              ]
-            },
             "elapsedRefreshCycle": {
               "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the `requiredInstallationDate` has expired.",
               "anyOf": [
@@ -644,6 +639,25 @@
                   "options": {
                     "inputAttributes": {
                       "placeholder": "18000"
+                    }
+                  }
+                }
+              ]
+            },
+            "logReferralTime": {
+              "description": "The amount of time in minutes Nudge will use to check for camera or screen sharing usage prior to Nudge launching. This has a CPU performance penalty for the initial launch of Nudge.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": 0,
+                  "type": "integer",
+                  "options": {
+                    "inputAttributes": {
+                      "placeholder": "0"
                     }
                   }
                 }
