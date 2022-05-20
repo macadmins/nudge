@@ -20,8 +20,7 @@ let softwareupdateDownloadLog = Logger(subsystem: bundleID, category: "softwareu
 
 class NudgeLogger {
     init() {
-        let msg = "Starting log events"
-        loggingLog.debug("\(msg, privacy: .public)")
+        loggingLog.debug("\("Starting log events", privacy: .public)")
     }
 }
 
@@ -125,8 +124,7 @@ class LogReader {
         do {
             try task.run()
         } catch {
-            let msg = "Error returning log show"
-            utilsLog.error("\(msg, privacy: .public)")
+            utilsLog.error("\("Error returning log show", privacy: .public)")
         }
 
         task.waitUntilExit()

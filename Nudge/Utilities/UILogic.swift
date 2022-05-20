@@ -11,27 +11,23 @@ import Foundation
 // Start doing a basic check
 func nudgeStartLogic() {
     if Utils().unitTestingEnabled() {
-        let msg = "App being ran in test mode"
-        uiLog.debug("\(msg, privacy: .public)")
+        uiLog.debug("\("App being ran in test mode", privacy: .public)")
         return
     }
 
     if Utils().simpleModeEnabled() {
-        let msg = "Device in simple mode"
-        uiLog.debug("\(msg, privacy: .public)")
+        uiLog.debug("\("Device in simple mode", privacy: .public)")
     }
 
     if Utils().demoModeEnabled() {
-        let msg = "Device in demo mode"
-        uiLog.debug("\(msg, privacy: .public)")
+        uiLog.debug("\("Device in demo mode", privacy: .public)")
         nudgePrimaryState.userDeferrals = 0
         nudgePrimaryState.userQuitDeferrals = 0
         return
     }
 
     if Utils().newNudgeEvent() {
-        let msg = "New Nudge event detected - resetting all deferral values"
-        uiLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\("New Nudge event detected - resetting all deferral values", privacy: .public)")
         Utils().logRequiredMinimumOSVersion()
         Utils().logUserDeferrals(resetCount: true)
         Utils().logUserQuitDeferrals(resetCount: true)
@@ -50,8 +46,7 @@ func nudgeStartLogic() {
         nudgePrimaryState.requireDualQuitButtons = true
     }
     if nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime > Utils().getCurrentDate() && !Utils().pastRequiredInstallationDate() {
-        let msg = "User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))"
-        uiLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))", privacy: .public)")
         Utils().exitNudge()
     }
     if Utils().fullyUpdated() {
@@ -60,25 +55,21 @@ func nudgeStartLogic() {
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             return
         } else {
-            let msg = "Device is fully updated"
-            uiLog.notice("\(msg, privacy: .public)")
+            uiLog.notice("\("Device is fully updated", privacy: .public)")
             Utils().exitNudge()
         }
     } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
-        let msg = "Device requires a minor update but enforceMinorUpdates is false"
-        uiLog.warning("\(msg, privacy: .public)")
+        uiLog.warning("\("Device requires a minor update but enforceMinorUpdates is false", privacy: .public)")
         Utils().exitNudge()
     }
 }
 
 func userHasClickedSecondaryQuitButton() {
-    let msg = "User clicked secondaryQuitButton"
-    uiLog.notice("\(msg, privacy: .public)")
+    uiLog.notice("\("User clicked secondaryQuitButton", privacy: .public)")
 }
 
 func userHasClickedDeferralQuitButton(deferralTime: Date) {
-    let msg = "User initiated a deferral: \(deferralTime)"
-    uiLog.notice("\(msg, privacy: .public)")
+    uiLog.notice("\("User initiated a deferral: \(deferralTime)", privacy: .public)")
 }
 
 func needToActivateNudge() -> Bool {
@@ -90,27 +81,23 @@ func needToActivateNudge() -> Bool {
     
     // Don't nudge if camera is on
     if nudgePrimaryState.cameraOn && acceptableCameraUsage {
-        let msg = "camera is currently on"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.info("\("Camera is currently on", privacy: .public)")
         return false
     }
 
     // Don't nudge if screen sharing
     if nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage {
-        let msg = "screen sharing is currently active"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.info("\("Screen sharing is currently active", privacy: .public)")
         return false
     }
 
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
         if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
-            let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) running in full screen and first launch"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.info("\("acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) running in full screen and first launch", privacy: .public)")
             return false
         } else {
-            let msg = "acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.info("\("acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
             return false
         }
     }
@@ -118,8 +105,7 @@ func needToActivateNudge() -> Bool {
     // Demo Mode should activate one time and then never again
     if Utils().demoModeEnabled() {
         if !nudgeLogState.afterFirstRun {
-            let msg = "Launching demo mode UI"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.info("\("Launching demo mode UI", privacy: .public)")
             nudgeLogState.afterFirstRun = true
             Utils().activateNudge()
             return true
@@ -141,8 +127,7 @@ func needToActivateNudge() -> Bool {
 
     // The first time the main timer controller hits we don't care
     if !nudgeLogState.afterFirstRun {
-        let msg = "Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.info("\("Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)", privacy: .public)")
         nudgeLogState.afterFirstRun = true
         nudgePrimaryState.lastRefreshTime = Date()
     }
@@ -155,16 +140,14 @@ func needToActivateNudge() -> Bool {
     
     if nudgePrimaryState.deferralCountPastThreshhold {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThreshhold {
-            let msg = "allowedDeferrals has been passed"
-            uiLog.warning("\(msg, privacy: .public)")
+            uiLog.warning("\("allowedDeferrals has been passed", privacy: .public)")
             nudgePrimaryState.hasLoggedDeferralCountPastThreshhold = true
         }
     }
     
     if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            let msg = "allowedDeferralsUntilForcedSecondaryQuitButton has been passed"
-            uiLog.warning("\(msg, privacy: .public)")
+            uiLog.warning("\("allowedDeferralsUntilForcedSecondaryQuitButton has been passed", privacy: .public)")
             nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
         }
     }
@@ -172,23 +155,20 @@ func needToActivateNudge() -> Bool {
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
-            let msg = "majorUpgradeApp is currently the frontmostApplication"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.info("\("majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
             return false
         }
     }
 
     if majorUpgradeBackupAppPathExists {
         if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
-            let msg = "majorUpgradeApp is currently the frontmostApplication"
-            uiLog.info("\(msg, privacy: .public)")
+            uiLog.info("\("majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
             return false
         }
     }
     
     if frontmostApplication?.bundleIdentifier != nil {
-        let msg = "\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication"
-        uiLog.info("\(msg, privacy: .public)")
+        uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
     }
 
     // If we get here, Nudge if not frontmostApplication

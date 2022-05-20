@@ -112,8 +112,7 @@ struct Utils {
         if !nudgeLogState.hasLoggedBundleMode {
             if bundleModeArgumentPassed {
                 nudgeLogState.hasLoggedBundleMode = true
-                let msg = "-bundle-mode argument passed"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.debug("\("-bundle-mode argument passed", privacy: .public)")
             }
         }
         return bundleModeArgumentPassed
@@ -149,8 +148,7 @@ struct Utils {
         let debugUIModeArgumentPassed = CommandLine.arguments.contains("-debug-ui-mode")
         if !nudgeLogState.afterFirstRun {
             if debugUIModeArgumentPassed {
-                let msg = "-debug-ui-mode argument passed"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.debug("\("-debug-ui-mode argument passed", privacy: .public)")
             }
         }
         return debugUIModeArgumentPassed
@@ -161,8 +159,7 @@ struct Utils {
         if !nudgeLogState.hasLoggedDemoMode {
             if demoModeArgumentPassed {
                 nudgeLogState.hasLoggedDemoMode = true
-                let msg = "-demo-mode argument passed"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.debug("\("-demo-mode argument passed", privacy: .public)")
             }
         }
         return demoModeArgumentPassed
@@ -173,16 +170,14 @@ struct Utils {
         if !nudgeLogState.hasLoggedUnitTestingMode {
             if demoModeArgumentPassed {
                 nudgeLogState.hasLoggedUnitTestingMode = true
-                let msg = "-unit-testing argument passed"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.debug("\("-unit-testing argument passed", privacy: .public)")
             }
         }
         return unitTestingArgumentPassed
     }
 
     func exitNudge() {
-        let msg = "Nudge is terminating due to condition met"
-        uiLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\("Nudge is terminating due to condition met", privacy: .public)")
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
@@ -192,8 +187,7 @@ struct Utils {
         if !nudgeLogState.hasLoggedScreenshotIconMode {
             if forceScreenShotIconMode {
                 nudgeLogState.hasLoggedScreenshotIconMode = true
-                let msg = "-force-screenshot-icon argument passed"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.debug("\("-force-screenshot-icon argument passed", privacy: .public)")
             }
         }
         return forceScreenShotIconMode
@@ -202,8 +196,7 @@ struct Utils {
     func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
-            let msg = "Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))"
-            utilsLog.notice("\(msg, privacy: .public)")
+            utilsLog.notice("\("Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))", privacy: .public)")
             return true
         } else {
             return false
@@ -249,17 +242,14 @@ struct Utils {
 
         let cpu_arch = type & 0xff // mask for architecture bits
         if cpu_arch == cpu_type_t(7){
-            let msg = "CPU Type is Intel"
-            utilsLog.debug("\(msg, privacy: .public)")
+            utilsLog.debug("\("CPU Type is Intel", privacy: .public)")
             return "Intel"
         }
         if cpu_arch == cpu_type_t(12){
-            let msg = "CPU Type is Apple Silicon"
-            utilsLog.debug("\(msg, privacy: .public)")
+            utilsLog.debug("\("CPU Type is Apple Silicon", privacy: .public)")
             return "Apple Silicon"
         }
-        let msg = "Unknown CPU Type"
-        utilsLog.debug("\(msg, privacy: .public)")
+        utilsLog.debug("\("Unknown CPU Type", privacy: .public)")
         return "unknown"
     }
 
@@ -335,8 +325,7 @@ struct Utils {
         }
         
         guard let fileURL = URL(string: url) else {
-            let msg = "Could not find on-disk json"
-            prefsJSONLog.error("\(msg, privacy: .public)")
+            prefsJSONLog.error("\("Could not find on-disk json", privacy: .public)")
             return nil
         }
         
@@ -462,13 +451,11 @@ struct Utils {
                     }
                     let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
                     let combinedGracePeriod = gracePeriodInstallDelay + gracePeriodLaunchDelay
-                    let msg = "allowGracePeriods is set to true"
-                    uiLog.info("\(msg, privacy: .public)")
+                    uiLog.info("\("allowGracePeriods is set to true", privacy: .public)")
                     if (currentDate > PrefsWrapper.requiredInstallationDate) || combinedGracePeriod > getNumberOfHoursRemaining(currentDate: currentDate) {
                         // Exit Scenario
                         if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
-                            let msg = "Device within gracePeriodLaunchDelay, exiting Nudge"
-                            uiLog.info("\(msg, privacy: .public)")
+                            uiLog.info("\("Device within gracePeriodLaunchDelay, exiting Nudge", privacy: .public)")
                             nudgePrimaryState.shouldExit = true
                         }
 
@@ -480,12 +467,10 @@ struct Utils {
                         }
                     }
                 } else {
-                    let msg = "allowGracePeriods is set to true, but gracePeriodPath creation date logic failed - bypassing allowGracePeriods logic"
-                    uiLog.error("\(msg, privacy: .public)")
+                    uiLog.error("\("allowGracePeriods is set to true, but gracePeriodPath creation date logic failed - bypassing allowGracePeriods logic", privacy: .public)")
                 }
             } else {
-               let msg = "allowGracePeriods is set to true, but gracePeriodPath was not found - bypassing allowGracePeriods logic"
-               uiLog.error("\(msg, privacy: .public)")
+               uiLog.error("\("allowGracePeriods is set to true, but gracePeriodPath was not found - bypassing allowGracePeriods logic", privacy: .public)")
            }
         }
         return PrefsWrapper.requiredInstallationDate
@@ -544,8 +529,7 @@ struct Utils {
         guard let url = URL(string: aboutUpdateURL) else {
             return
         }
-        let msg = "User clicked moreInfo button"
-        uiLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\("User clicked moreInfo button", privacy: .public)")
         NSWorkspace.shared.open(url)
     }
 
@@ -591,8 +575,7 @@ struct Utils {
         if !nudgeLogState.hasLoggedSimpleMode {
             if simpleModeEnabled {
                 nudgeLogState.hasLoggedSimpleMode = true
-                let msg = "-simple-mode argument passed"
-                uiLog.debug("\(msg, privacy: .public)")
+                uiLog.debug("\("-simple-mode argument passed", privacy: .public)")
             }
         }
         return simpleModeEnabled
@@ -606,8 +589,7 @@ struct Utils {
             if !actionButtonPath!.isEmpty {
                 url = actionButtonPath!
             } else {
-                let msg = "actionButtonPath contains empty string - actionButton will be unable to trigger any action."
-                prefsProfileLog.warning("\(msg, privacy: .public)")
+                prefsProfileLog.error("\("actionButtonPath contains empty string - actionButton will be unable to trigger any action.", privacy: .public)")
                 return
             }
         } else if requireMajorUpgrade() {
@@ -642,16 +624,14 @@ struct Utils {
                     do {
                         try task.run()
                     } catch {
-                        let msg = "Error running script"
-                        uiLog.error("\(msg, privacy: .public)")
+                        uiLog.error("\("Error running script", privacy: .public)")
                     }
                 })
             } else {
                 do {
                     try task.run()
                 } catch {
-                    let msg = "Error running script"
-                    uiLog.error("\(msg, privacy: .public)")
+                    uiLog.error("\("Error running script", privacy: .public)")
                 }
             }
         } else {
@@ -665,31 +645,26 @@ struct Utils {
         }
         
         if userClicked {
-            let msg = "User clicked updateDevice"
-            uiLog.notice("\(msg, privacy: .public)")
+            uiLog.notice("\("User clicked updateDevice", privacy: .public)")
         } else {
-            let msg = "Synthetically clicked updateDevice due to allowedDeferral count"
-            uiLog.notice("\(msg, privacy: .public)")
+            uiLog.notice("\("Synthetically clicked updateDevice due to allowedDeferral count", privacy: .public)")
         }
     }
 
     func userInitiatedExit() {
-        let msg = "User clicked primaryQuitButton"
-        uiLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\("User clicked primaryQuitButton", privacy: .public)")
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
 
     func userInitiatedDeviceInfo() {
-        let msg = "User clicked deviceInfo"
-        uiLog.notice("\(msg, privacy: .public)")
+        uiLog.notice("\("User clicked deviceInfo", privacy: .public)")
     }
 
     func versionArgumentPassed() -> Bool {
         let versionArgumentPassed = CommandLine.arguments.contains("-version")
         if versionArgumentPassed {
-            let msg = "-version argument passed"
-            uiLog.debug("\(msg, privacy: .public)")
+            uiLog.debug("\("-version argument passed", privacy: .public)")
         }
         return versionArgumentPassed
     }
