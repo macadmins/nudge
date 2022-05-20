@@ -75,19 +75,20 @@ func userHasClickedDeferralQuitButton(deferralTime: Date) {
 func needToActivateNudge() -> Bool {
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
+    let pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
 
     // Center Nudge
     Utils().centerNudge()
     
-    // Don't nudge if camera is on
-    if nudgePrimaryState.cameraOn && acceptableCameraUsage {
-        uiLog.info("\("Camera is currently on", privacy: .public)")
+    // Don't nudge if camera is on and prior to requiredInstallationDate
+    if (nudgePrimaryState.cameraOn && acceptableCameraUsage) && !pastRequiredInstallationDate {
+        uiLog.info("\("Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
         return false
     }
 
-    // Don't nudge if screen sharing
-    if nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage {
-        uiLog.info("\("Screen sharing is currently active", privacy: .public)")
+    // Don't nudge if screen sharing and prior to requiredInstallationDate
+    if (nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage) && !pastRequiredInstallationDate {
+        uiLog.info("\("Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
         return false
     }
 
