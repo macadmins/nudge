@@ -13,8 +13,7 @@ class SoftwareUpdate {
         task.launchPath = "/usr/sbin/softwareupdate"
         task.arguments = ["--list", "--all"]
 
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
+        let outputPipe = Pipe(), errorPipe = Pipe()
 
         task.standardOutput = outputPipe
         task.standardError = errorPipe
@@ -28,11 +27,9 @@ class SoftwareUpdate {
 
         task.waitUntilExit()
 
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
 
-        let output = String(decoding: outputData, as: UTF8.self)
-        let error = String(decoding: errorData, as: UTF8.self)
+        let output = String(decoding: outputData, as: UTF8.self), error = String(decoding: errorData, as: UTF8.self)
 
         if task.terminationStatus != 0 {
             softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
@@ -77,8 +74,7 @@ class SoftwareUpdate {
                 task.launchPath = "/usr/sbin/softwareupdate"
                 task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersion]
                 
-                let outputPipe = Pipe()
-                let errorPipe = Pipe()
+                let outputPipe = Pipe(), errorPipe = Pipe()
                 
                 task.standardOutput = outputPipe
                 task.standardError = errorPipe
@@ -92,11 +88,9 @@ class SoftwareUpdate {
                 
                 task.waitUntilExit()
                 
-                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-                let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
                 
-                let output = String(decoding: outputData, as: UTF8.self)
-                let _ = String(decoding: errorData, as: UTF8.self)
+                let output = String(decoding: outputData, as: UTF8.self), _ = String(decoding: errorData, as: UTF8.self)
                 
                 if task.terminationStatus != 0 {
                     softwareupdateDownloadLog.error("Error downloading software update: \(output, privacy: .public)")
@@ -132,8 +126,7 @@ class SoftwareUpdate {
                 task.launchPath = "/usr/sbin/softwareupdate"
                 task.arguments = ["--download", "\(updateLabel)"]
                 
-                let outputPipe = Pipe()
-                let errorPipe = Pipe()
+                let outputPipe = Pipe(), errorPipe = Pipe()
                 
                 task.standardOutput = outputPipe
                 task.standardError = errorPipe
@@ -147,11 +140,9 @@ class SoftwareUpdate {
                 
                 task.waitUntilExit()
                 
-                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-                let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
                 
-                let output = String(decoding: outputData, as: UTF8.self)
-                let error = String(decoding: errorData, as: UTF8.self)
+                let output = String(decoding: outputData, as: UTF8.self), error = String(decoding: errorData, as: UTF8.self)
                 
                 if task.terminationStatus != 0 {
                     softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")

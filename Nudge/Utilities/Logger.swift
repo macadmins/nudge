@@ -38,7 +38,7 @@ class LogReader {
         let outHandle = pipe.fileHandleForReading
         outHandle.waitForDataInBackgroundAndNotify()
 
-        NotificationCenter.default.addObserver(
+        nc.addObserver(
             forName: NSNotification.Name.NSFileHandleDataAvailable,
             object: outHandle, queue: nil)
         {
@@ -75,8 +75,7 @@ class LogReader {
         task.launchPath = "/usr/bin/log"
         task.arguments = ["show", "--last", "\(logReferralTime)m", "--predicate", "subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\"", "--style", "json"]
 
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
+        let outputPipe = Pipe(), errorPipe = Pipe()
 
         task.standardOutput = outputPipe
         task.standardError = errorPipe
@@ -84,14 +83,12 @@ class LogReader {
         do {
             try task.run()
         } catch {
-            let msg = "Error returning log show"
-            utilsLog.error("\(msg, privacy: .public)")
+            utilsLog.error("\("Error returning log show", privacy: .public)")
         }
 
         task.waitUntilExit()
 
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
 
         let error = String(decoding: errorData, as: UTF8.self)
 
@@ -120,8 +117,7 @@ class LogReader {
         task.launchPath = "/usr/bin/log"
         task.arguments = ["show", "--last", "\(logReferralTime)m", "--predicate", "subsystem contains \"com.apple.donotdisturb\" and composedMessage contains \"isScreenShared\"", "--style", "json"]
 
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
+        let outputPipe = Pipe(), errorPipe = Pipe()
 
         task.standardOutput = outputPipe
         task.standardError = errorPipe
@@ -135,8 +131,7 @@ class LogReader {
 
         task.waitUntilExit()
 
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
 
         let error = String(decoding: errorData, as: UTF8.self)
 
