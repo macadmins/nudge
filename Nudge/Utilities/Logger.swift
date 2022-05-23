@@ -48,15 +48,19 @@ class LogReader {
                     let jsonResult: NSDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                     if let eventMessage : NSString = jsonResult["eventMessage"] as? NSString {
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = On") {
+                            uiLog.notice("\("Camera was detected powering on", privacy: .public)")
                             nudgePrimaryState.cameraOn = true
                         }
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
+                            uiLog.notice("\("Camera was detected powering off", privacy: .public)")
                             nudgePrimaryState.cameraOn = false
                         }
                         if eventMessage.contains("isScreenShared=1") {
+                            uiLog.notice("\("Screen sharing was detected being enabled", privacy: .public)")
                             nudgePrimaryState.isScreenSharing = true
                         }
                         if eventMessage.contains("isScreenShared=0") {
+                            uiLog.notice("\("Screen sharing was detected being disabled", privacy: .public)")
                             nudgePrimaryState.isScreenSharing = false
                         }
                     }
@@ -99,9 +103,11 @@ class LogReader {
                 if let lastResult = jsonResult.lastObject as? NSDictionary {
                     if let eventMessage : NSString = lastResult["eventMessage"] as? NSString {
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = On") {
+                            uiLog.notice("\("Camera was detected as powered on prior to Nudge launching", privacy: .public)")
                             nudgePrimaryState.cameraOn = true
                         }
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
+                            uiLog.notice("\("Camera was detected as powered off prior to Nudge launching", privacy: .public)")
                             nudgePrimaryState.cameraOn = false
                         }
                     }
@@ -139,9 +145,11 @@ class LogReader {
                 if let lastResult = jsonResult.lastObject as? NSDictionary {
                     if let eventMessage : NSString = lastResult["eventMessage"] as? NSString {
                         if eventMessage.contains("isScreenShared=1") {
+                            uiLog.notice("\("Screen sharing was detected as enabled prior to Nudge launching", privacy: .public)")
                             nudgePrimaryState.isScreenSharing = true
                         }
                         if eventMessage.contains("isScreenShared=0") {
+                            uiLog.notice("\("Screen sharing was detected as disabled prior to Nudge launching", privacy: .public)")
                             nudgePrimaryState.isScreenSharing = false
                         }
                     }
