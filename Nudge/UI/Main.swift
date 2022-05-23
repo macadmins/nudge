@@ -235,10 +235,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if CommandLine.arguments.contains("-print-profile-config") {
             var nudgeProfileConfig = [String:Any]()
-            nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.array(forKey: "optionalFeatures") as? [[String:AnyObject]]
+            nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures") as? [String:AnyObject]
             nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]]
-            nudgeProfileConfig["userExperience"] = nudgeDefaults.array(forKey: "userExperience") as? [[String:AnyObject]]
-            nudgeProfileConfig["userInterface"] = nudgeDefaults.array(forKey: "userInterface") as? [[String:AnyObject]]
+            nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience") as? [String:AnyObject]
+            nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface") as? [String:AnyObject]
             if nudgeProfileConfig.isEmpty {
                 print("Could not find profile preferences!")
                 exit(1)
