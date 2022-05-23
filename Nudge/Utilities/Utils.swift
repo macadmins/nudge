@@ -466,7 +466,7 @@ struct Utils {
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
         if timerCycle != nudgePrimaryState.timerCycle {
-            utilsLog.info("Timer cycle: \(timerCycle, privacy: .public)")
+            uiLog.info("timerCycle: \(timerCycle, privacy: .public)")
             nudgePrimaryState.timerCycle = timerCycle
         }
         return timerCycle

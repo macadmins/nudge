@@ -80,13 +80,6 @@ func needToActivateNudge() -> Bool {
 
     // Center Nudge
     Utils().centerNudge()
-
-    // The first time the main timer controller hits we don't care
-    if !nudgeLogState.afterFirstRun {
-        uiLog.info("\("Initializing nudgeRefreshCycle: \(nudgeRefreshCycle)", privacy: .public)")
-        nudgeLogState.afterFirstRun = true
-        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-    }
     
     Utils().logUserSessionDeferrals()
     Utils().logUserDeferrals()
@@ -107,12 +100,50 @@ func needToActivateNudge() -> Bool {
         }
     }
     
+    // Print both controllers back to back
+    if !nudgeLogState.afterFirstRun {
+        uiLog.info("\("nudgeRefreshCycle: \(nudgeRefreshCycle)", privacy: .public)")
+    }
+    let timerController = Utils().getTimerController()
+    
     // Start to return true or false
+    // Demo Mode should activate one time and then never again
+    if Utils().demoModeEnabled() {
+        if nudgeLogState.afterFirstRun {
+            uiLog.info("\("Ignoring Nudge activation - Device is in demo mode", privacy: .public)")
+            nudgeLogState.afterFirstRun = true
+            return false
+        } else {
+            uiLog.notice("\("Nudge activating - Launching demo mode UI", privacy: .public)")
+            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
+            Utils().activateNudge()
+            return true
+        }
+    }
+    
+    if !nudgeLogState.afterFirstRun {
+        nudgeLogState.afterFirstRun = true
+    }
 
     // If noTimers is true, just bail
     if noTimers {
         uiLog.info("\("Ignoring Nudge activation - noTimers is set", privacy: .public)")
         return false
+    }
+    
+    // Don't nudge if major upgrade is frontmostApplication
+    if majorUpgradeAppPathExists {
+        if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
+            uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
+            return false
+        }
+    }
+
+    if majorUpgradeBackupAppPathExists {
+        if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
+            uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp (backup) is currently the frontmostApplication", privacy: .public)")
+            return false
+        }
     }
     
     // Don't nudge if camera is on and prior to requiredInstallationDate
@@ -126,7 +157,13 @@ func needToActivateNudge() -> Bool {
         uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
         return false
     }
-
+    
+    // Don't nudge if refresh timer hasn't passed threshold
+    if (timerController > Int((Utils().getCurrentDate().timeIntervalSince1970 - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))) && nudgeLogState.afterFirstLaunch  {
+        uiLog.info("\("Ignoring Nudge activation - Device is currently within current timer range", privacy: .public)")
+        return false
+    }
+    
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
         if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
@@ -134,40 +171,6 @@ func needToActivateNudge() -> Bool {
             return false
         } else {
             uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
-            return false
-        }
-    }
-    
-    // Demo Mode should activate one time and then never again
-    if Utils().demoModeEnabled() {
-        if nudgeLogState.afterFirstRun {
-            uiLog.info("\("Ignoring Nudge activation - Device is in demo mode", privacy: .public)")
-            return false
-        } else {
-            uiLog.notice("\("Nudge activating - Launching demo mode UI", privacy: .public)")
-            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-            Utils().activateNudge()
-            return true
-        }
-    }
-    
-    // Don't nudge if refresh timer hasn't passed threshold
-    if (Utils().getTimerController() > Int((Utils().getCurrentDate().timeIntervalSince1970 - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))) && nudgeLogState.afterFirstLaunch  {
-        uiLog.info("\("Ignoring Nudge activation - Device is currently within current timer range", privacy: .public)")
-        return false
-    }
-
-    // Don't nudge if major upgrade is frontmostApplication
-    if majorUpgradeAppPathExists {
-        if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
-            uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
-            return false
-        }
-    }
-
-    if majorUpgradeBackupAppPathExists {
-        if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
-            uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp (backup) is currently the frontmostApplication", privacy: .public)")
             return false
         }
     }
@@ -211,7 +214,6 @@ func needToActivateNudge() -> Bool {
         }
         
         nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-        
         return true
     }
     
