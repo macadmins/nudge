@@ -51,11 +51,7 @@ var unitTestingArgumentPassed = false
 
 struct Utils {
     func activateNudge() {
-        var msg = "Re-activating Nudge"
-        if demoModeEnabled() {
-            msg = "Activating Nudge"
-        }
-        utilsLog.info("\(msg, privacy: .public)")
+        utilsLog.info("\("Activating Nudge", privacy: .public)")
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
         NSApp.activate(ignoringOtherApps: true)
@@ -63,7 +59,7 @@ struct Utils {
         
         // load the blur background and send it to the back if we are past the required install date
         if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
-            uiLog.info("Enabling blurred background")
+            uiLog.info("\("Enabling blurred background", privacy: .public)")
             nudgePrimaryState.blurredBackground.close()
             nudgePrimaryState.blurredBackground.loadWindow()
             nudgePrimaryState.blurredBackground.showWindow(self)

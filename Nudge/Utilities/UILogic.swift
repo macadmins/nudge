@@ -80,60 +80,6 @@ func needToActivateNudge() -> Bool {
 
     // Center Nudge
     Utils().centerNudge()
-    
-    // Don't nudge if camera is on and prior to requiredInstallationDate
-    if (nudgePrimaryState.cameraOn && acceptableCameraUsage) && !pastRequiredInstallationDate {
-        uiLog.info("\("Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
-        nudgeLogState.afterFirstRun = true
-        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-        return false
-    }
-
-    // Don't nudge if screen sharing and prior to requiredInstallationDate
-    if (nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage) && !pastRequiredInstallationDate {
-        uiLog.info("\("Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
-        nudgeLogState.afterFirstRun = true
-        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-        return false
-    }
-
-    // Don't nudge if acceptable apps are frontmostApplication
-    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
-        if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
-            uiLog.info("\("acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) running in full screen and first launch", privacy: .public)")
-            nudgeLogState.afterFirstRun = true
-            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-            return false
-        } else {
-            uiLog.info("\("acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
-            nudgeLogState.afterFirstRun = true
-            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-            return false
-        }
-    }
-    
-    // Demo Mode should activate one time and then never again
-    if Utils().demoModeEnabled() {
-        if !nudgeLogState.afterFirstRun {
-            uiLog.info("\("Launching demo mode UI", privacy: .public)")
-            nudgeLogState.afterFirstRun = true
-            Utils().activateNudge()
-            return true
-        } else {
-            return false
-        }
-    }
-
-    Utils().logUserSessionDeferrals()
-    Utils().logUserDeferrals()
-
-    // If noTimers is true, just bail
-    if noTimers {
-        return false
-    }
-
-    let currentTime = Utils().getCurrentDate().timeIntervalSince1970
-    let timeDiff = Int((currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))
 
     // The first time the main timer controller hits we don't care
     if !nudgeLogState.afterFirstRun {
@@ -141,49 +87,97 @@ func needToActivateNudge() -> Bool {
         nudgeLogState.afterFirstRun = true
         nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
     }
-
-    if Utils().getTimerController() > timeDiff  {
-        return false
-    }
+    
+    Utils().logUserSessionDeferrals()
+    Utils().logUserDeferrals()
     
     nudgePrimaryState.deferralCountPastThreshhold = nudgePrimaryState.userDeferrals > allowedDeferrals
     
     if nudgePrimaryState.deferralCountPastThreshhold {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThreshhold {
-            uiLog.warning("\("allowedDeferrals has been passed", privacy: .public)")
+            uiLog.notice("\("allowedDeferrals has been passed", privacy: .public)")
             nudgePrimaryState.hasLoggedDeferralCountPastThreshhold = true
         }
     }
     
     if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            uiLog.warning("\("allowedDeferralsUntilForcedSecondaryQuitButton has been passed", privacy: .public)")
+            uiLog.notice("\("allowedDeferralsUntilForcedSecondaryQuitButton has been passed", privacy: .public)")
             nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
         }
+    }
+    
+    // Start to return true or false
+
+    // If noTimers is true, just bail
+    if noTimers {
+        uiLog.info("\("Ignoring Nudge activation - noTimers is set", privacy: .public)")
+        return false
+    }
+    
+    // Don't nudge if camera is on and prior to requiredInstallationDate
+    if (nudgePrimaryState.cameraOn && acceptableCameraUsage) && !pastRequiredInstallationDate {
+        uiLog.info("\("Ignoring Nudge activation - Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
+        return false
+    }
+
+    // Don't nudge if screen sharing and prior to requiredInstallationDate
+    if (nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage) && !pastRequiredInstallationDate {
+        uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
+        return false
+    }
+
+    // Don't nudge if acceptable apps are frontmostApplication
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
+        if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
+            uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is running in full screen during initial Nudge launch", privacy: .public)")
+            return false
+        } else {
+            uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
+            return false
+        }
+    }
+    
+    // Demo Mode should activate one time and then never again
+    if Utils().demoModeEnabled() {
+        if nudgeLogState.afterFirstRun {
+            uiLog.info("\("Ignoring Nudge activation - Device is in demo mode", privacy: .public)")
+            return false
+        } else {
+            uiLog.notice("\("Nudge activating - Launching demo mode UI", privacy: .public)")
+            nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
+            Utils().activateNudge()
+            return true
+        }
+    }
+    
+    // Don't nudge if refresh timer hasn't passed threshold
+    if (Utils().getTimerController() > Int((Utils().getCurrentDate().timeIntervalSince1970 - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))) && nudgeLogState.afterFirstLaunch  {
+        uiLog.info("\("Ignoring Nudge activation - Device is currently within current timer range", privacy: .public)")
+        return false
     }
 
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
-            uiLog.info("\("majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
+            uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
             return false
         }
     }
 
     if majorUpgradeBackupAppPathExists {
         if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
-            uiLog.info("\("majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
+            uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp (backup) is currently the frontmostApplication", privacy: .public)")
             return false
         }
     }
     
-    if frontmostApplication?.bundleIdentifier != nil {
-        uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
-    }
-
     // If we get here, Nudge if not frontmostApplication
     if !NSApplication.shared.isActive {
-        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
+        if frontmostApplication?.bundleIdentifier != nil {
+            uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
+        }
+    
         if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
             // Loop through all the running applications and hide them
             for runningApplication in runningApplications {
@@ -201,6 +195,7 @@ func needToActivateNudge() -> Bool {
                 if appName == "com.github.macadmins.Nudge" {
                     continue
                 }
+
                 // Taken from nudge-python as there was a race condition with NSWorkspace
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
                     uiLog.info("\("Attempting to hide \(appName)", privacy: .public)")
@@ -214,8 +209,14 @@ func needToActivateNudge() -> Bool {
         } else {
             Utils().activateNudge()
         }
+        
+        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
+        
         return true
     }
+    
+    // If we get here our logic didn't trigger
+    uiLog.info("\("Nudge re-activation logic failed and got to end of function", privacy: .public)")
     return false
 }
 
