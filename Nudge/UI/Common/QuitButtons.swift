@@ -52,7 +52,7 @@ struct QuitButtons: View {
                     if allowUserQuitDeferrals {
                         Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
                             Button {
-                                nudgeDefaults.set(nudgeEventDate, forKey: "deferRunUntil")
+                                Utils().setDeferralTime(deferralTime: nudgeEventDate)
                                 updateDeferralUI()
                             } label: {
                                 Text(primaryQuitButtonText)
@@ -61,7 +61,7 @@ struct QuitButtons: View {
                             if Utils().allow1HourDeferral() {
                                 Button {
                                     nudgeEventDate = Utils().getCurrentDate()
-                                    nudgeDefaults.set(nudgeEventDate.addingTimeInterval(hourTimeInterval), forKey: "deferRunUntil")
+                                    Utils().setDeferralTime(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                     updateDeferralUI()
                                 } label: {
@@ -72,7 +72,7 @@ struct QuitButtons: View {
                             if Utils().allow24HourDeferral() {
                                 Button {
                                     nudgeEventDate = Utils().getCurrentDate()
-                                    nudgeDefaults.set(nudgeEventDate.addingTimeInterval(dayTimeInterval), forKey: "deferRunUntil")
+                                    Utils().setDeferralTime(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                     updateDeferralUI()
                                 } label: {

@@ -59,7 +59,7 @@ struct DeferView: View {
             Divider()
             
             Button {
-                nudgeDefaults.set(nudgeCustomEventDate, forKey: "deferRunUntil")
+                Utils().setDeferralTime(deferralTime: nudgeCustomEventDate)
                 userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
                 viewObserved.shouldExit = true
                 viewObserved.userQuitDeferrals += 1

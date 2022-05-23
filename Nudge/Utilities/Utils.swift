@@ -613,6 +613,13 @@ struct Utils {
         return requireMajorUpdate
     }
 
+    func setDeferralTime(deferralTime: Date) {
+        if demoModeEnabled() {
+            return
+        }
+        nudgeDefaults.set(deferralTime, forKey: "deferRunUntil")
+    }
+
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
         if !nudgeLogState.hasLoggedSimpleMode {
