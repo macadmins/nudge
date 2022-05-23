@@ -117,20 +117,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         utilsLog.info("\("Application launched", privacy: .public)")
-        if notification.name == NSWorkspace.didLaunchApplicationNotification {
-            for runningApplication in NSWorkspace.shared.runningApplications {
-                let appBundleID = runningApplication.bundleIdentifier ?? ""
-                let appName = runningApplication.localizedName ?? ""
-                if appBundleID == "com.github.macadmins.Nudge" {
-                    continue
-                }
-                if blockedApplicationBundleIDs.contains(appBundleID) {
-                    utilsLog.info("\("Found \(appName), terminating application", privacy: .public)")
-                    scheduleLocal(applicationIdentifier: appName)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
-                        runningApplication.forceTerminate()
-                    })
-                }
+        for runningApplication in NSWorkspace.shared.runningApplications {
+            let appBundleID = runningApplication.bundleIdentifier ?? ""
+            let appName = runningApplication.localizedName ?? ""
+            if appBundleID == "com.github.macadmins.Nudge" {
+                continue
+            }
+            if blockedApplicationBundleIDs.contains(appBundleID) {
+                utilsLog.info("\("Found \(appName), terminating application", privacy: .public)")
+                scheduleLocal(applicationIdentifier: appName)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
+                    runningApplication.forceTerminate()
+                })
             }
         }
     }
