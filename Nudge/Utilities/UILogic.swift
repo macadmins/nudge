@@ -9,20 +9,19 @@ import AppKit
 import Foundation
 import IOKit.pwr_mgt
 
-//class ADMARDConfig {
-//    static let rawType = NSClassFromString("ADMARDConfig") as! NSObject.Type
-//    let rawValue: NSObject
-//    
-//    init() {
-//        self.rawValue = Self.rawType.init() as! NSObject
-//    }
-//    
-//    required init(rawValue: NSObject) {
-//        guard rawValue.isKind(of: Self.rawType) else { fatalError() }
-//        self.rawValue = rawValue
-//    }
-//}
-
+class DNDConfig {
+    static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as! NSObject.Type
+    let rawValue: NSObject
+    
+    init() {
+        self.rawValue = Self.rawType.init() as! NSObject
+    }
+    
+    required init(rawValue: NSObject) {
+        guard rawValue.isKind(of: Self.rawType) else { fatalError() }
+        self.rawValue = rawValue
+    }
+}
 
 // Start doing a basic check
 func nudgeStartLogic() {
@@ -93,6 +92,10 @@ func needToActivateNudge() -> Bool {
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
     let pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
+    
+//    // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
+//    Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")!.load()
+//    print(DNDConfig().rawValue.value(forKey: "isScreenShared"))
 
     // Center Nudge
     Utils().centerNudge()
@@ -176,9 +179,6 @@ func needToActivateNudge() -> Bool {
 
     // Don't nudge if assertions are set and prior to requiredInstallationDate
     if acceptableAssertionUsage && !pastRequiredInstallationDate {
-        // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
-//        Bundle(path: "/System/Library/PrivateFrameworks/SystemAdministration.framework")!.load()
-//        print(ADMARDConfig().rawValue.value(forKey: "isScreenSharingOn"))
         // Credit to https://github.com/francescofact/DualDimmer/blob/main/DualDimmer/Worker.swift
         var assertions: Unmanaged<CFDictionary>?
         if IOPMCopyAssertionsByProcess(&assertions) != kIOReturnSuccess {
