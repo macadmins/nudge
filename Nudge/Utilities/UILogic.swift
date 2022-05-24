@@ -7,6 +7,22 @@
 
 import AppKit
 import Foundation
+import IOKit.pwr_mgt
+
+//class ADMARDConfig {
+//    static let rawType = NSClassFromString("ADMARDConfig") as! NSObject.Type
+//    let rawValue: NSObject
+//    
+//    init() {
+//        self.rawValue = Self.rawType.init() as! NSObject
+//    }
+//    
+//    required init(rawValue: NSObject) {
+//        guard rawValue.isKind(of: Self.rawType) else { fatalError() }
+//        self.rawValue = rawValue
+//    }
+//}
+
 
 // Start doing a basic check
 func nudgeStartLogic() {
@@ -156,6 +172,31 @@ func needToActivateNudge() -> Bool {
     if (nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage) && !pastRequiredInstallationDate {
         uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
         return false
+    }
+
+    // Don't nudge if assertions are set and prior to requiredInstallationDate
+    if acceptableAssertionUsage && !pastRequiredInstallationDate {
+        // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
+//        Bundle(path: "/System/Library/PrivateFrameworks/SystemAdministration.framework")!.load()
+//        print(ADMARDConfig().rawValue.value(forKey: "isScreenSharingOn"))
+        // Credit to https://github.com/francescofact/DualDimmer/blob/main/DualDimmer/Worker.swift
+        var assertions: Unmanaged<CFDictionary>?
+        if IOPMCopyAssertionsByProcess(&assertions) != kIOReturnSuccess {
+            uiLog.info("\("Could not assess assertions", privacy: .public)")
+            return true
+        }
+        let retainedAssertions = assertions?.takeRetainedValue()
+        for assertion in retainedAssertions.unsafelyUnwrapped as NSDictionary{
+            let assertionValues = (assertion.value as? NSArray).unsafelyUnwrapped
+            for value in assertionValues as! [NSDictionary]{
+                let processName = value["Process Name"] as? String ?? ""
+                let assertionType = value["AssertionTrueType"] as? String ?? ""
+                if acceptableAssertionApplicationNames.contains(processName) {
+                    uiLog.info("\("Ignoring Nudge activation - Assertion \(assertionType) is set for \(processName)", privacy: .public)")
+                    return false
+                }
+            }
+        }
     }
     
     // Don't nudge if refresh timer hasn't passed threshold

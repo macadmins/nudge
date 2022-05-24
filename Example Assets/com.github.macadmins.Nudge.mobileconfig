@@ -23,6 +23,10 @@
         <dict>
           <key>acceptableApplicationBundleIDs</key>
           <array/>
+          <key>acceptableAssertionApplicationNames</key>
+          <array/>
+          <key>acceptableAssertionUsage</key>
+          <false/>
           <key>acceptableCameraUsage</key>
           <false/>
           <key>acceptableScreenSharingUsage</key>

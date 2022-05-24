@@ -1,5 +1,12 @@
 {
   "optionalFeatures": {
+    "acceptableAssertionApplicationNames": [
+        "zoom.us",
+        "Meeting Center",
+        "Google Chrome",
+        "Safari"
+    ],
+    "acceptableAssertionUsage": true,
     "acceptableCameraUsage": true,
     "acceptableScreenSharingUsage": true,
     "attemptToBlockApplicationLaunches": true,

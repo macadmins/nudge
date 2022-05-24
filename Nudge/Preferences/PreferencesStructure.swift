@@ -58,8 +58,9 @@ extension NudgePreferences {
 
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
-    var acceptableApplicationBundleIDs: [String]?
-    var acceptableCameraUsage,
+    var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
+    var acceptableAssertionUsage,
+        acceptableCameraUsage,
         acceptableScreenSharingUsage,
         aggressiveUserExperience,
         aggressiveUserFullScreenExperience,
@@ -91,6 +92,8 @@ extension OptionalFeatures {
 
     func with(
         acceptableApplicationBundleIDs: [String]?? = nil,
+        acceptableAssertionApplicationNames: [String]?? = nil,
+        acceptableAssertionUsage: Bool?? = nil,
         acceptableCameraUsage: Bool?? = nil,
         acceptableScreenSharingUsage: Bool?? = nil,
         aggressiveUserExperience: Bool?? = nil,
@@ -104,6 +107,8 @@ extension OptionalFeatures {
     ) -> OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
+            acceptableAssertionApplicationNames: acceptableAssertionApplicationNames ?? self.acceptableAssertionApplicationNames,
+            acceptableAssertionUsage: acceptableAssertionUsage ?? self.acceptableAssertionUsage,
             acceptableCameraUsage: acceptableCameraUsage ?? self.acceptableCameraUsage,
             acceptableScreenSharingUsage: acceptableScreenSharingUsage ?? self.acceptableScreenSharingUsage,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,

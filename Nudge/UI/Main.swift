@@ -7,6 +7,7 @@
 
 import UserNotifications
 import SwiftUI
+
 let windowDelegate = AppDelegate.WindowDelegate()
 let dnc = DistributedNotificationCenter.default()
 let nc = NotificationCenter.default

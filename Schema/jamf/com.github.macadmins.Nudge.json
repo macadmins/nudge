@@ -36,6 +36,42 @@
                 }
               ]
             },
+            "acceptableAssertionApplicationNames": {
+              "description": "The application names using assertions which Nudge allows without taking focus. (You can specify one or more applications. To find the names please run /usr/bin/pmset -g assertions in terminal while the application is open and running)",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "type": "array",
+                  "items": {
+                    "options": {
+                      "inputAttributes": {
+                        "placeholder": "zoom.us"
+                      }
+                    },
+                    "type": "string",
+                    "title": "acceptableAssertionApplicationNames"
+                  }
+                }
+              ]
+            },
+            "acceptableAssertionUsage": {
+              "description": "When enabled, Nudge will not activate or re-activate when assertions are currently set.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
             "acceptableCameraUsage": {
               "description": "When enabled, Nudge will not activate or re-activate when the camera is on.",
               "anyOf": [
