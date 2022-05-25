@@ -680,25 +680,6 @@
                 }
               ]
             },
-            "logReferralTime": {
-              "description": "The amount of time in minutes Nudge will use to check for camera or screen sharing usage prior to Nudge launching. This has a CPU performance penalty for the initial launch of Nudge.",
-              "anyOf": [
-                {
-                  "title": "Not Configured",
-                  "type": "null"
-                },
-                {
-                  "title": "Configured",
-                  "default": 0,
-                  "type": "integer",
-                  "options": {
-                    "inputAttributes": {
-                      "placeholder": "0"
-                    }
-                  }
-                }
-              ]
-            },
             "maxRandomDelayInSeconds": {
               "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling `randomDelay`.",
               "anyOf": [

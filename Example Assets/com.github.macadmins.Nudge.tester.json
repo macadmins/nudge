@@ -25,7 +25,6 @@
   ],
   "userExperience": {
     "elapsedRefreshCycle": 10,
-    "logReferralTime": 5,
     "nudgeRefreshCycle": 5,
     "randomDelay": false
   }

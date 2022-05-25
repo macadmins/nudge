@@ -118,8 +118,6 @@
           <integer>24</integer>
           <key>initialRefreshCycle</key>
           <integer>18000</integer>
-          <key>logReferralTime</key>
-          <integer>0</integer>
           <key>maxRandomDelayInSeconds</key>
           <integer>1200</integer>
           <key>noTimers</key>

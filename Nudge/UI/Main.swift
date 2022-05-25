@@ -282,13 +282,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
             sleep(UInt32(randomDelaySeconds))
         }
-        
-        // Check to see if camera was turned off or on in the last x amount of minutes
-        if logReferralTime > 0 && !nudgeLogState.afterFirstRun {
-            LogReader().cameraShow()
-        }
-        // Stream camera status from here on out
-        LogReader().Stream()
 
         self.runSoftwareUpdate()
         if Utils().requireMajorUpgrade() {

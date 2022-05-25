@@ -269,8 +269,7 @@ struct UserExperience: Codable {
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
     var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
     var gracePeriodPath: String?
-    var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
-    var logReferralTime, maxRandomDelayInSeconds: Int?
+    var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle, maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
@@ -308,7 +307,6 @@ extension UserExperience {
         imminentRefreshCycle: Int?? = nil,
         imminentWindowTime: Int?? = nil,
         initialRefreshCycle: Int?? = nil,
-        logReferralTime: Int?? = nil,
         maxRandomDelayInSeconds: Int?? = nil,
         noTimers: Bool?? = nil,
         nudgeRefreshCycle: Int?? = nil,
@@ -328,7 +326,6 @@ extension UserExperience {
             imminentRefreshCycle: imminentRefreshCycle ?? self.imminentRefreshCycle,
             imminentWindowTime: imminentWindowTime ?? self.imminentWindowTime,
             initialRefreshCycle: initialRefreshCycle ?? self.initialRefreshCycle,
-            logReferralTime: logReferralTime ?? self.logReferralTime,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,

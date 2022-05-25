@@ -54,7 +54,6 @@
     "imminentRefreshCycle": 600,
     "imminentWindowTime": 24,
     "initialRefreshCycle": 18000,
-    "logReferralTime": 0,
     "maxRandomDelayInSeconds": 1200,
     "noTimers": false,
     "nudgeRefreshCycle": 60,

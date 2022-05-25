@@ -168,9 +168,13 @@ func needToActivateNudge() -> Bool {
     }
     
     // Don't nudge if camera is on and prior to requiredInstallationDate
-    if (nudgePrimaryState.cameraOn && acceptableCameraUsage) && !pastRequiredInstallationDate {
-        uiLog.info("\("Ignoring Nudge activation - Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
-        return false
+    if acceptableCameraUsage && !pastRequiredInstallationDate {
+        for camera in cameras {
+            if camera.isOn {
+                uiLog.info("\("Ignoring Nudge activation - Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
+                return false
+            }
+        }
     }
 
     // Don't nudge if screen sharing and prior to requiredInstallationDate

@@ -12,7 +12,6 @@ import SwiftUI
 
 class ViewState: ObservableObject {
     @Published var allowButtons = true
-    @Published var cameraOn = false
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
