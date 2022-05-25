@@ -86,7 +86,7 @@ fi
 /bin/mkdir -p "$NUDGE_PKG_PATH/payload/Applications/Utilities"
 /bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
-/bin/mv "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
 /bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
 
 # Download specific version of munki-pkg
@@ -227,7 +227,7 @@ fi
 /bin/mkdir -p "$SUITE_PKG_PATH/payload/Library/LaunchDaemons"
 /bin/mkdir -p "$SUITE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$SUITE_PKG_PATH"
-/bin/mv "${BUILDSDIR}/Release/Nudge.app" "$SUITE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$SUITE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
 /bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$SUITE_PKG_PATH/scripts/preinstall"
 echo "Moving LaunchAgent to payload folder"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$SUITE_PKG_PATH/payload/Library/LaunchAgents"
