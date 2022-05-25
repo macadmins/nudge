@@ -98,6 +98,16 @@ jobs:
         asset_name: Nudge_Logger-1.0.1.pkg
         asset_content_type: application/x-newton-compatible-pkg
 
+    - name: Upload Signed Package Release Asset (Suite)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
+        asset_path: ./outputs/Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
+        asset_name: Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
+        asset_content_type: application/x-newton-compatible-pkg
+
     - name: Upload packages
       uses: actions/upload-artifact@v1
       with:
