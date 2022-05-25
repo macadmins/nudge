@@ -50,7 +50,10 @@ extension String {
 var demoModeArgumentPassed = false
 var unitTestingArgumentPassed = false
 
+// https://stackoverflow.com/questions/37470201/how-can-i-tell-if-the-camera-is-in-use-by-another-process
+// led me to https://github.com/antonfisher/go-media-devices-state/blob/main/pkg/camera/camera_darwin.mm
 // Complete credit to https://github.com/ttimpe/camera-usage-detector-mac/blob/845df180f9d19463e8fd382277e2f61d88ca7d5d/CameraUsage/CameraUsageController.swift
+// kCMIODevicePropertyDeviceIsRunningSomewhere is the key here
 struct Camera {
     var id: CMIOObjectID
     var name: String? {
