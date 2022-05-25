@@ -215,3 +215,53 @@ else
   # Move the signed pkg
   /bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" "$OUTPUTSDIR"
 fi
+
+# Create the Suite package
+echo "Moving Nudge.app to payload folder"
+SUITE_PKG_PATH="$TOOLSDIR/NudgePkgSuite"
+if [ -e $SUITE_PKG_PATH ]; then
+  /bin/rm -rf $SUITE_PKG_PATH
+fi
+/bin/mkdir -p "$SUITE_PKG_PATH/payload/Applications/Utilities"
+/bin/mkdir -p "$SUITE_PKG_PATH/payload/Library/LaunchAgents"
+/bin/mkdir -p "$SUITE_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/mkdir -p "$SUITE_PKG_PATH/scripts"
+/usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$SUITE_PKG_PATH"
+/bin/mv "${BUILDSDIR}/Release/Nudge.app" "$SUITE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$SUITE_PKG_PATH/scripts/preinstall"
+echo "Moving LaunchAgent to payload folder"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$SUITE_PKG_PATH/payload/Library/LaunchAgents"
+echo "Moving LaunchDaemon to logging payload folder"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$SUITE_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-suite" "$SUITE_PKG_PATH/scripts/postinstall"
+
+# Create the json file for signed munkipkg Nudge Suite pkg
+/bin/cat << SIGNED_JSONFILE > "$SUITE_PKG_PATH/build-info.json"
+{
+  "ownership": "recommended",
+  "suppress_bundle_relocation": true,
+  "identifier": "com.github.macadmins.Nudge.Suite",
+  "postinstall_action": "none",
+  "distribution_style": true,
+  "version": "$AUTOMATED_NUDGE_BUILD",
+  "name": "Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg",
+  "install_location": "/",
+  "signing_info": {
+    "identity": "$SIGNING_IDENTITY",
+    "timestamp": true
+  }
+}
+SIGNED_JSONFILE
+
+# Create the signed Nudge Suite pkg
+"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$SUITE_PKG_PATH"
+PKG_RESULT="$?"
+if [ "${PKG_RESULT}" != "0" ]; then
+  echo "Could not sign package: ${PKG_RESULT}" 1>&2
+else
+  # Notarize Nudge Suite package
+  $XCODE_NOTARY_PATH submit "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+  $XCODE_STAPLER_PATH staple "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg"
+  # Move the Nudge Suite signed/notarized pkg
+  /bin/mv "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
+fi
