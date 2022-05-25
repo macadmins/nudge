@@ -30,7 +30,7 @@ class LogReader {
     func Stream() {
         let task = Process()
         task.launchPath = "/usr/bin/log"
-        task.arguments = ["stream", "--predicate", "(subsystem contains \"com.apple.donotdisturb\" and composedMessage contains \"isScreenShared\") or (subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\")", "--style", "ndjson"]
+        task.arguments = ["stream", "--predicate", "(subsystem contains \"com.apple.UVCExtension\" and composedMessage contains \"Post PowerLog\" OR eventMessage contains \"Post event kCameraStream\")", "--style", "ndjson"]
 
         let pipe = Pipe()
         task.standardOutput = pipe
@@ -54,14 +54,6 @@ class LogReader {
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
                             uiLog.notice("\("Camera was detected powering off", privacy: .public)")
                             nudgePrimaryState.cameraOn = false
-                        }
-                        if eventMessage.contains("isScreenShared=1") {
-                            uiLog.notice("\("Screen sharing was detected being enabled", privacy: .public)")
-                            nudgePrimaryState.isScreenSharing = true
-                        }
-                        if eventMessage.contains("isScreenShared=0") {
-                            uiLog.notice("\("Screen sharing was detected being disabled", privacy: .public)")
-                            nudgePrimaryState.isScreenSharing = false
                         }
                     }
                 } catch {}
@@ -109,48 +101,6 @@ class LogReader {
                         if eventMessage.contains("\"VDCAssistant_Power_State\" = Off") {
                             uiLog.notice("\("Camera was detected as powered off prior to Nudge launching", privacy: .public)")
                             nudgePrimaryState.cameraOn = false
-                        }
-                    }
-                }
-            } catch {}
-        }
-    }
-    func screenSharingShow() {
-        let task = Process()
-        task.launchPath = "/usr/bin/log"
-        task.arguments = ["show", "--last", "\(logReferralTime)m", "--predicate", "subsystem contains \"com.apple.donotdisturb\" and composedMessage contains \"isScreenShared\"", "--style", "json"]
-
-        let outputPipe = Pipe(), errorPipe = Pipe()
-
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
-
-        do {
-            try task.run()
-        } catch {
-            utilsLog.error("\("Error returning log show", privacy: .public)")
-        }
-
-        task.waitUntilExit()
-
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-
-        let error = String(decoding: errorData, as: UTF8.self)
-
-        if task.terminationStatus != 0 {
-            utilsLog.error("Error returning log show: \(error, privacy: .public)")
-        } else {
-            do {
-                let jsonResult: NSArray = try JSONSerialization.jsonObject(with: outputData, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSArray
-                if let lastResult = jsonResult.lastObject as? NSDictionary {
-                    if let eventMessage : NSString = lastResult["eventMessage"] as? NSString {
-                        if eventMessage.contains("isScreenShared=1") {
-                            uiLog.notice("\("Screen sharing was detected as enabled prior to Nudge launching", privacy: .public)")
-                            nudgePrimaryState.isScreenSharing = true
-                        }
-                        if eventMessage.contains("isScreenShared=0") {
-                            uiLog.notice("\("Screen sharing was detected as disabled prior to Nudge launching", privacy: .public)")
-                            nudgePrimaryState.isScreenSharing = false
                         }
                     }
                 }

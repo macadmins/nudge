@@ -286,7 +286,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Check to see if camera was turned off or on in the last x amount of minutes
         if logReferralTime > 0 && !nudgeLogState.afterFirstRun {
             LogReader().cameraShow()
-            LogReader().screenSharingShow()
         }
         // Stream camera status from here on out
         LogReader().Stream()

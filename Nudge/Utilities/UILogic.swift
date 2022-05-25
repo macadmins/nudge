@@ -7,14 +7,17 @@
 
 import AppKit
 import Foundation
-import IOKit.pwr_mgt
+import IOKit.pwr_mgt // Asertions
+
+// Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
+let DNDServer = Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")?.load() ?? false
 
 class DNDConfig {
     static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as! NSObject.Type
     let rawValue: NSObject
     
     init() {
-        self.rawValue = Self.rawType.init() as! NSObject
+        self.rawValue = Self.rawType.init()
     }
     
     required init(rawValue: NSObject) {
@@ -92,10 +95,6 @@ func needToActivateNudge() -> Bool {
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
     let pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
-    
-//    // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
-//    Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")!.load()
-//    print(DNDConfig().rawValue.value(forKey: "isScreenShared"))
 
     // Center Nudge
     Utils().centerNudge()
@@ -122,6 +121,9 @@ func needToActivateNudge() -> Bool {
     // Print both controllers back to back
     if !nudgeLogState.afterFirstRun {
         uiLog.info("\("nudgeRefreshCycle: \(nudgeRefreshCycle)", privacy: .public)")
+        if !DNDServer {
+            uiLog.error("\("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable", privacy: .public)")
+        }
     }
     let timerController = Utils().getTimerController()
     
@@ -172,9 +174,11 @@ func needToActivateNudge() -> Bool {
     }
 
     // Don't nudge if screen sharing and prior to requiredInstallationDate
-    if (nudgePrimaryState.isScreenSharing && acceptableScreenSharingUsage) && !pastRequiredInstallationDate {
-        uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
-        return false
+    if DNDServer && acceptableScreenSharingUsage && !pastRequiredInstallationDate {
+        if (DNDConfig().rawValue.value(forKey: "isScreenShared") as? Bool) == true && !pastRequiredInstallationDate {
+            uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
+            return false
+        }
     }
 
     // Don't nudge if assertions are set and prior to requiredInstallationDate
@@ -281,5 +285,14 @@ extension NSWorkspace {
             }
         }
         return false
+    }
+}
+
+// Return nil if a key does not exist in a Dictionary, rather than completely crash the app
+// Comparable to aDictionary.get("something", None) in Python
+extension NSObject {
+    @objc
+    func value(forUndefinedKey key: String) -> String? {
+        nil
     }
 }
