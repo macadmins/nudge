@@ -205,7 +205,7 @@
                   "default": false
                 }
               ]
-            }
+            },
             "enforceMinorUpdates": {
               "description": "When enabled, Nudge will enforce minor updates. This should likely never be disabled.",
               "anyOf": [
