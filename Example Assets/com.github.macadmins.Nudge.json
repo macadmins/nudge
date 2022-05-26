@@ -10,7 +10,8 @@
     "attemptToBlockApplicationLaunches": false,
     "attemptToFetchMajorUpgrade": true,
     "blockedApplicationBundleIDs": [],
-    "enforceMinorUpdates": true
+    "enforceMinorUpdates": true,
+    "terminateApplicationsOnLaunch": false
   },
   "osVersionRequirements": [
     {

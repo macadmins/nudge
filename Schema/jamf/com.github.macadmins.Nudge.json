@@ -192,7 +192,20 @@
                 }
               ]
             },
-
+            "disableSoftwareUpdateWorkflow": {
+              "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
+              "anyOf": [
+                {
+                  "type": "null",
+                  "title": "Not Configured"
+                },
+                {
+                  "title": "Configured",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            }
             "enforceMinorUpdates": {
               "description": "When enabled, Nudge will enforce minor updates. This should likely never be disabled.",
               "anyOf": [
@@ -207,8 +220,8 @@
                 }
               ]
             },
-            "disableSoftwareUpdateWorkflow": {
-              "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
+            "terminateApplicationsOnLaunch": {
+              "description": "When enabled, Nudge will terminate the applications listed in blockedApplicationBundleIDs upon initial launch.",
               "anyOf": [
                 {
                   "type": "null",

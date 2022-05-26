@@ -13,7 +13,8 @@
     "blockedApplicationBundleIDs": [
       "com.microsoft.VSCode",
       "us.zoom.xos"
-    ]
+    ],
+    "terminateApplicationsOnLaunch": false
   },
   "osVersionRequirements": [
     {

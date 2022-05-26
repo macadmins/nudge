@@ -69,7 +69,8 @@ struct OptionalFeatures: Codable {
         attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
     var disableSoftwareUpdateWorkflow,
-        enforceMinorUpdates: Bool?
+        enforceMinorUpdates,
+        terminateApplicationsOnLaunch: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -103,7 +104,8 @@ extension OptionalFeatures {
         attemptToFetchMajorUpgrade: Bool?? = nil,
         blockedApplicationBundleIDs: [String]?? = nil,
         disableSoftwareUpdateWorkflow: Bool?? = nil,
-        enforceMinorUpdates: Bool?? = nil
+        enforceMinorUpdates: Bool?? = nil,
+        terminateApplicationsOnLaunch: Bool?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
@@ -118,7 +120,8 @@ extension OptionalFeatures {
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
             blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
-            enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates
+            enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
+            terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch
         )
     }
 

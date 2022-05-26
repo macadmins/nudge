@@ -45,6 +45,8 @@
           <array/>
           <key>enforceMinorUpdates</key>
           <true/>
+          <key>terminateApplicationsOnLaunch</key>
+          <false/>
         </dict>
         <key>osVersionRequirements</key>
         <array>
