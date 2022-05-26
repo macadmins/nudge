@@ -26,6 +26,7 @@ AUTOMATED_NUDGE_BUILD="$CURRENT_NUDGE_MAIN_BUILD_VERSION.$NEWSUBBUILD"
 
 # Create files to use for build process info
 echo "$AUTOMATED_NUDGE_BUILD" > $TOOLSDIR/build_info.txt
+echo "$CURRENT_NUDGE_MAIN_BUILD_VERSION" > $TOOLSDIR/build_info_main.txt
 
 # Ensure Xcode is set to run-time
 sudo xcode-select -s "$XCODE_PATH"

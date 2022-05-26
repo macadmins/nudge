@@ -37,12 +37,19 @@ jobs:
       id: get_env_var
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
+         echo "NUDGE_MAIN_VERSION=$(/bin/cat ./build_info_main.txt)" >> $GITHUB_ENV
+
+    - name: get environment variable changelog # trick to get this to work for sed command
+      id: get_env_var
+      run: |
+         echo "NUDGE_CHANGELOG=$(/bin/cat ./CHANGELOG.md | awk "/v$NUDGE_MAIN_VERSION/,EOF")" >> $GITHUB_ENV
 
     - name: Generate changelog
       id: changelog
-      uses: metcalfc/changelog-generator@e5306b306fa2e34f05258789e0e5c526c1bd4352 # v1.0.0
+      uses: metcalfc/changelog-generator@6a73d830c3191442cb22efe153073b4a36e0c3ea # v3.0.0
       with:
         myToken: ${{ secrets.GITHUB_TOKEN }}
+        reverse: 'true'
 
     - name: Create Release
       id: create_release
@@ -62,6 +69,9 @@ jobs:
             ## About the LaunchAgent
             This is a basic launch agent that opens Nudge twice an hour, every 30 minutes.
             If you would like to reduce the amount of times Nudge launches per day, it is recommended to create your own LaunchAgent.
+
+            # Changelog
+            ${{env.NUDGE_CHANGELOG}}
 
             # Changes
             ${{ steps.changelog.outputs.changelog }}
