@@ -42,7 +42,7 @@ jobs:
     - name: get environment variable changelog # trick to get this to work for sed command
       id: get_env_var_changelog
       run: |
-         echo "NUDGE_CHANGELOG=$(/bin/cat ./CHANGELOG.md | awk "/v$NUDGE_MAIN_VERSION/,EOF")" >> $GITHUB_ENV
+         echo "NUDGE_CHANGELOG=$(/bin/cat ./CHANGELOG.md | awk "/v{{env.NUDGE_MAIN_VERSION}}/,EOF")" >> $GITHUB_ENV
 
     - name: Generate changelog
       id: changelog
