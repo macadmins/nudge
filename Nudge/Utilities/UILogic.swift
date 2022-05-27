@@ -92,12 +92,14 @@ func userHasClickedDeferralQuitButton(deferralTime: Date) {
 }
 
 func needToActivateNudge() -> Bool {
+    if NSApplication.shared.isActive {
+        uiLog.notice("\("Nudge is currrently the frontmostApplication", privacy: .public)")
+        return false
+    }
+
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
     let pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
-
-    // Center Nudge
-    Utils().centerNudge()
     
     Utils().logUserSessionDeferrals()
     Utils().logUserDeferrals()
@@ -191,7 +193,6 @@ func needToActivateNudge() -> Bool {
         var assertions: Unmanaged<CFDictionary>?
         if IOPMCopyAssertionsByProcess(&assertions) != kIOReturnSuccess {
             uiLog.info("\("Could not assess assertions", privacy: .public)")
-            return true
         }
         let retainedAssertions = assertions?.takeRetainedValue()
         for assertion in retainedAssertions.unsafelyUnwrapped as NSDictionary{
@@ -206,13 +207,7 @@ func needToActivateNudge() -> Bool {
             }
         }
     }
-    
-    // Don't nudge if refresh timer hasn't passed threshold
-    if (timerController > Int((Utils().getCurrentDate().timeIntervalSince1970 - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))) && nudgeLogState.afterFirstLaunch  {
-        uiLog.info("\("Ignoring Nudge activation - Device is currently within current timer range", privacy: .public)")
-        return false
-    }
-    
+
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
         if !nudgeLogState.afterFirstLaunch && NSWorkspace.shared.isActiveSpaceFullScreen() {
@@ -224,51 +219,51 @@ func needToActivateNudge() -> Bool {
         }
     }
     
-    // If we get here, Nudge if not frontmostApplication
-    if !NSApplication.shared.isActive {
-        if frontmostApplication?.bundleIdentifier != nil {
-            uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
-        }
-    
-        if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
-            // Loop through all the running applications and hide them
-            for runningApplication in runningApplications {
-                let appName = runningApplication.bundleIdentifier ?? ""
-                let appBundle = runningApplication.bundleURL
-                if builtInAcceptableApplicationBundleIDs.contains(appName) || customAcceptableApplicationBundleIDs.contains(appName) {
-                    continue
-                }
-                if majorUpgradeAppPathExists {
-                    if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
-                        continue
-                    }
-                }
-                
-                if appName == "com.github.macadmins.Nudge" {
-                    continue
-                }
-
-                // Taken from nudge-python as there was a race condition with NSWorkspace
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
-                    uiLog.info("\("Attempting to hide \(appName)", privacy: .public)")
-                    runningApplication.hide()
-                })
-            }
-            Utils().activateNudge()
-            if !Utils().unitTestingEnabled() {
-                Utils().updateDevice(userClicked: false)
-            }
-        } else {
-            Utils().activateNudge()
-        }
-        
-        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
-        return true
+    // Don't nudge if refresh timer hasn't passed threshold
+    if (timerController > Int((Utils().getCurrentDate().timeIntervalSince1970 - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970))) && nudgeLogState.afterFirstLaunch  {
+        uiLog.info("\("Ignoring Nudge activation - Device is currently within current timer range", privacy: .public)")
+        return false
     }
     
-    // If we get here our logic didn't trigger
-    uiLog.info("\("Nudge re-activation logic failed and got to end of function", privacy: .public)")
-    return false
+    // Aggressive logic
+    if frontmostApplication?.bundleIdentifier != nil {
+        uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
+    }
+
+    if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
+        // Loop through all the running applications and hide them
+        for runningApplication in runningApplications {
+            let appName = runningApplication.bundleIdentifier ?? ""
+            let appBundle = runningApplication.bundleURL
+            if builtInAcceptableApplicationBundleIDs.contains(appName) || customAcceptableApplicationBundleIDs.contains(appName) {
+                continue
+            }
+            if majorUpgradeAppPathExists {
+                if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
+                    continue
+                }
+            }
+            
+            if appName == "com.github.macadmins.Nudge" {
+                continue
+            }
+
+            // Taken from nudge-python as there was a race condition with NSWorkspace
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
+                uiLog.info("\("Attempting to hide \(appName)", privacy: .public)")
+                runningApplication.hide()
+            })
+        }
+        Utils().activateNudge()
+        if !Utils().unitTestingEnabled() {
+            Utils().updateDevice(userClicked: false)
+        }
+    } else {
+        Utils().activateNudge()
+    }
+    
+    nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
+    return true
 }
 
 // https://github.com/brackeen/calculate-widget/blob/master/Calculate/NSWindow%2BMoveToActiveSpace.swift#L64

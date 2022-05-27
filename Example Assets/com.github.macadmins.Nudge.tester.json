@@ -26,7 +26,30 @@
   ],
   "userExperience": {
     "elapsedRefreshCycle": 10,
+    "initialRefreshCycle": 10,
     "nudgeRefreshCycle": 5,
     "randomDelay": false
+  },
+  "userInterface": {
+    "fallbackLanguage": "en",
+    "forceFallbackLanguage": true,
+    "updateElements": [
+      {
+        "_language": "en",
+        "actionButtonText": "actionButtonText",
+        "customDeferralButtonText": "customDeferralButtonText",
+        "informationButtonText": "informationButtonText",
+        "mainContentHeader": "mainContentHeader",
+        "mainContentNote": "mainContentNote",
+        "mainContentSubHeader": "mainContentSubHeader",
+        "mainContentText": "mainContentText",
+        "mainHeader": "mainHeader",
+        "oneDayDeferralButtonText": "oneDayDeferralButtonText",
+        "oneHourDeferralButtonText": "oneHourDeferralButtonText",
+        "primaryQuitButtonText": "primaryQuitButtonText",
+        "secondaryQuitButtonText": "secondaryQuitButtonText",
+        "subHeader": "subHeader"
+      }
+    ]
   }
 }

@@ -7,6 +7,8 @@
 import Foundation
 import Cocoa
 
+var loopedScreen = NSScreen()
+
 class BlurWindow: NSWindow {
     override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask, backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
         super.init(contentRect: contentRect, styleMask: [.fullSizeContentView],  backing: .buffered, defer: true)
@@ -21,7 +23,7 @@ class BlurWindowController: NSWindowController {
     override func loadWindow() {
         window = BlurWindow(contentRect: NSMakeRect(0, 0, 0, 0), styleMask: [], backing: .buffered, defer: true)
         self.window?.contentViewController = BlurViewController()
-        self.window?.setFrame((NSScreen.main?.frame)!, display: true)
+        self.window?.setFrame((loopedScreen.frame), display: true)
         self.window?.collectionBehavior = [.canJoinAllSpaces]
     }
 }

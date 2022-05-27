@@ -145,16 +145,31 @@ struct Utils {
         utilsLog.info("\("Activating Nudge", privacy: .public)")
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.windows[0].makeKeyAndOrderFront(self)
-        
+
         // load the blur background and send it to the back if we are past the required install date
         if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
+            Utils().centerNudge()
+            NSApp.activate(ignoringOtherApps: true)
+            NSApp.windows[0].makeKeyAndOrderFront(self)
             uiLog.info("\("Enabling blurred background", privacy: .public)")
-            nudgePrimaryState.blurredBackground.close()
-            nudgePrimaryState.blurredBackground.loadWindow()
-            nudgePrimaryState.blurredBackground.showWindow(self)
+            nudgePrimaryState.blurredBackground.removeAll()
+            for (index, screen) in screens.enumerated() {
+                nudgePrimaryState.blurredBackground.append(BlurWindowController())
+                loopedScreen = screen
+                nudgePrimaryState.blurredBackground[index].close()
+                nudgePrimaryState.blurredBackground[index].loadWindow()
+                nudgePrimaryState.blurredBackground[index].showWindow(self)
+            }
             NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
+            return
+        }
+
+        if NSWorkspace.shared.isActiveSpaceFullScreen() && !nudgePrimaryState.afterFirstStateChange {
+            uiLog.notice("\("Bypassing activation due to full screen bugs in macOS", privacy: .public)")
+            return
+        } else {
+            NSApp.activate(ignoringOtherApps: true)
+            NSApp.windows[0].makeKeyAndOrderFront(self)
         }
     }
 
@@ -787,6 +802,13 @@ struct Utils {
         
         if userClicked {
             uiLog.notice("\("User clicked updateDevice", privacy: .public)")
+            // turn off blur and allow windows to come above Nudge
+            if Utils().pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
+                for (index, _) in screens.enumerated() {
+                    nudgePrimaryState.blurredBackground[index].close()
+                }
+                NSApp.windows[0].level = .normal
+            }
         } else {
             uiLog.notice("\("Synthetically clicked updateDevice due to allowedDeferral count", privacy: .public)")
         }

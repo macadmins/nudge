@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changlog in GitHub Actions
 - Blurring feature when the user is passed the required installation date.
   - Many many thanks to @bartreardon for this feature!
+  - Blurring will dynamically enable a blur for all of the user's screens until they click on the `Update Device` button.
+  - If the user adds or removes a screen during Nudge's current session, after the next re-activation event, the blur will dynamically modify to the new screen count.
 - Danish localization
 - Added basic localizations for new Notification Center UX
   - Help on this would be appreciated
