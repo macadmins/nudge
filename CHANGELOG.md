@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.7] - 2022-06-01
 ### Added
-- Nudge "Suite" package that included Logger, LaunchAgent and Nudge.app
+- Nudge "Suite" package that includes the Logger LaunchDaemon, Nudge 30 minute LaunchAgent and Nudge.app
+  - The Nudge application is identical to the standard package which is signed and notarized.
+  - The package is signed, notarized and stapled, similarly to the standard package.
 - Changlog in GitHub Actions
 - Blurring feature when the user is passed the required installation date.
   - Many many thanks to @bartreardon for this feature!
