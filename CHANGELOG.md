@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please note that with these three options, the user will be notified through Notification Center, but only if they approve the dialog. It is recommended to deploy an MDM profile for this to force user notifications, otherwise Nudge will ask the user upon the next launch to allow notifications.
 
 ### Changed
+- **If a full screen application is already running prior to Nudge's initial launch and the user has not passed the required installation date, Nudge will wait until the user has moved to another application or change the full screen state of the current application before triggering it's first activation. This is due to poor behavior with full screen applications.**
 - CMD+N and CMD+M are now banned if Nudge is the primary window on a macOS device
 - Nudge no longer exits 0 when there are issues it detects and instead exits 1
 - Refactored all log logic to reduce lines of code
