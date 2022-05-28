@@ -239,6 +239,12 @@ func needToActivateNudge() -> Bool {
                 }
             }
             
+            if majorUpgradeBackupAppPathExists {
+                if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == appBundle {
+                    continue
+                }
+            }
+            
             if appName == "com.github.macadmins.Nudge" {
                 continue
             }
