@@ -725,6 +725,11 @@ struct Utils {
         }
         nudgeDefaults.set(deferralTime, forKey: "deferRunUntil")
     }
+    
+    func showEasterEgg() -> Bool {
+        let components = Calendar.current.dateComponents([.day, .month], from: Utils().getCurrentDate())
+        return (components.month == 8 && components.day == 6)
+    }
 
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")

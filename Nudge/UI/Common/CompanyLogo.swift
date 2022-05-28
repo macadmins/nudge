@@ -36,11 +36,32 @@ struct CompanyLogo: View {
                     .scaledToFit()
                     .frame(width: logoWidth, height: logoHeight)
             } else {
-                Image(systemName: "applelogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .scaledToFit()
+                if Utils().showEasterEgg() {
+                    // https://twitter.com/onmyway133/status/1530135315071000576?s=20&t=_vIIIqcSEiUii15GIBr8nw
+                    VStack(spacing: 0) {
+                        Color.green
+                        Color.green
+                        Color.green
+                        Color.yellow
+                        Color.orange
+                        Color.red
+                        Color.purple
+                        Color.blue
+                    }
                     .frame(width: logoWidth, height: logoHeight)
+                    .mask(
+                        Image(systemName: "applelogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .scaledToFit()
+                    )
+                } else {
+                    Image(systemName: "applelogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
+                        .frame(width: logoWidth, height: logoHeight)
+                }
             }
         }
     }

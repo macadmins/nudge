@@ -297,6 +297,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // print("applicationWillFinishLaunching")
         _ = Utils().gracePeriodLogic()
+        
+        // TODO: metrics
+        // machine uuid + serial in a safe and non-identifying form
+        // hash of config
+        // version of app
+        // code signature name
+
         if nudgePrimaryState.shouldExit {
             exit(0)
         }
