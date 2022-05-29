@@ -38,6 +38,7 @@
         "_language": "en",
         "actionButtonText": "actionButtonText",
         "customDeferralButtonText": "customDeferralButtonText",
+        "customDeferralDropdownText": "customDeferralDropdownText",
         "informationButtonText": "informationButtonText",
         "mainContentHeader": "mainContentHeader",
         "mainContentNote": "mainContentNote",

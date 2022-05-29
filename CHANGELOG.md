@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `aggressiveUserFullScreenExperience`
   - When disabled, Nudge will not create a blurred background when the user is passed the deferral window.
   - **defaulted to on**
+- `customDeferralDropdownText`
+  - This allows you to custom the "Defer" button.
 ---
 - `attemptToBlockApplicationLaunches`
   - When enabled, Nudge will attempt to block application launches after the required installation date. This key must be used in conjunction with `blockedApplicationBundleIDs`.

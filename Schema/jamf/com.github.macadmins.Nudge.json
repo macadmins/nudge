@@ -1033,6 +1033,24 @@
                           }
                         ]
                       },
+                      "customDeferralDropdownText": {
+                        "description": "customDeferralDropdownText, also known as the \"Defer\" button.",
+                        "anyOf": [
+                          {
+                            "type": "null",
+                            "title": "Not Configured"
+                          },
+                          {
+                            "title": "Configured",
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Defer"
+                              }
+                            }
+                          }
+                        ]
+                      },
                       "informationButtonText": {
                         "description": "Modifies the informationButton, also known as the \"More Info\" button.",
                         "anyOf": [

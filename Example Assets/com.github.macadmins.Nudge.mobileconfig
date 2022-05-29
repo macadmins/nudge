@@ -162,6 +162,8 @@
               <string>Update Device</string>
               <key>customDeferralButtonText</key>
               <string>Custom</string>
+              <key>customDeferralDropdownText</key>
+              <string>Defer</string>
               <key>informationButtonText</key>
               <string>More Info</string>
               <key>mainContentHeader</key>

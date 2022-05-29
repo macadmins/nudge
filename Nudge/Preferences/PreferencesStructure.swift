@@ -413,13 +413,13 @@ extension UserInterface {
 
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
-    var language, actionButtonText, customDeferralButtonText, informationButtonText, mainContentHeader: String?
-    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText: String?
-    var oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+    var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText: String?
+    var mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
+    var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, customDeferralButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
     }
 }
 
@@ -445,6 +445,7 @@ extension UpdateElement {
         language: String?? = nil,
         actionButtonText: String?? = nil,
         customDeferralButtonText: String?? = nil,
+        customDeferralDropdownText: String?? = nil,
         informationButtonText: String?? = nil,
         mainContentHeader: String?? = nil,
         mainContentNote: String?? = nil,
@@ -461,6 +462,7 @@ extension UpdateElement {
             language: language ?? self.language,
             actionButtonText: actionButtonText ?? self.actionButtonText,
             customDeferralButtonText: customDeferralButtonText ?? self.customDeferralButtonText,
+            customDeferralDropdownText: customDeferralDropdownText ?? self.customDeferralDropdownText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentNote: mainContentNote ?? self.mainContentNote,

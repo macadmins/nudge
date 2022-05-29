@@ -44,13 +44,12 @@ struct QuitButtons: View {
                         .padding(.leading, -200.0)
                     }
                 }
-                .frame(maxHeight: 30)
             }
             // primaryQuitButton
             if viewObserved.requireDualQuitButtons == false || viewObserved.hasClickedSecondaryQuitButton {
                 HStack(spacing: 20) {
                     if allowUserQuitDeferrals {
-                        Menu("Defer".localized(desiredLanguage: getDesiredLanguage())) {
+                        Menu(customDeferralDropdownText) {
                             Button {
                                 Utils().setDeferralTime(deferralTime: nudgeEventDate)
                                 updateDeferralUI()
@@ -90,7 +89,6 @@ struct QuitButtons: View {
                                 }
                             }
                         }
-                        .frame(maxWidth: 100)
                     } else {
                         Button {
                             Utils().userInitiatedExit()
@@ -106,6 +104,7 @@ struct QuitButtons: View {
                 }
             }
         }
+        .frame(maxWidth:100, maxHeight: 30)
     }
 }
 

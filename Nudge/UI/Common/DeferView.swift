@@ -68,7 +68,7 @@ struct DeferView: View {
                 Utils().logUserDeferrals()
                 Utils().userInitiatedExit()
             } label: {
-                Text("Defer")
+                Text(customDeferralDropdownText)
                     .frame(minWidth: 35)
             }
             // a bit of space at the bottom to raise the Defer button away from the very edge
