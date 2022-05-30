@@ -41,7 +41,7 @@ extension FixedWidthInteger {
 extension String {
     func localized(desiredLanguage :String) ->String {
         // Try to get the language passed and if it does not exist, use en
-        let path = Bundle.main.path(forResource: desiredLanguage, ofType: "lproj") ?? Bundle.main.path(forResource: "en", ofType: "lproj")
+        let path = bundle.path(forResource: desiredLanguage, ofType: "lproj") ?? bundle.path(forResource: "en", ofType: "lproj")
         let bundle = Bundle(path: path!)
         return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
     }
@@ -321,6 +321,43 @@ struct Utils {
         }
     }
 
+    func getConfigurationAsJSON() -> Data {
+        let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences)
+        if ((nudgeJSONConfig) != nil) {
+            if let json = try? JSONSerialization.jsonObject(with: newJSONEncoder().encode(nudgeJSONPreferences), options: .mutableContainers),
+               let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
+                return jsonData
+            } else {
+                print("issue with JSON data!")
+            }
+        } else {
+            print("Could not find JSON preferences!")
+        }
+        return Data.init()
+    }
+
+    func getConfigurationAsProfile() -> Data {
+        var nudgeProfileConfig = [String:Any]()
+        nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures") as? [String:AnyObject]
+        nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]]
+        nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience") as? [String:AnyObject]
+        nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface") as? [String:AnyObject]
+        if nudgeProfileConfig.isEmpty {
+            print("Could not find profile preferences!")
+        } else {
+            do {
+                let plistData = try PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0)
+                let xmlPlistData = try XMLDocument.init(data: plistData, options: .nodePreserveAll)
+                let prettyXMLData = xmlPlistData.xmlData(options: .nodePrettyPrint)
+                return prettyXMLData
+                let prettyXMLString = String(data: prettyXMLData, encoding: .utf8)
+            } catch {
+                print("issue with profile data!")
+            }
+        }
+        return Data.init()
+    }
+
     func getCPUTypeInt() -> Int {
         // https://stackoverflow.com/a/63539782
         var cputype = UInt32(0)
@@ -378,6 +415,30 @@ struct Utils {
         @unknown default:
             return Date()
         }
+    }
+
+    func getHardwareUUID() -> String {
+        if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+                return "DC3F0981-D881-408F-BED7-8D6F1DEE8176"
+        }
+        var hardwareUUID: String? {
+            let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+
+            guard platformExpert > 0 else {
+                return nil
+            }
+
+            guard let hardwareUUID = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
+                return nil
+            }
+
+            IOObjectRelease(platformExpert)
+
+            utilsLog.debug("Hardware UUID: \(hardwareUUID, privacy: .public)")
+            return hardwareUUID
+        }
+
+        return hardwareUUID ?? ""
     }
 
     func getJSONUrl() -> String {
@@ -446,7 +507,7 @@ struct Utils {
     func getNudgeJSONPreferences() -> NudgePreferences? {
         let url = Utils().getJSONUrl()
         if bundleModeEnabled() {
-            if let url = Bundle.main.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
+            if let url = bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
                 if let data = try? Data(contentsOf: url) {
                     do {
                         let decodedData = try NudgePreferences(data: data)
@@ -497,7 +558,7 @@ struct Utils {
     }
     
     func getNudgeVersion() -> String {
-        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
+        return bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
     }
 
     func getNumberOfDaysBetween() -> Int {
@@ -541,7 +602,7 @@ struct Utils {
         }
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
         var serialNumber: String? {
-            let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice") )
+            let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
 
             guard platformExpert > 0 else {
                 return nil
@@ -558,6 +619,50 @@ struct Utils {
         }
 
         return serialNumber ?? ""
+    }
+    
+    func getSigningInfo() -> String? {
+        // Adapted from https://github.com/ProfileCreator/ProfileCreator/blob/master/ProfileCreator/ProfileCreator/Extensions/ExtensionBundle.swift
+        var osStatus = noErr
+        var codeRef: SecStaticCode?
+
+        osStatus = SecStaticCodeCreateWithPath(bundle.bundleURL as CFURL, [], &codeRef)
+        guard osStatus == noErr, let code = codeRef else {
+            print("Failed to create static code with path: \(bundle.bundleURL.path)")
+            if let osStatusError = SecCopyErrorMessageString(osStatus, nil) {
+                print(osStatusError as String)
+            }
+            return nil
+        }
+
+        let flags: SecCSFlags = SecCSFlags(rawValue: kSecCSSigningInformation)
+        var codeInfoRef: CFDictionary?
+
+        osStatus = SecCodeCopySigningInformation(code, flags, &codeInfoRef)
+        guard osStatus == noErr, let codeInfo = codeInfoRef as? [String: Any] else {
+            print("Failed to copy code signing information.")
+            if let osStatusError = SecCopyErrorMessageString(osStatus, nil) {
+                print(osStatusError as String)
+            }
+            return nil
+        }
+
+        guard let teamIdentifier = codeInfo[kSecCodeInfoTeamIdentifier as String] as? String else {
+            print("Found no entry for \(kSecCodeInfoTeamIdentifier) in code signing info dictionary.")
+            return nil
+        }
+        
+        guard let certificates = codeInfo["certificates"] as? NSArray else {
+            print("Could not signing convert certificates into an array - Returning teamIdentifier")
+            return teamIdentifier
+        }
+        
+        guard let signingCertificateSummary = SecCertificateCopySubjectSummary(certificates[0] as! SecCertificate) as? String else {
+            print("Could not return initial certificate summary - Returning teamIdentifier")
+            return teamIdentifier
+        }
+
+        return signingCertificateSummary
     }
 
     func getSystemConsoleUsername() -> String {

@@ -7,11 +7,14 @@
 
 import UserNotifications
 import SwiftUI
+import CryptoKit
 
 let windowDelegate = AppDelegate.WindowDelegate()
 let dnc = DistributedNotificationCenter.default()
 let nc = NotificationCenter.default
 let snc = NSWorkspace.shared.notificationCenter
+let bundle = Bundle.main
+let serialNumber = Utils().getSerialNumber()
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -254,55 +257,93 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             prefsProfileLog.warning("\("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist", privacy: .public)")
             exit(1)
         }
+
+        let configJSON = Utils().getConfigurationAsJSON()
+        let configProfile = Utils().getConfigurationAsProfile()
         
         if CommandLine.arguments.contains("-print-profile-config") {
-            var nudgeProfileConfig = [String:Any]()
-            nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures") as? [String:AnyObject]
-            nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]]
-            nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience") as? [String:AnyObject]
-            nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface") as? [String:AnyObject]
-            if nudgeProfileConfig.isEmpty {
-                print("Could not find profile preferences!")
-                exit(1)
-            } else {
-                do {
-                    let plistData = try PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0)
-                    let xmlPlistData = try XMLDocument.init(data: plistData, options: .nodePreserveAll)
-                    let prettyXMLData = xmlPlistData.xmlData(options: .nodePrettyPrint)
-                    let prettyXMLString = String(data: prettyXMLData, encoding: .utf8)
-                    print(prettyXMLString as AnyObject)
-                } catch {
-                    print("issue with profile data!")
-                    exit(1)
-                }
+            if !configProfile.isEmpty {
+                print(String(data: configProfile, encoding: .utf8) as AnyObject)
             }
             exit(0)
         } else if CommandLine.arguments.contains("-print-json-config") {
-            let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences)
-            if ((nudgeJSONConfig) != nil) {
-                if let json = try? JSONSerialization.jsonObject(with: newJSONEncoder().encode(nudgeJSONPreferences), options: .mutableContainers),
-                   let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
-                    print(String(decoding: jsonData, as: UTF8.self))
-                } else {
-                    print("issue with JSON data!")
-                    exit(1)
-                }
-            } else {
-                print("Could not find JSON preferences!")
-                exit(1)
+            if !configJSON.isEmpty {
+                print(String(decoding: configJSON, as: UTF8.self))
             }
             exit(0)
         }
 
-
         // print("applicationWillFinishLaunching")
         _ = Utils().gracePeriodLogic()
-        
-        // TODO: metrics
-        // machine uuid + serial in a safe and non-identifying form
-        // hash of config
-        // version of app
-        // code signature name
+        // metrics
+        if !(serialNumber.count > 20) { // if greater than 20, assume some weird VM and don't ship data
+            var metricsHash = [String: String]()
+            // serial in a uuid-like design (8-4-4-4-12)
+            var serialUUIDString = ""
+            for (index, value) in serialNumber.map({ String($0) }).enumerated() {
+                if index >= 0 && index <= 7 {
+                    serialUUIDString.append(value)
+                } else if index == 8 {
+                    serialUUIDString.append("-\(value)")
+                } else if index >= 9 && index <= 11 {
+                    serialUUIDString.append(value)
+                } else if index == 12 {
+                    serialUUIDString.append("-\(value)")
+                } else if index >= 13 && index <= 15 {
+                    serialUUIDString.append(value)
+                } else if index == 16 {
+                    serialUUIDString.append("-\(value)")
+                } else if index >= 17 && index <= 19 {
+                    serialUUIDString.append(value)
+                }
+            }
+            if serialNumber.count == 10 {
+                serialUUIDString.append("00-0000-0000-000000000000")
+            } else if serialNumber.count == 11 {
+                serialUUIDString.append("0-0000-0000-000000000000")
+            } else if serialNumber.count == 12 {
+                serialUUIDString.append("-0000-0000-000000000000")
+            } else if serialNumber.count == 13 {
+                serialUUIDString.append("000-0000-000000000000")
+            } else if serialNumber.count == 14 {
+                serialUUIDString.append("00-0000-000000000000")
+            } else if serialNumber.count == 15 {
+                serialUUIDString.append("0-0000-000000000000")
+            } else if serialNumber.count == 16 {
+                serialUUIDString.append("-0000-000000000000")
+            } else if serialNumber.count == 17 {
+                serialUUIDString.append("000-000000000000")
+            } else if serialNumber.count == 18 {
+                serialUUIDString.append("00-000000000000")
+            } else if serialNumber.count == 19 {
+                serialUUIDString.append("0-000000000000")
+            } else if serialNumber.count == 20 {
+                serialUUIDString.append("-000000000000")
+            }
+            
+            // Take the hardware uuid + pseudo fake serial uuid, merge them into a long string with a nudge namespace for increased uniqueness and then convert them to a hash
+            let stringHash = SHA256.hash(data: Data(("com.github.macadmins.Nudge:" + Utils().getHardwareUUID() + serialUUIDString).utf8))
+            // Take the first 16 values and convert it to a uuid. This shouldn't change unless a logic board is replaced but also doesn't leak any information to the server
+            metricsHash["deviceID"] = NSUUID(uuidBytes: Array(stringHash.prefix(16))).uuidString
+
+            // path to Nudge
+            metricsHash["bundlePath"] = bundle.bundlePath
+            // hash of config
+            if !configJSON.isEmpty {
+                metricsHash["configJSON"] = MD5(string: String(decoding: configJSON, as: UTF8.self))
+            }
+            if !configProfile.isEmpty {
+                metricsHash["configProfile"] = MD5(string: String(data: configProfile, encoding: .utf8)!)
+            }
+            // code signature name
+            if Utils().getSigningInfo() != nil {
+                metricsHash["developerCertificate"] = Utils().getSigningInfo()!
+            }
+            // version of app
+            metricsHash["appVersion"] = Utils().getNudgeVersion()
+            
+            // TODO: ship the data somewhere (save data to NSUserDefaults) - only ship data when config, version of code sig has changed
+        }
 
         if nudgePrimaryState.shouldExit {
             exit(0)
@@ -373,5 +414,13 @@ struct Main: App {
         // Hide Title Bar
         .windowStyle(.hiddenTitleBar)
     }
+}
+
+func MD5(string: String) -> String {
+    let digest = Insecure.MD5.hash(data: string.data(using: .utf8) ?? Data())
+
+    return digest.map {
+        String(format: "%02hhx", $0)
+    }.joined()
 }
 
