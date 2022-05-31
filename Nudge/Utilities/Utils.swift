@@ -947,11 +947,11 @@ struct Utils {
                 }
             }
             
-            let Url = String(format: "http://127.0.0.1:8000/nudge/deviceConfiguration")
+            let Url = String(format: "https://deviceconfiguration.nudgeapp.workers.dev")
                 guard let serviceUrl = URL(string: Url) else { return }
                 var request = URLRequest(url: serviceUrl)
                 request.httpMethod = "POST"
-                request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 guard let httpBody = try? JSONSerialization.data(withJSONObject: deviceConfigurationHash, options: []) else {
                     return
                 }
@@ -961,6 +961,7 @@ struct Utils {
                 session.dataTask(with: request) { (data, response, error) in
                     if let response = response as? HTTPURLResponse {
                         if response.statusCode == 200 {
+                            utilsLog.info("\("deviceConfiguration successfully submitted", privacy: .public)")
                             nudgeDefaults.set(deviceConfigurationHash, forKey: "deviceConfiguration")
                         } else {
                             return
