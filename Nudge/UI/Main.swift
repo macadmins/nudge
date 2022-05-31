@@ -274,9 +274,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         _ = Utils().gracePeriodLogic()
-        
-        // deviceConfiguration information
-        Utils().submitDeviceConfiguration()
 
         if nudgePrimaryState.shouldExit {
             exit(0)

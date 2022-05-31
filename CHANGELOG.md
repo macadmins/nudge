@@ -52,7 +52,6 @@ Please note that with these three options, the user will be notified through Not
 - CMD+N and CMD+M are now banned if Nudge is the primary window on a macOS device
 - Nudge no longer exits 0 when there are issues it detects and instead exits 1
 - Refactored all log logic to reduce lines of code
-- Nudge will submit anonymous metrics about it's configuration
 
 ### Fixed
 - Improved Dutch localization

@@ -51,11 +51,6 @@ func nudgeStartLogic() {
         Utils().logUserQuitDeferrals(resetCount: true)
         Utils().logUserSessionDeferrals(resetCount: true)
         nudgeDefaults.removeObject(forKey: "deferRunUntil")
-        nudgeDefaults.removeObject(forKey: "deviceConfiguration")
-        // Give NSUserDefaults a few seconds before submitting deviceConfiguration data
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
-            Utils().submitDeviceConfiguration()
-        })
     } else {
         if nudgePrimaryState.userDeferrals >= 0 {
             nudgePrimaryState.userDeferrals = nudgePrimaryState.userSessionDeferrals + nudgePrimaryState.userQuitDeferrals
