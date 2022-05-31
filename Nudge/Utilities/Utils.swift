@@ -7,6 +7,7 @@
 
 import AppKit
 import CoreMediaIO
+import CryptoKit
 import Foundation
 import SystemConfiguration
 import SwiftUI
@@ -327,11 +328,7 @@ struct Utils {
             if let json = try? JSONSerialization.jsonObject(with: newJSONEncoder().encode(nudgeJSONPreferences), options: .mutableContainers),
                let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
                 return jsonData
-            } else {
-                print("issue with JSON data!")
             }
-        } else {
-            print("Could not find JSON preferences!")
         }
         return Data.init()
     }
@@ -342,15 +339,12 @@ struct Utils {
         nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]]
         nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience") as? [String:AnyObject]
         nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface") as? [String:AnyObject]
-        if nudgeProfileConfig.isEmpty {
-            print("Could not find profile preferences!")
-        } else {
+        if !nudgeProfileConfig.isEmpty {
             do {
                 let plistData = try PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0)
                 let xmlPlistData = try XMLDocument.init(data: plistData, options: .nodePreserveAll)
                 let prettyXMLData = xmlPlistData.xmlData(options: .nodePrettyPrint)
                 return prettyXMLData
-                let prettyXMLString = String(data: prettyXMLData, encoding: .utf8)
             } catch {
                 print("issue with profile data!")
             }
@@ -640,7 +634,7 @@ struct Utils {
 
         osStatus = SecCodeCopySigningInformation(code, flags, &codeInfoRef)
         guard osStatus == noErr, let codeInfo = codeInfoRef as? [String: Any] else {
-            print("Failed to copy code signing information.")
+            // print("Failed to copy code signing information.")
             if let osStatusError = SecCopyErrorMessageString(osStatus, nil) {
                 print(osStatusError as String)
             }
@@ -648,17 +642,17 @@ struct Utils {
         }
 
         guard let teamIdentifier = codeInfo[kSecCodeInfoTeamIdentifier as String] as? String else {
-            print("Found no entry for \(kSecCodeInfoTeamIdentifier) in code signing info dictionary.")
+            // print("Found no entry for \(kSecCodeInfoTeamIdentifier) in code signing info dictionary.")
             return nil
         }
         
         guard let certificates = codeInfo["certificates"] as? NSArray else {
-            print("Could not signing convert certificates into an array - Returning teamIdentifier")
+            // print("Could not signing convert certificates into an array - Returning teamIdentifier")
             return teamIdentifier
         }
         
         guard let signingCertificateSummary = SecCertificateCopySubjectSummary(certificates[0] as! SecCertificate) as? String else {
-            print("Could not return initial certificate summary - Returning teamIdentifier")
+            // print("Could not return initial certificate summary - Returning teamIdentifier")
             return teamIdentifier
         }
 
@@ -775,6 +769,17 @@ struct Utils {
         nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
 
+    func MD5(string: String) -> String {
+        if string.isEmpty {
+            return ""
+        }
+        let digest = Insecure.MD5.hash(data: string.data(using: .utf8) ?? Data())
+
+        return digest.map {
+            String(format: "%02hhx", $0)
+        }.joined()
+    }
+
     func newNudgeEvent() -> Bool {
         versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
@@ -845,6 +850,124 @@ struct Utils {
             }
         }
         return simpleModeEnabled
+    }
+    
+    func submitDeviceConfiguration() {
+        if serialNumber.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) != nil {
+            return // virtual machine with special characters
+        }
+
+        if !(serialNumber.count > 20) { // if greater than 20, assume some weird VM and don't ship data
+            var deviceConfigurationHash = [String: String]()
+            // serial in a uuid-like design (8-4-4-4-12)
+            var serialUUIDString = ""
+            for (index, value) in serialNumber.map({ String($0) }).enumerated() {
+                if index >= 0 && index <= 7 {
+                    serialUUIDString.append(value)
+                } else if index == 8 {
+                    serialUUIDString.append("-\(value)")
+                } else if index >= 9 && index <= 11 {
+                    serialUUIDString.append(value)
+                } else if index == 12 {
+                    serialUUIDString.append("-\(value)")
+                } else if index >= 13 && index <= 15 {
+                    serialUUIDString.append(value)
+                } else if index == 16 {
+                    serialUUIDString.append("-\(value)")
+                } else if index >= 17 && index <= 19 {
+                    serialUUIDString.append(value)
+                }
+            }
+
+            // Finish out the GUI in a really hacky way
+            if serialNumber.count == 10 {
+                serialUUIDString.append("00-0000-0000-000000000000")
+            } else if serialNumber.count == 11 {
+                serialUUIDString.append("0-0000-0000-000000000000")
+            } else if serialNumber.count == 12 {
+                serialUUIDString.append("-0000-0000-000000000000")
+            } else if serialNumber.count == 13 {
+                serialUUIDString.append("000-0000-000000000000")
+            } else if serialNumber.count == 14 {
+                serialUUIDString.append("00-0000-000000000000")
+            } else if serialNumber.count == 15 {
+                serialUUIDString.append("0-0000-000000000000")
+            } else if serialNumber.count == 16 {
+                serialUUIDString.append("-0000-000000000000")
+            } else if serialNumber.count == 17 {
+                serialUUIDString.append("000-000000000000")
+            } else if serialNumber.count == 18 {
+                serialUUIDString.append("00-000000000000")
+            } else if serialNumber.count == 19 {
+                serialUUIDString.append("0-000000000000")
+            } else if serialNumber.count == 20 {
+                serialUUIDString.append("-000000000000")
+            }
+            
+            // Take the hardware uuid + pseudo fake serial uuid, merge them into a long string with a nudge namespace for increased uniqueness and then convert them to a hash
+            let stringHash = SHA256.hash(data: Data(("com.github.macadmins.Nudge:" + getHardwareUUID() + serialUUIDString).utf8))
+            // Take the first 16 values and convert it to a uuid. This shouldn't change unless a logic board is replaced but also doesn't leak any information to the server
+            deviceConfigurationHash["deviceID"] = NSUUID(uuidBytes: Array(stringHash.prefix(16))).uuidString
+
+            // path to Nudge
+            deviceConfigurationHash["bundlePath"] = bundle.bundlePath
+            // hash of config
+            if !configJSON.isEmpty {
+                deviceConfigurationHash["configJSON"] = MD5(string: String(decoding: configJSON, as: UTF8.self))
+            }
+            if !configProfile.isEmpty {
+                deviceConfigurationHash["configProfile"] = MD5(string: String(data: configProfile, encoding: .utf8)!)
+            }
+            // code signature name
+            let signingInfo = Utils().getSigningInfo()
+            if signingInfo != nil {
+                deviceConfigurationHash["developerCertificate"] = signingInfo!
+            }
+            // version of app
+            deviceConfigurationHash["appVersion"] = Utils().getNudgeVersion()
+            
+            // Look for current data
+            let currentData = nudgeDefaults.dictionary(forKey: "deviceConfiguration") as? [String:String]
+            var currentAppVersion = String()
+            var currentConfigJSON = String()
+            var currentConfigProfile = String()
+            var currentDeveloperCertificate = String()
+            if currentData != nil {
+                currentAppVersion = currentData!["appVersion"]! as String // This should never be nil
+                currentConfigJSON = (currentData!["configJSON"] ?? String()) as String
+                currentConfigProfile = currentData!["configProfile"] ?? String() as String
+                currentDeveloperCertificate = currentData!["developerCertificate"] ?? String() as String
+                
+                // Bail if already shipped
+                if Utils().getNudgeVersion() == currentAppVersion &&
+                    MD5(string: String(decoding: configJSON, as: UTF8.self)) == currentConfigJSON &&
+                    MD5(string: String(data: configProfile, encoding: .utf8)!) == currentConfigProfile &&
+                    signingInfo ?? "" == currentDeveloperCertificate {
+                    return
+                }
+            }
+            
+            let Url = String(format: "http://127.0.0.1:8000/nudge/deviceConfiguration")
+                guard let serviceUrl = URL(string: Url) else { return }
+                var request = URLRequest(url: serviceUrl)
+                request.httpMethod = "POST"
+                request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
+                guard let httpBody = try? JSONSerialization.data(withJSONObject: deviceConfigurationHash, options: []) else {
+                    return
+                }
+                request.httpBody = httpBody
+                request.timeoutInterval = 3
+                let session = URLSession.shared
+                session.dataTask(with: request) { (data, response, error) in
+                    if let response = response as? HTTPURLResponse {
+                        if response.statusCode == 200 {
+                            nudgeDefaults.set(deviceConfigurationHash, forKey: "deviceConfiguration")
+                        } else {
+                            return
+                        }
+                    }
+                }.resume()
+        }
     }
 
     func updateDevice(userClicked: Bool = true) {
