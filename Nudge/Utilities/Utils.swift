@@ -907,8 +907,10 @@ struct Utils {
             uiLog.notice("\("User clicked updateDevice", privacy: .public)")
             // turn off blur and allow windows to come above Nudge
             if Utils().pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
-                for (index, _) in screens.enumerated() {
-                    nudgePrimaryState.blurredBackground[index].close()
+                if nudgePrimaryState.blurredBackground.count > 0 {
+                    for (index, _) in screens.enumerated() {
+                        nudgePrimaryState.blurredBackground[index].close()
+                    }
                 }
                 NSApp.windows[0].level = .normal
             }
