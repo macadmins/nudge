@@ -31,12 +31,20 @@ let actionButtonPath = osVersionRequirementsProfile?.actionButtonPath ?? osVersi
 // optionalFeatures
 let optionalFeaturesProfile = getOptionalFeaturesProfile()
 let optionalFeaturesJSON = getOptionalFeaturesJSON()
+let customAcceptableApplicationBundleIDs = optionalFeaturesProfile?["acceptableApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.acceptableApplicationBundleIDs ?? [String]()
+let acceptableAssertionApplicationNames = optionalFeaturesProfile?["acceptableAssertionApplicationNames"] as? [String] ?? optionalFeaturesJSON?.acceptableAssertionApplicationNames ?? [String]()
+let acceptableAssertionUsage = optionalFeaturesProfile?["acceptableAssertionUsage"] as? Bool ?? optionalFeaturesJSON?.acceptableAssertionUsage ?? false
+let acceptableCameraUsage = optionalFeaturesProfile?["acceptableCameraUsage"] as? Bool ?? optionalFeaturesJSON?.acceptableCameraUsage ?? false
+let acceptableScreenSharingUsage = optionalFeaturesProfile?["acceptableScreenSharingUsage"] as? Bool ?? optionalFeaturesJSON?.acceptableScreenSharingUsage ?? false
 let aggressiveUserExperience = optionalFeaturesProfile?["aggressiveUserExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserExperience ?? true
-let customAcceptableApplicationBundleIDs = optionalFeaturesProfile?["acceptableApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.acceptableApplicationBundleIDs ?? [""]
+let aggressiveUserFullScreenExperience = optionalFeaturesProfile?["aggressiveUserFullScreenExperience"] as? Bool ?? optionalFeaturesJSON?.aggressiveUserFullScreenExperience ?? true
 let asynchronousSoftwareUpdate = optionalFeaturesProfile?["asynchronousSoftwareUpdate"] as? Bool ?? optionalFeaturesJSON?.asynchronousSoftwareUpdate ?? true
+let attemptToBlockApplicationLaunches = optionalFeaturesProfile?["attemptToBlockApplicationLaunches"] as? Bool ?? optionalFeaturesJSON?.attemptToBlockApplicationLaunches ?? false
 let attemptToFetchMajorUpgrade = optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ?? optionalFeaturesJSON?.attemptToFetchMajorUpgrade ?? true
+let blockedApplicationBundleIDs = optionalFeaturesProfile?["blockedApplicationBundleIDs"] as? [String] ?? optionalFeaturesJSON?.blockedApplicationBundleIDs ?? [String]()
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 let disableSoftwareUpdateWorkflow = optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ?? optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ?? false
+let terminateApplicationsOnLaunch = optionalFeaturesProfile?["terminateApplicationsOnLaunch"] as? Bool ?? optionalFeaturesJSON?.terminateApplicationsOnLaunch ?? false
 
 // osVersionRequirements
 let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
@@ -44,7 +52,7 @@ let osVersionRequirementsJSON = getOSVersionRequirementsJSON()
 let majorUpgradeAppPath = osVersionRequirementsProfile?.majorUpgradeAppPath ?? osVersionRequirementsJSON?.majorUpgradeAppPath ?? ""
 var majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
 var majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
-var requiredInstallationDate = PrefsWrapper.requiredInstallationDate
+var requiredInstallationDate = Utils().getFormattedDate(date: PrefsWrapper.requiredInstallationDate)
 let requiredMinimumOSVersion = try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
 let requiredMinimumOSVersionTest = try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
 
@@ -93,6 +101,7 @@ let secondaryQuitButtonText = userInterfaceUpdateElementsProfile?["secondaryQuit
 let showDeferralCount = userInterfaceProfile?["showDeferralCount"] as? Bool ?? userInterfaceJSON?.showDeferralCount ?? true
 let singleQuitButton = userInterfaceProfile?["singleQuitButton"] as? Bool ?? userInterfaceJSON?.singleQuitButton ?? false
 let subHeader = userInterfaceUpdateElementsProfile?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
+let customDeferralDropdownText = userInterfaceUpdateElementsProfile?["customDeferralDropdownText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralDropdownText ?? "Defer".localized(desiredLanguage: getDesiredLanguage())
 let customDeferralButtonText = userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralButtonText ?? "Custom".localized(desiredLanguage: getDesiredLanguage())
 let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ?? "One Day".localized(desiredLanguage: getDesiredLanguage())
 let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour".localized(desiredLanguage: getDesiredLanguage())
@@ -102,11 +111,11 @@ let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDefe
     let builtInAcceptableApplicationBundleIDs = [
         "com.apple.loginwindow",
         "com.apple.systempreferences",
-        "com.apple.dt.Xcode"
+        "com.apple.dt.Xcode",
     ]
 #else
     let builtInAcceptableApplicationBundleIDs = [
         "com.apple.loginwindow",
-        "com.apple.systempreferences"
+        "com.apple.systempreferences",
     ]
 #endif

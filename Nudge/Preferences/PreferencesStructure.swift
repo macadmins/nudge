@@ -58,12 +58,19 @@ extension NudgePreferences {
 
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
-    var acceptableApplicationBundleIDs: [String]?
-    var aggressiveUserExperience,
+    var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
+    var acceptableAssertionUsage,
+        acceptableCameraUsage,
+        acceptableScreenSharingUsage,
+        aggressiveUserExperience,
+        aggressiveUserFullScreenExperience,
         asynchronousSoftwareUpdate,
-        attemptToFetchMajorUpgrade,
-        disableSoftwareUpdateWorkflow,
-        enforceMinorUpdates: Bool?
+        attemptToBlockApplicationLaunches,
+        attemptToFetchMajorUpgrade: Bool?
+    var blockedApplicationBundleIDs: [String]?
+    var disableSoftwareUpdateWorkflow,
+        enforceMinorUpdates,
+        terminateApplicationsOnLaunch: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -86,19 +93,35 @@ extension OptionalFeatures {
 
     func with(
         acceptableApplicationBundleIDs: [String]?? = nil,
+        acceptableAssertionApplicationNames: [String]?? = nil,
+        acceptableAssertionUsage: Bool?? = nil,
+        acceptableCameraUsage: Bool?? = nil,
+        acceptableScreenSharingUsage: Bool?? = nil,
         aggressiveUserExperience: Bool?? = nil,
+        aggressiveUserFullScreenExperience: Bool?? = nil,
         asynchronousSoftwareUpdate: Bool?? = nil,
+        attemptToBlockApplicationLaunches: Bool?? = nil,
         attemptToFetchMajorUpgrade: Bool?? = nil,
+        blockedApplicationBundleIDs: [String]?? = nil,
         disableSoftwareUpdateWorkflow: Bool?? = nil,
-        enforceMinorUpdates: Bool?? = nil
+        enforceMinorUpdates: Bool?? = nil,
+        terminateApplicationsOnLaunch: Bool?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
+            acceptableAssertionApplicationNames: acceptableAssertionApplicationNames ?? self.acceptableAssertionApplicationNames,
+            acceptableAssertionUsage: acceptableAssertionUsage ?? self.acceptableAssertionUsage,
+            acceptableCameraUsage: acceptableCameraUsage ?? self.acceptableCameraUsage,
+            acceptableScreenSharingUsage: acceptableScreenSharingUsage ?? self.acceptableScreenSharingUsage,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
+            aggressiveUserFullScreenExperience: aggressiveUserFullScreenExperience ?? self.aggressiveUserFullScreenExperience,
             asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
+            attemptToBlockApplicationLaunches: attemptToBlockApplicationLaunches ?? self.attemptToBlockApplicationLaunches,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
+            blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
-            enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates
+            enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
+            terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch
         )
     }
 
@@ -390,13 +413,13 @@ extension UserInterface {
 
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
-    var language, actionButtonText, customDeferralButtonText, informationButtonText, mainContentHeader: String?
-    var mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText: String?
-    var oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+    var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText: String?
+    var mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
+    var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, customDeferralButtonText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
     }
 }
 
@@ -422,6 +445,7 @@ extension UpdateElement {
         language: String?? = nil,
         actionButtonText: String?? = nil,
         customDeferralButtonText: String?? = nil,
+        customDeferralDropdownText: String?? = nil,
         informationButtonText: String?? = nil,
         mainContentHeader: String?? = nil,
         mainContentNote: String?? = nil,
@@ -438,6 +462,7 @@ extension UpdateElement {
             language: language ?? self.language,
             actionButtonText: actionButtonText ?? self.actionButtonText,
             customDeferralButtonText: customDeferralButtonText ?? self.customDeferralButtonText,
+            customDeferralDropdownText: customDeferralDropdownText ?? self.customDeferralDropdownText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentNote: mainContentNote ?? self.mainContentNote,

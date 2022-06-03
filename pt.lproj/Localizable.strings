@@ -54,3 +54,7 @@
 "One Hour" = "Uma Hora";
 "One Day" = "Um Dia";
 "Custom" = "Personalizar";
+
+// User Notification
+"Application terminated" = "Aplicativo encerrado";
+"Please update your device to use this application" = "Atualize seu dispositivo para usar este aplicativo";

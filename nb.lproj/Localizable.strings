@@ -3,11 +3,12 @@
   Nudge
 
   Created by Sam Wennerlund on 2022-17-02.
+  Updated by Marcel Strøm 2022-02-05.
 
 */
 
 //// Additional Device Information
-"Additional Device Information" = "Ytterlige informasjon";
+"Additional Device Information" = "Ytterligere informasjon";
 // Username
 "Username:" = "Brukernavn:";
 // Serial Number
@@ -21,13 +22,13 @@
 
 //// Left side of Nudge
 // Current OS Version
-"Current OS Version:" = "Nåvarende OS-versjon:";
+"Current OS Version:" = "Nåværende OS-versjon:";
 // Required OS Version
 "Required OS Version:" = "Påkrevd OS-versjon:";
 // Days Remaining To Update
-"Days Remaining To Update:" = "Resterende dager:";
+"Days Remaining To Update:" = "Gjenstående dager til oppdatering:";
 // Hours Remaining To Update
-"Hours Remaining To Update:" = "Resterende timer:";
+"Hours Remaining To Update:" = "Gjenstående timer til oppdatering:";
 // Deferred Count
 "Deferred Count:" = "Utsatt antall ganger:";
 // More Info
@@ -40,17 +41,21 @@
 "Click for more information about the security update" = "Klikk for mer informasjon om sikkerhetsoppdateringen";
 
 //// Right side of Nudge
-"Update Device" = "Oppdatere";
-"Your device will restart during this update" = "Enheten din starter på nytt under denne oppdateringen";
+"Update Device" = "Oppdater nå";
+"Your device will restart during this update" = "Du vil bli spurt om å starte på nytt underveis i oppdateringen";
 "Important Notes" = "Viktig informasjon";
-"Updates can take around 30 minutes to complete" = "Oppdateringer kan ta omtrent 30 minutter";
-"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Et datamaskin med de siste oppdateringene kreves for at IT skal kunne sikre at datamaskinen din er beskyttet.\n\nHvis du ikke oppdaterer datamaskinen, kan det hende du ikke får tilgang til de nødvendige ressursene.\n\nFor å starte oppdateringen, klikk på Oppdater og følg trinnene.";
-"Your device requires a security update" = "En sikkerhetsoppdatering er nødvendig på datamaskinen";
-"Your device requires a security update (Demo Mode)" = "En sikkerhetsoppdatering er nødvendig på datamaskinen din (demomodus)";
-"Later" = "Seinere";
+"Updates can take around 30 minutes to complete" = "Oppdateringen fullføres vanligvis innen 30 minutter";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Datamaskinen må være oppdatert med de siste sikkerhetsoppdateringene for å være beskyttet.\n\nHvis du ikke oppdaterer datamaskinen, kan det hende at du ikke får tilgang til de nødvendige ressursene.\n\nFor å starte oppdateringen, klikk på Oppdater nå og følg instruksene.";
+"Your device requires a security update" = "En nødvendig sikkerhetsoppdatering er tilgjengelig";
+"Your device requires a security update (Demo Mode)" = "En nødvendig sikkerhetsoppdatering er tilgjengelig(demomodus)";
+"Later" = "Senere";
 "I understand" = "Jeg forstår";
 "A friendly reminder from your local IT team" = "En påminnelse fra IT";
-"Defer" = "Utsette";
+"Defer" = "Utsett";
 "One Hour" = "En time";
 "One Day" = "En dag";
 "Custom" = "Velg tid";
+
+// User Notification
+"Application terminated" = "Appen er avsluttet";
+"Please update your device to use this application" = "Oppdater enheten din for å bruke denne appen";

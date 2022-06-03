@@ -54,3 +54,7 @@
 "One Hour" = "En timme";
 "One Day" = "En dag";
 "Custom" = "Välj tid";
+
+// User Notification
+"Application terminated" = "Appen avslutad";
+"Please update your device to use this application" = "Uppdatera din enhet för att använda den här appen";

@@ -1,12 +1,17 @@
 {
   "optionalFeatures": {
-    "acceptableApplicationBundleIDs": [
-      "us.zoom.xos"
-    ],
+    "acceptableApplicationBundleIDs": [],
+    "acceptableAssertionUsage": false,
+    "acceptableCameraUsage": false,
+    "acceptableScreenSharingUsage": false,
     "aggressiveUserExperience": true,
+    "aggressiveUserFullScreenExperience": true,
     "asynchronousSoftwareUpdate": true,
+    "attemptToBlockApplicationLaunches": false,
     "attemptToFetchMajorUpgrade": true,
-    "enforceMinorUpdates": true
+    "blockedApplicationBundleIDs": [],
+    "enforceMinorUpdates": true,
+    "terminateApplicationsOnLaunch": false
   },
   "osVersionRequirements": [
     {
@@ -72,6 +77,7 @@
         "_language": "en",
         "actionButtonText": "Update Device",
         "customDeferralButtonText": "Custom",
+        "customDeferralDropdownText": "Defer",
         "informationButtonText": "More Info",
         "mainContentHeader": "Your device will restart during this update",
         "mainContentNote": "Important Notes",

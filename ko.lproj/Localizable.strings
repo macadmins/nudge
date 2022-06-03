@@ -54,3 +54,7 @@
 "One Hour" = "한 시간";
 "One Day" = "하루";
 "Custom" = "직접 설정";
+
+// User Notification
+"Application terminated" = "앱이 종료됨";
+"Please update your device to use this application" = "이 앱을 사용하려면 기기를 업데이트하세요.";

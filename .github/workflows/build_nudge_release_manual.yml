@@ -37,12 +37,21 @@ jobs:
       id: get_env_var
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
+         echo "NUDGE_MAIN_VERSION=$(/bin/cat ./build_info_main.txt)" >> $GITHUB_ENV
+
+    - name: Get Changelog Entry
+      id: changelog_reader
+      uses: mindsers/changelog-reader-action@e1a36842bddbd512340f882735802de843998e1f # v2.0.0
+      with:
+        validation_depth: 100
+        version: ${{ env.NUDGE_MAIN_VERSION }}
 
     - name: Generate changelog
       id: changelog
-      uses: metcalfc/changelog-generator@e5306b306fa2e34f05258789e0e5c526c1bd4352 # v1.0.0
+      uses: metcalfc/changelog-generator@6a73d830c3191442cb22efe153073b4a36e0c3ea # v3.0.0
       with:
         myToken: ${{ secrets.GITHUB_TOKEN }}
+        reverse: 'true'
 
     - name: Create Release
       id: create_release
@@ -62,6 +71,9 @@ jobs:
             ## About the LaunchAgent
             This is a basic launch agent that opens Nudge twice an hour, every 30 minutes.
             If you would like to reduce the amount of times Nudge launches per day, it is recommended to create your own LaunchAgent.
+
+            # Changelog
+            ${{ steps.changelog_reader.outputs.changes }}
 
             # Changes
             ${{ steps.changelog.outputs.changelog }}
@@ -96,6 +108,16 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./outputs/Nudge_Logger-1.0.1.pkg
         asset_name: Nudge_Logger-1.0.1.pkg
+        asset_content_type: application/x-newton-compatible-pkg
+
+    - name: Upload Signed Package Release Asset (Suite)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
+        asset_path: ./outputs/Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
+        asset_name: Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
         asset_content_type: application/x-newton-compatible-pkg
 
     - name: Upload packages

@@ -22,17 +22,31 @@
         <key>optionalFeatures</key>
         <dict>
           <key>acceptableApplicationBundleIDs</key>
-          <array>
-            <string>us.zoom.xos</string>
-          </array>
+          <array/>
+          <key>acceptableAssertionApplicationNames</key>
+          <array/>
+          <key>acceptableAssertionUsage</key>
+          <false/>
+          <key>acceptableCameraUsage</key>
+          <false/>
+          <key>acceptableScreenSharingUsage</key>
+          <false/>
           <key>aggressiveUserExperience</key>
+          <true/>
+          <key>aggressiveUserFullScreenExperience</key>
           <true/>
           <key>asynchronousSoftwareUpdate</key>
           <true/>
+          <key>attemptToBlockApplicationLaunches</key>
+          <false/>
           <key>attemptToFetchMajorUpgrade</key>
           <true/>
+          <key>blockedApplicationBundleIDs</key>
+          <array/>
           <key>enforceMinorUpdates</key>
           <true/>
+          <key>terminateApplicationsOnLaunch</key>
+          <false/>
         </dict>
         <key>osVersionRequirements</key>
         <array>
@@ -148,6 +162,8 @@
               <string>Update Device</string>
               <key>customDeferralButtonText</key>
               <string>Custom</string>
+              <key>customDeferralDropdownText</key>
+              <string>Defer</string>
               <key>informationButtonText</key>
               <string>More Info</string>
               <key>mainContentHeader</key>

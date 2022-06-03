@@ -31,13 +31,91 @@
                       }
                     },
                     "type": "string",
-                    "title": "acceptableApplicationBundleID"
+                    "title": "acceptableApplicationBundleIDs"
                   }
+                }
+              ]
+            },
+            "acceptableAssertionApplicationNames": {
+              "description": "The application names using assertions which Nudge allows without taking focus. (You can specify one or more applications. To find the names please run /usr/bin/pmset -g assertions in terminal while the application is open and running)",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "type": "array",
+                  "items": {
+                    "options": {
+                      "inputAttributes": {
+                        "placeholder": "zoom.us"
+                      }
+                    },
+                    "type": "string",
+                    "title": "acceptableAssertionApplicationNames"
+                  }
+                }
+              ]
+            },
+            "acceptableAssertionUsage": {
+              "description": "When enabled, Nudge will not activate or re-activate when assertions are currently set.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
+            "acceptableCameraUsage": {
+              "description": "When enabled, Nudge will not activate or re-activate when the camera is on.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
+            "acceptableScreenSharingUsage": {
+              "description": "When enabled, Nudge will not activate or re-activate when screen sharing is active.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
                 }
               ]
             },
             "aggressiveUserExperience": {
               "description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": true,
+                  "type": "boolean"
+                }
+              ]
+            },
+            "aggressiveUserFullScreenExperience": {
+              "description": "When disabled, Nudge will not create a blurred background when the user is past the deferral window.",
               "anyOf": [
                 {
                   "title": "Not Configured",
@@ -64,6 +142,20 @@
                 }
               ]
             },
+            "attemptToBlockApplicationLaunches": {
+              "description": "When enabled, Nudge will attempt to block application launches after the required installation date. This key must be used in conjunction with blockedApplicationBundleIDs (Note: This key is only used with Nudge v1.1.7 and higher)",
+              "anyOf": [
+                {
+                  "type": "null",
+                  "title": "Not Configured"
+                },
+                {
+                  "title": "Configured",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
             "attemptToFetchMajorUpgrade": {
               "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
               "anyOf": [
@@ -75,6 +167,42 @@
                   "title": "Configured",
                   "type": "boolean",
                   "default": true
+                }
+              ]
+            },
+            "blockedApplicationBundleIDs": {
+              "description": "The application Bundle ID which Nudge disallows from lauching after the required installation date. (You can specify one or more Bundle ID.)",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "type": "array",
+                  "items": {
+                    "options": {
+                      "inputAttributes": {
+                        "placeholder": "us.zoom.xos"
+                      }
+                    },
+                    "type": "string",
+                    "title": "blockedApplicationBundleIDs"
+                  }
+                }
+              ]
+            },
+            "disableSoftwareUpdateWorkflow": {
+              "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
+              "anyOf": [
+                {
+                  "type": "null",
+                  "title": "Not Configured"
+                },
+                {
+                  "title": "Configured",
+                  "type": "boolean",
+                  "default": false
                 }
               ]
             },
@@ -92,8 +220,8 @@
                 }
               ]
             },
-            "disableSoftwareUpdateWorkflow": {
-              "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
+            "terminateApplicationsOnLaunch": {
+              "description": "When enabled, Nudge will terminate the applications listed in blockedApplicationBundleIDs upon initial launch.",
               "anyOf": [
                 {
                   "type": "null",
@@ -900,6 +1028,24 @@
                             "options": {
                               "inputAttributes": {
                                 "placeholder": "Custom"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "customDeferralDropdownText": {
+                        "description": "customDeferralDropdownText, also known as the \"Defer\" button.",
+                        "anyOf": [
+                          {
+                            "type": "null",
+                            "title": "Not Configured"
+                          },
+                          {
+                            "title": "Configured",
+                            "type": "string",
+                            "options": {
+                              "inputAttributes": {
+                                "placeholder": "Defer"
                               }
                             }
                           }

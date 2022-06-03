@@ -10,7 +10,10 @@ import SwiftUI
 // https://stackoverflow.com/a/66039864
 // https://gist.github.com/steve228uk/c960b4880480c6ed186d
 
+let screens = NSScreen.screens
+
 class ViewState: ObservableObject {
+    @Published var afterFirstStateChange = false
     @Published var allowButtons = true
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshhold = false
@@ -24,7 +27,7 @@ class ViewState: ObservableObject {
     @Published var hasLoggedRequireDualQuitButtons = false
     @Published var hasLoggedRequireMajorUgprade = false
     @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()
-    @Published var lastRefreshTime = Utils().getInitialDate()
+    @Published var lastRefreshTime = Utils().getFormattedDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
     @Published var timerCycle = 0
@@ -32,11 +35,13 @@ class ViewState: ObservableObject {
     @Published var userQuitDeferrals = nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0
     @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
     @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
+    @Published var blurredBackground =  [BlurWindowController]()
 }
 
 class LogState {
     var afterFirstLaunch = false
     var afterFirstRun = false
+    var hasLoggedBundleMode = false
     var hasLoggedDemoMode = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
@@ -70,7 +75,8 @@ struct ContentView: View {
                 window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
                 window?.center() // center
                 window?.isMovable = false // not movable
-                // window?.collectionBehavior = [.canJoinAllSpaces] // can join everywhere
+                window?.collectionBehavior = [.fullScreenAuxiliary]
+                window?.delegate = windowDelegate
                 _ = needToActivateNudge()
             }
         )

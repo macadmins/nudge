@@ -8,7 +8,7 @@
 import Foundation
 import os
 
-let bundleID = Bundle.main.bundleIdentifier ?? "com.github.macadmins.Nudge"
+let bundleID = bundle.bundleIdentifier ?? "com.github.macadmins.Nudge"
 let utilsLog = Logger(subsystem: bundleID, category: "utilities")
 let osLog = Logger(subsystem: bundleID, category: "operating-system")
 let loggingLog = Logger(subsystem: bundleID, category: "logging")
@@ -20,7 +20,6 @@ let softwareupdateDownloadLog = Logger(subsystem: bundleID, category: "softwareu
 
 class NudgeLogger {
     init() {
-        let msg = "Starting log events"
-        loggingLog.debug("\(msg, privacy: .public)")
+        loggingLog.debug("\("Starting log events", privacy: .public)")
     }
 }

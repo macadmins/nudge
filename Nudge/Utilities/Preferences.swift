@@ -30,9 +30,8 @@ func getOptionalFeaturesProfile() -> [String:Any]? {
     }
     if let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures") {
         return optionalFeatures
-    } else {
-        let msg = "profile optionalFeatures key is empty"
-        prefsProfileLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsProfileLog.info("\("Profile optionalFeatures key is empty", privacy: .public)")
     }
     return nil
 }
@@ -43,9 +42,8 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
     }
     if let optionalFeatures = nudgeJSONPreferences?.optionalFeatures {
         return optionalFeatures
-    } else {
-        let msg = "json optionalFeatures key is empty"
-        prefsJSONLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsJSONLog.info("\("JSON optionalFeatures key is empty", privacy: .public)")
     }
     return nil
 }
@@ -79,9 +77,8 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
                 defaultMatch = subPreferences
             }
         }
-    } else {
-        let msg = "profile osVersionRequirements key is empty"
-        prefsProfileLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsProfileLog.info("\("Profile osVersionRequirements key is empty", privacy: .public)")
     }
     if fullMatch.requiredMinimumOSVersion != nil {
         return fullMatch
@@ -113,9 +110,8 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
                 defaultMatch = subPreferences
             }
         }
-    } else {
-        let msg = "json osVersionRequirements key is empty"
-        prefsJSONLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsJSONLog.info("\("JSON osVersionRequirements key is empty", privacy: .public)")
     }
     if fullMatch.requiredMinimumOSVersion != nil {
         return fullMatch
@@ -153,9 +149,8 @@ func getUserExperienceProfile() -> [String:Any]? {
     }
     if let userExperience = nudgeDefaults.dictionary(forKey: "userExperience") {
         return userExperience
-    } else {
-        let msg = "profile userExperience key is empty"
-        prefsProfileLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsProfileLog.info("\("Profile userExperience key is empty", privacy: .public)")
     }
     return nil
 }
@@ -166,9 +161,8 @@ func getUserExperienceJSON() -> UserExperience? {
     }
     if let userExperience = nudgeJSONPreferences?.userExperience {
         return userExperience
-    } else {
-        let msg = "json userExperience key is empty"
-        prefsJSONLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsJSONLog.info("\("JSON userExperience key is empty", privacy: .public)")
     }
     return nil
 }
@@ -182,9 +176,8 @@ func getUserInterfaceProfile() -> [String:Any]? {
     }
     if let userInterface = nudgeDefaults.dictionary(forKey: "userInterface") {
         return userInterface
-    } else {
-        let msg = "profile userInterface key is empty"
-        prefsProfileLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsProfileLog.info("\("Profile userInterface key is empty", privacy: .public)")
     }
     return nil
 }
@@ -195,9 +188,8 @@ func getUserInterfaceJSON() -> UserInterface? {
     }
     if let userInterface = nudgeJSONPreferences?.userInterface {
         return userInterface
-    } else {
-        let msg = "json userInterface key is empty"
-        prefsJSONLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsJSONLog.info("\("JSON userInterface key is empty", privacy: .public)")
     }
     return nil
 }
@@ -231,9 +223,8 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
                 return subPreferences
             }
         }
-    } else {
-        let msg = "profile updateElements key is empty"
-        prefsProfileLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsProfileLog.info("\("Profile updateElements key is empty", privacy: .public)")
     }
     return nil
 }
@@ -250,9 +241,8 @@ func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
                 return subPreferences
             }
         }
-    } else {
-        let msg = "json updateElements key is empty"
-        prefsJSONLog.info("\(msg, privacy: .public)")
+    } else if !nudgeLogState.afterFirstLaunch {
+        prefsJSONLog.info("\("JSON updateElements key is empty", privacy: .public)")
     }
     return nil
 }

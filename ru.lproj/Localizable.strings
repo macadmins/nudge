@@ -54,3 +54,7 @@
 "One Hour" = "На час";
 "One Day" = "На день";
 "Custom" = "Другое";
+
+// User Notification
+"Application terminated" = "Приложение закрыто";
+"Please update your device to use this application" = "Пожалуйста, обновите свое устройство, чтобы использовать это приложение";
