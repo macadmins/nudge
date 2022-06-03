@@ -1,4 +1,4 @@
-name: Bbuild signed Nudge and upload signed package
+name: Build signed Nudge and upload signed package
 
 env:
   NOTARY_APP_PASSWORD: ${{ secrets.NOTARY_APP_PASSWORD }}
@@ -123,7 +123,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./outputs/Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
         asset_name: Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
         asset_content_type: application/x-newton-compatible-pkg
