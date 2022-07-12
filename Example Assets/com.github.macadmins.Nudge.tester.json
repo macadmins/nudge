@@ -20,7 +20,7 @@
     {
       "aboutUpdateURL": "https://apple.com",
       "requiredInstallationDate": "2023-01-01T00:00:00Z",
-      "requiredMinimumOSVersion": "12.99.99",
+      "requiredMinimumOSVersion": "13.99.99",
       "targetedOSVersionsRule": "default"
     }
   ],
