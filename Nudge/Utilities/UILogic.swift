@@ -154,6 +154,12 @@ func needToActivateNudge() -> Bool {
         return false
     }
     
+    // Don't nudge if screen is locked
+    if nudgePrimaryState.screenCurrentlyLocked {
+        uiLog.info("\("Ignoring Nudge activation - Screen is currently locked", privacy: .public)")
+        return false
+    }
+    
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
