@@ -215,7 +215,7 @@ func needToActivateNudge() -> Bool {
     }
 
     // Don't nudge if acceptable apps are frontmostApplication
-    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) {
         uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
         return false
     }
