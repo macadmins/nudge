@@ -126,7 +126,7 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_PKG_PATH"
+"python3 ${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
@@ -169,7 +169,7 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LA_PKG_PATH"
+"python3 ${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LA_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
@@ -209,7 +209,7 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LD_PKG_PATH"
+"python3 ${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LD_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
@@ -256,7 +256,7 @@ echo "Moving LaunchDaemon to logging payload folder"
 SIGNED_JSONFILE
 
 # Create the signed Nudge Suite pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$SUITE_PKG_PATH"
+"python3 ${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$SUITE_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
