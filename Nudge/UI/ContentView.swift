@@ -36,6 +36,7 @@ class ViewState: ObservableObject {
     @Published var userRequiredMinimumOSVersion = nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
     @Published var userSessionDeferrals = nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
     @Published var blurredBackground =  [BlurWindowController]()
+    @Published var screenCurrentlyLocked = false
 }
 
 class LogState {

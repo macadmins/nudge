@@ -3,7 +3,8 @@
 # Build script for Nudge
 
 # Variables
-XCODE_PATH="/Applications/Xcode_13.2.1.app"
+XCODE_PATH="/Applications/Xcode_13.4.1.app"
+XCODE_ORIGINAL_PATH="/Applications/Xcode_13.4.1.app"
 CODE_SIGN_IDENTITY="Developer ID Application: Clever DevOps Co. (9GQZ7KUFR6)"
 SIGNING_IDENTITY="Developer ID Installer: Clever DevOps Co. (9GQZ7KUFR6)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
@@ -125,7 +126,7 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_PKG_PATH"
+python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
@@ -168,7 +169,7 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LA_PKG_PATH"
+python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LA_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
@@ -208,7 +209,7 @@ fi
 SIGNED_JSONFILE
 
 # Create the signed pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LD_PKG_PATH"
+python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LD_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
@@ -255,7 +256,7 @@ echo "Moving LaunchDaemon to logging payload folder"
 SIGNED_JSONFILE
 
 # Create the signed Nudge Suite pkg
-"${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$SUITE_PKG_PATH"
+python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$SUITE_PKG_PATH"
 PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2

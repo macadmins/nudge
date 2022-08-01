@@ -13,16 +13,16 @@ import IOKit.pwr_mgt // Asertions
 let DNDServer = Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")?.load() ?? false
 
 class DNDConfig {
-    static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as! NSObject.Type
-    let rawValue: NSObject
+    static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as? NSObject.Type ?? nil
+    let rawValue: NSObject?
     
     init() {
-        self.rawValue = Self.rawType.init()
+        self.rawValue = Self.rawType == nil ? nil : (Self.rawType!).init()
     }
     
-    required init(rawValue: NSObject) {
-        guard rawValue.isKind(of: Self.rawType) else { fatalError() }
-        self.rawValue = rawValue
+    required init(rawValue: NSObject?) {
+        guard rawValue!.isKind(of: Self.rawType!) else { fatalError() }
+        self.rawValue = rawValue == nil ? nil : rawValue
     }
 }
 
@@ -154,6 +154,12 @@ func needToActivateNudge() -> Bool {
         return false
     }
     
+    // Don't nudge if screen is locked
+    if nudgePrimaryState.screenCurrentlyLocked {
+        uiLog.info("\("Ignoring Nudge activation - Screen is currently locked", privacy: .public)")
+        return false
+    }
+    
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
         if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
@@ -181,7 +187,7 @@ func needToActivateNudge() -> Bool {
 
     // Don't nudge if screen sharing and prior to requiredInstallationDate
     if DNDServer && acceptableScreenSharingUsage && !pastRequiredInstallationDate {
-        if (DNDConfig().rawValue.value(forKey: "isScreenShared") as? Bool) == true && !pastRequiredInstallationDate {
+        if (DNDConfig().rawValue?.value(forKey: "isScreenShared") as? Bool ?? false) == true && !pastRequiredInstallationDate {
             uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
             return false
         }
@@ -209,7 +215,7 @@ func needToActivateNudge() -> Bool {
     }
 
     // Don't nudge if acceptable apps are frontmostApplication
-    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier!)!) {
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) {
         uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
         return false
     }
@@ -285,14 +291,5 @@ extension NSWorkspace {
             }
         }
         return false
-    }
-}
-
-// Return nil if a key does not exist in a Dictionary, rather than completely crash the app
-// Comparable to aDictionary.get("something", None) in Python
-extension NSObject {
-    @objc
-    func value(forUndefinedKey key: String) -> String? {
-        nil
     }
 }

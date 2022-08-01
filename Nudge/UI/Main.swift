@@ -64,6 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { notification in
+            nudgePrimaryState.screenCurrentlyLocked = true
             utilsLog.info("\("Screen was locked", privacy: .public)")
         }
 
@@ -72,6 +73,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil,
             queue: .main
         ) { notification in
+            nudgePrimaryState.screenCurrentlyLocked = false
             utilsLog.info("\("Screen was unlocked", privacy: .public)")
         }
 
