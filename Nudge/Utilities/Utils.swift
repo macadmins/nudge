@@ -859,10 +859,10 @@ struct Utils {
             } else if majorUpgradeBackupAppPathExists {
                 url = getBackupMajorUpgradeAppPath()
             } else { // Backup if all of these checks fail
-                url = "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"
+                url = "/System/Library/CoreServices/Software Update.app"
             }
         } else {
-            url = "/System/Library/PreferencePanes/SoftwareUpdate.prefPane"
+            url = "/System/Library/CoreServices/Software Update.app"
             // NSWorkspace.shared.open(URL(fileURLWithPath: "x-apple.systempreferences:com.apple.preferences.softwareupdate?client=softwareupdateapp"))
         }
         
