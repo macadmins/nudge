@@ -59,6 +59,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		031343AB28CF562F00750AE1 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		035C2AEB25D8ABC400429458 /* com.github.macadmins.Nudge.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.json; sourceTree = "<group>"; };
 		05DDB291263049DB006629B3 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		068D23D025DC27EA00FE05A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -381,6 +382,7 @@
 				nb,
 				it,
 				da,
+				pl,
 			);
 			mainGroup = 63D7D0D625C9E9A400236281;
 			productRefGroup = 63D7D0E025C9E9A400236281 /* Products */;
@@ -506,6 +508,7 @@
 				29AF939527BF8BBF009CD38D /* nb */,
 				630316C127C53143004E1F72 /* it */,
 				6362D3F72824368E00A4849E /* da */,
+				031343AB28CF562F00750AE1 /* pl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
