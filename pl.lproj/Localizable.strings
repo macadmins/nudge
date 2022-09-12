@@ -7,54 +7,54 @@
 */
 
 //// Additional Device Information
-"Additional Device Information" = "Additional Device Information";
+"Additional Device Information" = "Dodatkowe informacje o urządzeniu";
 // Username
-"Username:" = "Username:";
+"Username:" = "Użytkownik:";
 // Serial Number
-"Serial Number:" = "Serial Number:";
+"Serial Number:" = "Numer seryjny:";
 // Architecture
-"Architecture:" = "Architecture:";
+"Architecture:" = "Architektura:";
 // Nudge Version
-"Version:" = "Version:";
+"Version:" = "Wersja:";
 // Language
-"Language:" = "Language:";
+"Language:" = "Język:";
 
 //// Left side of Nudge
 // Current OS Version
-"Current OS Version:" = "Current OS Version:";
+"Current OS Version:" = "Bieżąca wersja macOS:";
 // Required OS Version
-"Required OS Version:" = "Required OS Version:";
+"Required OS Version:" = "Wymagana wersja macOS:";
 // Days Remaining To Update
-"Days Remaining To Update:" = "Days Remaining To Update:";
+"Days Remaining To Update:" = "Dni pozostałe do aktualizacji:";
 // Hours Remaining To Update
-"Hours Remaining To Update:" = "Hours Remaining To Update:";
+"Hours Remaining To Update:" = "Godziny pozostałe do aktualizacji:";
 // Deferred Count
-"Deferred Count:" = "Deferred Count:";
+"Deferred Count:" = "Licznik odroczeń:";
 // More Info
-"More Info" = "More Info";
+"More Info" = "Więcej informacji";
 
 // Help buttons
-"Click to close" = "Click to close";
-"Click for additional device information" = "Click for additional device information";
-"Click to zoom into screenshot" = "Click to zoom into screenshot";
-"Click for more information about the security update" = "Click for more information about the security update";
+"Click to close" = "Kliknij aby zamknąć";
+"Click for additional device information" = "Kliknij po dodatkowe informacje o urządzeniu";
+"Click to zoom into screenshot" = "Kliknij aby powiększyć zrzut ekranu";
+"Click for more information about the security update" = "Kliknij aby uzyskać więcej informacji na temat uaktualnienia";
 
 //// Right side of Nudge
-"Update Device" = "Update Device";
-"Your device will restart during this update" = "Your device will restart during this update";
-"Important Notes" = "Important Notes";
-"Updates can take around 30 minutes to complete" = "Updates can take around 30 minutes to complete";
-"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.";
-"Your device requires a security update" = "Your device requires a security update";
-"Your device requires a security update (Demo Mode)" = "Your device requires a security update (Demo Mode)";
-"Later" = "Later";
-"I understand" = "I understand";
-"A friendly reminder from your local IT team" = "A friendly reminder from your local IT team";
-"Defer" = "Defer";
-"One Hour" = "One Hour";
-"One Day" = "One Day";
-"Custom" = "Custom";
+"Update Device" = "Uaktualnij urządzenie";
+"Your device will restart during this update" = "Podczas tej aktualizacji Mac uruchomi się ponownie";
+"Important Notes" = "Ważne informacje";
+"Updates can take around 30 minutes to complete" = "Aktualizacja może zająć około 30 minut";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Wymagane jest uaktualnienie urządzenia, aby mieć pewność, że dział IT może w pełni chronić Twoje urządzenie.\n\nJeśli nie zaktualizujesz urządzenia, możesz utracić dostęp do niektórych elementów niezbędnych do wykonywania codziennych zadań.\n\nAby rozpocząć aktualizację, po prostu kliknij przycisk Uaktualnij system i postępuj zgodnie z podanymi krokami.";
+"Your device requires a security update" = "Twoje urządzenie wymaga aktualizacji systemu macOS";
+"Your device requires a security update (Demo Mode)" = "Twoje urządzenie wymaga aktualizacji systemu macOS (Tryb Demo)";
+"Later" = "Później";
+"I understand" = "Rozumiem";
+"A friendly reminder from your local IT team" = "Przypomnienie IT";
+"Defer" = "Odrocz";
+"One Hour" = "1 godzina";
+"One Day" = "1 dzień";
+"Custom" = "Własne";
 
 // User Notification
-"Application terminated" = "Application terminated";
-"Please update your device to use this application" = "Please update your device to use this application";
+"Application terminated" = "Applikacja została zamknięta";
+"Please update your device to use this application" = "Zaktualizuj swoje urządzenie, aby używać tej aplikacji";
