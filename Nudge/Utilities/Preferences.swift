@@ -55,6 +55,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     var fullMatch = OSVersionRequirement()
     var partialMatch = OSVersionRequirement()
     var defaultMatch = OSVersionRequirement()
+    var defaultMatchSet = false
     if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
@@ -73,7 +74,8 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
                 partialMatch = subPreferences
             } else if subPreferences.targetedOSVersionsRule == "default" {
                 defaultMatch = subPreferences
-            } else {
+                defaultMatchSet = true
+            } else if !(defaultMatchSet) {
                 defaultMatch = subPreferences
             }
         }
@@ -94,6 +96,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     var fullMatch = OSVersionRequirement()
     var partialMatch = OSVersionRequirement()
     var defaultMatch = OSVersionRequirement()
+    var defaultMatchSet = false
     if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
@@ -106,7 +109,8 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
                 partialMatch = subPreferences
             } else if subPreferences.targetedOSVersionsRule == "default" {
                 defaultMatch = subPreferences
-            } else if subPreferences.targetedOSVersionsRule == nil {
+                defaultMatchSet = true
+            } else if subPreferences.targetedOSVersionsRule == nil && !(defaultMatchSet) {
                 defaultMatch = subPreferences
             }
         }
