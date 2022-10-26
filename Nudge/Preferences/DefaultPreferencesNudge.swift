@@ -113,11 +113,15 @@ let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDefe
         "com.apple.ScreenSaver.Engine",
         "com.apple.systempreferences",
         "com.apple.dt.Xcode",
+        "com.apple.InstallAssistant.macOSVentura",
+        "com.apple.InstallAssistant.macOSMonterey",
     ]
 #else
     let builtInAcceptableApplicationBundleIDs = [
         "com.apple.loginwindow",
         "com.apple.ScreenSaver.Engine",
         "com.apple.systempreferences",
+        "com.apple.InstallAssistant.macOSVentura",
+        "com.apple.InstallAssistant.macOSMonterey",
     ]
 #endif
