@@ -85,6 +85,7 @@ NUDGE_PKG_PATH="$TOOLSDIR/NudgePkg"
 if [ -e $NUDGE_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_PKG_PATH
 fi
+/bin/mkdir -p "$NUDGE_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
 /bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Nudge.app"
@@ -143,6 +144,7 @@ NUDGE_LA_PKG_PATH="$TOOLSDIR/NudgePkgLA"
 if [ -e $NUDGE_LA_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_LA_PKG_PATH
 fi
+/bin/mkdir -p "$NUDGE_LA_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_LA_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LA_PKG_PATH"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload"
@@ -182,6 +184,7 @@ NUDGE_LD_PKG_PATH="$TOOLSDIR/NudgePkgLogger"
 if [ -e $NUDGE_LD_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_LD_PKG_PATH
 fi
+/bin/mkdir -p "$NUDGE_LD_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_LD_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LD_PKG_PATH"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload"
