@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Xcode 14 or higher is now required to build Nudge
 - Xcode 14.2 is the verison used to build Nudge through Github Actions
 - Built with Swift 5.7.2
-- Monterey is the default icon, decreasing the size of Nudge by 50%!
+- Monterey is the default icon, decreasing the size of Nudge by 55%!
 - `asynchronousSoftwareUpdate` is no longer honored when the `requiredInstallationDate` has been passed
 - The default Nudge package now attempts to install to `/Applications/Utilities` to improve deployments through Intune
 - The default Nudge LaunchAgent package now attempts to install to `/Library/LaunchAgents` to improve deployments through Intune
