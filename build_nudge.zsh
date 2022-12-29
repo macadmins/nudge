@@ -156,11 +156,11 @@ fi
     "distribution_style": true,
     "identifier": "com.github.macadmins.Nudge.LaunchAgent",
     "install_location": "/",
-    "name": "Nudge_LaunchAgent-1.0.0.pkg",
+    "name": "Nudge_LaunchAgent-1.0.1.pkg",
     "ownership": "recommended",
     "postinstall_action": "none",
     "suppress_bundle_relocation": true,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "signing_info": {
         "identity": "$SIGNING_IDENTITY",
         "timestamp": true
@@ -175,7 +175,7 @@ if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
   # Move the signed pkg
-  /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.0.pkg" "$OUTPUTSDIR"
+  /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" "$OUTPUTSDIR"
 fi
 
 # move the ld to the payload folder
