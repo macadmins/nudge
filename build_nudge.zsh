@@ -117,7 +117,7 @@ fi
   "distribution_style": true,
   "version": "$AUTOMATED_NUDGE_BUILD",
   "name": "Nudge-$AUTOMATED_NUDGE_BUILD.pkg",
-  "install_location": "/",
+  "install_location": "/Applications/Utilities",
   "signing_info": {
     "identity": "$SIGNING_IDENTITY",
     "timestamp": true
