@@ -62,6 +62,7 @@ let aboutUpdateURL = getAboutUpdateURL(OSVerReq: osVersionRequirementsProfile) ?
 let userExperienceProfile = getUserExperienceProfile()
 let userExperienceJSON = getUserExperienceJSON()
 let allowGracePeriods = PrefsWrapper.allowGracePeriods
+let allowLaterDeferralButton = userExperienceProfile?["allowLaterDeferralButton"] as? Bool ?? userExperienceJSON?.allowLaterDeferralButton ?? true
 let allowUserQuitDeferrals = userExperienceProfile?["allowUserQuitDeferrals"] as? Bool ?? userExperienceJSON?.allowUserQuitDeferrals ?? true
 let allowedDeferrals = userExperienceProfile?["allowedDeferrals"] as? Int ?? userExperienceJSON?.allowedDeferrals ?? 1000000
 let allowedDeferralsUntilForcedSecondaryQuitButton = userExperienceProfile?["allowedDeferralsUntilForcedSecondaryQuitButton"] as? Int ?? userExperienceJSON?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14

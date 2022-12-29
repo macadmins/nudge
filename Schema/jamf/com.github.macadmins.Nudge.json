@@ -470,6 +470,20 @@
                 }
               ]
             },
+            "allowLaterDeferralButton": {
+                "description": "Allows the user to press the `Later` button through the custom deferrals UI",
+                "anyOf": [
+                  {
+                    "title": "Not Configured",
+                    "type": "null"
+                  },
+                  {
+                    "title": "Configured",
+                    "default": true,
+                    "type": "boolean"
+                  }
+                ]
+              },
             "allowUserQuitDeferrals": {
               "description": "Allows the user to specify when they will next be prompted by Nudge. (Set to `False` to maintain v1.0.0 behavior.) When using this feature, Nudge will no longer adhere to your LaunchAgent logic as the user is specifying their own execution time for the next Nudge event.(See: `~/Library/Preferences/com.github.macadmins.Nudge.plist`.)",
               "anyOf": [

@@ -51,12 +51,14 @@ struct QuitButtons: View {
                 HStack {
                     if allowUserQuitDeferrals {
                         Menu {
-                            Button {
-                                Utils().setDeferralTime(deferralTime: nudgeEventDate)
-                                updateDeferralUI()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: buttonTextMinWidth)
+                            if allowLaterDeferralButton {
+                                Button {
+                                    Utils().setDeferralTime(deferralTime: nudgeEventDate)
+                                    updateDeferralUI()
+                                } label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: buttonTextMinWidth)
+                                }
                             }
                             if Utils().allow1HourDeferral() {
                                 Button {
