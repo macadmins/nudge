@@ -787,8 +787,8 @@ struct Utils {
         if demoModeEnabled() {
             pastRequiredInstallationDate = false
         }
-        if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
-            nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
+        if !nudgeLogState.hasLoggedPastRequiredInstallationDate {
+            nudgeLogState.hasLoggedPastRequiredInstallationDate = true
             utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
         }
         return pastRequiredInstallationDate

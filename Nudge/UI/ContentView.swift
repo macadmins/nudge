@@ -21,7 +21,6 @@ class ViewState: ObservableObject {
     @Published var hasClickedSecondaryQuitButton = false
     @Published var hasLoggedDeferralCountPastThreshhold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
-    @Published var hasLoggedPastRequiredInstallationDate = false
     @Published var hasLoggedRequireDualQuitButtons = false
     @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()
     @Published var lastRefreshTime = Utils().getFormattedDate()
@@ -43,6 +42,7 @@ class LogState {
     var hasLoggedDemoMode = false
     var hasLoggedMajorOSVersion = false
     var hasLoggedMajorRequiredOSVersion = false
+    var hasLoggedPastRequiredInstallationDate = false
     var hasLoggedRequireMajorUgprade = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
