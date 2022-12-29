@@ -85,10 +85,9 @@ NUDGE_PKG_PATH="$TOOLSDIR/NudgePkg"
 if [ -e $NUDGE_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_PKG_PATH
 fi
-/bin/mkdir -p "$NUDGE_PKG_PATH/payload/Applications/Utilities"
 /bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
-/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Nudge.app"
 /bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
 
 # Download specific version of munki-pkg
@@ -144,10 +143,9 @@ NUDGE_LA_PKG_PATH="$TOOLSDIR/NudgePkgLA"
 if [ -e $NUDGE_LA_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_LA_PKG_PATH
 fi
-/bin/mkdir -p "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
 /bin/mkdir -p "$NUDGE_LA_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LA_PKG_PATH"
-/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-launchagent" "$NUDGE_LA_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
@@ -155,7 +153,7 @@ fi
 {
     "distribution_style": true,
     "identifier": "com.github.macadmins.Nudge.LaunchAgent",
-    "install_location": "/",
+    "install_location": "/Library/LaunchAgents",
     "name": "Nudge_LaunchAgent-1.0.1.pkg",
     "ownership": "recommended",
     "postinstall_action": "none",
@@ -184,10 +182,9 @@ NUDGE_LD_PKG_PATH="$TOOLSDIR/NudgePkgLogger"
 if [ -e $NUDGE_LD_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_LD_PKG_PATH
 fi
-/bin/mkdir -p "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
 /bin/mkdir -p "$NUDGE_LD_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LD_PKG_PATH"
-/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-logger" "$NUDGE_LD_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
@@ -195,7 +192,7 @@ fi
 {
     "distribution_style": true,
     "identifier": "com.github.macadmins.Nudge.Logger",
-    "install_location": "/",
+    "install_location": "/Library/LaunchDaemons",
     "name": "Nudge_Logger-1.0.1.pkg",
     "ownership": "recommended",
     "postinstall_action": "none",

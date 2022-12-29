@@ -16,7 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Xcode 14.2 is the verison used to build Nudge through Github Actions
 - Monterey is the default icon
 - `asynchronousSoftwareUpdate` is no longer honored when the `requiredInstallationDate` has been passed
-- The default package now attempts to install to `/Applications/Utilities` to improve deployments through Intune
+- The default Nudge package now attempts to install to `/Applications/Utilities` to improve deployments through Intune
+- The default Nudge LaunchAgent package now attempts to install to `/Library/LaunchAgents` to improve deployments through Intune
+- The default Nudge Logger package now attempts to install to `/Library/LaunchDaemons` to improve deployments through Intune
 - German and Danish language improvements
 
 ### Fixed
