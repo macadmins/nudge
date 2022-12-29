@@ -19,19 +19,19 @@ jobs:
 
     steps:
     - name: Checkout nudge repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.2.0
       with:
         fetch-depth: 0
 
     - name: Install Apple Xcode certificates
-      uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
+      uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
       with:
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
         p12-file-base64: ${{ secrets.APP_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.APP_CERTIFICATES_P12_PASSWORD }}
 
     - name: Install Apple Installer certificates
-      uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
+      uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
       with:
         create-keychain: false # do not create a new keychain for this value
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
@@ -56,19 +56,20 @@ jobs:
 
     - name: Generate changelog
       id: changelog
-      uses: metcalfc/changelog-generator@6a73d830c3191442cb22efe153073b4a36e0c3ea # v3.0.0
+      uses: metcalfc/changelog-generator@31b6d6f9e6e17e84ad34bee780f82d8ee79f6842 # v4.0.1
       with:
         myToken: ${{ secrets.GITHUB_TOKEN }}
         reverse: 'true'
 
     - name: Create Pre-Release
       id: create_pre_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
       with:
+        name: v${{env.NUDGE_VERSION}}
         tag_name: v${{env.NUDGE_VERSION}}
-        release_name: Nudge ${{env.NUDGE_VERSION}}
+        draft: false
+        prerelease: true
+        token: ${{ secrets.GITHUB_TOKEN }}
         body: |
             # Notes
             This is a pre-release version of Nudge created by GitHub Actions.
@@ -85,51 +86,10 @@ jobs:
 
             # Changes
             ${{ steps.changelog.outputs.changelog }}
-        draft: false
-        prerelease: true
-
-    - name: Upload Signed Package Pre-Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-        asset_path: ./outputs/Nudge-${{env.NUDGE_VERSION}}.pkg
-        asset_name: Nudge-${{env.NUDGE_VERSION}}.pkg
-        asset_content_type: application/x-newton-compatible-pkg
-
-    - name: Upload Signed Package Pre-Release Asset (LaunchAgent)
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-        asset_path: ./outputs/Nudge_LaunchAgent-1.0.1.pkg
-        asset_name: Nudge_LaunchAgent-1.0.1.pkg
-        asset_content_type: application/x-newton-compatible-pkg
-
-    - name: Upload Signed Package Pre-Release Asset (Logger)
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-        asset_path: ./outputs/Nudge_Logger-1.0.1.pkg
-        asset_name: Nudge_Logger-1.0.1.pkg
-        asset_content_type: application/x-newton-compatible-pkg
-
-    - name: Upload Signed Package Pre-Release Asset (Suite)
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_pre_release.outputs.upload_url }}
-        asset_path: ./outputs/Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
-        asset_name: Nudge_Suite-${{env.NUDGE_VERSION}}.pkg
-        asset_content_type: application/x-newton-compatible-pkg
+        files: ${{github.workspace}}/outputs/*.pkg
 
     - name: Upload packages
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3.1.1
       with:
         name: packages
         path: outputs/

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AssociatedBundleIdentifiers` is now added to the LaunchAgent
 
 ### Changed
+- Modernized the Github Action dependencies
 - Xcode 14 or higher is now required to build Nudge
 - Xcode 14.2 is the verison used to build Nudge through Github Actions
 - Monterey is the default icon

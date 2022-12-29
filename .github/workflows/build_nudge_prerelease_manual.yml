@@ -59,7 +59,7 @@ jobs:
       with:
         name: v${{env.NUDGE_VERSION}}
         tag_name: v${{env.NUDGE_VERSION}}
-        draft: true
+        draft: false
         prerelease: true
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
