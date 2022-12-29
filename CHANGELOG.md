@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.10] - 2022-12-29
+### Added
+- `allowLaterDeferralButton` key to remove the "Later" button when using deferrals
+- `builtInAcceptableApplicationBundleIDs` now includes the Ventura and Monterey upgrade apps
+- `CMD + Option + M` and `CMD + Option + N` are now banned hotkeys when Nudge is the primary window
+- `AssociatedBundleIdentifiers` is now added to the LaunchAgent
+
+### Changed
+- Xcode 14 or higher is now required to build Nudge
+- Xcode 14.2 is the verison used to build Nudge through Github Actions
+- Monterey is the default icon
+- `asynchronousSoftwareUpdate` is no longer honored when the `requiredInstallationDate` has been passed
+- The default package now attempts to install to `/Applications/Utilities` to improve deployments through Intune
+- German and Danish language improvements
+
+### Fixed
+- All known Xcode 14 warnings
+- Custom Deferral buttons now expand to the entire string length
+
 ## [1.1.9] - 2022-09-12
 Almost all of these changes were sent by others. Thank you for continuing to support Nudge!
 ### Added
