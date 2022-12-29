@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modernized the Github Action dependencies
 - Xcode 14 or higher is now required to build Nudge
 - Xcode 14.2 is the verison used to build Nudge through Github Actions
+- Built with Swift 5.7.2
 - Monterey is the default icon
 - `asynchronousSoftwareUpdate` is no longer honored when the `requiredInstallationDate` has been passed
 - The default Nudge package now attempts to install to `/Applications/Utilities` to improve deployments through Intune
