@@ -3,8 +3,8 @@
 # Build script for Nudge
 
 # Variables
-XCODE_PATH="/Applications/Xcode_13.4.1.app"
-XCODE_ORIGINAL_PATH="/Applications/Xcode_13.4.1.app"
+XCODE_PATH="/Applications/Xcode_14.2.app"
+XCODE_ORIGINAL_PATH="/Applications/Xcode_14.2.app"
 CODE_SIGN_IDENTITY="Developer ID Application: Clever DevOps Co. (9GQZ7KUFR6)"
 SIGNING_IDENTITY="Developer ID Installer: Clever DevOps Co. (9GQZ7KUFR6)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
