@@ -21,13 +21,13 @@
 
 //// Left side of Nudge
 // Current OS Version
-"Current OS Version:" = "Nuværende OS-version:";
+"Current OS Version:" = "Nuværende MacOS-version:";
 // Required OS Version
-"Required OS Version:" = "Påkrævet OS-version:";
+"Required OS Version:" = "Påkrævet MacOS-version:";
 // Days Remaining To Update
-"Days Remaining To Update:" = "Dage at opdatere i:";
+"Days Remaining To Update:" = "Tilbageværende dage til at opdatere:";
 // Hours Remaining To Update
-"Hours Remaining To Update:" = "Timer at opdatere i:";
+"Hours Remaining To Update:" = "Tilbageværende timer til at opdatere:";
 // Deferred Count
 "Deferred Count:" = "Antal udsættelser:";
 // More Info

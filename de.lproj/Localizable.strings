@@ -1,9 +1,9 @@
-/* 
+/*
   Localizable.strings
   Nudge
 
   Created by Erik Gomez on 2/12/21.
-  
+
 */
 
 //// Additional Device Information
@@ -41,15 +41,15 @@
 
 //// Right side of Nudge
 "Update Device" = "Gerät Aktualisieren";
-"Your device will restart during this update" = "Ihr Gerät wird während dieses Updates neu gestartet";
+"Your device will restart during this update" = "Dein Gerät wird während dieses Updates neu gestartet";
 "Important Notes" = "Wichtige Hinweise";
 "Updates can take around 30 minutes to complete" = "Die Aktualisierung kann etwa 30 Minuten in Anspruch nehmen";
-"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung Ihr Gerät effektiv schützen kann.\n\nWenn Sie Ihr Gerät nicht aktualisieren, verlieren Sie möglicherweise den Zugriff auf einige Werkzeuge, die Sie für Ihre täglichen Aufgaben benötigen.\n\nUm das Update zu starten, klicken Sie auf die Schaltfläche Gerät aktualisieren und befolgen Sie die angegebenen Schritte.";
-"Your device requires a security update" = "Ihr Gerät benötigt ein Sicherheitsupdate";
-"Your device requires a security update (Demo Mode)" = "Ihr Gerät benötigt ein Sicherheitsupdate (Demo-Modus)";
+"A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." = "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Gerät effektiv schützen kann.\n\nWenn du dein Gerät nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche Gerät Aktualisieren und befolge die angegebenen Schritte.";
+"Your device requires a security update" = "Dein Gerät benötigt ein Sicherheitsupdate";
+"Your device requires a security update (Demo Mode)" = "Dein Gerät benötigt ein Sicherheitsupdate (Demo-Modus)";
 "Later" = "Später";
 "I understand" = "Ich verstehe";
-"A friendly reminder from your local IT team" = "Eine freundliche Erinnerung von Ihrem IT-Team";
+"A friendly reminder from your local IT team" = "Eine freundliche Erinnerung deines IT-Teams";
 "Defer" = "Verschieben";
 "One Hour" = "Eine Stunde";
 "One Day" = "Ein Tag";
@@ -57,4 +57,4 @@
 
 // User Notification
 "Application terminated" = "Progamm beendet";
-"Please update your device to use this application" = "Bitte updaten Sie Ihr Gerät, um diese Programm zu verwenden.";
+"Please update your device to use this application" = "Bitte aktualisiere dein Gerät, um dieses Programm zu verwenden.";

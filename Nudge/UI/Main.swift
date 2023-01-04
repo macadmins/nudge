@@ -218,9 +218,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 case [.command] where event.characters == "m":
                     uiLog.warning("\("Nudge detected an attempt to minimise the application via CMD + M shortcut key.", privacy: .public)")
                     return true
-                // Disable CMD + Q -  fully closes Nudge
+                // Disable CMD + Q - fully closes Nudge
                 case [.command] where event.characters == "q":
                     uiLog.warning("\("Nudge detected an attempt to close the application via CMD + Q shortcut key.", privacy: .public)")
+                    return true
+                // Disable CMD + Option + M - minimizes Nudge and could render it broken when blur is enabled
+                case [.command, .option] where event.characters == "µ":
+                    uiLog.warning("\("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.", privacy: .public)")
+                    return true
+                // Disable CMD + Option + N - Opens new tabs in Nudge and breaks UI
+                case [.command, .option] where event.characters == "~":
+                    uiLog.warning("\("Nudge detected an attempt add tabs to the application via CMD + Option + N shortcut key.", privacy: .public)")
                     return true
                 // Don't care about any other shortcut keys
                 default:
@@ -245,7 +253,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        if asynchronousSoftwareUpdate && Utils().requireMajorUpgrade() == false {
+        if asynchronousSoftwareUpdate && Utils().requireMajorUpgrade() == false && !Utils().pastRequiredInstallationDate() {
             DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
                 SoftwareUpdate().Download()
             })

@@ -11,20 +11,20 @@ jobs:
 
     steps:
     - name: Checkout nudge repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.2.0
       with:
         ref: ${{ github.event.pull_request.head.sha }}
         fetch-depth: 0
 
     - name: Install Apple Xcode certificates
-      uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
+      uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
       with:
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
         p12-file-base64: ${{ secrets.APP_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.APP_CERTIFICATES_P12_PASSWORD }}
 
     - name: Install Apple Installer certificates
-      uses: apple-actions/import-codesign-certs@253ddeeac23f2bdad1646faac5c8c2832e800071
+      uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
       with:
         create-keychain: false # do not create a new keychain for this value
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
@@ -38,9 +38,10 @@ jobs:
       id: get_env_var
       run: |
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
+         echo "NUDGE_MAIN_VERSION=$(/bin/cat ./build_info_main.txt)" >> $GITHUB_ENV
 
     - name: Upload packages
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3.1.1
       with:
         name: packages
         path: outputs/

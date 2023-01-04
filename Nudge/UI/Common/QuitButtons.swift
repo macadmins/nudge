@@ -44,18 +44,21 @@ struct QuitButtons: View {
                         .padding(.leading, -200.0)
                     }
                 }
+                .frame(maxWidth:100, maxHeight: 30)
             }
             // primaryQuitButton
             if viewObserved.requireDualQuitButtons == false || viewObserved.hasClickedSecondaryQuitButton {
-                HStack(spacing: 20) {
+                HStack {
                     if allowUserQuitDeferrals {
-                        Menu(customDeferralDropdownText) {
-                            Button {
-                                Utils().setDeferralTime(deferralTime: nudgeEventDate)
-                                updateDeferralUI()
-                            } label: {
-                                Text(primaryQuitButtonText)
-                                    .frame(minWidth: buttonTextMinWidth)
+                        Menu {
+                            if allowLaterDeferralButton {
+                                Button {
+                                    Utils().setDeferralTime(deferralTime: nudgeEventDate)
+                                    updateDeferralUI()
+                                } label: {
+                                    Text(primaryQuitButtonText)
+                                        .frame(minWidth: buttonTextMinWidth)
+                                }
                             }
                             if Utils().allow1HourDeferral() {
                                 Button {
@@ -89,6 +92,10 @@ struct QuitButtons: View {
                                 }
                             }
                         }
+                        label: {
+                            Text(customDeferralDropdownText)
+                        }
+                        .frame(maxWidth:215, maxHeight: 30)
                     } else {
                         Button {
                             Utils().userInitiatedExit()
@@ -104,7 +111,6 @@ struct QuitButtons: View {
                 }
             }
         }
-        .frame(maxWidth:100, maxHeight: 30)
     }
 }
 

@@ -3,8 +3,8 @@
 # Build script for Nudge
 
 # Variables
-XCODE_PATH="/Applications/Xcode_13.4.1.app"
-XCODE_ORIGINAL_PATH="/Applications/Xcode_13.4.1.app"
+XCODE_PATH="/Applications/Xcode_14.2.app"
+XCODE_ORIGINAL_PATH="/Applications/Xcode_14.2.app"
 CODE_SIGN_IDENTITY="Developer ID Application: Clever DevOps Co. (9GQZ7KUFR6)"
 SIGNING_IDENTITY="Developer ID Installer: Clever DevOps Co. (9GQZ7KUFR6)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
@@ -85,10 +85,10 @@ NUDGE_PKG_PATH="$TOOLSDIR/NudgePkg"
 if [ -e $NUDGE_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_PKG_PATH
 fi
-/bin/mkdir -p "$NUDGE_PKG_PATH/payload/Applications/Utilities"
+/bin/mkdir -p "$NUDGE_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
-/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Nudge.app"
 /bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
 
 # Download specific version of munki-pkg
@@ -117,7 +117,7 @@ fi
   "distribution_style": true,
   "version": "$AUTOMATED_NUDGE_BUILD",
   "name": "Nudge-$AUTOMATED_NUDGE_BUILD.pkg",
-  "install_location": "/",
+  "install_location": "/Applications/Utilities",
   "signing_info": {
     "identity": "$SIGNING_IDENTITY",
     "timestamp": true
@@ -144,10 +144,10 @@ NUDGE_LA_PKG_PATH="$TOOLSDIR/NudgePkgLA"
 if [ -e $NUDGE_LA_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_LA_PKG_PATH
 fi
-/bin/mkdir -p "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
+/bin/mkdir -p "$NUDGE_LA_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_LA_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LA_PKG_PATH"
-/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload/Library/LaunchAgents"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-launchagent" "$NUDGE_LA_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
@@ -155,12 +155,12 @@ fi
 {
     "distribution_style": true,
     "identifier": "com.github.macadmins.Nudge.LaunchAgent",
-    "install_location": "/",
-    "name": "Nudge_LaunchAgent-1.0.0.pkg",
+    "install_location": "/Library/LaunchAgents",
+    "name": "Nudge_LaunchAgent-1.0.1.pkg",
     "ownership": "recommended",
     "postinstall_action": "none",
     "suppress_bundle_relocation": true,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "signing_info": {
         "identity": "$SIGNING_IDENTITY",
         "timestamp": true
@@ -175,7 +175,7 @@ if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
   # Move the signed pkg
-  /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.0.pkg" "$OUTPUTSDIR"
+  /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" "$OUTPUTSDIR"
 fi
 
 # move the ld to the payload folder
@@ -184,10 +184,10 @@ NUDGE_LD_PKG_PATH="$TOOLSDIR/NudgePkgLogger"
 if [ -e $NUDGE_LD_PKG_PATH ]; then
   /bin/rm -rf $NUDGE_LD_PKG_PATH
 fi
-/bin/mkdir -p "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/mkdir -p "$NUDGE_LD_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_LD_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LD_PKG_PATH"
-/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload/Library/LaunchDaemons"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-logger" "$NUDGE_LD_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
@@ -195,7 +195,7 @@ fi
 {
     "distribution_style": true,
     "identifier": "com.github.macadmins.Nudge.Logger",
-    "install_location": "/",
+    "install_location": "/Library/LaunchDaemons",
     "name": "Nudge_Logger-1.0.1.pkg",
     "ownership": "recommended",
     "postinstall_action": "none",

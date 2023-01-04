@@ -96,6 +96,8 @@
         <dict>
           <key>allowGracePeriods</key>
           <false/>
+          <key>allowLaterDeferralButton</key>
+          <true/>
           <key>allowUserQuitDeferrals</key>
           <true/>
           <key>allowedDeferrals</key>

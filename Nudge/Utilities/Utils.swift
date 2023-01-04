@@ -476,8 +476,8 @@ struct Utils {
 
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
-        if !nudgePrimaryState.hasLoggedMajorOSVersion {
-            nudgePrimaryState.hasLoggedMajorOSVersion = true
+        if !nudgeLogState.hasLoggedMajorOSVersion {
+            nudgeLogState.hasLoggedMajorOSVersion = true
             utilsLog.info("OS Version: \(MajorOSVersion, privacy: .public)")
         }
         return MajorOSVersion
@@ -486,8 +486,8 @@ struct Utils {
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
-        if !nudgePrimaryState.hasLoggedMajorRequiredOSVersion {
-            nudgePrimaryState.hasLoggedMajorRequiredOSVersion = true
+        if !nudgeLogState.hasLoggedMajorRequiredOSVersion {
+            nudgeLogState.hasLoggedMajorRequiredOSVersion = true
             utilsLog.info("Major required OS version: \(majorRequiredNudgeOSVersion, privacy: .public)")
         }
         return majorRequiredNudgeOSVersion
@@ -787,8 +787,8 @@ struct Utils {
         if demoModeEnabled() {
             pastRequiredInstallationDate = false
         }
-        if !nudgePrimaryState.hasLoggedPastRequiredInstallationDate {
-            nudgePrimaryState.hasLoggedPastRequiredInstallationDate = true
+        if !nudgeLogState.hasLoggedPastRequiredInstallationDate {
+            nudgeLogState.hasLoggedPastRequiredInstallationDate = true
             utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
         }
         return pastRequiredInstallationDate
@@ -812,8 +812,8 @@ struct Utils {
 
     func requireMajorUpgrade() -> Bool {
         let requireMajorUpdate = versionGreaterThan(currentVersion: String(getMajorRequiredNudgeOSVersion()), newVersion: String(getMajorOSVersion()))
-        if !nudgePrimaryState.hasLoggedRequireMajorUgprade {
-            nudgePrimaryState.hasLoggedRequireMajorUgprade = true
+        if !nudgeLogState.hasLoggedRequireMajorUgprade {
+            nudgeLogState.hasLoggedRequireMajorUgprade = true
             utilsLog.info("Device requireMajorUpgrade: \(requireMajorUpdate, privacy: .public)")
         }
         return requireMajorUpdate
