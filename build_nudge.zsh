@@ -5,8 +5,8 @@
 # Variables
 XCODE_PATH="/Applications/Xcode_14.2.app"
 XCODE_ORIGINAL_PATH="/Applications/Xcode_14.2.app"
-CODE_SIGN_IDENTITY="Developer ID Application: Clever DevOps Co. (9GQZ7KUFR6)"
-SIGNING_IDENTITY="Developer ID Installer: Clever DevOps Co. (9GQZ7KUFR6)"
+CODE_SIGN_IDENTITY="Developer ID Application: Mac Admins Open Source (T4SK8ZXCXG)"
+SIGNING_IDENTITY="Developer ID Application: Mac Admins Open Source (T4SK8ZXCXG)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
 MP_BINDIR="/tmp/munki-pkg"
 CONSOLEUSER=$(/usr/bin/stat -f "%Su" /dev/console)
@@ -59,7 +59,7 @@ if [ "${XCB_RESULT}" != "0" ]; then
 fi
 
 # Setup notary item
-$XCODE_NOTARY_PATH store-credentials --apple-id "macadmins@cleverdevops.com" --team-id "9GQZ7KUFR6" --password "$2" nudge
+$XCODE_NOTARY_PATH store-credentials --apple-id "opensource@macadmins.io" --team-id "T4SK8ZXCXG" --password "$2" nudge
 
 # Zip application for notary
 /usr/bin/ditto -c -k --keepParent "${BUILDSDIR}/Release/Nudge.app" "${BUILDSDIR}/Release/Nudge.zip"

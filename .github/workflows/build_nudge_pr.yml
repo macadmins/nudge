@@ -20,16 +20,16 @@ jobs:
       uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
       with:
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
-        p12-file-base64: ${{ secrets.APP_CERTIFICATES_P12 }}
-        p12-password: ${{ secrets.APP_CERTIFICATES_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.APP_CERTIFICATES_P12_MAOS }}
+        p12-password: ${{ secrets.APP_CERTIFICATES_P12_PASSWORD_MAOS }}
 
     - name: Install Apple Installer certificates
       uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
       with:
         create-keychain: false # do not create a new keychain for this value
         keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
-        p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12 }}
-        p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12_MAOS }}
+        p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD_MAOS }}
 
     - name: Run build package script
       run: ./build_nudge.zsh
