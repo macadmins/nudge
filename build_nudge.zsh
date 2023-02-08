@@ -5,8 +5,8 @@
 # Variables
 XCODE_PATH="/Applications/Xcode_14.2.app"
 XCODE_ORIGINAL_PATH="/Applications/Xcode_14.2.app"
-CODE_SIGN_IDENTITY="Developer ID Application: Mac Admins Open Source (T4SK8ZXCXG)"
-SIGNING_IDENTITY="Developer ID Application: Mac Admins Open Source (T4SK8ZXCXG)"
+APP_SIGNING_IDENTITY="Developer ID Application: Mac Admins Open Source (T4SK8ZXCXG)"
+INSTALLER_SIGNING_IDENTITY="Developer ID Installer: Mac Admins Open Source (T4SK8ZXCXG)"
 MP_SHA="71c57fcfdf43692adcd41fa7305be08f66bae3e5"
 MP_BINDIR="/tmp/munki-pkg"
 CONSOLEUSER=$(/usr/bin/stat -f "%Su" /dev/console)
@@ -51,7 +51,7 @@ fi
 
 # build nudge
 echo "Building Nudge"
-$XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$CODE_SIGN_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
+$XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$APP_SIGNING_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
 XCB_RESULT="$?"
 if [ "${XCB_RESULT}" != "0" ]; then
     echo "Error running xcodebuild: ${XCB_RESULT}" 1>&2
@@ -119,7 +119,7 @@ fi
   "name": "Nudge-$AUTOMATED_NUDGE_BUILD.pkg",
   "install_location": "/Applications/Utilities",
   "signing_info": {
-    "identity": "$SIGNING_IDENTITY",
+    "identity": "$INSTALLER_SIGNING_IDENTITY",
     "timestamp": true
   }
 }
@@ -162,7 +162,7 @@ fi
     "suppress_bundle_relocation": true,
     "version": "1.0.1",
     "signing_info": {
-        "identity": "$SIGNING_IDENTITY",
+        "identity": "$INSTALLER_SIGNING_IDENTITY",
         "timestamp": true
     }
 }
@@ -202,7 +202,7 @@ fi
     "suppress_bundle_relocation": true,
     "version": "1.0.1",
     "signing_info": {
-        "identity": "$SIGNING_IDENTITY",
+        "identity": "$INSTALLER_SIGNING_IDENTITY",
         "timestamp": true
     }
 }
@@ -249,7 +249,7 @@ echo "Moving LaunchDaemon to logging payload folder"
   "name": "Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg",
   "install_location": "/",
   "signing_info": {
-    "identity": "$SIGNING_IDENTITY",
+    "identity": "$INSTALLER_SIGNING_IDENTITY",
     "timestamp": true
   }
 }

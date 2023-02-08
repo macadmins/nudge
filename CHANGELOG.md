@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.10] - 2023-02-08
+### Changed
+- Moved to the new "Mac Admins Open Source" Developer Certificate
+- Developer ID is now `T4SK8ZXCXG`
+
 ## [1.1.10] - 2022-12-29
 ### Added
 - `allowLaterDeferralButton` key to remove the "Later" button when using deferrals
