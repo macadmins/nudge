@@ -8,6 +8,14 @@
 import UserNotifications
 import SwiftUI
 
+#if canImport(ServiceManagement)
+    import ServiceManagement
+#endif
+
+#endif
+
+import os.log
+
 let windowDelegate = AppDelegate.WindowDelegate()
 let dnc = DistributedNotificationCenter.default()
 let nc = NotificationCenter.default
@@ -46,6 +54,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if #available(macOS 13, *) {
+            let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
+            if appService.status != .enabled {
+                do {
+                    try appService.register()
+                    os_log("Starting Nudge launchagent")
+                } catch {
+                    os_log("Nudge launchagent not enabled")
+                }
+                
+            } else {
+                os_log("Nudge launchagent enabled")
+                
+            }
+        }
         Utils().centerNudge()
         // print("applicationDidFinishLaunching")
 
@@ -261,7 +284,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             SoftwareUpdate().Download()
         }
     }
-
+    
+    
+    
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
