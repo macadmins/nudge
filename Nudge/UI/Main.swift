@@ -12,7 +12,6 @@ import SwiftUI
     import ServiceManagement
 #endif
 
-#endif
 
 import os.log
 
