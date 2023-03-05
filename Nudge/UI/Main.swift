@@ -7,12 +7,9 @@
 
 import UserNotifications
 import SwiftUI
-
 #if canImport(ServiceManagement)
     import ServiceManagement
 #endif
-
-
 import os.log
 
 let windowDelegate = AppDelegate.WindowDelegate()
