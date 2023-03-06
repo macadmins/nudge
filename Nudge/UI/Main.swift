@@ -52,19 +52,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         if #available(macOS 13, *) {
             let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
-            if appService.status != .enabled {
-                do {
-                    try appService.register()
+            
+            osLog.info("loadLaunchAgent: \(loadLaunchAgent, privacy: .public)")
+            if loadLaunchAgent {
+                if appService.status != .enabled {
+                    do {
+                        try appService.register()
+                        
+                        osLog.info("Starting Nudge launchagent")
+                    } catch {
+                        osLog.info("Nudge launchagent not enabled")
+                    }
                     
-                    osLog.info("Starting Nudge launchagent")
-                } catch {
-                    osLog.info("Nudge launchagent not enabled")
+                } else {
+                    osLog.info("Nudge launchagent enabled")
+                    
                 }
-                
             } else {
-                osLog.info("Nudge launchagent enabled")
-                
+                if appService.status == .enabled {
+                    do {
+                        try appService.unregister()
+                        osLog.info("Stopping Nudge launchagent")
+                    } catch {
+                        osLog.info("Failed to stop Nudge launchagent")
+                    }
+                } else {
+                    osLog.info("Nudge launchagent not loaded")
+                }
             }
+            
         }
         Utils().centerNudge()
         // print("applicationDidFinishLaunching")
