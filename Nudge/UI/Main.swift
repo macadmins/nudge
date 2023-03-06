@@ -55,13 +55,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if appService.status != .enabled {
                 do {
                     try appService.register()
-                    os_log("Starting Nudge launchagent")
+                    
+                    osLog.info("Starting Nudge launchagent")
                 } catch {
-                    os_log("Nudge launchagent not enabled")
+                    osLog.info("Nudge launchagent not enabled")
                 }
                 
             } else {
-                os_log("Nudge launchagent enabled")
+                osLog.info("Nudge launchagent enabled")
                 
             }
         }
