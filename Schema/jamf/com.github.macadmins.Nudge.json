@@ -470,6 +470,20 @@
                 }
               ]
             },
+            "loadLaunchAgent": {
+              "description": "Loads the Nudge LaunchAgent using macOS Ventura's SMAppService API (macOS 13+ required).",
+              "anyOf": [
+                {
+                  "title": "Not Configured",
+                  "type": "null"
+                },
+                {
+                  "title": "Configured",
+                  "default": false,
+                  "type": "boolean"
+                }
+              ]
+            },
             "allowLaterDeferralButton": {
                 "description": "Allows the user to press the `Later` button through the custom deferrals UI",
                 "anyOf": [

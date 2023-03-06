@@ -276,6 +276,7 @@ struct UserExperience: Codable {
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
+    var loadLaunchAgent: Bool?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -334,7 +335,8 @@ extension UserExperience {
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
-            randomDelay: randomDelay ?? self.randomDelay
+            randomDelay: randomDelay ?? self.randomDelay,
+            loadLaunchAgent: loadLaunchAgent ?? self.loadLaunchAgent
         )
     }
 
