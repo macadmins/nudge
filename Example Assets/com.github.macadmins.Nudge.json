@@ -42,6 +42,7 @@
     }
   ],
   "userExperience": {
+    "loadLaunchAgent": false,
     "allowGracePeriods": false,
     "allowLaterDeferralButton": true,
     "allowUserQuitDeferrals": true,
@@ -59,7 +60,8 @@
     "maxRandomDelayInSeconds": 1200,
     "noTimers": false,
     "nudgeRefreshCycle": 60,
-    "randomDelay": false
+    "randomDelay": false,
+    "loadLaunchAgent": false
   },
   "userInterface": {
     "actionButtonPath": "munki://updates",
