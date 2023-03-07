@@ -51,45 +51,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         if #available(macOS 13, *) {
-            
-            let url = URL(string: "/Library/LaunchAgents/com.github.macadmins.Nudge.plist")!
-            let legacyStatus = SMAppService.statusForLegacyPlist(at: url)
-            
-            if legacyStatus != .enabled {
-                let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
-                
-                osLog.info("loadLaunchAgent: \(loadLaunchAgent, privacy: .public)")
                 if loadLaunchAgent {
-                    if appService.status != .enabled {
-                        do {
-                            try appService.register()
-                            
-                            osLog.info("Starting Nudge launchagent")
-                        } catch {
-                            osLog.info("Nudge launchagent not enabled")
-                        }
-                        
-                    } else {
-                        osLog.info("Nudge launchagent enabled")
-                        
-                    }
+                    _ = Utils().loadSMAppLaunchAgent()
                 } else {
-                    if appService.status == .enabled {
-                        do {
-                            try appService.unregister()
-                            osLog.info("Stopping Nudge launchagent")
-                        } catch {
-                            osLog.info("Failed to stop Nudge launchagent")
-                        }
-                    } else {
-                        osLog.info("Nudge launchagent not loaded")
-                    }
+                    _ = Utils().unloadSMAppLaunchAgent()
                 }
-            } else {
-                osLog.info("Legacy Nudge LaunchAgent loaded")
-            }
-            
-            
         }
         Utils().centerNudge()
         // print("applicationDidFinishLaunching")
@@ -312,7 +278,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-
+        
         if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
             prefsProfileLog.warning("\("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist", privacy: .public)")
             exit(1)
@@ -328,7 +294,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 print(String(decoding: configJSON, as: UTF8.self))
             }
             exit(0)
+        } else if CommandLine.arguments.contains("--register") {
+            if Utils().loadSMAppLaunchAgent() {
+                print("LaunchAgent successfully register")
+            } else {
+                print("Unable to register LaunchAgent ")
+            }
+            exit(0)
+        } else if CommandLine.arguments.contains("--unregister") {
+            if Utils().unloadSMAppLaunchAgent() {
+                print("LaunchAgent successfully unregistered")
+            } else {
+                print("Unable to unregister LaunchAgent ")
+            }
+            exit(0)
         }
+        
 
         _ = Utils().gracePeriodLogic()
 
@@ -375,6 +356,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+    
 @main
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
