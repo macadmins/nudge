@@ -10,6 +10,9 @@ import CoreMediaIO
 import Foundation
 import SystemConfiguration
 import SwiftUI
+#if canImport(ServiceManagement)
+import ServiceManagement
+#endif
 
 extension Color {
     static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)
@@ -183,6 +186,71 @@ struct Utils {
             uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
         }
         return allow1HourDeferralButton
+    }
+    
+    func loadSMAppLaunchAgent() -> Bool {
+        if #available(macOS 13, *){
+            let url = URL(string: "/Library/LaunchAgents/com.github.macadmins.Nudge.plist")!
+            let legacyStatus = SMAppService.statusForLegacyPlist(at: url)
+            
+            if legacyStatus != .enabled {
+                let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
+                
+                osLog.info("loadLaunchAgent: \(loadLaunchAgent, privacy: .public)")
+                if loadLaunchAgent {
+                    if appService.status != .enabled {
+                        do {
+                            try appService.register()
+                            osLog.info("Starting Nudge launchagent")
+                            return true
+                        } catch {
+                            osLog.info("Nudge launchagent not enabled")
+                            return false
+                        }
+                    } else {
+                        osLog.info("Nudge launchagent enabled")
+                        return true
+                    }
+                } else {
+                    osLog.info("loadLaunchAgent: Set to False")
+                    return false
+                }
+            } else {
+                osLog.info("Legacy Nudge LaunchAgent loaded")
+                return true
+            }
+        } else {
+            osLog.info("Register and unregister argument only support on macOS Ventura and newer")
+            return false
+        }
+    }
+    
+    func unloadSMAppLaunchAgent() -> Bool {
+        if #available(macOS 13, *) {
+            let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
+            if !loadLaunchAgent {
+                if appService.status == .enabled {
+                    do {
+                        try appService.unregister()
+                        osLog.info("Stopping Nudge launchagent")
+                        return true
+                    } catch {
+                        osLog.info("Failed to stop Nudge launchagent")
+                        return false
+                    }
+                } else {
+                    osLog.info("Nudge launchagent not loaded")
+                    return true
+                }
+            } else {
+                osLog.info("loadLaunchAgent: Set to True")
+                return false
+            }
+        } else {
+            osLog.info("Register and unregister argument only support on macOS Ventura and newer")
+            return false
+        }
+        
     }
     
     func allow24HourDeferral() -> Bool {
