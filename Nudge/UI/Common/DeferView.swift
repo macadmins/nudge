@@ -67,6 +67,7 @@ struct DeferView: View {
                 Utils().logUserQuitDeferrals()
                 Utils().logUserDeferrals()
                 Utils().userInitiatedExit()
+                self.presentationMode.wrappedValue.dismiss()
             } label: {
                 Text(customDeferralDropdownText)
                     .frame(minWidth: 35)
