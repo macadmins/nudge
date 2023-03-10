@@ -233,7 +233,19 @@
                   "default": false
                 }
               ]
-            }
+            },
+            "hideInsteadofQuit": {
+              "description": "When enabled, Nudge will hide Nudge instead of quitting when a user clicks 'Later' or any deferral.",
+              "anyOf": [
+                {
+                  "type": "null",
+                  "title": "Not Configured"
+                },
+                {
+                  "title": "Configured",
+                  "type": "boolean",
+                  "default": false
+                }
           }
         }
       ]
