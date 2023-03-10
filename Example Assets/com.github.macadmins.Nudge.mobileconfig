@@ -47,6 +47,8 @@
           <true/>
           <key>terminateApplicationsOnLaunch</key>
           <false/>
+          <key>hideInsteadofQuit</key>
+          <false/>
         </dict>
         <key>osVersionRequirements</key>
         <array>

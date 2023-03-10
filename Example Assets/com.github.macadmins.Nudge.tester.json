@@ -14,7 +14,8 @@
       "com.microsoft.VSCode",
       "us.zoom.xos"
     ],
-    "terminateApplicationsOnLaunch": false
+    "terminateApplicationsOnLaunch": false,
+    "hideInsteadofQuit": false
   },
   "osVersionRequirements": [
     {
