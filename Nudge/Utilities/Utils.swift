@@ -168,8 +168,14 @@ struct Utils {
             uiLog.notice("\("Bypassing activation due to full screen bugs in macOS", privacy: .public)")
             return
         } else {
-            NSApp.activate(ignoringOtherApps: true)
-            NSApp.windows[0].makeKeyAndOrderFront(self)
+            if !hideNudge {
+                NSApp.activate(ignoringOtherApps: true)
+                NSApp.windows[0].makeKeyAndOrderFront(self)
+            } else {
+                NSApp.hide(nil)
+            }
+            hideNudge = false
+            return
         }
     }
 
@@ -279,9 +285,15 @@ struct Utils {
     }
 
     func exitNudge() {
-        uiLog.notice("\("Nudge is terminating due to condition met", privacy: .public)")
-        nudgePrimaryState.shouldExit = true
-        exit(0)
+        if hideInsteadofQuit {
+            uiLog.notice("\("Nudge is hiding due to condition met", privacy: .public)")
+            NSApp.hide(nil)
+            return
+        } else {
+            uiLog.notice("\("Nudge is terminating due to condition met", privacy: .public)")
+            nudgePrimaryState.shouldExit = true
+            exit(0)
+        }
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
