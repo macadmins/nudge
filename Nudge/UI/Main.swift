@@ -16,6 +16,7 @@ let bundle = Bundle.main
 let serialNumber = Utils().getSerialNumber()
 let configJSON = Utils().getConfigurationAsJSON()
 let configProfile = Utils().getConfigurationAsProfile()
+var hideNudge = false
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
