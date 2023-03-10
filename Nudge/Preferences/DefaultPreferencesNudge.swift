@@ -45,6 +45,8 @@ let blockedApplicationBundleIDs = optionalFeaturesProfile?["blockedApplicationBu
 let enforceMinorUpdates = optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ?? optionalFeaturesJSON?.enforceMinorUpdates ?? true
 let disableSoftwareUpdateWorkflow = optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ?? optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ?? false
 let terminateApplicationsOnLaunch = optionalFeaturesProfile?["terminateApplicationsOnLaunch"] as? Bool ?? optionalFeaturesJSON?.terminateApplicationsOnLaunch ?? false
+let hideInsteadofQuit = optionalFeaturesProfile?["hideInsteadofQuit"] as? Bool ?? optionalFeaturesJSON?.hideInsteadofQuit ?? false
+
 
 // osVersionRequirements
 let osVersionRequirementsProfile = getOSVersionRequirementsProfile()
