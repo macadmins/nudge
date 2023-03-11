@@ -936,7 +936,11 @@ struct Utils {
     func userInitiatedExit() {
         uiLog.notice("\("User clicked primaryQuitButton", privacy: .public)")
         nudgePrimaryState.shouldExit = true
-        exit(0)
+        if hideInsteadofQuit {
+            NSApp.hide(nil)
+        } else {
+            exit(0)
+        }
     }
 
     func userInitiatedDeviceInfo() {
