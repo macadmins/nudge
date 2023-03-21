@@ -276,6 +276,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
+        if CommandLine.arguments.contains("--register") {
+            if Utils().loadSMAppLaunchAgent() {
+                print("LaunchAgent successfully register")
+            } else {
+                print("Unable to register LaunchAgent ")
+            }
+            exit(0)
+        } else if CommandLine.arguments.contains("--unregister") {
+            if Utils().unloadSMAppLaunchAgent() {
+                print("LaunchAgent successfully unregistered")
+            } else {
+                print("Unable to unregister LaunchAgent ")
+            }
+            exit(0)
+        }
         
         if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
             prefsProfileLog.warning("\("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist", privacy: .public)")
@@ -290,20 +305,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else if CommandLine.arguments.contains("-print-json-config") {
             if !configJSON.isEmpty {
                 print(String(decoding: configJSON, as: UTF8.self))
-            }
-            exit(0)
-        } else if CommandLine.arguments.contains("--register") {
-            if Utils().loadSMAppLaunchAgent() {
-                print("LaunchAgent successfully register")
-            } else {
-                print("Unable to register LaunchAgent ")
-            }
-            exit(0)
-        } else if CommandLine.arguments.contains("--unregister") {
-            if Utils().unloadSMAppLaunchAgent() {
-                print("LaunchAgent successfully unregistered")
-            } else {
-                print("Unable to unregister LaunchAgent ")
             }
             exit(0)
         }
