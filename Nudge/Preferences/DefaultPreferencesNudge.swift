@@ -78,11 +78,11 @@ let gracePeriodPath = userExperienceProfile?["gracePeriodPath"] as? String ?? us
 let imminentRefreshCycle = userExperienceProfile?["imminentRefreshCycle"] as? Int ?? userExperienceJSON?.imminentRefreshCycle ?? 600
 let imminentWindowTime = userExperienceProfile?["imminentWindowTime"] as? Int ?? userExperienceJSON?.imminentWindowTime ?? 24
 let initialRefreshCycle = userExperienceProfile?["initialRefreshCycle"] as? Int ?? userExperienceJSON?.initialRefreshCycle ?? 18000
+let loadLaunchAgent = userExperienceProfile?["loadLaunchAgent"] as? Bool ?? userExperienceJSON?.loadLaunchAgent ?? false
 let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] as? Int ?? userExperienceJSON?.maxRandomDelayInSeconds ?? 1200
 let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? userExperienceJSON?.noTimers ?? false
 let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? userExperienceJSON?.nudgeRefreshCycle ?? 60
 let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? userExperienceJSON?.randomDelay ?? false
-let loadLaunchAgent = userExperienceProfile?["loadLaunchAgent"] as? Bool ?? userExperienceJSON?.loadLaunchAgent ?? false
 
 // userInterface
 let userInterfaceProfile = getUserInterfaceProfile()
