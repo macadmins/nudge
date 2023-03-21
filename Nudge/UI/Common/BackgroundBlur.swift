@@ -12,14 +12,14 @@ var loopedScreen = NSScreen()
 class BlurWindow: NSWindow {
     override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask, backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
         super.init(contentRect: contentRect, styleMask: [.fullSizeContentView],  backing: .buffered, defer: true)
-     }
+    }
 }
 
 class BlurWindowController: NSWindowController {
     convenience init() {
         self.init(windowNibName: "BlurWindow")
     }
-        
+    
     override func loadWindow() {
         window = BlurWindow(contentRect: NSMakeRect(0, 0, 0, 0), styleMask: [], backing: .buffered, defer: true)
         self.window?.contentViewController = BlurViewController()
@@ -30,12 +30,12 @@ class BlurWindowController: NSWindowController {
 
 class BlurViewController: NSViewController {
     init() {
-         super.init(nibName: nil, bundle: nil)
-     }
-     
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     required init?(coder: NSCoder) {
-         fatalError()
-     }
+        fatalError()
+    }
     
     override func loadView() {
         super.viewDidLoad()
@@ -53,7 +53,7 @@ class BlurViewController: NSViewController {
         blurView.state = .active
         view.window?.contentView?.addSubview(blurView)
     }
-
+    
     override func viewWillDisappear() {
         super.viewWillDisappear()
         view.window?.contentView?.removeFromSuperview()

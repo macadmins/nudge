@@ -11,13 +11,13 @@ import SwiftUI
 // Standard Mode
 struct StandardMode: View {
     @ObservedObject var viewObserved: ViewState
-
+    
     // enforce a fixed width for the left hand side
     let leftSideWidth: CGFloat = 300
-
+    
     let bottomPadding: CGFloat = 10
     let contentWidthPadding: CGFloat = 25
-
+    
     // Nudge UI
     var body: some View {
         VStack {
@@ -25,7 +25,7 @@ struct StandardMode: View {
                 // Left side of Nudge
                 StandardModeLeftSide(viewObserved: viewObserved)
                     .frame(width: leftSideWidth)
-
+                
                 // Vertical Line
                 VStack{
                     Rectangle()

@@ -13,7 +13,7 @@ var fetchMajorUpgradeSuccessful = false
 
 public class PrefsWrapper {
     internal static var prefsOverride: [String:Any]?
-
+    
     public class var requiredInstallationDate: Date {
         return prefsOverride?["requiredInstallationDate"] as? Date ?? osVersionRequirementsProfile?.requiredInstallationDate ?? osVersionRequirementsJSON?.requiredInstallationDate ?? Date(timeIntervalSince1970: 0)
     }
@@ -109,20 +109,20 @@ let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDefe
 
 // Other important defaults
 #if DEBUG
-    let builtInAcceptableApplicationBundleIDs = [
-        "com.apple.InstallAssistant.macOSMonterey",
-        "com.apple.InstallAssistant.macOSVentura",
-        "com.apple.loginwindow",
-        "com.apple.ScreenSaver.Engine",
-        "com.apple.systempreferences",
-        "com.apple.dt.Xcode",
-    ]
+let builtInAcceptableApplicationBundleIDs = [
+    "com.apple.InstallAssistant.macOSMonterey",
+    "com.apple.InstallAssistant.macOSVentura",
+    "com.apple.loginwindow",
+    "com.apple.ScreenSaver.Engine",
+    "com.apple.systempreferences",
+    "com.apple.dt.Xcode",
+]
 #else
-    let builtInAcceptableApplicationBundleIDs = [
-        "com.apple.InstallAssistant.macOSMonterey",
-        "com.apple.InstallAssistant.macOSVentura",
-        "com.apple.loginwindow",
-        "com.apple.ScreenSaver.Engine",
-        "com.apple.systempreferences",
-    ]
+let builtInAcceptableApplicationBundleIDs = [
+    "com.apple.InstallAssistant.macOSMonterey",
+    "com.apple.InstallAssistant.macOSVentura",
+    "com.apple.loginwindow",
+    "com.apple.ScreenSaver.Engine",
+    "com.apple.systempreferences",
+]
 #endif

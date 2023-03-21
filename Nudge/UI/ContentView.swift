@@ -67,7 +67,7 @@ struct ContentView: View {
     var forceSimpleMode: Bool = false
     // Setup the main refresh timer that controls the child refresh logic
     let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
-
+    
     var body: some View {
         BackgroundView(forceSimpleMode: forceSimpleMode, viewObserved: viewObserved).background(
             HostingWindowFinder { window in
@@ -128,7 +128,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct HostingWindowFinder: NSViewRepresentable {
     var callback: (NSWindow?) -> ()
-
+    
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSView()
         if Utils().versionArgumentPassed() {

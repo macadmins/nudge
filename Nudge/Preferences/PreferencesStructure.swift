@@ -21,18 +21,18 @@ extension NudgePreferences {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(NudgePreferences.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         optionalFeatures: OptionalFeatures?? = nil,
         osVersionRequirements: [OSVersionRequirement]?? = nil,
@@ -46,11 +46,11 @@ extension NudgePreferences {
             userInterface: userInterface ?? self.userInterface
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
@@ -79,18 +79,18 @@ extension OptionalFeatures {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OptionalFeatures.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         acceptableApplicationBundleIDs: [String]?? = nil,
         acceptableAssertionApplicationNames: [String]?? = nil,
@@ -124,11 +124,11 @@ extension OptionalFeatures {
             terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
@@ -173,22 +173,22 @@ extension OSVersionRequirement {
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
     }
-
+    
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OSVersionRequirement.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         aboutUpdateURL: String?? = nil,
         aboutUpdateURLs: [AboutUpdateURL]?? = nil,
@@ -208,11 +208,11 @@ extension OSVersionRequirement {
             targetedOSVersionsRule: targetedOSVersionsRule ?? self.targetedOSVersionsRule
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
@@ -222,7 +222,7 @@ extension OSVersionRequirement {
 struct AboutUpdateURL: Codable {
     var language: String?
     var aboutUpdateURL: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case language = "_language"
         case aboutUpdateURL
@@ -235,18 +235,18 @@ extension AboutUpdateURL {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(AboutUpdateURL.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         language: String?? = nil,
         aboutUpdateURL: String?? = nil
@@ -256,11 +256,11 @@ extension AboutUpdateURL {
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
@@ -284,18 +284,18 @@ extension UserExperience {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UserExperience.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         allowGracePeriods: Bool?? = nil,
         allowLaterDeferralButton: Bool?? = nil,
@@ -337,11 +337,11 @@ extension UserExperience {
             randomDelay: randomDelay ?? self.randomDelay
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
@@ -362,18 +362,18 @@ extension UserInterface {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UserInterface.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         actionButtonPath: String?? = nil,
         fallbackLanguage: String?? = nil,
@@ -403,11 +403,11 @@ extension UserInterface {
             updateElements: updateElements ?? self.updateElements
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }
@@ -418,7 +418,7 @@ struct UpdateElement: Codable {
     var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText: String?
     var mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
     var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case language = "_language"
         case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
@@ -431,18 +431,18 @@ extension UpdateElement {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UpdateElement.self, from: data)
     }
-
+    
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
         try self.init(data: data)
     }
-
+    
     init(fromURL url: URL) throws {
         try self.init(data: try Data(contentsOf: url))
     }
-
+    
     func with(
         language: String?? = nil,
         actionButtonText: String?? = nil,
@@ -478,11 +478,11 @@ extension UpdateElement {
             subHeader: subHeader ?? self.subHeader
         )
     }
-
+    
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)
     }
-
+    
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
         return String(data: try self.jsonData(), encoding: encoding)
     }

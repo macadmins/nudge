@@ -19,7 +19,7 @@ extension Color {
 }
 
 extension Date {
-   func getFormattedDate(format: String) -> String {
+    func getFormattedDate(format: String) -> String {
         let dateformat = DateFormatter()
         dateformat.dateFormat = format
         return dateformat.string(from: self)
@@ -62,16 +62,16 @@ struct Camera {
                 mSelector:CMIOObjectPropertySelector(kCMIOObjectPropertyName),
                 mScope:CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
                 mElement:CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
-
+            
             var name:CFString? = nil
             let propsize:UInt32 = UInt32(MemoryLayout<CFString?>.size)
             var dataUsed: UInt32 = 0
-
+            
             let result:OSStatus = CMIOObjectGetPropertyData(self.id, &address, 0, nil, propsize, &dataUsed, &name)
             if (result != 0) {
                 return ""
             }
-
+            
             return name as String?
         }
     }
@@ -81,7 +81,7 @@ struct Camera {
             mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeWildcard),
             mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementWildcard)
         )
-
+        
         
         var isUsed = false
         
@@ -95,7 +95,7 @@ struct Camera {
                 isUsed = on.pointee != 0
             }
         }
-
+        
         return isUsed
     }
 }
@@ -108,33 +108,33 @@ var cameras: [Camera]  {
             mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
             mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster)
         )
-
+        
         var dataSize: UInt32 = 0
         var dataUsed: UInt32 = 0
         var result = CMIOObjectGetPropertyDataSize(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, &dataSize)
         var devices: UnsafeMutableRawPointer?
-
+        
         repeat {
             if devices != nil {
                 free(devices)
                 devices = nil
             }
-
+            
             devices = malloc(Int(dataSize))
             result = CMIOObjectGetPropertyData(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, dataSize, &dataUsed, devices)
         } while result == OSStatus(kCMIOHardwareBadPropertySizeError)
-
-
+        
+        
         if let devices = devices {
             for offset in stride(from: 0, to: dataSize, by: MemoryLayout<CMIOObjectID>.size) {
                 let current = devices.advanced(by: Int(offset)).assumingMemoryBound(to: CMIOObjectID.self)
                 innerArray.append(Camera(id: current.pointee))
             }
         }
-
+        
         free(devices)
-
-
+        
+        
         return innerArray
     }
     
@@ -145,7 +145,7 @@ struct Utils {
         utilsLog.info("\("Activating Nudge", privacy: .public)")
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
-
+        
         // load the blur background and send it to the back if we are past the required install date
         if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
             Utils().centerNudge()
@@ -163,7 +163,7 @@ struct Utils {
             NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
             return
         }
-
+        
         if NSWorkspace.shared.isActiveSpaceFullScreen() && !nudgePrimaryState.afterFirstStateChange {
             uiLog.notice("\("Bypassing activation due to full screen bugs in macOS", privacy: .public)")
             return
@@ -172,7 +172,7 @@ struct Utils {
             NSApp.windows[0].makeKeyAndOrderFront(self)
         }
     }
-
+    
     func allow1HourDeferral() -> Bool {
         if demoModeEnabled() {
             return true
@@ -184,7 +184,7 @@ struct Utils {
         }
         return allow1HourDeferralButton
     }
-
+    
     func allow24HourDeferral() -> Bool {
         if demoModeEnabled() {
             return true
@@ -196,7 +196,7 @@ struct Utils {
         }
         return allow24HourDeferralButton
     }
-
+    
     func allowCustomDeferral() -> Bool {
         if demoModeEnabled() {
             return true
@@ -208,7 +208,7 @@ struct Utils {
         }
         return allowCustomDeferralButton
     }
-
+    
     func bundleModeEnabled() -> Bool {
         let bundleModeArgumentPassed = CommandLine.arguments.contains("-bundle-mode")
         if !nudgeLogState.hasLoggedBundleMode {
@@ -219,19 +219,19 @@ struct Utils {
         }
         return bundleModeArgumentPassed
     }
-
+    
     func centerNudge() {
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
         NSApp.windows[0].center()
     }
-
+    
     func coerceStringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         return dateFormatter.date(from: dateString) ?? Utils().getCurrentDate()
     }
-
+    
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)
@@ -245,7 +245,7 @@ struct Utils {
         }
         return NSImage(data: imageData as Data)!
     }
-
+    
     func debugUIModeEnabled() -> Bool {
         let debugUIModeArgumentPassed = CommandLine.arguments.contains("-debug-ui-mode")
         if !nudgeLogState.afterFirstRun {
@@ -255,7 +255,7 @@ struct Utils {
         }
         return debugUIModeArgumentPassed
     }
-
+    
     func demoModeEnabled() -> Bool {
         demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
         if !nudgeLogState.hasLoggedDemoMode {
@@ -266,7 +266,7 @@ struct Utils {
         }
         return demoModeArgumentPassed
     }
-
+    
     func unitTestingEnabled() -> Bool {
         unitTestingArgumentPassed = CommandLine.arguments.contains("-unit-testing")
         if !nudgeLogState.hasLoggedUnitTestingMode {
@@ -277,13 +277,13 @@ struct Utils {
         }
         return unitTestingArgumentPassed
     }
-
+    
     func exitNudge() {
         uiLog.notice("\("Nudge is terminating due to condition met", privacy: .public)")
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
-
+    
     func forceScreenShotIconModeEnabled() -> Bool {
         let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
         if !nudgeLogState.hasLoggedScreenshotIconMode {
@@ -294,7 +294,7 @@ struct Utils {
         }
         return forceScreenShotIconMode
     }
-
+    
     func fullyUpdated() -> Bool {
         let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
@@ -304,7 +304,7 @@ struct Utils {
             return false
         }
     }
-
+    
     func getBackupMajorUpgradeAppPath() -> String {
         if getMajorRequiredNudgeOSVersion() == 12 {
             return "/Applications/Install macOS Monterey.app"
@@ -322,7 +322,7 @@ struct Utils {
             return iconLightPath
         }
     }
-
+    
     func getConfigurationAsJSON() -> Data {
         let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences)
         if ((nudgeJSONConfig) != nil) {
@@ -333,7 +333,7 @@ struct Utils {
         }
         return Data.init()
     }
-
+    
     func getConfigurationAsProfile() -> Data {
         var nudgeProfileConfig = [String:Any]()
         nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures") as? [String:AnyObject]
@@ -352,7 +352,7 @@ struct Utils {
         }
         return Data.init()
     }
-
+    
     func getCPUTypeInt() -> Int {
         // https://stackoverflow.com/a/63539782
         var cputype = UInt32(0)
@@ -366,14 +366,14 @@ struct Utils {
         }
         return Int(cputype)
     }
-
+    
     func getCPUTypeString() -> String {
         // https://stackoverflow.com/a/63539782
         let type: Int = getCPUTypeInt()
         if type == -1 {
             return "error in CPU type"
         }
-
+        
         let cpu_arch = type & 0xff // mask for architecture bits
         if cpu_arch == cpu_type_t(7){
             utilsLog.debug("\("CPU Type is Intel", privacy: .public)")
@@ -386,62 +386,62 @@ struct Utils {
         utilsLog.debug("\("Unknown CPU Type", privacy: .public)")
         return "unknown"
     }
-
+    
     func getCurrentDate() -> Date {
         // Date fixing stuff for non Gregorian calendars
         let dateFormatterCurrent = DateFormatter()
         let dateFormatterISO8601 = DateFormatter()
         let dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         dateFormatterCurrent.dateFormat = dateFormat
-
+        
         dateFormatterISO8601.dateFormat = dateFormat
         dateFormatterISO8601.locale = Locale(identifier: "en_US_POSIX")
         dateFormatterISO8601.calendar = Calendar(identifier: .iso8601)
         dateFormatterISO8601.timeZone = TimeZone(identifier: "UTC")
         switch Calendar.current.identifier {
-        case .buddhist, .japanese:
-            return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-        case .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
-            return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-        case .chinese, .republicOfChina: // TODO: These are untested
-            return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-        case .ethiopicAmeteAlem: // TODO: Need to figure out
-            return Date()
-        @unknown default:
-            return Date()
+            case .buddhist, .japanese:
+                return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+            case .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
+                return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+            case .chinese, .republicOfChina: // TODO: These are untested
+                return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+            case .ethiopicAmeteAlem: // TODO: Need to figure out
+                return Date()
+            @unknown default:
+                return Date()
         }
     }
-
+    
     func getHardwareUUID() -> String {
         if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
-                return "DC3F0981-D881-408F-BED7-8D6F1DEE8176"
+            return "DC3F0981-D881-408F-BED7-8D6F1DEE8176"
         }
         var hardwareUUID: String? {
             let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-
+            
             guard platformExpert > 0 else {
                 return nil
             }
-
+            
             guard let hardwareUUID = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
                 return nil
             }
-
+            
             IOObjectRelease(platformExpert)
-
+            
             utilsLog.debug("Hardware UUID: \(hardwareUUID, privacy: .public)")
             return hardwareUUID
         }
-
+        
         return hardwareUUID ?? ""
     }
-
+    
     func getJSONUrl() -> String {
         let jsonURL = nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
         utilsLog.debug("JSON url: \(jsonURL, privacy: .public)")
         return jsonURL
     }
-
+    
     func getFormattedDate(date: Date? = nil) -> Date {
         var endDate = Date()
         // Date fixing stuff for non Gregorian calendars
@@ -449,7 +449,7 @@ struct Utils {
         let dateFormatterISO8601 = DateFormatter()
         let dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         dateFormatterCurrent.dateFormat = dateFormat
-
+        
         dateFormatterISO8601.dateFormat = dateFormat
         dateFormatterISO8601.locale = Locale(identifier: "en_US_POSIX")
         dateFormatterISO8601.calendar = Calendar(identifier: .iso8601)
@@ -460,20 +460,20 @@ struct Utils {
         }
         
         switch Calendar.current.identifier {
-        case .gregorian, .buddhist, .iso8601, .japanese:
-            endDate = initialDate
-        case .coptic, .ethiopicAmeteMihret, .hebrew, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
-            endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
-        case .chinese, .republicOfChina: // TODO: These are untested
-            endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
-        case .ethiopicAmeteAlem: // TODO: Need to figure out
-            break
-        @unknown default:
-            break
+            case .gregorian, .buddhist, .iso8601, .japanese:
+                endDate = initialDate
+            case .coptic, .ethiopicAmeteMihret, .hebrew, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
+                endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
+            case .chinese, .republicOfChina: // TODO: These are untested
+                endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
+            case .ethiopicAmeteAlem: // TODO: Need to figure out
+                break
+            @unknown default:
+                break
         }
         return endDate
     }
-
+    
     func getMajorOSVersion() -> Int {
         let MajorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
         if !nudgeLogState.hasLoggedMajorOSVersion {
@@ -482,7 +482,7 @@ struct Utils {
         }
         return MajorOSVersion
     }
-
+    
     func getMajorRequiredNudgeOSVersion() -> Int {
         let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
@@ -492,13 +492,13 @@ struct Utils {
         }
         return majorRequiredNudgeOSVersion
     }
-
+    
     func getMinorOSVersion() -> Int {
         let MinorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
         utilsLog.info("Minor OS Version: \(MinorOSVersion, privacy: .public)")
         return MinorOSVersion
     }
-
+    
     func getNudgeJSONPreferences() -> NudgePreferences? {
         let url = Utils().getJSONUrl()
         if bundleModeEnabled() {
@@ -555,18 +555,18 @@ struct Utils {
     func getNudgeVersion() -> String {
         return bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
     }
-
+    
     func getNumberOfDaysBetween() -> Int {
         if Utils().demoModeEnabled() {
             return 0
         }
-       let currentCal = Calendar.current
-       let fromDate = currentCal.startOfDay(for: getCurrentDate())
-       let toDate = currentCal.startOfDay(for: requiredInstallationDate)
-       let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
-       return numberOfDays.day!
+        let currentCal = Calendar.current
+        let fromDate = currentCal.startOfDay(for: getCurrentDate())
+        let toDate = currentCal.startOfDay(for: requiredInstallationDate)
+        let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
+        return numberOfDays.day!
     }
-
+    
     func getNumberOfHoursRemaining(currentDate: Date = Utils().getCurrentDate()) -> Int {
         if Utils().demoModeEnabled() {
             return 24
@@ -576,7 +576,7 @@ struct Utils {
         }
         return Int(requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
     }
-
+    
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
         utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
@@ -590,29 +590,29 @@ struct Utils {
             return screenShotLightPath
         }
     }
-
+    
     func getSerialNumber() -> String {
         if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
-                return "C00000000000"
+            return "C00000000000"
         }
         // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
         var serialNumber: String? {
             let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-
+            
             guard platformExpert > 0 else {
                 return nil
             }
-
+            
             guard let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
                 return nil
             }
-
+            
             IOObjectRelease(platformExpert)
-
+            
             utilsLog.debug("Serial Number: \(serialNumber, privacy: .public)")
             return serialNumber
         }
-
+        
         return serialNumber ?? ""
     }
     
@@ -620,7 +620,7 @@ struct Utils {
         // Adapted from https://github.com/ProfileCreator/ProfileCreator/blob/master/ProfileCreator/ProfileCreator/Extensions/ExtensionBundle.swift
         var osStatus = noErr
         var codeRef: SecStaticCode?
-
+        
         osStatus = SecStaticCodeCreateWithPath(bundle.bundleURL as CFURL, [], &codeRef)
         guard osStatus == noErr, let code = codeRef else {
             print("Failed to create static code with path: \(bundle.bundleURL.path)")
@@ -629,10 +629,10 @@ struct Utils {
             }
             return nil
         }
-
+        
         let flags: SecCSFlags = SecCSFlags(rawValue: kSecCSSigningInformation)
         var codeInfoRef: CFDictionary?
-
+        
         osStatus = SecCodeCopySigningInformation(code, flags, &codeInfoRef)
         guard osStatus == noErr, let codeInfo = codeInfoRef as? [String: Any] else {
             // print("Failed to copy code signing information.")
@@ -641,7 +641,7 @@ struct Utils {
             }
             return nil
         }
-
+        
         guard let teamIdentifier = codeInfo[kSecCodeInfoTeamIdentifier as String] as? String else {
             // print("Found no entry for \(kSecCodeInfoTeamIdentifier) in code signing info dictionary.")
             return nil
@@ -656,10 +656,10 @@ struct Utils {
             // print("Could not return initial certificate summary - Returning teamIdentifier")
             return teamIdentifier
         }
-
+        
         return signingCertificateSummary
     }
-
+    
     func getSystemConsoleUsername() -> String {
         // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
         var uid: uid_t = 0
@@ -668,7 +668,7 @@ struct Utils {
         utilsLog.debug("System console username: \(SystemConsoleUsername, privacy: .public)")
         return SystemConsoleUsername
     }
-
+    
     func getTimerController() -> Int {
         let timerCycle = getTimerControllerInt()
         if timerCycle != nudgePrimaryState.timerCycle {
@@ -677,7 +677,7 @@ struct Utils {
         }
         return timerCycle
     }
-
+    
     func getTimerControllerInt() -> Int {
         if 0 >= getNumberOfHoursRemaining() {
             return elapsedRefreshCycle
@@ -689,7 +689,7 @@ struct Utils {
             return initialRefreshCycle
         }
     }
-
+    
     func gracePeriodLogic(currentDate: Date = Utils().getCurrentDate(), testFileDate: Date? = nil) -> Date {
         if (allowGracePeriods || PrefsWrapper.allowGracePeriods) && !demoModeEnabled() {
             if FileManager.default.fileExists(atPath: gracePeriodPath) || unitTestingEnabled() {
@@ -707,7 +707,7 @@ struct Utils {
                             uiLog.info("\("Device within gracePeriodLaunchDelay, exiting Nudge", privacy: .public)")
                             nudgePrimaryState.shouldExit = true
                         }
-
+                        
                         // Launch Scenario
                         if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
                             requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
@@ -719,12 +719,12 @@ struct Utils {
                     uiLog.error("\("allowGracePeriods is set to true, but gracePeriodPath creation date logic failed - bypassing allowGracePeriods logic", privacy: .public)")
                 }
             } else {
-               uiLog.error("\("allowGracePeriods is set to true, but gracePeriodPath was not found - bypassing allowGracePeriods logic", privacy: .public)")
-           }
+                uiLog.error("\("allowGracePeriods is set to true, but gracePeriodPath was not found - bypassing allowGracePeriods logic", privacy: .public)")
+            }
         }
         return PrefsWrapper.requiredInstallationDate
     }
-
+    
     func logUserDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
             nudgePrimaryState.userDeferrals = 0
@@ -738,7 +738,7 @@ struct Utils {
         }
         
     }
-
+    
     func logUserQuitDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
             nudgePrimaryState.userQuitDeferrals = 0
@@ -751,7 +751,7 @@ struct Utils {
             nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
         }
     }
-
+    
     func logUserSessionDeferrals(resetCount: Bool = false) {
         if Utils().demoModeEnabled() {
             nudgePrimaryState.userSessionDeferrals = 0
@@ -765,15 +765,15 @@ struct Utils {
         }
         
     }
-
+    
     func logRequiredMinimumOSVersion() {
         nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
-
+    
     func newNudgeEvent() -> Bool {
         versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
-
+    
     func openMoreInfo() {
         guard let url = URL(string: aboutUpdateURL) else {
             return
@@ -781,7 +781,7 @@ struct Utils {
         uiLog.notice("\("User clicked moreInfo button", privacy: .public)")
         NSWorkspace.shared.open(url)
     }
-
+    
     func pastRequiredInstallationDate() -> Bool {
         var pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
         if demoModeEnabled() {
@@ -793,7 +793,7 @@ struct Utils {
         }
         return pastRequiredInstallationDate
     }
-
+    
     func requireDualQuitButtons() -> Bool {
         if demoModeEnabled() {
             return true
@@ -809,7 +809,7 @@ struct Utils {
         }
         return requireDualQuitButtons
     }
-
+    
     func requireMajorUpgrade() -> Bool {
         let requireMajorUpdate = versionGreaterThan(currentVersion: String(getMajorRequiredNudgeOSVersion()), newVersion: String(getMajorOSVersion()))
         if !nudgeLogState.hasLoggedRequireMajorUgprade {
@@ -818,7 +818,7 @@ struct Utils {
         }
         return requireMajorUpdate
     }
-
+    
     func setDeferralTime(deferralTime: Date) {
         if demoModeEnabled() {
             return
@@ -830,7 +830,7 @@ struct Utils {
         let components = Calendar.current.dateComponents([.day, .month], from: Utils().getCurrentDate())
         return (components.month == 8 && components.day == 6)
     }
-
+    
     func simpleModeEnabled() -> Bool {
         let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
         if !nudgeLogState.hasLoggedSimpleMode {
@@ -841,7 +841,7 @@ struct Utils {
         }
         return simpleModeEnabled
     }
-
+    
     func updateDevice(userClicked: Bool = true) {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
@@ -879,7 +879,7 @@ struct Utils {
             let task = Process()
             task.launchPath = cmds.first!
             task.arguments = [cmds.last!]
-
+            
             if userClicked {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                     do {
@@ -920,17 +920,17 @@ struct Utils {
             uiLog.notice("\("Synthetically clicked updateDevice due to allowedDeferral count", privacy: .public)")
         }
     }
-
+    
     func userInitiatedExit() {
         uiLog.notice("\("User clicked primaryQuitButton", privacy: .public)")
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
-
+    
     func userInitiatedDeviceInfo() {
         uiLog.notice("\("User clicked deviceInfo", privacy: .public)")
     }
-
+    
     func versionArgumentPassed() -> Bool {
         let versionArgumentPassed = CommandLine.arguments.contains("-version")
         if versionArgumentPassed {
@@ -938,27 +938,27 @@ struct Utils {
         }
         return versionArgumentPassed
     }
-
+    
     func versionEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) == .orderedSame
     }
-
+    
     func versionGreaterThan(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) == .orderedDescending
     }
-
+    
     func versionGreaterThanOrEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) != .orderedAscending
     }
-
+    
     func versionLessThan(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) == .orderedAscending
     }
-
+    
     func versionLessThanOrEqual(currentVersion: String, newVersion: String) -> Bool {
         // Adapted from https://stackoverflow.com/a/25453654
         return currentVersion.compare(newVersion, options: .numeric) != .orderedDescending
@@ -967,12 +967,12 @@ struct Utils {
 
 func memoize<Input: Hashable, Output>(_ function: @escaping (Input) -> Output) -> (Input) -> Output {
     var storage = [Input: Output]()
-
+    
     return { input in
         if let cached = storage[input] {
             return cached
         }
-
+        
         let result = function(input)
         storage[input] = result
         return result
@@ -982,12 +982,12 @@ func memoize<Input: Hashable, Output>(_ function: @escaping (Input) -> Output) -
 func recursiveMemoize<Input: Hashable, Output>(_ function: @escaping ((Input) -> Output, Input) -> Output) -> (Input) -> Output {
     var storage = [Input: Output]()
     var memo: ((Input) -> Output)!
-
+    
     memo = { input in
         if let cached = storage[input] {
             return cached
         }
-
+        
         let result = function(memo, input)
         storage[input] = result
         return result

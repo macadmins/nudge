@@ -89,14 +89,14 @@ struct StandardModeRightSide: View {
                         }
                         .keyboardShortcut(.defaultAction)
                     }
-                
+                    
                     // Horizontal line
                     HStack{
                         Rectangle()
                             .fill(Color.gray.opacity(0.5))
                             .frame(height: 1)
                     }
-                
+                    
                     // mainContentNote
                     HStack {
                         Text(mainContentNote)
@@ -105,7 +105,7 @@ struct StandardModeRightSide: View {
                             .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                         Spacer()
                     }
-
+                    
                     // mainContentText
                     ScrollView(.vertical) {
                         VStack {
@@ -117,7 +117,7 @@ struct StandardModeRightSide: View {
                             }
                         }
                     }
-                
+                    
                     if screenShotExists || forceScreenShotIconMode() {
                         HStack {
                             Spacer()
@@ -135,7 +135,7 @@ struct StandardModeRightSide: View {
                                 .buttonStyle(.plain)
                                 .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                                 .sheet(isPresented: $showSSDetail) {
-                                ScreenShotZoom()
+                                    ScreenShotZoom()
                                 }
                                 .onHover { inside in
                                     if inside {
@@ -158,7 +158,7 @@ struct StandardModeRightSide: View {
                                     .buttonStyle(.plain)
                                     .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                                     .sheet(isPresented: $showSSDetail) {
-                                    ScreenShotZoom()
+                                        ScreenShotZoom()
                                     }
                                     .onHover { inside in
                                         if inside {
@@ -181,7 +181,7 @@ struct StandardModeRightSide: View {
                                     .hidden()
                                     .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
                                     .sheet(isPresented: $showSSDetail) {
-                                    ScreenShotZoom()
+                                        ScreenShotZoom()
                                     }
                                 }
                             }
@@ -189,8 +189,8 @@ struct StandardModeRightSide: View {
                         }
                     }
                 }
-                    .padding(.leading, contentWidthPadding)
-                    .padding(.trailing, contentWidthPadding)
+                .padding(.leading, contentWidthPadding)
+                .padding(.trailing, contentWidthPadding)
             }
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)

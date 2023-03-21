@@ -41,7 +41,7 @@ struct StandardModeLeftSide: View {
                 }
                 .padding(.leading,contentWidthPadding)
                 .padding(.trailing,contentWidthPadding)
-
+                
                 VStack(alignment: .center, spacing: 10) {
                     // Required OS Version
                     HStack{
@@ -52,7 +52,7 @@ struct StandardModeLeftSide: View {
                             .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .fontWeight(.bold)
                     }
-
+                    
                     // Current OS Version
                     HStack{
                         Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage()))
@@ -60,7 +60,7 @@ struct StandardModeLeftSide: View {
                         Text(currentOSVersion)
                             .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     }
-
+                    
                     // Days or Hours Remaining
                     HStack{
                         if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
@@ -69,21 +69,21 @@ struct StandardModeLeftSide: View {
                             Text(String(viewObserved.daysRemaining))
                                 .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
-                                Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                                Spacer()
-                                Text(String(viewObserved.hoursRemaining))
-                                    .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
-                                    .fontWeight(.bold)
+                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                            Spacer()
+                            Text(String(viewObserved.hoursRemaining))
+                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                                .fontWeight(.bold)
                         } else {
                             Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                             Spacer()
                             Text(String(viewObserved.daysRemaining))
                                 .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                                 .fontWeight(.bold)
-
+                            
                         }
                     }
-
+                    
                     // Deferred Count
                     // Show by default, allow to be hidden via preference
                     if showDeferralCount {
@@ -98,7 +98,7 @@ struct StandardModeLeftSide: View {
                 .padding(.leading,contentWidthPadding)
                 .padding(.trailing,contentWidthPadding)
             }
-
+            
             // Force buttons to the bottom with a spacer
             Spacer()
         }
