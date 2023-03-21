@@ -19,22 +19,22 @@ jobs:
 
     steps:
     - name: Checkout nudge repo
-      uses: actions/checkout@v3.2.0
+      uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
       with:
         fetch-depth: 0
 
     - name: Install Apple Xcode certificates
-      uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
+      uses: apple-actions/import-codesign-certs@8f3fb608891dd2244cdab3d69cd68c0d37a7fe93 # v2.0.0
       with:
-        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
+        keychain-password: ${{ github.run_id }}
         p12-file-base64: ${{ secrets.APP_CERTIFICATES_P12_MAOS }}
         p12-password: ${{ secrets.APP_CERTIFICATES_P12_PASSWORD_MAOS }}
 
     - name: Install Apple Installer certificates
-      uses: ssrobins/import-codesign-certs@04ce695a5e6002f1971a8ed78fedd676318f950f # Move back to apple-actions/import-codesign-certs when merged
+      uses: apple-actions/import-codesign-certs@8f3fb608891dd2244cdab3d69cd68c0d37a7fe93 # v2.0.0
       with:
         create-keychain: false # do not create a new keychain for this value
-        keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
+        keychain-password: ${{ github.run_id }}
         p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12_MAOS }}
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD_MAOS }}
 
@@ -56,7 +56,7 @@ jobs:
 
     - name: Generate changelog
       id: changelog
-      uses: metcalfc/changelog-generator@31b6d6f9e6e17e84ad34bee780f82d8ee79f6842 # v4.0.1
+      uses: metcalfc/changelog-generator@afdcb9470aebdb2252c0c95a1c130723c9e21f3a # v4.1
       with:
         myToken: ${{ secrets.GITHUB_TOKEN }}
         reverse: 'true'
@@ -89,7 +89,7 @@ jobs:
         files: ${{github.workspace}}/outputs/*.pkg
 
     - name: Upload packages
-      uses: actions/upload-artifact@v3.1.1
+      uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
       with:
         name: packages
         path: outputs/
