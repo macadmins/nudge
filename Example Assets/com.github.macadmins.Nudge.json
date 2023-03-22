@@ -11,8 +11,8 @@
     "attemptToFetchMajorUpgrade": true,
     "blockedApplicationBundleIDs": [],
     "enforceMinorUpdates": true,
-    "terminateApplicationsOnLaunch": false,
-    "hideInsteadofQuit": false
+    "hideInsteadOfQuit": false,
+    "terminateApplicationsOnLaunch": false
   },
   "osVersionRequirements": [
     {

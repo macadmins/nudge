@@ -15,7 +15,7 @@
       "us.zoom.xos"
     ],
     "terminateApplicationsOnLaunch": false,
-    "hideInsteadofQuit": false
+    "hideInsteadOfQuit": false
   },
   "osVersionRequirements": [
     {

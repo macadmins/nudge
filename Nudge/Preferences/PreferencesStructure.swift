@@ -70,8 +70,8 @@ struct OptionalFeatures: Codable {
     var blockedApplicationBundleIDs: [String]?
     var disableSoftwareUpdateWorkflow,
         enforceMinorUpdates,
-        terminateApplicationsOnLaunch: Bool?,
-        hideInsteadofQuit: Bool?
+        hideInsteadOfQuit: Bool?,
+        terminateApplicationsOnLaunch: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -106,8 +106,8 @@ extension OptionalFeatures {
         blockedApplicationBundleIDs: [String]?? = nil,
         disableSoftwareUpdateWorkflow: Bool?? = nil,
         enforceMinorUpdates: Bool?? = nil,
-        terminateApplicationsOnLaunch: Bool?? = nil,
-        hideInsteadofQuit: Bool?? = nil
+        hideInsteadOfQuit: Bool?? = nil,
+        terminateApplicationsOnLaunch: Bool?? = nil
     ) -> OptionalFeatures {
         return OptionalFeatures(
             acceptableApplicationBundleIDs: acceptableApplicationBundleIDs ?? self.acceptableApplicationBundleIDs,
@@ -123,8 +123,8 @@ extension OptionalFeatures {
             blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
+            hideInsteadOfQuit: hideInsteadOfQuit ?? self.hideInsteadOfQuit,
             terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch,
-            hideInsteadofQuit: hideInsteadofQuit ?? self.hideInsteadofQuit
         )
     }
 
