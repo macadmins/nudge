@@ -124,7 +124,7 @@ extension OptionalFeatures {
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
             hideInsteadOfQuit: hideInsteadOfQuit ?? self.hideInsteadOfQuit,
-            terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch,
+            terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch
         )
     }
 
