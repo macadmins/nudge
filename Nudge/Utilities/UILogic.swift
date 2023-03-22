@@ -66,8 +66,8 @@ func nudgeStartLogic() {
     let deferralDate = nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime
     if (deferralDate > Utils().getCurrentDate()) && !(deferralDate > requiredInstallationDate) && !Utils().pastRequiredInstallationDate() {
         uiLog.notice("\("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))", privacy: .public)")
-        if hideInsteadofQuit {
-                    hideNudge = true
+        if hideInsteadOfQuit {
+            hideNudge = true
         }
         Utils().exitNudge()
     }
@@ -78,11 +78,11 @@ func nudgeStartLogic() {
             return
         } else {
             uiLog.notice("\("Device is fully updated", privacy: .public)")
-            Utils().exitNudge()
+            Utils().exitNudge(shouldReallyHide: false)
         }
     } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
         uiLog.warning("\("Device requires a minor update but enforceMinorUpdates is false", privacy: .public)")
-        Utils().exitNudge()
+        Utils().exitNudge(shouldReallyHide: false)
     }
 }
 

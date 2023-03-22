@@ -284,8 +284,8 @@ struct Utils {
         return unitTestingArgumentPassed
     }
 
-    func exitNudge() {
-        if hideInsteadofQuit {
+    func exitNudge(shouldReallyHide: Bool = true) {
+        if hideInsteadOfQuit && shouldReallyHide {
             uiLog.notice("\("Nudge is hiding due to condition met", privacy: .public)")
             NSApp.hide(nil)
             return
@@ -936,7 +936,7 @@ struct Utils {
     func userInitiatedExit() {
         uiLog.notice("\("User clicked primaryQuitButton", privacy: .public)")
         nudgePrimaryState.shouldExit = true
-        if hideInsteadofQuit {
+        if hideInsteadOfQuit {
             NSApp.hide(nil)
         } else {
             exit(0)
