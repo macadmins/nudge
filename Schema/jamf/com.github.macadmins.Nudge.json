@@ -707,6 +707,24 @@
                                 }
                             ]
                         },
+                        "launchAgentIdentifier": {
+                            "description": "The identifier of the Nudge LaunchAgent. Only set this if you use a custom identifier",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "string",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "com.github.macadmins.Nudge"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
                         "loadLaunchAgent": {
                             "description": "Loads the Nudge LaunchAgent using macOS Ventura's SMAppService API (macOS 13+ required).",
                             "anyOf": [

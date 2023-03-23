@@ -40,7 +40,7 @@
 		63D7D10125C9E9A500236281 /* NudgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D10025C9E9A500236281 /* NudgeUITests.swift */; };
 		63D7D12725C9F1EE00236281 /* StandardMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D12625C9F1EE00236281 /* StandardMode.swift */; };
 		73CC1D7829B81EE500FBF8E2 /* com.github.macadmins.Nudge.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.plist */; };
-		73CC1D7A29B81F0600FBF8E2 /* com.github.macadmins.Nudge.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.plist */; };
+		73CC1D7A29B81F0600FBF8E2 /* com.github.macadmins.Nudge.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.plist */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +64,7 @@
 		73CC1D7929B81EF100FBF8E2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = Nudge.app/Contents/Resources/LaunchAgents;
+			dstPath = Nudge.app/Contents/Library/LaunchAgents;
 			dstSubfolderSpec = 16;
 			files = (
 				73CC1D7A29B81F0600FBF8E2 /* com.github.macadmins.Nudge.plist in CopyFiles */,

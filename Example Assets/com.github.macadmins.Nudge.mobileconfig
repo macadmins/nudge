@@ -122,6 +122,8 @@
                     <integer>24</integer>
                     <key>initialRefreshCycle</key>
                     <integer>18000</integer>
+                    <key>launchAgentIdentifier</key>
+                    <string>com.github.macadmins.Nudge</string>
                     <key>loadLaunchAgent</key>
                     <false/>
                     <key>maxRandomDelayInSeconds</key>
