@@ -7,6 +7,10 @@
 
 import UserNotifications
 import SwiftUI
+import SwiftUI
+#if canImport(ServiceManagement)
+import ServiceManagement
+#endif
 
 let windowDelegate = AppDelegate.WindowDelegate()
 let dnc = DistributedNotificationCenter.default()
@@ -46,6 +50,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if #available(macOS 13, *) {
+            if loadLaunchAgent {
+                _ = Utils().loadSMAppLaunchAgent()
+            } else {
+                _ = Utils().unloadSMAppLaunchAgent()
+            }
+        }
         Utils().centerNudge()
         // print("applicationDidFinishLaunching")
         
@@ -265,6 +276,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
+        if CommandLine.arguments.contains("--register") {
+            if Utils().loadSMAppLaunchAgent() {
+                print("LaunchAgent successfully register")
+            } else {
+                print("Unable to register LaunchAgent ")
+            }
+            exit(0)
+        } else if CommandLine.arguments.contains("--unregister") {
+            if Utils().unloadSMAppLaunchAgent() {
+                print("LaunchAgent successfully unregistered")
+            } else {
+                print("Unable to unregister LaunchAgent ")
+            }
+            exit(0)
+        }
         
         if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
             prefsProfileLog.warning("\("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist", privacy: .public)")

@@ -1,1276 +1,1290 @@
 {
-    "description": "Preference settings for Nudge (com.github.macadmins.Nudge). See: https://github.com/macadmins/nudge",
-    "title": "Nudge",
-    "properties": {
-        "optionalFeatures": {
-            "description": "All optional features to enhance and customize the Nudge experience for your employer's needs.",
-            "title": "optionalFeatures",
-            "anyOf": [
-                {
-                    "title": "Not Configured",
-                    "type": "null"
-                },
-                {
-                    "title": "Configured",
-                    "type": "object",
-                    "properties": {
-                        "acceptableApplicationBundleIDs": {
-                            "description": "The application Bundle ID which Nudge allows without taking focus. (You can specify one or more Bundle ID.)",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "array",
-                                    "items": {
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "us.zoom.xos"
-                                            }
-                                        },
-                                        "type": "string",
-                                        "title": "acceptableApplicationBundleIDs"
-                                    }
-                                }
-                            ]
-                        },
-                        "acceptableAssertionApplicationNames": {
-                            "description": "The application names using assertions which Nudge allows without taking focus. (You can specify one or more applications. To find the names please run /usr/bin/pmset -g assertions in terminal while the application is open and running)",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "array",
-                                    "items": {
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "zoom.us"
-                                            }
-                                        },
-                                        "type": "string",
-                                        "title": "acceptableAssertionApplicationNames"
-                                    }
-                                }
-                            ]
-                        },
-                        "acceptableAssertionUsage": {
-                            "description": "When enabled, Nudge will not activate or re-activate when assertions are currently set.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "acceptableCameraUsage": {
-                            "description": "When enabled, Nudge will not activate or re-activate when the camera is on.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "acceptableScreenSharingUsage": {
-                            "description": "When enabled, Nudge will not activate or re-activate when screen sharing is active.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "aggressiveUserExperience": {
-                            "description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": true,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "aggressiveUserFullScreenExperience": {
-                            "description": "When disabled, Nudge will not create a blurred background when the user is past the deferral window.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": true,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "asynchronousSoftwareUpdate": {
-                            "description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "boolean",
-                                    "default": true
-                                }
-                            ]
-                        },
-                        "attemptToBlockApplicationLaunches": {
-                            "description": "When enabled, Nudge will attempt to block application launches after the required installation date. This key must be used in conjunction with blockedApplicationBundleIDs (Note: This key is only used with Nudge v1.1.7 and higher)",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "boolean",
-                                    "default": false
-                                }
-                            ]
-                        },
-                        "attemptToFetchMajorUpgrade": {
-                            "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "boolean",
-                                    "default": true
-                                }
-                            ]
-                        },
-                        "blockedApplicationBundleIDs": {
-                            "description": "The application Bundle ID which Nudge disallows from lauching after the required installation date. (You can specify one or more Bundle ID.)",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "array",
-                                    "items": {
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "us.zoom.xos"
-                                            }
-                                        },
-                                        "type": "string",
-                                        "title": "blockedApplicationBundleIDs"
-                                    }
-                                }
-                            ]
-                        },
-                        "disableSoftwareUpdateWorkflow": {
-                            "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "boolean",
-                                    "default": false
-                                }
-                            ]
-                        },
-                        "enforceMinorUpdates": {
-                            "description": "When enabled, Nudge will enforce minor updates. This should likely never be disabled.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "boolean",
-                                    "default": true
-                                }
-                            ]
-                        },
-                        "terminateApplicationsOnLaunch": {
-                            "description": "When enabled, Nudge will terminate the applications listed in blockedApplicationBundleIDs upon initial launch.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "boolean",
-                                    "default": false
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "osVersionRequirements": {
-            "description": "The required components necessary to enforce an Operating System version through Nudge. Specify one array to enforce a single Operating System version across all machines or specify multiple arrays for specific enforcements.",
-            "title": "osVersionRequirements",
-            "anyOf": [
-                {
-                    "title": "Not Configured",
-                    "type": "null"
-                },
-                {
-                    "title": "Configured",
-                    "type": "array",
-                    "items": {
-                        "title": "osVersionRequirement",
-                        "type": "object",
-                        "properties": {
-                            "aboutUpdateURL": {
-                                "description": "A single URL, enabling the More Info button URL path. While this accepts a string, it must be a valid URL (http://, https://, file://). Note: If this value is passed with aboutUpdateURLs, the aboutUpdateURLs key will be ignored.",
-                                "anyOf": [
-                                    {
-                                        "type": "null",
-                                        "title": "Not Configured"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "string",
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "https://github.com/macadmins/nudge"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "aboutUpdateURLs": {
-                                "description": "The aboutUpdateURL - per country localization.",
-                                "title": "aboutUpdateURLs",
-                                "anyOf": [
-                                    {
-                                        "title": "Not Configured",
-                                        "type": "null"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "array",
-                                        "items": {
-                                            "title": "aboutUpdateURL - Dictionary",
-                                            "type": "object",
-                                            "properties": {
-                                                "_language": {
-                                                    "description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
-                                                    "anyOf": [
-                                                        {
-                                                            "type": "null",
-                                                            "title": "Not Configured"
-                                                        },
-                                                        {
-                                                            "title": "Configured",
-                                                            "type": "string",
-                                                            "options": {
-                                                                "inputAttributes": {
-                                                                    "placeholder": "en"
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                },
-                                                "aboutUpdateURL": {
-                                                    "description": "The URL for the More Info button. While this accepts a string, it must be a valid URL (http://, https://, file://).",
-                                                    "anyOf": [
-                                                        {
-                                                            "type": "null",
-                                                            "title": "Not Configured"
-                                                        },
-                                                        {
-                                                            "title": "Configured",
-                                                            "type": "string",
-                                                            "options": {
-                                                                "inputAttributes": {
-                                                                    "placeholder": "https://github.com/macadmins/nudge"
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "actionButtonPath": {
-                                "description": "A path to a URI for opening alternative actions, like Jamf self service items.",
-                                "anyOf": [
-                                    {
-                                        "type": "null",
-                                        "title": "Not Configured"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "string",
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "majorUpgradeAppPath": {
-                                "description": "The app path for a major upgrade. (Note: Requires Nudge v1.0.1 or higher.)",
-                                "anyOf": [
-                                    {
-                                        "type": "null",
-                                        "title": "Not Configured"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "string",
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "/Applications/Install macOS Monterey.app"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "requiredInstallationDate": {
-                                "description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-09-15T00:00:00Z",
-                                "anyOf": [
-                                    {
-                                        "type": "null",
-                                        "title": "Not Configured"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "string",
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "2021-09-15T00:00:00Z"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "requiredMinimumOSVersion": {
-                                "description": "The required minimum operating system version. Note: When passing versions such as `11.2.0`, it will be normalized to `11.2`. It is recommended to remove the trailing zero from the version number.",
-                                "anyOf": [
-                                    {
-                                        "type": "null",
-                                        "title": "Not Configured"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "string",
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "11.5.2"
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            "targetedOSVersions": {
-                                "description": "The versions of macOS that require a security update. You can specify single version or multiple versions. This key is only used with Nudge v1.0 and will not be honored in v1.1.",
-                                "anyOf": [
-                                    {
-                                        "title": "Not Configured",
-                                        "type": "null"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "array",
-                                        "items": {
-                                            "options": {
-                                                "inputAttributes": {
-                                                    "placeholder": "11.5.1"
-                                                }
-                                            },
-                                            "type": "string",
-                                            "title": "targetedOSVersion"
-                                        }
-                                    }
-                                ]
-                            },
-                            "targetedOSVersionsRule": {
-                                "description": "The OS string rule for targeting Nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
-                                "anyOf": [
-                                    {
-                                        "type": "null",
-                                        "title": "Not Configured"
-                                    },
-                                    {
-                                        "title": "Configured",
-                                        "type": "string",
-                                        "options": {
-                                            "inputAttributes": {
-                                                "placeholder": "default"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        "userExperience": {
-            "description": "All features related to how Nudge refreshes and defines the user experience",
-            "title": "userExperience",
-            "anyOf": [
-                {
-                    "title": "Not Configured",
-                    "type": "null"
-                },
-                {
-                    "title": "Configured",
-                    "type": "object",
-                    "properties": {
-                        "allowGracePeriods": {
-                            "description": "Allows a device to modify the requiredInstallationDate logic and launch behavior. Useful for new device provisioning.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "allowLaterDeferralButton": {
-                            "description": "Allows the user to press the `Later` button through the custom deferrals UI",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": true,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "allowUserQuitDeferrals": {
-                            "description": "Allows the user to specify when they will next be prompted by Nudge. (Set to `False` to maintain v1.0.0 behavior.) When using this feature, Nudge will no longer adhere to your LaunchAgent logic as the user is specifying their own execution time for the next Nudge event.(See: `~/Library/Preferences/com.github.macadmins.Nudge.plist`.)",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": true,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "allowedDeferrals": {
-                            "description": "The number of times a user can defer Nudge (change it from the currently active window) before the \"aggressive user experience\" is enabled.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 1000000,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "1000000"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "allowedDeferralsUntilForcedSecondaryQuitButton": {
-                            "description": "The number of times a user can defer Nudge (change it from the currently active window) before both quit buttons need to be actioned.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 14,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "14"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "approachingRefreshCycle": {
-                            "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key `approachingWindowTime` to know when to trigger this timer.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 6000,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "6000"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "approachingWindowTime": {
-                            "description": "The amount of time in hours Nudge will use to determine that the `requiredInstallationDate` is \"approaching\".",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 72,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "72"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "elapsedRefreshCycle": {
-                            "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the `requiredInstallationDate` has expired.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 300,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "300"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "gracePeriodInstallDelay": {
-                            "description": "The amount of time in hours Nudge will extend the requiredInstallationDate for newly provisioned devices.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 23,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "24"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "gracePeriodLaunchDelay": {
-                            "description": "The amount of time in hours Nudge will bypass launching for newly provided devices.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 1,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "1"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "gracePeriodPath": {
-                            "description": "The path of the file Nudge will read and assess for allowGracePeriods.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "default": "/private/var/db/.AppleSetupDone",
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "/private/var/db/.AppleSetupDone"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "imminentRefreshCycle": {
-                            "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key `imminentWindowTime` to know when to trigger this timer.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 600,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "600"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "imminentWindowTime": {
-                            "description": "The amount of time in hours Nudge will use to determine that the `requiredInstallationDate` is \"imminent\".",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 24,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "24"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "initialRefreshCycle": {
-                            "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered for all Nudge launches until the `approachingWindowTime` has been passed.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 18000,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "18000"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "maxRandomDelayInSeconds": {
-                            "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling `randomDelay`.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 1200,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "1200"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "noTimers": {
-                            "description": "This will disable all functionality related to the `userExperience` preference domain.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "false"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "nudgeRefreshCycle": {
-                            "description": "The amount of time in seconds Nudge will use as its core timer to refresh all the core code paths. Note: While you can lower this setting, it could make Nudge too aggressive. Be mindful of decreasing this value.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": 60,
-                                    "type": "integer",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "60"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "randomDelay": {
-                            "description": "Enables an initial delay Nudge before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "false"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "userInterface": {
-            "description": "All features related to how Nudge defines the user interface.",
-            "title": "userInterface",
-            "anyOf": [
-                {
-                    "title": "Not Configured",
-                    "type": "null"
-                },
-                {
-                    "title": "Configured",
-                    "type": "object",
-                    "properties": {
-                        "actionButtonPath": {
-                            "description": "A path to a URI for opening alternative actions, like Jamf self service items.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "fallbackLanguage": {
-                            "description": "The language to revert to if no localizations are available for the device's current language.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "default": "en",
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "en"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "forceFallbackLanguage": {
-                            "description": "Force the custom localizations to the value of `fallbackLanguage`.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "forceScreenShotIcon": {
-                            "description": "Force the built-in ScreenShot icon to render in the UI if a ScreenShot path is not passed.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "iconDarkPath": {
-                            "description": "A path to a local jpg, png, icns that contains the icon for dark mode. This will replace the Apple logo on the left side of Nudge.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "/Library/Application Support/Nudge/logoDark.png"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "iconLightPath": {
-                            "description": "A path to a local jpg, png, icns that contains the icon for light mode. This will replace the Apple logo on the left side of Nudge.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "/Library/Application Support/Nudge/logoLight.png"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "screenShotDarkPath": {
-                            "description": "A path to a local jpg, png, icns that contains the screen shot for dark mode. This will replace the Big Sur logo on the lower right side of Nudge.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "/Library/Application Support/Nudge/screenShotDark.png"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "screenShotLightPath": {
-                            "description": "A path to a local jpg, png, icns that contains the screen shot for light mode. This will replace the Big Sur logo on the lower right side of Nudge.",
-                            "anyOf": [
-                                {
-                                    "type": "null",
-                                    "title": "Not Configured"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "string",
-                                    "options": {
-                                        "inputAttributes": {
-                                            "placeholder": "/Library/Application Support/Nudge/screenShotLight.png"
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        "showDeferralCount": {
-                            "description": "Enables or disables the deferral count of the current Nudge event.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": true,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "simpleMode": {
-                            "description": "Enables Nudge to launch in the simplified user experience.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "singleQuitButton": {
-                            "description": "Only display one quit button regardless of proximity to the due date.",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
-                        "updateElements": {
-                            "description": "The individual buttons and text elements that can be customized for your employer's needs. This includes per country localization.",
-                            "title": "updateElements",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "type": "array",
-                                    "items": {
-                                        "title": "updateElement - Dictionary",
-                                        "type": "object",
-                                        "properties": {
-                                            "_language": {
-                                                "description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "en"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "actionButtonText": {
-                                                "description": "Modifies the actionButton, also known as the \"Update Device\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Update Device"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "customDeferralButtonText": {
-                                                "description": "Modifies the customDeferralButtonText, also known as the \"Custom\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Custom"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "customDeferralDropdownText": {
-                                                "description": "customDeferralDropdownText, also known as the \"Defer\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Defer"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "informationButtonText": {
-                                                "description": "Modifies the informationButton, also known as the \"More Info\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "More Info"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "oneDayDeferralButtonText": {
-                                                "description": "Modifies the oneDayDeferralButtonText, also known as the \"One Day\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "One Day"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "oneHourDeferralButtonText": {
-                                                "description": "Modifies the oneHourDeferralButtonText, also known as the \"One Hour\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "One Hour"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentHeader": {
-                                                "description": "Modifies the mainContentHeader. This is the \"Your device will restart during this update\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Your device will restart during this update"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentNote": {
-                                                "description": "Modifies the mainContentNote. This is the \"Important Notes\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Important Notes"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentSubHeader": {
-                                                "description": "Modifies the mainContentSubHeader. This is the \"Updates can take around 30 minutes to complete\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Updates can take around 30 minutes to complete"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentText": {
-                                                "description": "Modifies the `mainContentText`. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device.\" text. (See the Wiki for information on adding line breaks.)",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "A fully up-to-date device …"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainHeader": {
-                                                "description": "Modifies the `mainHeader`. This is the \"Your device requires a security update\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Your device requires a security update"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "primaryQuitButtonText": {
-                                                "description": "Modifies the `primaryQuitButton`, also known as the \"Later\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Later"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "secondaryQuitButtonText": {
-                                                "description": "Modifies the `secondaryQuitButton`, also known as the \"I understand\" button.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "I understand"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "subHeader": {
-                                                "description": "Modifies the `subHeader`. This is the \"A friendly reminder from your local IT team\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "A friendly reminder from your local IT team"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
-    }
+  "description": "Preference settings for Nudge (com.github.macadmins.Nudge). See: https://github.com/macadmins/nudge",
+  "title": "Nudge",
+  "properties": {
+      "optionalFeatures": {
+          "description": "All optional features to enhance and customize the Nudge experience for your employer's needs.",
+          "title": "optionalFeatures",
+          "anyOf": [
+              {
+                  "title": "Not Configured",
+                  "type": "null"
+              },
+              {
+                  "title": "Configured",
+                  "type": "object",
+                  "properties": {
+                      "acceptableApplicationBundleIDs": {
+                          "description": "The application Bundle ID which Nudge allows without taking focus. (You can specify one or more Bundle ID.)",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "array",
+                                  "items": {
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "us.zoom.xos"
+                                          }
+                                      },
+                                      "type": "string",
+                                      "title": "acceptableApplicationBundleIDs"
+                                  }
+                              }
+                          ]
+                      },
+                      "acceptableAssertionApplicationNames": {
+                          "description": "The application names using assertions which Nudge allows without taking focus. (You can specify one or more applications. To find the names please run /usr/bin/pmset -g assertions in terminal while the application is open and running)",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "array",
+                                  "items": {
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "zoom.us"
+                                          }
+                                      },
+                                      "type": "string",
+                                      "title": "acceptableAssertionApplicationNames"
+                                  }
+                              }
+                          ]
+                      },
+                      "acceptableAssertionUsage": {
+                          "description": "When enabled, Nudge will not activate or re-activate when assertions are currently set.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "acceptableCameraUsage": {
+                          "description": "When enabled, Nudge will not activate or re-activate when the camera is on.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "acceptableScreenSharingUsage": {
+                          "description": "When enabled, Nudge will not activate or re-activate when screen sharing is active.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "aggressiveUserExperience": {
+                          "description": "When disabled, Nudge will not hide all non-acceptableApplicationBundleIDs after the requiredInstallationDate or allowedDeferrals.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": true,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "aggressiveUserFullScreenExperience": {
+                          "description": "When disabled, Nudge will not create a blurred background when the user is past the deferral window.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": true,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "asynchronousSoftwareUpdate": {
+                          "description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "boolean",
+                                  "default": true
+                              }
+                          ]
+                      },
+                      "attemptToBlockApplicationLaunches": {
+                          "description": "When enabled, Nudge will attempt to block application launches after the required installation date. This key must be used in conjunction with blockedApplicationBundleIDs (Note: This key is only used with Nudge v1.1.7 and higher)",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "boolean",
+                                  "default": false
+                              }
+                          ]
+                      },
+                      "attemptToFetchMajorUpgrade": {
+                          "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "boolean",
+                                  "default": true
+                              }
+                          ]
+                      },
+                      "blockedApplicationBundleIDs": {
+                          "description": "The application Bundle ID which Nudge disallows from lauching after the required installation date. (You can specify one or more Bundle ID.)",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "array",
+                                  "items": {
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "us.zoom.xos"
+                                          }
+                                      },
+                                      "type": "string",
+                                      "title": "blockedApplicationBundleIDs"
+                                  }
+                              }
+                          ]
+                      },
+                      "disableSoftwareUpdateWorkflow": {
+                          "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "boolean",
+                                  "default": false
+                              }
+                          ]
+                      },
+                      "enforceMinorUpdates": {
+                          "description": "When enabled, Nudge will enforce minor updates. This should likely never be disabled.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "boolean",
+                                  "default": true
+                              }
+                          ]
+                      },
+                      "terminateApplicationsOnLaunch": {
+                          "description": "When enabled, Nudge will terminate the applications listed in blockedApplicationBundleIDs upon initial launch.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "boolean",
+                                  "default": false
+                              }
+                          ]
+                      }
+                  }
+              }
+          ]
+      },
+      "osVersionRequirements": {
+          "description": "The required components necessary to enforce an Operating System version through Nudge. Specify one array to enforce a single Operating System version across all machines or specify multiple arrays for specific enforcements.",
+          "title": "osVersionRequirements",
+          "anyOf": [
+              {
+                  "title": "Not Configured",
+                  "type": "null"
+              },
+              {
+                  "title": "Configured",
+                  "type": "array",
+                  "items": {
+                      "title": "osVersionRequirement",
+                      "type": "object",
+                      "properties": {
+                          "aboutUpdateURL": {
+                              "description": "A single URL, enabling the More Info button URL path. While this accepts a string, it must be a valid URL (http://, https://, file://). Note: If this value is passed with aboutUpdateURLs, the aboutUpdateURLs key will be ignored.",
+                              "anyOf": [
+                                  {
+                                      "type": "null",
+                                      "title": "Not Configured"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "string",
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "https://github.com/macadmins/nudge"
+                                          }
+                                      }
+                                  }
+                              ]
+                          },
+                          "aboutUpdateURLs": {
+                              "description": "The aboutUpdateURL - per country localization.",
+                              "title": "aboutUpdateURLs",
+                              "anyOf": [
+                                  {
+                                      "title": "Not Configured",
+                                      "type": "null"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "array",
+                                      "items": {
+                                          "title": "aboutUpdateURL - Dictionary",
+                                          "type": "object",
+                                          "properties": {
+                                              "_language": {
+                                                  "description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
+                                                  "anyOf": [
+                                                      {
+                                                          "type": "null",
+                                                          "title": "Not Configured"
+                                                      },
+                                                      {
+                                                          "title": "Configured",
+                                                          "type": "string",
+                                                          "options": {
+                                                              "inputAttributes": {
+                                                                  "placeholder": "en"
+                                                              }
+                                                          }
+                                                      }
+                                                  ]
+                                              },
+                                              "aboutUpdateURL": {
+                                                  "description": "The URL for the More Info button. While this accepts a string, it must be a valid URL (http://, https://, file://).",
+                                                  "anyOf": [
+                                                      {
+                                                          "type": "null",
+                                                          "title": "Not Configured"
+                                                      },
+                                                      {
+                                                          "title": "Configured",
+                                                          "type": "string",
+                                                          "options": {
+                                                              "inputAttributes": {
+                                                                  "placeholder": "https://github.com/macadmins/nudge"
+                                                              }
+                                                          }
+                                                      }
+                                                  ]
+                                              }
+                                          }
+                                      }
+                                  }
+                              ]
+                          },
+                          "actionButtonPath": {
+                              "description": "A path to a URI for opening alternative actions, like Jamf self service items.",
+                              "anyOf": [
+                                  {
+                                      "type": "null",
+                                      "title": "Not Configured"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "string",
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
+                                          }
+                                      }
+                                  }
+                              ]
+                          },
+                          "majorUpgradeAppPath": {
+                              "description": "The app path for a major upgrade. (Note: Requires Nudge v1.0.1 or higher.)",
+                              "anyOf": [
+                                  {
+                                      "type": "null",
+                                      "title": "Not Configured"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "string",
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "/Applications/Install macOS Monterey.app"
+                                          }
+                                      }
+                                  }
+                              ]
+                          },
+                          "requiredInstallationDate": {
+                              "description": "The required installation date for Nudge to enforce the required operating system version. You must follow a standard date string as YYYY-MM-DDTHH:MM:SSZ - Example: 2021-09-15T00:00:00Z",
+                              "anyOf": [
+                                  {
+                                      "type": "null",
+                                      "title": "Not Configured"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "string",
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "2021-09-15T00:00:00Z"
+                                          }
+                                      }
+                                  }
+                              ]
+                          },
+                          "requiredMinimumOSVersion": {
+                              "description": "The required minimum operating system version. Note: When passing versions such as `11.2.0`, it will be normalized to `11.2`. It is recommended to remove the trailing zero from the version number.",
+                              "anyOf": [
+                                  {
+                                      "type": "null",
+                                      "title": "Not Configured"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "string",
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "11.5.2"
+                                          }
+                                      }
+                                  }
+                              ]
+                          },
+                          "targetedOSVersions": {
+                              "description": "The versions of macOS that require a security update. You can specify single version or multiple versions. This key is only used with Nudge v1.0 and will not be honored in v1.1.",
+                              "anyOf": [
+                                  {
+                                      "title": "Not Configured",
+                                      "type": "null"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "array",
+                                      "items": {
+                                          "options": {
+                                              "inputAttributes": {
+                                                  "placeholder": "11.5.1"
+                                              }
+                                          },
+                                          "type": "string",
+                                          "title": "targetedOSVersion"
+                                      }
+                                  }
+                              ]
+                          },
+                          "targetedOSVersionsRule": {
+                              "description": "The OS string rule for targeting Nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
+                              "anyOf": [
+                                  {
+                                      "type": "null",
+                                      "title": "Not Configured"
+                                  },
+                                  {
+                                      "title": "Configured",
+                                      "type": "string",
+                                      "options": {
+                                          "inputAttributes": {
+                                              "placeholder": "default"
+                                          }
+                                      }
+                                  }
+                              ]
+                          }
+                      }
+                  }
+              }
+          ]
+      },
+      "userExperience": {
+          "description": "All features related to how Nudge refreshes and defines the user experience",
+          "title": "userExperience",
+          "anyOf": [
+              {
+                  "title": "Not Configured",
+                  "type": "null"
+              },
+              {
+                  "title": "Configured",
+                  "type": "object",
+                  "properties": {
+                      "allowGracePeriods": {
+                          "description": "Allows a device to modify the requiredInstallationDate logic and launch behavior. Useful for new device provisioning.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "allowLaterDeferralButton": {
+                          "description": "Allows the user to press the `Later` button through the custom deferrals UI",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": true,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "allowUserQuitDeferrals": {
+                          "description": "Allows the user to specify when they will next be prompted by Nudge. (Set to `False` to maintain v1.0.0 behavior.) When using this feature, Nudge will no longer adhere to your LaunchAgent logic as the user is specifying their own execution time for the next Nudge event.(See: `~/Library/Preferences/com.github.macadmins.Nudge.plist`.)",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": true,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "allowedDeferrals": {
+                          "description": "The number of times a user can defer Nudge (change it from the currently active window) before the \"aggressive user experience\" is enabled.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 1000000,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "1000000"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "allowedDeferralsUntilForcedSecondaryQuitButton": {
+                          "description": "The number of times a user can defer Nudge (change it from the currently active window) before both quit buttons need to be actioned.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 14,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "14"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "approachingRefreshCycle": {
+                          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key `approachingWindowTime` to know when to trigger this timer.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 6000,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "6000"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "approachingWindowTime": {
+                          "description": "The amount of time in hours Nudge will use to determine that the `requiredInstallationDate` is \"approaching\".",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 72,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "72"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "elapsedRefreshCycle": {
+                          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the `requiredInstallationDate` has expired.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 300,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "300"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "gracePeriodInstallDelay": {
+                          "description": "The amount of time in hours Nudge will extend the requiredInstallationDate for newly provisioned devices.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 23,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "24"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "gracePeriodLaunchDelay": {
+                          "description": "The amount of time in hours Nudge will bypass launching for newly provided devices.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 1,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "1"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "gracePeriodPath": {
+                          "description": "The path of the file Nudge will read and assess for allowGracePeriods.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "default": "/private/var/db/.AppleSetupDone",
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "/private/var/db/.AppleSetupDone"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "imminentRefreshCycle": {
+                          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is directly tied to its partner key `imminentWindowTime` to know when to trigger this timer.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 600,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "600"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "imminentWindowTime": {
+                          "description": "The amount of time in hours Nudge will use to determine that the `requiredInstallationDate` is \"imminent\".",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 24,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "24"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "initialRefreshCycle": {
+                          "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered for all Nudge launches until the `approachingWindowTime` has been passed.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 18000,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "18000"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "loadLaunchAgent": {
+                        "description": "Loads the Nudge LaunchAgent using macOS Ventura's SMAppService API (macOS 13+ required).",
+                        "anyOf": [
+                          {
+                            "title": "Not Configured",
+                            "type": "null"
+                          },
+                          {
+                            "title": "Configured",
+                            "default": false,
+                            "type": "boolean"
+                          }
+                        ]
+                      },                      
+                      "maxRandomDelayInSeconds": {
+                          "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling `randomDelay`.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 1200,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "1200"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "noTimers": {
+                          "description": "This will disable all functionality related to the `userExperience` preference domain.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "false"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "nudgeRefreshCycle": {
+                          "description": "The amount of time in seconds Nudge will use as its core timer to refresh all the core code paths. Note: While you can lower this setting, it could make Nudge too aggressive. Be mindful of decreasing this value.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": 60,
+                                  "type": "integer",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "60"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "randomDelay": {
+                          "description": "Enables an initial delay Nudge before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "false"
+                                      }
+                                  }
+                              }
+                          ]
+                      }
+                  }
+              }
+          ]
+      },
+      "userInterface": {
+          "description": "All features related to how Nudge defines the user interface.",
+          "title": "userInterface",
+          "anyOf": [
+              {
+                  "title": "Not Configured",
+                  "type": "null"
+              },
+              {
+                  "title": "Configured",
+                  "type": "object",
+                  "properties": {
+                      "actionButtonPath": {
+                          "description": "A path to a URI for opening alternative actions, like Jamf self service items.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "fallbackLanguage": {
+                          "description": "The language to revert to if no localizations are available for the device's current language.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "default": "en",
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "en"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "forceFallbackLanguage": {
+                          "description": "Force the custom localizations to the value of `fallbackLanguage`.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "forceScreenShotIcon": {
+                          "description": "Force the built-in ScreenShot icon to render in the UI if a ScreenShot path is not passed.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "iconDarkPath": {
+                          "description": "A path to a local jpg, png, icns that contains the icon for dark mode. This will replace the Apple logo on the left side of Nudge.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "/Library/Application Support/Nudge/logoDark.png"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "iconLightPath": {
+                          "description": "A path to a local jpg, png, icns that contains the icon for light mode. This will replace the Apple logo on the left side of Nudge.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "/Library/Application Support/Nudge/logoLight.png"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "screenShotDarkPath": {
+                          "description": "A path to a local jpg, png, icns that contains the screen shot for dark mode. This will replace the Big Sur logo on the lower right side of Nudge.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "/Library/Application Support/Nudge/screenShotDark.png"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "screenShotLightPath": {
+                          "description": "A path to a local jpg, png, icns that contains the screen shot for light mode. This will replace the Big Sur logo on the lower right side of Nudge.",
+                          "anyOf": [
+                              {
+                                  "type": "null",
+                                  "title": "Not Configured"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "string",
+                                  "options": {
+                                      "inputAttributes": {
+                                          "placeholder": "/Library/Application Support/Nudge/screenShotLight.png"
+                                      }
+                                  }
+                              }
+                          ]
+                      },
+                      "showDeferralCount": {
+                          "description": "Enables or disables the deferral count of the current Nudge event.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": true,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "simpleMode": {
+                          "description": "Enables Nudge to launch in the simplified user experience.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "singleQuitButton": {
+                          "description": "Only display one quit button regardless of proximity to the due date.",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "default": false,
+                                  "type": "boolean"
+                              }
+                          ]
+                      },
+                      "updateElements": {
+                          "description": "The individual buttons and text elements that can be customized for your employer's needs. This includes per country localization.",
+                          "title": "updateElements",
+                          "anyOf": [
+                              {
+                                  "title": "Not Configured",
+                                  "type": "null"
+                              },
+                              {
+                                  "title": "Configured",
+                                  "type": "array",
+                                  "items": {
+                                      "title": "updateElement - Dictionary",
+                                      "type": "object",
+                                      "properties": {
+                                          "_language": {
+                                              "description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "en"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "actionButtonText": {
+                                              "description": "Modifies the actionButton, also known as the \"Update Device\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Update Device"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "customDeferralButtonText": {
+                                              "description": "Modifies the customDeferralButtonText, also known as the \"Custom\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Custom"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "customDeferralDropdownText": {
+                                              "description": "customDeferralDropdownText, also known as the \"Defer\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Defer"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "informationButtonText": {
+                                              "description": "Modifies the informationButton, also known as the \"More Info\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "More Info"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "oneDayDeferralButtonText": {
+                                              "description": "Modifies the oneDayDeferralButtonText, also known as the \"One Day\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "One Day"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "oneHourDeferralButtonText": {
+                                              "description": "Modifies the oneHourDeferralButtonText, also known as the \"One Hour\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "One Hour"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "mainContentHeader": {
+                                              "description": "Modifies the mainContentHeader. This is the \"Your device will restart during this update\" text.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Your device will restart during this update"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "mainContentNote": {
+                                              "description": "Modifies the mainContentNote. This is the \"Important Notes\" text.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Important Notes"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "mainContentSubHeader": {
+                                              "description": "Modifies the mainContentSubHeader. This is the \"Updates can take around 30 minutes to complete\" text.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Updates can take around 30 minutes to complete"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "mainContentText": {
+                                              "description": "Modifies the `mainContentText`. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device.\" text. (See the Wiki for information on adding line breaks.)",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "A fully up-to-date device …"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "mainHeader": {
+                                              "description": "Modifies the `mainHeader`. This is the \"Your device requires a security update\" text.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Your device requires a security update"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "primaryQuitButtonText": {
+                                              "description": "Modifies the `primaryQuitButton`, also known as the \"Later\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "Later"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "secondaryQuitButtonText": {
+                                              "description": "Modifies the `secondaryQuitButton`, also known as the \"I understand\" button.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "I understand"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          },
+                                          "subHeader": {
+                                              "description": "Modifies the `subHeader`. This is the \"A friendly reminder from your local IT team\" text.",
+                                              "anyOf": [
+                                                  {
+                                                      "type": "null",
+                                                      "title": "Not Configured"
+                                                  },
+                                                  {
+                                                      "title": "Configured",
+                                                      "type": "string",
+                                                      "options": {
+                                                          "inputAttributes": {
+                                                              "placeholder": "A friendly reminder from your local IT team"
+                                                          }
+                                                      }
+                                                  }
+                                              ]
+                                          }
+                                      }
+                                  }
+                              }
+                          ]
+                      }
+                  }
+              }
+          ]
+      }
+  }
 }

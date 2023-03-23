@@ -273,6 +273,7 @@ struct UserExperience: Codable {
     var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
     var gracePeriodPath: String?
     var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle, maxRandomDelayInSeconds: Int?
+    var loadLaunchAgent: Bool?
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
@@ -331,6 +332,7 @@ extension UserExperience {
             imminentRefreshCycle: imminentRefreshCycle ?? self.imminentRefreshCycle,
             imminentWindowTime: imminentWindowTime ?? self.imminentWindowTime,
             initialRefreshCycle: initialRefreshCycle ?? self.initialRefreshCycle,
+            loadLaunchAgent: loadLaunchAgent ?? self.loadLaunchAgent,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,

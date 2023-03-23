@@ -23,6 +23,9 @@ public class PrefsWrapper {
     public class var allowGracePeriods: Bool {
         return (prefsOverride?["allowGracePeriods"] as? Bool) ?? userExperienceProfile?["allowGracePeriods"] as? Bool ?? userExperienceJSON?.allowGracePeriods ?? false
     }
+    public class var loadLaunchAgent: Bool {
+        return (prefsOverride?["loadLaunchAgent"] as? Bool) ?? userExperienceProfile?["loadLaunchAgent"] as? Bool ?? userExperienceJSON?.loadLaunchAgent ?? false
+    }
 }
 
 // Features can be placed in multiple primary keys
@@ -75,6 +78,7 @@ let gracePeriodPath = userExperienceProfile?["gracePeriodPath"] as? String ?? us
 let imminentRefreshCycle = userExperienceProfile?["imminentRefreshCycle"] as? Int ?? userExperienceJSON?.imminentRefreshCycle ?? 600
 let imminentWindowTime = userExperienceProfile?["imminentWindowTime"] as? Int ?? userExperienceJSON?.imminentWindowTime ?? 24
 let initialRefreshCycle = userExperienceProfile?["initialRefreshCycle"] as? Int ?? userExperienceJSON?.initialRefreshCycle ?? 18000
+let loadLaunchAgent = userExperienceProfile?["loadLaunchAgent"] as? Bool ?? userExperienceJSON?.loadLaunchAgent ?? false
 let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] as? Int ?? userExperienceJSON?.maxRandomDelayInSeconds ?? 1200
 let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? userExperienceJSON?.noTimers ?? false
 let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? userExperienceJSON?.nudgeRefreshCycle ?? 60
