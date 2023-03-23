@@ -23,9 +23,6 @@ public class PrefsWrapper {
     public class var allowGracePeriods: Bool {
         return (prefsOverride?["allowGracePeriods"] as? Bool) ?? userExperienceProfile?["allowGracePeriods"] as? Bool ?? userExperienceJSON?.allowGracePeriods ?? false
     }
-    public class var loadLaunchAgent: Bool {
-        return (prefsOverride?["loadLaunchAgent"] as? Bool) ?? userExperienceProfile?["loadLaunchAgent"] as? Bool ?? userExperienceJSON?.loadLaunchAgent ?? false
-    }
 }
 
 // Features can be placed in multiple primary keys
