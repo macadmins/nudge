@@ -62,9 +62,9 @@ fi
 $XCODE_NOTARY_PATH store-credentials --apple-id "opensource@macadmins.io" --team-id "T4SK8ZXCXG" --password "$2" nudge
 
 # Zip application for notary
-/usr/bin/ditto -c -k --keepParent "${BUILDSDIR}/Release/Nudge.app" "${BUILDSDIR}/Release/Nudge.zip"
+# /usr/bin/ditto -c -k --keepParent "${BUILDSDIR}/Release/Nudge.app" "${BUILDSDIR}/Release/Nudge.zip"
 # Notarize nudge application
-$XCODE_NOTARY_PATH submit "${BUILDSDIR}/Release/Nudge.zip" --keychain-profile "nudge" --wait
+# $XCODE_NOTARY_PATH submit "${BUILDSDIR}/Release/Nudge.zip" --keychain-profile "nudge" --wait
 
 # Create outputs folder
 if [ -e $OUTPUTSDIR ]; then
