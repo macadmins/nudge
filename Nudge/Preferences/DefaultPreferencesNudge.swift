@@ -81,6 +81,7 @@ let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] 
 let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? userExperienceJSON?.noTimers ?? false
 let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? userExperienceJSON?.nudgeRefreshCycle ?? 60
 let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? userExperienceJSON?.randomDelay ?? false
+let calendarDeferUntilApproaching = userExperienceProfile?["calendarDeferUntilApproaching"] as? Bool ?? userExperienceJSON?.calendarDeferUntilApproaching ?? false
 
 // userInterface
 let userInterfaceProfile = getUserInterfaceProfile()

@@ -134,6 +134,8 @@
                     <integer>60</integer>
                     <key>randomDelay</key>
                     <false/>
+                    <key>calendarDeferUntilApproaching</key>
+                    <true/>
                 </dict>
                 <key>userInterface</key>
                 <dict>

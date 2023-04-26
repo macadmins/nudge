@@ -279,6 +279,7 @@ struct UserExperience: Codable {
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
+    var calendarDeferUntilApproaching: Bool?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -319,7 +320,8 @@ extension UserExperience {
         maxRandomDelayInSeconds: Int?? = nil,
         noTimers: Bool?? = nil,
         nudgeRefreshCycle: Int?? = nil,
-        randomDelay: Bool?? = nil
+        randomDelay: Bool?? = nil,
+        calendarDeferUntilApproaching: Bool?? = nil
     ) -> UserExperience {
         return UserExperience(
             allowGracePeriods: allowGracePeriods ?? self.allowGracePeriods,
@@ -341,7 +343,8 @@ extension UserExperience {
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
-            randomDelay: randomDelay ?? self.randomDelay
+            randomDelay: randomDelay ?? self.randomDelay,
+            calendarDeferUntilApproaching: calendarDeferUntilApproaching ?? self.calendarDeferUntilApproaching
         )
     }
     

@@ -61,7 +61,8 @@
         "maxRandomDelayInSeconds": 1200,
         "noTimers": false,
         "nudgeRefreshCycle": 60,
-        "randomDelay": false
+        "randomDelay": false,
+        "calendarDeferUntilApproaching": false
     },
     "userInterface": {
         "actionButtonPath": "munki://updates",
