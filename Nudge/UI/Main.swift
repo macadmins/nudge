@@ -341,6 +341,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+
+extension Scene {
+    func windowResizabilityContentSize() -> some Scene {
+        if #available(macOS 13.0, *) {
+            return windowResizability(.contentSize)
+        } else {
+            return self
+        }
+    }
+}
+
+
 @main
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -363,7 +375,7 @@ struct Main: App {
                 ContentView(viewObserved: viewState)
                     .frame(width: declaredWindowWidth, height: declaredWindowHeight)
             }
-        }
+        }.windowResizabilityContentSize()
         // Hide Title Bar
         .windowStyle(.hiddenTitleBar)
     }
