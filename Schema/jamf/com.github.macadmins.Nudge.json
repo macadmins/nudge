@@ -574,6 +574,25 @@
                                 }
                             ]
                         },
+                        "calendarDeferralUnit": {
+                            "description": "Utilize the approachingWindowTime or imminentWindowTime for calendar deferrals.",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "default": "imminentWindowTime",
+                                    "title": "Configured",
+                                    "type": "string",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "imminentWindowTime"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
                         "elapsedRefreshCycle": {
                             "description": "The amount of time in seconds Nudge will use as a timer to refresh the user interface if it is not the currently active window. This key is triggered once the `requiredInstallationDate` has expired.",
                             "anyOf": [

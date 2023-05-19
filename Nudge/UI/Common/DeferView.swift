@@ -76,9 +76,17 @@ struct DeferView: View {
         }
     }
     var limitRange: ClosedRange<Date> {
+        var windowTime: Int
+        if calendarDeferralUnit == "approachingWindowTime" {
+            windowTime = (approachingWindowTime / 24)
+        } else if calendarDeferralUnit == "imminentWindowTime" {
+            windowTime = (imminentWindowTime / 24)
+        } else {
+            windowTime = (imminentWindowTime / 24)
+        }
         if viewObserved.daysRemaining > 0 {
-            // Do not let the user defer past the point of the approachingWindowTime
-            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(imminentWindowTime / 24), to: Utils().getCurrentDate())!
+            // Do not let the user defer past the point of the windowTime
+            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(windowTime), to: Utils().getCurrentDate())!
         } else {
             return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: 0, to: Utils().getCurrentDate())!
         }
@@ -103,4 +111,3 @@ struct DeferView_Previews: PreviewProvider {
     }
 }
 #endif
-
