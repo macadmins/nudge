@@ -49,6 +49,7 @@
         "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
         "approachingRefreshCycle": 6000,
         "approachingWindowTime": 72,
+        "calendarDeferUntilApproaching": false,
         "elapsedRefreshCycle": 300,
         "gracePeriodInstallDelay": 23,
         "gracePeriodLaunchDelay": 1,
@@ -61,8 +62,7 @@
         "maxRandomDelayInSeconds": 1200,
         "noTimers": false,
         "nudgeRefreshCycle": 60,
-        "randomDelay": false,
-        "calendarDeferUntilApproaching": false
+        "randomDelay": false
     },
     "userInterface": {
         "actionButtonPath": "munki://updates",

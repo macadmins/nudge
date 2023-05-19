@@ -68,6 +68,7 @@ let allowedDeferrals = userExperienceProfile?["allowedDeferrals"] as? Int ?? use
 let allowedDeferralsUntilForcedSecondaryQuitButton = userExperienceProfile?["allowedDeferralsUntilForcedSecondaryQuitButton"] as? Int ?? userExperienceJSON?.allowedDeferralsUntilForcedSecondaryQuitButton ?? 14
 let approachingRefreshCycle = userExperienceProfile?["approachingRefreshCycle"] as? Int ?? userExperienceJSON?.approachingRefreshCycle ?? 6000
 let approachingWindowTime = userExperienceProfile?["approachingWindowTime"] as? Int ?? userExperienceJSON?.approachingWindowTime ?? 72
+let calendarDeferUntilApproaching = userExperienceProfile?["calendarDeferUntilApproaching"] as? Bool ?? userExperienceJSON?.calendarDeferUntilApproaching ?? false
 let elapsedRefreshCycle = userExperienceProfile?["elapsedRefreshCycle"] as? Int ?? userExperienceJSON?.elapsedRefreshCycle ?? 300
 let gracePeriodInstallDelay = userExperienceProfile?["gracePeriodInstallDelay"] as? Int ?? userExperienceJSON?.gracePeriodInstallDelay ?? 23
 let gracePeriodLaunchDelay = userExperienceProfile?["gracePeriodLaunchDelay"] as? Int ?? userExperienceJSON?.gracePeriodLaunchDelay ?? 1
@@ -81,7 +82,6 @@ let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] 
 let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? userExperienceJSON?.noTimers ?? false
 let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? userExperienceJSON?.nudgeRefreshCycle ?? 60
 let randomDelay = userExperienceProfile?["randomDelay"] as? Bool ?? userExperienceJSON?.randomDelay ?? false
-let calendarDeferUntilApproaching = userExperienceProfile?["calendarDeferUntilApproaching"] as? Bool ?? userExperienceJSON?.calendarDeferUntilApproaching ?? false
 
 // userInterface
 let userInterfaceProfile = getUserInterfaceProfile()

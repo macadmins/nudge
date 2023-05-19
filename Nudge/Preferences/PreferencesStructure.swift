@@ -270,6 +270,7 @@ extension AboutUpdateURL {
 struct UserExperience: Codable {
     var allowGracePeriods, allowLaterDeferralButton, allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
+    var calendarDeferUntilApproaching: Bool?
     var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
     var gracePeriodPath: String?
     var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
@@ -279,7 +280,6 @@ struct UserExperience: Codable {
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
-    var calendarDeferUntilApproaching: Bool?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -308,6 +308,7 @@ extension UserExperience {
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
+        calendarDeferUntilApproaching: Bool?? = nil,
         elapsedRefreshCycle: Int?? = nil,
         gracePeriodInstallDelay: Int?? = nil,
         gracePeriodLaunchDelay: Int?? = nil,
@@ -320,8 +321,7 @@ extension UserExperience {
         maxRandomDelayInSeconds: Int?? = nil,
         noTimers: Bool?? = nil,
         nudgeRefreshCycle: Int?? = nil,
-        randomDelay: Bool?? = nil,
-        calendarDeferUntilApproaching: Bool?? = nil
+        randomDelay: Bool?? = nil
     ) -> UserExperience {
         return UserExperience(
             allowGracePeriods: allowGracePeriods ?? self.allowGracePeriods,
@@ -331,6 +331,7 @@ extension UserExperience {
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
+            calendarDeferUntilApproaching: calendarDeferUntilApproaching ?? self.calendarDeferUntilApproaching,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
             gracePeriodInstallDelay: gracePeriodInstallDelay ?? self.gracePeriodInstallDelay,
             gracePeriodLaunchDelay: gracePeriodLaunchDelay ?? self.gracePeriodLaunchDelay,
@@ -343,8 +344,7 @@ extension UserExperience {
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
-            randomDelay: randomDelay ?? self.randomDelay,
-            calendarDeferUntilApproaching: calendarDeferUntilApproaching ?? self.calendarDeferUntilApproaching
+            randomDelay: randomDelay ?? self.randomDelay
         )
     }
     
