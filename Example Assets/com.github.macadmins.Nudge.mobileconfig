@@ -108,8 +108,8 @@
                     <integer>6000</integer>
                     <key>approachingWindowTime</key>
                     <integer>72</integer>
-                    <key>calendarDeferUntilApproaching</key>
-                    <false/>
+                    <key>calendarDeferralUnit</key>
+                    <string>imminentWindowTime</string>
                     <key>elapsedRefreshCycle</key>
                     <integer>300</integer>
                     <key>gracePeriodInstallDelay</key>

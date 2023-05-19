@@ -574,17 +574,22 @@
                                 }
                             ]
                         },
-                        "calendarDeferUntilApproaching": {
-                            "description": "Utilize the approachingWindowTime instead of imminentWindowTime for calendar deferrals during the Regular Window Time period.",
+                        "calendarDeferralUnit": {
+                            "description": "Utilize the approachingWindowTime or imminentWindowTime for calendar deferrals.",
                             "anyOf": [
                                 {
-                                    "title": "Not Configured",
-                                    "type": "null"
+                                    "type": "null",
+                                    "title": "Not Configured"
                                 },
                                 {
+                                    "default": "imminentWindowTime",
                                     "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
+                                    "type": "string",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "imminentWindowTime"
+                                        }
+                                    }
                                 }
                             ]
                         },

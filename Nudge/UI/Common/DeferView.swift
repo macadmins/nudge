@@ -77,10 +77,11 @@ struct DeferView: View {
     }
     var limitRange: ClosedRange<Date> {
         var windowTime: Int
-        if calendarDeferUntilApproaching {
+        if calendarDeferralUnit == "approachingWindowTime" {
             windowTime = (approachingWindowTime / 24)
-        }
-        else {
+        } else if calendarDeferralUnit == "imminentWindowTime" {
+            windowTime = (imminentWindowTime / 24)
+        } else {
             windowTime = (imminentWindowTime / 24)
         }
         if viewObserved.daysRemaining > 0 {
@@ -110,4 +111,3 @@ struct DeferView_Previews: PreviewProvider {
     }
 }
 #endif
-
