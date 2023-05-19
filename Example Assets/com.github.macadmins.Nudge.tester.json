@@ -1,56 +1,57 @@
 {
-  "optionalFeatures": {
-    "acceptableAssertionApplicationNames": [
-        "zoom.us",
-        "Meeting Center",
-        "Google Chrome",
-        "Safari"
+    "optionalFeatures": {
+        "acceptableAssertionApplicationNames": [
+            "zoom.us",
+            "Meeting Center",
+            "Google Chrome",
+            "Safari"
+        ],
+        "acceptableAssertionUsage": true,
+        "acceptableCameraUsage": true,
+        "acceptableScreenSharingUsage": true,
+        "attemptToBlockApplicationLaunches": true,
+        "blockedApplicationBundleIDs": [
+            "com.microsoft.VSCode",
+            "us.zoom.xos"
+        ],
+        "terminateApplicationsOnLaunch": false
+    },
+    "osVersionRequirements": [
+        {
+            "aboutUpdateURL": "https://apple.com",
+            "requiredInstallationDate": "2024-01-01T00:00:00Z",
+            "requiredMinimumOSVersion": "13.99.99",
+            "targetedOSVersionsRule": "default"
+        }
     ],
-    "acceptableAssertionUsage": true,
-    "acceptableCameraUsage": true,
-    "acceptableScreenSharingUsage": true,
-    "attemptToBlockApplicationLaunches": true,
-    "blockedApplicationBundleIDs": [
-      "com.microsoft.VSCode",
-      "us.zoom.xos"
-    ],
-    "terminateApplicationsOnLaunch": false
-  },
-  "osVersionRequirements": [
-    {
-      "aboutUpdateURL": "https://apple.com",
-      "requiredInstallationDate": "2023-01-01T00:00:00Z",
-      "requiredMinimumOSVersion": "13.99.99",
-      "targetedOSVersionsRule": "default"
+    "userExperience": {
+        "elapsedRefreshCycle": 10,
+        "initialRefreshCycle": 10,
+        "loadLaunchAgent": false,
+        "nudgeRefreshCycle": 5,
+        "randomDelay": false
+    },
+    "userInterface": {
+        "fallbackLanguage": "en",
+        "forceFallbackLanguage": true,
+        "updateElements": [
+            {
+                "_language": "en",
+                "actionButtonText": "actionButtonText",
+                "customDeferralButtonText": "customDeferralButtonText",
+                "customDeferralDropdownText": "customDeferralDropdownText",
+                "informationButtonText": "informationButtonText",
+                "mainContentHeader": "mainContentHeader",
+                "mainContentNote": "mainContentNote",
+                "mainContentSubHeader": "mainContentSubHeader",
+                "mainContentText": "mainContentText",
+                "mainHeader": "mainHeader",
+                "oneDayDeferralButtonText": "oneDayDeferralButtonText",
+                "oneHourDeferralButtonText": "oneHourDeferralButtonText",
+                "primaryQuitButtonText": "primaryQuitButtonText",
+                "secondaryQuitButtonText": "secondaryQuitButtonText",
+                "subHeader": "subHeader"
+            }
+        ]
     }
-  ],
-  "userExperience": {
-    "elapsedRefreshCycle": 10,
-    "initialRefreshCycle": 10,
-    "nudgeRefreshCycle": 5,
-    "randomDelay": false
-  },
-  "userInterface": {
-    "fallbackLanguage": "en",
-    "forceFallbackLanguage": true,
-    "updateElements": [
-      {
-        "_language": "en",
-        "actionButtonText": "actionButtonText",
-        "customDeferralButtonText": "customDeferralButtonText",
-        "customDeferralDropdownText": "customDeferralDropdownText",
-        "informationButtonText": "informationButtonText",
-        "mainContentHeader": "mainContentHeader",
-        "mainContentNote": "mainContentNote",
-        "mainContentSubHeader": "mainContentSubHeader",
-        "mainContentText": "mainContentText",
-        "mainHeader": "mainHeader",
-        "oneDayDeferralButtonText": "oneDayDeferralButtonText",
-        "oneHourDeferralButtonText": "oneHourDeferralButtonText",
-        "primaryQuitButtonText": "primaryQuitButtonText",
-        "secondaryQuitButtonText": "secondaryQuitButtonText",
-        "subHeader": "subHeader"
-      }
-    ]
-  }
 }

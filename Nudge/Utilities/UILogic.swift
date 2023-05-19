@@ -32,18 +32,18 @@ func nudgeStartLogic() {
         uiLog.debug("\("App being ran in test mode", privacy: .public)")
         return
     }
-
+    
     if Utils().simpleModeEnabled() {
         uiLog.debug("\("Device in simple mode", privacy: .public)")
     }
-
+    
     if Utils().demoModeEnabled() {
         uiLog.debug("\("Device in demo mode", privacy: .public)")
         nudgePrimaryState.userDeferrals = 0
         nudgePrimaryState.userQuitDeferrals = 0
         return
     }
-
+    
     if Utils().newNudgeEvent() {
         uiLog.notice("\("New Nudge event detected - resetting all deferral values", privacy: .public)")
         Utils().logRequiredMinimumOSVersion()
@@ -96,7 +96,7 @@ func needToActivateNudge() -> Bool {
         uiLog.notice("\("Nudge is currrently the frontmostApplication", privacy: .public)")
         return false
     }
-
+    
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let runningApplications = NSWorkspace.shared.runningApplications
     let pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
@@ -147,7 +147,7 @@ func needToActivateNudge() -> Bool {
     if !nudgeLogState.afterFirstRun {
         nudgeLogState.afterFirstRun = true
     }
-
+    
     // If noTimers is true, just bail
     if noTimers {
         uiLog.info("\("Ignoring Nudge activation - noTimers is set", privacy: .public)")
@@ -167,7 +167,7 @@ func needToActivateNudge() -> Bool {
             return false
         }
     }
-
+    
     if majorUpgradeBackupAppPathExists {
         if NSURL.fileURL(withPath: Utils().getBackupMajorUpgradeAppPath()) == frontmostApplication?.bundleURL {
             uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp (backup) is currently the frontmostApplication", privacy: .public)")
@@ -184,7 +184,7 @@ func needToActivateNudge() -> Bool {
             }
         }
     }
-
+    
     // Don't nudge if screen sharing and prior to requiredInstallationDate
     if DNDServer && acceptableScreenSharingUsage && !pastRequiredInstallationDate {
         if (DNDConfig().rawValue?.value(forKey: "isScreenShared") as? Bool ?? false) == true && !pastRequiredInstallationDate {
@@ -192,7 +192,7 @@ func needToActivateNudge() -> Bool {
             return false
         }
     }
-
+    
     // Don't nudge if assertions are set and prior to requiredInstallationDate
     if acceptableAssertionUsage && !pastRequiredInstallationDate {
         // Credit to https://github.com/francescofact/DualDimmer/blob/main/DualDimmer/Worker.swift
@@ -213,7 +213,7 @@ func needToActivateNudge() -> Bool {
             }
         }
     }
-
+    
     // Don't nudge if acceptable apps are frontmostApplication
     if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) {
         uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
@@ -230,7 +230,7 @@ func needToActivateNudge() -> Bool {
     if frontmostApplication?.bundleIdentifier != nil {
         uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
     }
-
+    
     if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
         // Loop through all the running applications and hide them
         for runningApplication in runningApplications {
@@ -254,7 +254,7 @@ func needToActivateNudge() -> Bool {
             if appName == "com.github.macadmins.Nudge" {
                 continue
             }
-
+            
             // Taken from nudge-python as there was a race condition with NSWorkspace
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
                 uiLog.info("\("Attempting to hide \(appName)", privacy: .public)")

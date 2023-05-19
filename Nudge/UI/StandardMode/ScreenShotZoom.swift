@@ -59,7 +59,7 @@ struct ScreenShotZoom: View {
                     }
                 }
                 )
-                    .buttonStyle(.plain)
+                .buttonStyle(.plain)
                 .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
                 .onHover { inside in
                     if inside {

@@ -41,7 +41,7 @@ struct DeviceInfo: View {
                     }
                 }
                 .frame(width: 30, height: 30)
-
+                
                 // Horizontally align close button to left
                 Spacer()
             }

@@ -15,33 +15,33 @@ struct SimpleMode: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-
+    
     let bottomPadding: CGFloat = 10
     let contentWidthPadding: CGFloat = 25
     
     let logoWidth: CGFloat = 200
     let logoHeight: CGFloat = 150
-
+    
     // Nudge UI
     var body: some View {
         VStack {
             // display the (?) info button
             AdditionalInfoButton()
                 .padding(3)
-
+            
             VStack(alignment: .center, spacing: 10) {
                 Spacer()
                 // Company Logo
                 CompanyLogo(width: logoWidth, height: logoHeight)
                 Spacer()
-
+                
                 // mainHeader
                 HStack {
                     Text(getMainHeader())
                         .font(.title)
                         .fontWeight(.bold)
                 }
- 
+                
                 // Days or Hours Remaining
                 HStack(spacing: 3.5) {
                     if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
@@ -49,19 +49,19 @@ struct SimpleMode: View {
                         Text(String(viewObserved.daysRemaining))
                             .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
-                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
-                            Text(String(viewObserved.hoursRemaining))
-                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
-                                .fontWeight(.bold)
+                        Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
+                        Text(String(viewObserved.hoursRemaining))
+                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                            .fontWeight(.bold)
                     } else {
                         Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage()))
                         Text(String(viewObserved.daysRemaining))
                             .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
                             .fontWeight(.bold)
-
+                        
                     }
                 }
-
+                
                 // Deferral Count
                 if showDeferralCount {
                     HStack{
@@ -84,7 +84,7 @@ struct SimpleMode: View {
                     .hidden()
                 }
                 Spacer()
-
+                
                 // actionButton
                 Button(action: {
                     Utils().updateDevice()
@@ -96,7 +96,7 @@ struct SimpleMode: View {
                 Spacer()
             }
             .frame(alignment: .center)
-
+            
             // Bottom buttons
             HStack {
                 // informationButton

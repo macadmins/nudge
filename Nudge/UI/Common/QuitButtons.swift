@@ -10,17 +10,17 @@ import Foundation
 
 struct QuitButtons: View {
     @ObservedObject var viewObserved: ViewState
-
+    
     @State var showDeferView = false
-
+    
     @State var nudgeEventDate = Utils().getCurrentDate()
     @State var nudgeCustomEventDate = Utils().getCurrentDate()
-
+    
     let buttonTextMinWidth: CGFloat = 35
-
+    
     let hourTimeInterval: CGFloat = 3600
     let dayTimeInterval: CGFloat = 86400
-
+    
     func updateDeferralUI() {
         viewObserved.userQuitDeferrals += 1
         viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
@@ -28,7 +28,7 @@ struct QuitButtons: View {
         Utils().logUserDeferrals()
         Utils().userInitiatedExit()
     }
-
+    
     var body: some View {
         HStack {
             // secondaryQuitButton
@@ -92,10 +92,10 @@ struct QuitButtons: View {
                                 }
                             }
                         }
-                        label: {
-                            Text(customDeferralDropdownText)
-                        }
-                        .frame(maxWidth:215, maxHeight: 30)
+                    label: {
+                        Text(customDeferralDropdownText)
+                    }
+                    .frame(maxWidth:215, maxHeight: 30)
                     } else {
                         Button {
                             Utils().userInitiatedExit()

@@ -69,7 +69,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersionsRule == currentOSVersion {
                 fullMatch = subPreferences
-            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+                // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
             } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
                 partialMatch = subPreferences
             } else if subPreferences.targetedOSVersionsRule == "default" {
@@ -104,7 +104,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
         for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersionsRule == currentOSVersion {
                 fullMatch = subPreferences
-            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+                // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
             } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
                 partialMatch = subPreferences
             } else if subPreferences.targetedOSVersionsRule == "default" {
