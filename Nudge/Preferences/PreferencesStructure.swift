@@ -270,6 +270,7 @@ extension AboutUpdateURL {
 struct UserExperience: Codable {
     var allowGracePeriods, allowLaterDeferralButton, allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
+    var calendarDeferralUnit: String?
     var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
     var gracePeriodPath: String?
     var imminentRefreshCycle, imminentWindowTime, initialRefreshCycle: Int?
@@ -307,6 +308,7 @@ extension UserExperience {
         allowedDeferralsUntilForcedSecondaryQuitButton: Int?? = nil,
         approachingRefreshCycle: Int?? = nil,
         approachingWindowTime: Int?? = nil,
+        calendarDeferralUnit: String?? = nil,
         elapsedRefreshCycle: Int?? = nil,
         gracePeriodInstallDelay: Int?? = nil,
         gracePeriodLaunchDelay: Int?? = nil,
@@ -329,6 +331,7 @@ extension UserExperience {
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,
             approachingRefreshCycle: approachingRefreshCycle ?? self.approachingRefreshCycle,
             approachingWindowTime: approachingWindowTime ?? self.approachingWindowTime,
+            calendarDeferralUnit: calendarDeferralUnit ?? self.calendarDeferralUnit,
             elapsedRefreshCycle: elapsedRefreshCycle ?? self.elapsedRefreshCycle,
             gracePeriodInstallDelay: gracePeriodInstallDelay ?? self.gracePeriodInstallDelay,
             gracePeriodLaunchDelay: gracePeriodLaunchDelay ?? self.gracePeriodLaunchDelay,

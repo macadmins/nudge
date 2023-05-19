@@ -49,6 +49,7 @@
         "allowedDeferralsUntilForcedSecondaryQuitButton": 14,
         "approachingRefreshCycle": 6000,
         "approachingWindowTime": 72,
+        "calendarDeferralUnit": "imminentWindowTime",
         "elapsedRefreshCycle": 300,
         "gracePeriodInstallDelay": 23,
         "gracePeriodLaunchDelay": 1,
