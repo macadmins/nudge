@@ -106,7 +106,7 @@ class SoftwareUpdate {
             let softwareupdateList = self.List()
             var updateLabel = ""
             for update in softwareupdateList.components(separatedBy: "\n") {
-                if update.contains("Label:") {
+                if update.contains("Label:") && update.contains(requiredMinimumOSVersion) {
                     updateLabel = update.components(separatedBy: ": ")[1]
                 }
             }
