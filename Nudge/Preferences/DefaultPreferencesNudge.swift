@@ -94,21 +94,21 @@ let iconDarkPath = userInterfaceProfile?["iconDarkPath"] as? String ?? userInter
 let iconLightPath = userInterfaceProfile?["iconLightPath"] as? String ?? userInterfaceJSON?.iconLightPath ?? ""
 let screenShotDarkPath = userInterfaceProfile?["screenShotDarkPath"] as? String ?? userInterfaceJSON?.screenShotDarkPath ?? ""
 let screenShotLightPath = userInterfaceProfile?["screenShotLightPath"] as? String ?? userInterfaceJSON?.screenShotLightPath ?? ""
-let actionButtonText = userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.actionButtonText ?? "Update Device".localized(desiredLanguage: getDesiredLanguage())
-let informationButtonText = userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.informationButtonText ?? "More Info".localized(desiredLanguage: getDesiredLanguage())
-let mainContentHeader = userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentHeader ?? "Your device will restart during this update".localized(desiredLanguage: getDesiredLanguage())
-let mainContentNote = userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentNote ?? "Important Notes".localized(desiredLanguage: getDesiredLanguage())
-let mainContentSubHeader = userInterfaceUpdateElementsProfile?["mainContentSubHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete".localized(desiredLanguage: getDesiredLanguage())
-let mainContentText = userInterfaceUpdateElementsProfile?["mainContentText"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps.".localized(desiredLanguage: getDesiredLanguage())
-let primaryQuitButtonText = userInterfaceUpdateElementsProfile?["primaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.primaryQuitButtonText ?? "Later".localized(desiredLanguage: getDesiredLanguage())
-let secondaryQuitButtonText = userInterfaceUpdateElementsProfile?["secondaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ?? "I understand".localized(desiredLanguage: getDesiredLanguage())
+let actionButtonText = userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.actionButtonText ?? "Update Device"
+let informationButtonText = userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.informationButtonText ?? "More Info"
+let mainContentHeader = userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentHeader ?? "Your device will restart during this update"
+let mainContentNote = userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentNote ?? "Important Notes"
+let mainContentSubHeader = userInterfaceUpdateElementsProfile?["mainContentSubHeader"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentSubHeader ?? "Updates can take around 30 minutes to complete"
+let mainContentText = userInterfaceUpdateElementsProfile?["mainContentText"] as? String ?? userInterfaceUpdateElementsJSON?.mainContentText ?? "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+let primaryQuitButtonText = userInterfaceUpdateElementsProfile?["primaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.primaryQuitButtonText ?? "Later"
+let secondaryQuitButtonText = userInterfaceUpdateElementsProfile?["secondaryQuitButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ?? "I understand"
 let showDeferralCount = userInterfaceProfile?["showDeferralCount"] as? Bool ?? userInterfaceJSON?.showDeferralCount ?? true
 let singleQuitButton = userInterfaceProfile?["singleQuitButton"] as? Bool ?? userInterfaceJSON?.singleQuitButton ?? false
-let subHeader = userInterfaceUpdateElementsProfile?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team".localized(desiredLanguage: getDesiredLanguage())
-let customDeferralDropdownText = userInterfaceUpdateElementsProfile?["customDeferralDropdownText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralDropdownText ?? "Defer".localized(desiredLanguage: getDesiredLanguage())
-let customDeferralButtonText = userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralButtonText ?? "Custom".localized(desiredLanguage: getDesiredLanguage())
-let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ?? "One Day".localized(desiredLanguage: getDesiredLanguage())
-let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour".localized(desiredLanguage: getDesiredLanguage())
+let subHeader = userInterfaceUpdateElementsProfile?["subHeader"] as? String ?? userInterfaceUpdateElementsJSON?.subHeader ?? "A friendly reminder from your local IT team"
+let customDeferralDropdownText = userInterfaceUpdateElementsProfile?["customDeferralDropdownText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralDropdownText ?? "Defer"
+let customDeferralButtonText = userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralButtonText ?? "Custom"
+let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ?? "One Day"
+let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour"
 
 // Other important defaults
 #if DEBUG
