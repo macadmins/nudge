@@ -206,16 +206,9 @@ struct StandardModeRightSide: View {
 // Xcode preview for both light and dark mode
 struct StandardModeRightSide_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ForEach(["en", "es"], id: \.self) { id in
-                StandardModeRightSide(viewObserved: nudgePrimaryState)
-                    .preferredColorScheme(.light)
-                    .environment(\.locale, .init(identifier: id))
-            }
-            ZStack {
-                StandardModeRightSide(viewObserved: nudgePrimaryState)
-                    .preferredColorScheme(.dark)
-            }
+        ForEach(["en", "es"], id: \.self) { id in
+            StandardModeRightSide(viewObserved: nudgePrimaryState)
+                .environment(\.locale, .init(identifier: id))
         }
     }
 }
