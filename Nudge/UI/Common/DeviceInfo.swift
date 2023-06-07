@@ -98,6 +98,7 @@ struct DeviceInfo_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             DeviceInfo()
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("DeviceInfo (\(id))")
         }
     }
 }

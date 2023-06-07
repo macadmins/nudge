@@ -84,6 +84,7 @@ struct ScreenShotZoom_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             ScreenShotZoom()
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("ScreenShotZoom (\(id))")
         }
     }
 }

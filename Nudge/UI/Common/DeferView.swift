@@ -101,6 +101,7 @@ struct DeferView_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             DeferView(viewObserved: nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("DeferView (\(id))")
         }
     }
 }

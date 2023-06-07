@@ -120,7 +120,9 @@ struct SimpleMode_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
             SimpleMode(viewObserved: nudgePrimaryState)
+                .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("SimpleMode (\(id))")
         }
     }
 }
