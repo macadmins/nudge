@@ -73,7 +73,7 @@ struct DeviceInfo: View {
                 // Language
                 HStack{
                     Text("Language:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                    Text(language)
+                    Text(languageCode)
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Nudge Version

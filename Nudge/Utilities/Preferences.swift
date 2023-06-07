@@ -9,15 +9,24 @@ import Foundation
 
 let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
-let language = Locale.current.identifier
+let languageCode = NSLocale.current.languageCode!
+let languageID = Locale.current.identifier
 var nudgePrimaryState = ViewState()
 var nudgeLogState = LogState()
 
+var isPreview: Bool {
+    return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+}
+
 // Get the language
 func getDesiredLanguage(locale: Locale? = nil) -> String {
-    var desiredLanguage = language
-    if locale?.identifier != nil {
-        desiredLanguage = locale!.identifier
+    var desiredLanguage = languageID
+    if isPreview {
+        if locale?.identifier != nil {
+            desiredLanguage = locale!.identifier
+        }
+    } else {
+        desiredLanguage = languageCode
     }
     if forceFallbackLanguage {
         desiredLanguage = fallbackLanguage

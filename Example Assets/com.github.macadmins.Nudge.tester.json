@@ -32,8 +32,6 @@
         "randomDelay": false
     },
     "userInterface": {
-        "fallbackLanguage": "en",
-        "forceFallbackLanguage": false,
         "updateElements": [
             {
                 "_language": "en",

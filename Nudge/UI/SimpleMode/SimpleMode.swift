@@ -90,7 +90,7 @@ struct SimpleMode: View {
                 Button(action: {
                     Utils().updateDevice()
                 }) {
-                    Text(actionButtonText)
+                    Text(actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                         .frame(minWidth: 120)
                 }
                 .keyboardShortcut(.defaultAction)
