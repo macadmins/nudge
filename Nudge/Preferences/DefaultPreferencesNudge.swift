@@ -113,18 +113,24 @@ let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDefe
 // Other important defaults
 #if DEBUG
 let builtInAcceptableApplicationBundleIDs = [
+    "com.apple.InstallAssistant.macOSBigSur",
     "com.apple.InstallAssistant.macOSMonterey",
     "com.apple.InstallAssistant.macOSVentura",
+    "com.apple.InstallAssistant.macOSSonoma",
     "com.apple.loginwindow",
+    "com.apple.MobileAsset.MacSoftwareUpdate",
     "com.apple.ScreenSaver.Engine",
     "com.apple.systempreferences",
     "com.apple.dt.Xcode",
 ]
 #else
 let builtInAcceptableApplicationBundleIDs = [
+    "com.apple.InstallAssistant.macOSBigSur",
     "com.apple.InstallAssistant.macOSMonterey",
     "com.apple.InstallAssistant.macOSVentura",
+    "com.apple.InstallAssistant.macOSSonoma",
     "com.apple.loginwindow",
+    "com.apple.MobileAsset.MacSoftwareUpdate",
     "com.apple.ScreenSaver.Engine",
     "com.apple.systempreferences",
 ]
