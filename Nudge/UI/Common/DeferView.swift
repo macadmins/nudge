@@ -13,6 +13,7 @@ struct DeferView: View {
     @ObservedObject var viewObserved: ViewState
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.locale) var locale: Locale
     
     @State var nudgeCustomEventDate = Utils().getCurrentDate()
     
@@ -30,7 +31,7 @@ struct DeferView: View {
                 }
                 .keyboardShortcut(.escape)
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -68,7 +69,7 @@ struct DeferView: View {
                 Utils().logUserDeferrals()
                 Utils().userInitiatedExit()
             } label: {
-                Text(customDeferralDropdownText)
+                Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     .frame(minWidth: 35)
             }
             // a bit of space at the bottom to raise the Defer button away from the very edge

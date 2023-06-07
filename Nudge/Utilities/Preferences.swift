@@ -9,13 +9,16 @@ import Foundation
 
 let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
-let language = NSLocale.current.languageCode!
+let language = Locale.current.identifier
 var nudgePrimaryState = ViewState()
 var nudgeLogState = LogState()
 
 // Get the language
-func getDesiredLanguage() -> String {
+func getDesiredLanguage(locale: Locale? = nil) -> String {
     var desiredLanguage = language
+    if locale?.identifier != nil {
+        desiredLanguage = locale!.identifier
+    }
     if forceFallbackLanguage {
         desiredLanguage = fallbackLanguage
     }
@@ -254,10 +257,10 @@ func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
 // Returns the mainHeader
 func getMainHeader() -> String {
     if Utils().demoModeEnabled() {
-        return "Your device requires a security update (Demo Mode)".localized(desiredLanguage: getDesiredLanguage())
+        return "Your device requires a security update (Demo Mode)"
     } else if Utils().unitTestingEnabled() {
-        return "Your device requires a security update (Unit Testing Mode)".localized(desiredLanguage: getDesiredLanguage())
+        return "Your device requires a security update (Unit Testing Mode)"
     } else {
-        return userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update".localized(desiredLanguage: getDesiredLanguage())
+        return userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
     }
 }

@@ -33,7 +33,7 @@
     },
     "userInterface": {
         "fallbackLanguage": "en",
-        "forceFallbackLanguage": true,
+        "forceFallbackLanguage": false,
         "updateElements": [
             {
                 "_language": "en",

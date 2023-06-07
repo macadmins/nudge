@@ -12,6 +12,7 @@ import SwiftUI
 struct ScreenShotZoom: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.locale) var locale: Locale
     
     var body: some View {
         let darkMode = colorScheme == .dark
@@ -28,7 +29,7 @@ struct ScreenShotZoom: View {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -60,7 +61,7 @@ struct ScreenShotZoom: View {
                 }
                 )
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
