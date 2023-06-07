@@ -114,6 +114,7 @@ struct StandardModeLeftSide_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             StandardModeLeftSide(viewObserved: nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("LeftSide (\(id))")
         }
     }
 }

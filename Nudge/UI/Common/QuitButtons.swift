@@ -120,6 +120,7 @@ struct QuitButtons_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             QuitButtons(viewObserved: nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("QuitButtons (\(id))")
         }
     }
 }

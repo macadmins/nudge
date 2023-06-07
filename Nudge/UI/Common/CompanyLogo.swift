@@ -72,6 +72,7 @@ struct CompanyLogo: View {
 struct CompanyLogo_Previews: PreviewProvider {
     static var previews: some View {
         CompanyLogo(width: 200, height: 150)
+            .previewDisplayName("CompanyLogo")
     }
 }
 #endif

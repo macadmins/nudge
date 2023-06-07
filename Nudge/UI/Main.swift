@@ -20,6 +20,8 @@ let bundle = Bundle.main
 let serialNumber = Utils().getSerialNumber()
 let configJSON = Utils().getConfigurationAsJSON()
 let configProfile = Utils().getConfigurationAsProfile()
+var declaredWindowHeight: CGFloat = 450
+var declaredWindowWidth: CGFloat = 900
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -357,9 +359,6 @@ extension Scene {
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var viewState = nudgePrimaryState
-    
-    var declaredWindowHeight: CGFloat = 450
-    var declaredWindowWidth: CGFloat = 900
     
     var body: some Scene {
         WindowGroup {

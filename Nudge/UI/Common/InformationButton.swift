@@ -43,6 +43,7 @@ struct InformationButton_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             InformationButton()
                 .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("InformationButton (\(id))")
         }
     }
 }

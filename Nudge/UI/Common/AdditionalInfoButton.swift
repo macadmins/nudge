@@ -44,6 +44,7 @@ struct AdditionalInfoButton: View {
 struct AdditionalInfoButton_Previews: PreviewProvider {
     static var previews: some View {
         AdditionalInfoButton()
+            .previewDisplayName("AdditionalInfoButton")
     }
 }
 #endif
