@@ -12,6 +12,7 @@ import SwiftUI
 struct DeviceInfo: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.locale) var locale: Locale
     
     // State variables
     @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
@@ -32,7 +33,7 @@ struct DeviceInfo: View {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage()))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -48,36 +49,36 @@ struct DeviceInfo: View {
             // Additional Device Information
             Group {
                 HStack{
-                    Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                         .fontWeight(.bold)
                 }
                 // Username
                 HStack{
-                    Text("Username:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Username:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     Text(self.systemConsoleUsername)
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Serial Number
                 HStack{
-                    Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     Text(self.serialNumber)
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Architecture
                 HStack{
-                    Text("Architecture:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Architecture:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     Text(self.cpuType)
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Language
                 HStack{
-                    Text("Language:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Language:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     Text(language)
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Nudge Version
                 HStack{
-                    Text("Version:".localized(desiredLanguage: getDesiredLanguage()))
+                    Text("Version:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     Text(self.nudgeVersion)
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }

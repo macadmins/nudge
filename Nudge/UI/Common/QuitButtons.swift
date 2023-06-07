@@ -10,9 +10,8 @@ import Foundation
 
 struct QuitButtons: View {
     @ObservedObject var viewObserved: ViewState
-    
+    @Environment(\.locale) var locale: Locale
     @State var showDeferView = false
-    
     @State var nudgeEventDate = Utils().getCurrentDate()
     @State var nudgeCustomEventDate = Utils().getCurrentDate()
     
@@ -39,7 +38,7 @@ struct QuitButtons: View {
                             viewObserved.hasClickedSecondaryQuitButton = true
                             userHasClickedSecondaryQuitButton()
                         } label: {
-                            Text(secondaryQuitButtonText)
+                            Text(secondaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                         }
                         .padding(.leading, -200.0)
                     }
@@ -56,7 +55,7 @@ struct QuitButtons: View {
                                     Utils().setDeferralTime(deferralTime: nudgeEventDate)
                                     updateDeferralUI()
                                 } label: {
-                                    Text(primaryQuitButtonText)
+                                    Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
@@ -67,7 +66,7 @@ struct QuitButtons: View {
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                     updateDeferralUI()
                                 } label: {
-                                    Text(oneHourDeferralButtonText)
+                                    Text(oneHourDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
@@ -78,7 +77,7 @@ struct QuitButtons: View {
                                     userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                     updateDeferralUI()
                                 } label: {
-                                    Text(oneDayDeferralButtonText)
+                                    Text(oneDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
@@ -87,20 +86,20 @@ struct QuitButtons: View {
                                 Button {
                                     self.showDeferView.toggle()
                                 } label: {
-                                    Text(customDeferralButtonText)
+                                    Text(customDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
                         }
                     label: {
-                        Text(customDeferralDropdownText)
+                        Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                     }
                     .frame(maxWidth:215, maxHeight: 30)
                     } else {
                         Button {
                             Utils().userInitiatedExit()
                         } label: {
-                            Text(primaryQuitButtonText)
+                            Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                 .frame(minWidth: buttonTextMinWidth)
                         }
                     }

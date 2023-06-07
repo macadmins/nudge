@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct AdditionalInfoButton: View {
-    
     // Modal view for screenshot and device info
     @State var showDeviceInfo = false
+    
+    @Environment(\.locale) var locale: Locale
     
     var body: some View {
         HStack {
@@ -22,7 +23,7 @@ struct AdditionalInfoButton: View {
             }
             .padding(.top, 1.0)
             .buttonStyle(.plain)
-            .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage()))
+            .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
             .onHover { inside in
                 if inside {
                     NSCursor.pointingHand.push()

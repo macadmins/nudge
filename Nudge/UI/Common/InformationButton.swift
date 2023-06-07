@@ -9,17 +9,18 @@ import SwiftUI
 
 struct InformationButton: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.locale) var locale: Locale
     var body: some View {
         HStack {
             // informationButton
             if aboutUpdateURL != "" {
                 Button(action: Utils().openMoreInfo, label: {
-                    Text(informationButtonText)
+                    Text(informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                         .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 )
                 .buttonStyle(.plain)
-                .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage()))
+                .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()

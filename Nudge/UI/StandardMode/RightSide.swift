@@ -14,6 +14,7 @@ struct StandardModeRightSide: View {
     // Get the color scheme so we can dynamically change properties
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.openURL) var openURL
+    @Environment(\.locale) var locale: Locale
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     
     // Modal view for screenshot and deferral info
@@ -39,7 +40,7 @@ struct StandardModeRightSide: View {
                     VStack(alignment: .leading, spacing: 5) {
                         // mainHeader
                         HStack {
-                            Text(getMainHeader())
+                            Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                 .font(.largeTitle)
                                 .minimumScaleFactor(0.5)
                                 .frame(maxHeight: 25)
@@ -47,7 +48,7 @@ struct StandardModeRightSide: View {
                         }
                         // subHeader
                         HStack {
-                            Text(subHeader)
+                            Text(subHeader.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                 .font(.body)
                                 .fontWeight(.bold)
                                 .lineLimit(1)
@@ -69,13 +70,13 @@ struct StandardModeRightSide: View {
                     HStack(alignment: .center) {
                         VStack(alignment: .leading, spacing: 1) {
                             HStack {
-                                Text(mainContentHeader)
+                                Text(mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                     .font(.callout)
                                     .fontWeight(.bold)
                                 Spacer()
                             }
                             HStack {
-                                Text(mainContentSubHeader)
+                                Text(mainContentSubHeader.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                     .font(.callout)
                                 Spacer()
                             }
@@ -85,7 +86,7 @@ struct StandardModeRightSide: View {
                         Button(action: {
                             Utils().updateDevice()
                         }) {
-                            Text(actionButtonText)
+                            Text(actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                         }
                         .keyboardShortcut(.defaultAction)
                     }
@@ -99,7 +100,7 @@ struct StandardModeRightSide: View {
                     
                     // mainContentNote
                     HStack {
-                        Text(mainContentNote)
+                        Text(mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                             .font(.callout)
                             .fontWeight(.bold)
                             .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
@@ -110,7 +111,7 @@ struct StandardModeRightSide: View {
                     ScrollView(.vertical) {
                         VStack {
                             HStack {
-                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n"))
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                     .font(.callout)
                                     .multilineTextAlignment(.leading)
                                 Spacer()
@@ -133,7 +134,7 @@ struct StandardModeRightSide: View {
                                         .frame(maxHeight: screenshotMaxHeight)
                                 }
                                 .buttonStyle(.plain)
-                                .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
+                                .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                 .sheet(isPresented: $showSSDetail) {
                                     ScreenShotZoom()
                                 }
@@ -156,7 +157,7 @@ struct StandardModeRightSide: View {
                                             .frame(maxHeight: screenshotMaxHeight)
                                     }
                                     .buttonStyle(.plain)
-                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
+                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                     .sheet(isPresented: $showSSDetail) {
                                         ScreenShotZoom()
                                     }
@@ -179,7 +180,7 @@ struct StandardModeRightSide: View {
                                     }
                                     .buttonStyle(.plain)
                                     .hidden()
-                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage()))
+                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
                                     .sheet(isPresented: $showSSDetail) {
                                         ScreenShotZoom()
                                     }

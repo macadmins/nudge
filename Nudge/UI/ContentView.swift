@@ -110,8 +110,14 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        StandardMode(viewObserved: nudgePrimaryState)
-        SimpleMode(viewObserved: nudgePrimaryState)
+        ForEach(["en", "es"], id: \.self) { id in
+            StandardMode(viewObserved: nudgePrimaryState)
+                .environment(\.locale, .init(identifier: id))
+        }
+        ForEach(["en", "es"], id: \.self) { id in
+            SimpleMode(viewObserved: nudgePrimaryState)
+                .environment(\.locale, .init(identifier: id))
+        }
     }
 }
 #endif
