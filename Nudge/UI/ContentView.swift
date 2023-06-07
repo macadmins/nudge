@@ -111,17 +111,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         StandardMode(viewObserved: nudgePrimaryState)
-            .preferredColorScheme(.light)
-        ZStack {
-            StandardMode(viewObserved: nudgePrimaryState)
-                .preferredColorScheme(.dark)
-        }
         SimpleMode(viewObserved: nudgePrimaryState)
-            .preferredColorScheme(.light)
-        ZStack {
-            SimpleMode(viewObserved: nudgePrimaryState)
-                .preferredColorScheme(.dark)
-        }
     }
 }
 #endif

@@ -94,16 +94,9 @@ struct DeviceInfo: View {
 // Xcode preview for both light and dark mode
 struct DeviceInfo_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ForEach(["en", "es"], id: \.self) { id in
-                DeviceInfo()
-                    .preferredColorScheme(.light)
-                    .environment(\.locale, .init(identifier: id))
-            }
-            ZStack {
-                DeviceInfo()
-                    .preferredColorScheme(.dark)
-            }
+        ForEach(["en", "es"], id: \.self) { id in
+            DeviceInfo()
+                .environment(\.locale, .init(identifier: id))
         }
     }
 }

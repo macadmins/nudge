@@ -117,16 +117,9 @@ struct SimpleMode: View {
 // Xcode preview for both light and dark mode
 struct SimpleMode_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ForEach(["en", "es"], id: \.self) { id in
-                SimpleMode(viewObserved: nudgePrimaryState)
-                    .preferredColorScheme(.light)
-                    .environment(\.locale, .init(identifier: id))
-            }
-            ZStack {
-                SimpleMode(viewObserved: nudgePrimaryState)
-                    .preferredColorScheme(.dark)
-            }
+        ForEach(["en", "es"], id: \.self) { id in
+            SimpleMode(viewObserved: nudgePrimaryState)
+                .environment(\.locale, .init(identifier: id))
         }
     }
 }

@@ -118,16 +118,9 @@ struct QuitButtons: View {
 // Xcode preview for both light and dark mode
 struct QuitButtons_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ForEach(["en", "es"], id: \.self) { id in
-                QuitButtons(viewObserved: nudgePrimaryState)
-                    .preferredColorScheme(.light)
-                    .environment(\.locale, .init(identifier: id))
-            }
-            ZStack {
-                QuitButtons(viewObserved: nudgePrimaryState)
-                    .preferredColorScheme(.dark)
-            }
+        ForEach(["en", "es"], id: \.self) { id in
+            QuitButtons(viewObserved: nudgePrimaryState)
+                .environment(\.locale, .init(identifier: id))
         }
     }
 }
