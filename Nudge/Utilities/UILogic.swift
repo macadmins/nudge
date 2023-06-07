@@ -11,6 +11,10 @@ import IOKit.pwr_mgt // Asertions
 
 // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
 let DNDServer = Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")?.load() ?? false
+var isPreview: Bool {
+    // https://zacwhite.com/2020/detecting-swiftui-previews/
+    return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+}
 
 class DNDConfig {
     static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as? NSObject.Type ?? nil
@@ -70,8 +74,7 @@ func nudgeStartLogic() {
     }
     if Utils().fullyUpdated() {
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
-        // https://zacwhite.com/2020/detecting-swiftui-previews/
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+        if isPreview {
             return
         } else {
             uiLog.notice("\("Device is fully updated", privacy: .public)")

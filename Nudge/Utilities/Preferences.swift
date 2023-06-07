@@ -14,10 +14,6 @@ let languageID = Locale.current.identifier
 var nudgePrimaryState = ViewState()
 var nudgeLogState = LogState()
 
-var isPreview: Bool {
-    return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-}
-
 // Get the language
 func getDesiredLanguage(locale: Locale? = nil) -> String {
     var desiredLanguage = languageID
