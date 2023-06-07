@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Nudge_CompanyScreenshotIcon-1x.png",
+      "filename" : "GenericLogo_Normal.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Nudge_CompanyScreenshotIcon-2x.png",
+      "filename" : "GenericLogo_Normal@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
