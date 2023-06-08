@@ -4,8 +4,8 @@
 //  Created by Bart Reardon on 23/2/2022.
 //
 
-import Foundation
 import Cocoa
+import Foundation
 
 var loopedScreen = NSScreen()
 
