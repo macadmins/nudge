@@ -8,11 +8,11 @@
 import AppKit
 import CoreMediaIO
 import Foundation
-import SystemConfiguration
-import SwiftUI
 #if canImport(ServiceManagement)
 import ServiceManagement
 #endif
+import SwiftUI
+import SystemConfiguration
 
 extension Color {
     static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)

@@ -5,8 +5,8 @@
 //  Created by Bart Reardon on 31/8/21.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct QuitButtons: View {
     @ObservedObject var viewObserved: ViewState

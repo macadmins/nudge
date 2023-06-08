@@ -5,12 +5,11 @@
 //  Created by Erik Gomez on 2/2/21.
 //
 
-import UserNotifications
-import SwiftUI
-import SwiftUI
 #if canImport(ServiceManagement)
 import ServiceManagement
 #endif
+import SwiftUI
+import UserNotifications
 
 let windowDelegate = AppDelegate.WindowDelegate()
 let dnc = DistributedNotificationCenter.default()
