@@ -11,7 +11,7 @@ let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
 let nudgeDefaults = UserDefaults.standard
 let languageCode = NSLocale.current.languageCode!
 let languageID = Locale.current.identifier
-var nudgePrimaryState = ViewState()
+var nudgePrimaryState = AppState()
 var nudgeLogState = LogState()
 
 // Get the language

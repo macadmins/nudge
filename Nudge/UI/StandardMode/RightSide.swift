@@ -10,26 +10,10 @@ import SwiftUI
 
 // StandardModeRightSide
 struct StandardModeRightSide: View {
-    @ObservedObject var viewObserved: ViewState
-    // Get the color scheme so we can dynamically change properties
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.openURL) var openURL
-    @Environment(\.locale) var locale: Locale
-    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @EnvironmentObject var appState: AppState
     
-    // Modal view for screenshot and deferral info
-    @State var showSSDetail = false
-    
-    // Some constants for defining element positioning and whatnot
-    let contentWidthPadding: CGFloat = 25
-    let bottomPadding: CGFloat = 10
-    let topPadding: CGFloat = 28
-    let screenshotMaxHeight: CGFloat = 120
-    
-    // Nudge UI
     var body: some View {
-        let darkMode = colorScheme == .dark
-        let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
+        let screenShotPath = Utils().getScreenShotPath(colorScheme: appState.colorScheme)
         let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
         // Right side of Nudge
         VStack {
@@ -40,7 +24,7 @@ struct StandardModeRightSide: View {
                     VStack(alignment: .leading, spacing: 5) {
                         // mainHeader
                         HStack {
-                            Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                 .font(.largeTitle)
                                 .minimumScaleFactor(0.5)
                                 .frame(maxHeight: 25)
@@ -48,7 +32,7 @@ struct StandardModeRightSide: View {
                         }
                         // subHeader
                         HStack {
-                            Text(subHeader.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text(subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                 .font(.body)
                                 .fontWeight(.bold)
                                 .lineLimit(1)
@@ -70,13 +54,13 @@ struct StandardModeRightSide: View {
                     HStack(alignment: .center) {
                         VStack(alignment: .leading, spacing: 1) {
                             HStack {
-                                Text(mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                Text(mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                     .font(.callout)
                                     .fontWeight(.bold)
                                 Spacer()
                             }
                             HStack {
-                                Text(mainContentSubHeader.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                Text(mainContentSubHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                     .font(.callout)
                                 Spacer()
                             }
@@ -86,7 +70,7 @@ struct StandardModeRightSide: View {
                         Button(action: {
                             Utils().updateDevice()
                         }) {
-                            Text(actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text(actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         }
                         .keyboardShortcut(.defaultAction)
                     }
@@ -100,10 +84,10 @@ struct StandardModeRightSide: View {
                     
                     // mainContentNote
                     HStack {
-                        Text(mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        Text(mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.callout)
                             .fontWeight(.bold)
-                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                            .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                         Spacer()
                     }
                     
@@ -111,7 +95,7 @@ struct StandardModeRightSide: View {
                     ScrollView(.vertical) {
                         VStack {
                             HStack {
-                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                Text(mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                     .font(.callout)
                                     .multilineTextAlignment(.leading)
                                 Spacer()
@@ -125,7 +109,7 @@ struct StandardModeRightSide: View {
                             // screenShot
                             if screenShotExists {
                                 Button {
-                                    self.showSSDetail.toggle()
+                                    appState.screenShotZoomViewIsPresented = true
                                 } label: {
                                     Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                                         .resizable()
@@ -134,8 +118,8 @@ struct StandardModeRightSide: View {
                                         .frame(maxHeight: screenshotMaxHeight)
                                 }
                                 .buttonStyle(.plain)
-                                .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                                .sheet(isPresented: $showSSDetail) {
+                                .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                                .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
                                     ScreenShotZoom()
                                 }
                                 .onHover { inside in
@@ -148,7 +132,7 @@ struct StandardModeRightSide: View {
                             } else {
                                 if forceScreenShotIconMode() {
                                     Button {
-                                        self.showSSDetail.toggle()
+                                        appState.screenShotZoomViewIsPresented = true
                                     } label: {
                                         Image("CompanyScreenshotIcon")
                                             .resizable()
@@ -157,8 +141,8 @@ struct StandardModeRightSide: View {
                                             .frame(maxHeight: screenshotMaxHeight)
                                     }
                                     .buttonStyle(.plain)
-                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                                    .sheet(isPresented: $showSSDetail) {
+                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                                    .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
                                         ScreenShotZoom()
                                     }
                                     .onHover { inside in
@@ -170,7 +154,7 @@ struct StandardModeRightSide: View {
                                     }
                                 } else {
                                     Button {
-                                        self.showSSDetail.toggle()
+                                        appState.screenShotZoomViewIsPresented = true
                                     } label: {
                                         Image("CompanyScreenshotIcon")
                                             .resizable()
@@ -180,8 +164,8 @@ struct StandardModeRightSide: View {
                                     }
                                     .buttonStyle(.plain)
                                     .hidden()
-                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                                    .sheet(isPresented: $showSSDetail) {
+                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                                    .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
                                         ScreenShotZoom()
                                     }
                                 }
@@ -196,7 +180,7 @@ struct StandardModeRightSide: View {
             .background(Color.secondary.opacity(0.1))
             .cornerRadius(5)
         }
-        .padding(.top, topPadding)
+        .padding(.top, screenshotTopPadding)
         .padding(.bottom, bottomPadding)
         .padding(.leading, contentWidthPadding)
         .padding(.trailing, contentWidthPadding)
@@ -208,7 +192,8 @@ struct StandardModeRightSide: View {
 struct StandardModeRightSide_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
-            StandardModeRightSide(viewObserved: nudgePrimaryState)
+            StandardModeRightSide()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("RightSide (\(id))")
         }

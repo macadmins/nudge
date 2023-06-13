@@ -10,17 +10,7 @@ import SwiftUI
 
 // StandardModeLeftSide
 struct StandardModeLeftSide: View {
-    @ObservedObject var viewObserved: ViewState
-    // Get the color scheme so we can dynamically change properties
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.locale) var locale: Locale
-    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    
-    let logoWidth: CGFloat = 200
-    let logoHeight: CGFloat = 150
-    
-    let contentWidthPadding : CGFloat = 25
-    let bottomPadding: CGFloat = 10
+    @EnvironmentObject var appState: AppState
     
     // Nudge UI
     var body: some View {
@@ -32,7 +22,7 @@ struct StandardModeLeftSide: View {
                     .padding(3)
                 
                 // Company Logo
-                CompanyLogo(width: logoWidth, height: logoHeight)
+                CompanyLogo()
                 
                 // Horizontal line
                 HStack{
@@ -46,40 +36,40 @@ struct StandardModeLeftSide: View {
                 VStack(alignment: .center, spacing: 10) {
                     // Required OS Version
                     HStack{
-                        Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .fontWeight(.bold)
                         Spacer()
                         Text(String(requiredMinimumOSVersion))
-                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .fontWeight(.bold)
                     }
                     
                     // Current OS Version
                     HStack{
-                        Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         Spacer()
                         Text(currentOSVersion)
-                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     }
                     
                     // Days or Hours Remaining
                     HStack{
-                        if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
-                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        if (appState.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
+                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
-                            Text(String(viewObserved.daysRemaining))
-                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                        } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
-                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text(String(appState.daysRemaining))
+                                .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        } else if appState.daysRemaining == 0 && !Utils().demoModeEnabled() {
+                            Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
-                            Text(String(viewObserved.hoursRemaining))
-                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                            Text(String(appState.hoursRemaining))
+                                .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                                 .fontWeight(.bold)
                         } else {
-                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
-                            Text(String(viewObserved.daysRemaining))
-                                .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                            Text(String(appState.daysRemaining))
+                                .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                                 .fontWeight(.bold)
                             
                         }
@@ -89,10 +79,10 @@ struct StandardModeLeftSide: View {
                     // Show by default, allow to be hidden via preference
                     if showDeferralCount {
                         HStack{
-                            Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
-                            Text(String(viewObserved.userDeferrals))
-                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            Text(String(appState.userDeferrals))
+                                .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         }
                     }
                 }
@@ -112,7 +102,8 @@ struct StandardModeLeftSide: View {
 struct StandardModeLeftSide_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
-            StandardModeLeftSide(viewObserved: nudgePrimaryState)
+            StandardModeLeftSide()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("LeftSide (\(id))")
         }

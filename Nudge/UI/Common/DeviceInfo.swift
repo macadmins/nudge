@@ -10,22 +10,15 @@ import SwiftUI
 
 // Sheet view for Device Information
 struct DeviceInfo: View {
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.locale) var locale: Locale
-    
-    // State variables
-    @State var systemConsoleUsername = Utils().getSystemConsoleUsername()
-    @State var serialNumber = Utils().getSerialNumber()
-    @State var cpuType = Utils().getCPUTypeString()
-    @State var nudgeVersion = Utils().getNudgeVersion()
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         VStack(alignment: .center, spacing: 7.5) {
             HStack {
                 Button(
                     action: {
-                        self.presentationMode.wrappedValue.dismiss()})
+                        appState.additionalInfoViewIsPresented = false
+                    })
                 {
                     Image(systemName: "xmark.circle")
                         .resizable()
@@ -33,7 +26,7 @@ struct DeviceInfo: View {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -49,38 +42,38 @@ struct DeviceInfo: View {
             // Additional Device Information
             Group {
                 HStack{
-                    Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                    Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         .fontWeight(.bold)
                 }
                 // Username
                 HStack{
-                    Text("Username:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                    Text(self.systemConsoleUsername)
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    Text("Username:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    Text(Utils().getSystemConsoleUsername())
+                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Serial Number
                 HStack{
-                    Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                    Text(self.serialNumber)
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    Text(Utils().getSerialNumber())
+                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Architecture
                 HStack{
-                    Text("Architecture:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                    Text(self.cpuType)
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    Text("Architecture:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    Text(Utils().getCPUTypeString())
+                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Language
                 HStack{
-                    Text("Language:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                    Text("Language:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     Text(languageCode)
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Nudge Version
                 HStack{
-                    Text("Version:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                    Text(self.nudgeVersion)
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    Text("Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    Text(Utils().getNudgeVersion())
+                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
             }
             
@@ -97,6 +90,7 @@ struct DeviceInfo_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
             DeviceInfo()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("DeviceInfo (\(id))")
         }

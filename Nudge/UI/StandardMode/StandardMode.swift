@@ -10,20 +10,13 @@ import SwiftUI
 
 // Standard Mode
 struct StandardMode: View {
-    @ObservedObject var viewObserved: ViewState
-    
-    // enforce a fixed width for the left hand side
-    let leftSideWidth: CGFloat = 300
-    
-    let bottomPadding: CGFloat = 10
-    let contentWidthPadding: CGFloat = 25
-    
-    // Nudge UI
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
         VStack {
             HStack {
                 // Left side of Nudge
-                StandardModeLeftSide(viewObserved: viewObserved)
+                StandardModeLeftSide()
                     .frame(width: leftSideWidth)
                 
                 // Vertical Line
@@ -34,15 +27,15 @@ struct StandardMode: View {
                 }
                 
                 // Right side of Nudge
-                StandardModeRightSide(viewObserved: viewObserved)
+                StandardModeRightSide()
             }
             // Bottom buttons
             HStack {
                 // informationButton
                 InformationButton()
                 
-                if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    QuitButtons(viewObserved: viewObserved)
+                if appState.allowButtons || Utils().demoModeEnabled() {
+                    QuitButtons()
                 }
             }
             .padding(.bottom, bottomPadding)
@@ -57,7 +50,8 @@ struct StandardMode: View {
 struct StandardMode_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
-            StandardMode(viewObserved: nudgePrimaryState)
+            StandardMode()
+                .environmentObject(nudgePrimaryState)
                 .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("StandardMode (\(id))")

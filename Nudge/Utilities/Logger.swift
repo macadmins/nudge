@@ -18,6 +18,20 @@ let uiLog = Logger(subsystem: bundleID, category: "user-interface")
 let softwareupdateListLog = Logger(subsystem: bundleID, category: "softwareupdate-list")
 let softwareupdateDownloadLog = Logger(subsystem: bundleID, category: "softwareupdate-download")
 
+class LogState {
+    var afterFirstLaunch = false
+    var afterFirstRun = false
+    var hasLoggedBundleMode = false
+    var hasLoggedDemoMode = false
+    var hasLoggedMajorOSVersion = false
+    var hasLoggedMajorRequiredOSVersion = false
+    var hasLoggedPastRequiredInstallationDate = false
+    var hasLoggedRequireMajorUgprade = false
+    var hasLoggedScreenshotIconMode = false
+    var hasLoggedSimpleMode = false
+    var hasLoggedUnitTestingMode = false
+}
+
 class NudgeLogger {
     init() {
         loggingLog.debug("\("Starting log events", privacy: .public)")

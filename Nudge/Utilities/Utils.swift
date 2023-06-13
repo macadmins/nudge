@@ -155,13 +155,13 @@ struct Utils {
             NSApp.activate(ignoringOtherApps: true)
             NSApp.windows[0].makeKeyAndOrderFront(self)
             uiLog.info("\("Enabling blurred background", privacy: .public)")
-            nudgePrimaryState.blurredBackground.removeAll()
+            nudgePrimaryState.backgroundBlur.removeAll()
             for (index, screen) in screens.enumerated() {
-                nudgePrimaryState.blurredBackground.append(BlurWindowController())
+                nudgePrimaryState.backgroundBlur.append(BackgroundBlurWindowController())
                 loopedScreen = screen
-                nudgePrimaryState.blurredBackground[index].close()
-                nudgePrimaryState.blurredBackground[index].loadWindow()
-                nudgePrimaryState.blurredBackground[index].showWindow(self)
+                nudgePrimaryState.backgroundBlur[index].close()
+                nudgePrimaryState.backgroundBlur[index].loadWindow()
+                nudgePrimaryState.backgroundBlur[index].showWindow(self)
             }
             NSApp.windows[0].level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
             return
@@ -408,8 +408,8 @@ struct Utils {
         }
     }
     
-    func getCompanyLogoPath(darkMode: Bool) -> String {
-        if darkMode {
+    func getCompanyLogoPath(colorScheme: ColorScheme) -> String {
+        if colorScheme == .dark {
             return iconDarkPath
         } else {
             return iconLightPath
@@ -676,8 +676,8 @@ struct Utils {
         return PatchOSVersion
     }
     
-    func getScreenShotPath(darkMode: Bool) -> String {
-        if darkMode {
+    func getScreenShotPath(colorScheme: ColorScheme) -> String {
+        if colorScheme == .dark {
             return screenShotDarkPath
         } else {
             return screenShotLightPath
@@ -1002,9 +1002,9 @@ struct Utils {
             uiLog.notice("\("User clicked updateDevice", privacy: .public)")
             // turn off blur and allow windows to come above Nudge
             if Utils().pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
-                if nudgePrimaryState.blurredBackground.count > 0 {
+                if nudgePrimaryState.backgroundBlur.count > 0 {
                     for (index, _) in screens.enumerated() {
-                        nudgePrimaryState.blurredBackground[index].close()
+                        nudgePrimaryState.backgroundBlur[index].close()
                     }
                 }
                 NSApp.windows[0].level = .normal

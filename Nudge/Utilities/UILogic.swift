@@ -8,6 +8,7 @@
 import AppKit
 import Foundation
 import IOKit.pwr_mgt // Asertions
+import SwiftUI
 
 // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
 let DNDServer = Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")?.load() ?? false
@@ -294,5 +295,15 @@ extension NSWorkspace {
             }
         }
         return false
+    }
+}
+
+extension Scene {
+    func windowResizabilityContentSize() -> some Scene {
+        if #available(macOS 13.0, *) {
+            return windowResizability(.contentSize)
+        } else {
+            return self
+        }
     }
 }

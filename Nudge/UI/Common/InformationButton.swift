@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct InformationButton: View {
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.locale) var locale: Locale
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
         HStack {
             // informationButton
             if aboutUpdateURL != "" {
                 Button(action: Utils().openMoreInfo, label: {
-                    Text(informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    Text(informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 )
                 .buttonStyle(.plain)
-                .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -42,6 +42,7 @@ struct InformationButton_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
             InformationButton()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("InformationButton (\(id))")
         }

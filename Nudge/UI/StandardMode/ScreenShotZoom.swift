@@ -10,18 +10,17 @@ import SwiftUI
 
 // Sheet view for Screenshot zoom
 struct ScreenShotZoom: View {
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.locale) var locale: Locale
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
-        let darkMode = colorScheme == .dark
-        let screenShotPath = Utils().getScreenShotPath(darkMode: darkMode)
+        let screenShotPath = Utils().getScreenShotPath(colorScheme: appState.colorScheme)
         VStack(alignment: .center) {
             HStack {
                 Button(
                     action: {
-                        self.presentationMode.wrappedValue.dismiss()})
+                        appState.screenShotZoomViewIsPresented = false
+                    }
+                )
                 {
                     Image(systemName: "xmark.circle")
                         .resizable()
@@ -29,7 +28,7 @@ struct ScreenShotZoom: View {
                         .foregroundColor(.red)
                 }
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -44,7 +43,10 @@ struct ScreenShotZoom: View {
             }
             
             HStack {
-                Button(action: {self.presentationMode.wrappedValue.dismiss()}, label: {
+                Button(
+                    action: {
+                        appState.screenShotZoomViewIsPresented = false
+                    }, label: {
                     if FileManager.default.fileExists(atPath: screenShotPath) {
                         Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                             .resizable()
@@ -61,7 +63,7 @@ struct ScreenShotZoom: View {
                 }
                 )
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -83,6 +85,7 @@ struct ScreenShotZoom_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
             ScreenShotZoom()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("ScreenShotZoom (\(id))")
         }
