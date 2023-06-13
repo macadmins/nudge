@@ -11,16 +11,102 @@ import ServiceManagement
 import SwiftUI
 import UserNotifications
 
-let windowDelegate = AppDelegate.WindowDelegate()
-let dnc = DistributedNotificationCenter.default()
-let nc = NotificationCenter.default
-let snc = NSWorkspace.shared.notificationCenter
-let bundle = Bundle.main
-let serialNumber = Utils().getSerialNumber()
-let configJSON = Utils().getConfigurationAsJSON()
-let configProfile = Utils().getConfigurationAsProfile()
-var declaredWindowHeight: CGFloat = 450
-var declaredWindowWidth: CGFloat = 900
+@main
+struct Main: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var appState = nudgePrimaryState
+    
+    var body: some Scene {
+        WindowGroup {
+            if Utils().debugUIModeEnabled() {
+                VSplitView {
+                    ForEach([true, false], id: \.self) { id in
+                        ContentView(forceSimpleMode: id)
+                            .environmentObject(appState)
+                            .frame(width: declaredWindowWidth, height: declaredWindowHeight)
+                    }
+                }
+                .frame(height: declaredWindowHeight*2)
+            } else {
+                ContentView()
+                    .environmentObject(appState)
+                    .frame(width: declaredWindowWidth, height: declaredWindowHeight)
+            }
+        }
+        .windowResizabilityContentSize()
+        .windowStyle(.hiddenTitleBar)
+    }
+}
+
+struct ContentView: View {
+    var forceSimpleMode: Bool = false // do not move
+    @EnvironmentObject var appState: AppState
+    
+    var body: some View {
+        let backgroundView = if simpleMode() || forceSimpleMode {
+            AnyView(SimpleMode())
+        } else {
+            AnyView(StandardMode())
+        }
+        backgroundView
+            .background(
+                HostingWindowFinder { window in
+                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
+                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
+                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
+                    window?.center() // center
+                    window?.isMovable = false // not movable
+                    window?.collectionBehavior = [.fullScreenAuxiliary]
+                    window?.delegate = windowDelegate
+                    _ = needToActivateNudge()
+                }
+            )
+            .edgesIgnoringSafeArea(.all)
+            .onAppear(perform: nudgeStartLogic)
+            .onAppear() {
+                updateUI()
+            }
+            .onReceive(nudgeRefreshCycleTimer) { _ in
+                if needToActivateNudge() {
+                    appState.userSessionDeferrals += 1
+                    appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+                }
+                updateUI()
+            }
+    }
+    
+    func updateUI() {
+        if Utils().requireDualQuitButtons() || appState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+            appState.requireDualQuitButtons = true
+        }
+        if Utils().pastRequiredInstallationDate() || appState.deferralCountPastThreshhold {
+            appState.allowButtons = false
+        }
+        appState.daysRemaining = Utils().getNumberOfDaysBetween()
+        appState.hoursRemaining = Utils().getNumberOfHoursRemaining()
+    }
+}
+
+struct HostingWindowFinder: NSViewRepresentable {
+    // https://stackoverflow.com/a/66039864
+    // https://gist.github.com/steve228uk/c960b4880480c6ed186d
+
+    var callback: (NSWindow?) -> ()
+    
+    func makeNSView(context: Self.Context) -> NSView {
+        let view = NSView()
+        if Utils().versionArgumentPassed() {
+            print(Utils().getNudgeVersion())
+            Utils().exitNudge()
+        }
+        
+        DispatchQueue.main.async { [weak view] in
+            self.callback(view?.window)
+        }
+        return view
+    }
+    func updateNSView(_ nsView: NSView, context: Context) {}
+}
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -342,40 +428,41 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+// Stuff if we ever implement fullscreen
+//        let presentationOptions: NSApplication.PresentationOptions = [
+//            .hideDock, // Dock is entirely unavailable. Spotlight menu is disabled.
+//            // .autoHideMenuBar,           // Menu Bar appears when moused to.
+//            // .disableAppleMenu,          // All Apple menu items are disabled.
+//            .disableProcessSwitching      // Cmd+Tab UI is disabled. All Exposé functionality is also disabled.
+//            // .disableForceQuit,             // Cmd+Opt+Esc panel is disabled.
+//            // .disableSessionTermination,    // PowerKey panel and Restart/Shut Down/Log Out are disabled.
+//            // .disableHideApplication,       // Application "Hide" menu item is disabled.
+//            // .autoHideToolbar,
+//            // .fullScreen
+//        ]
+//        let optionsDictionary = [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions: presentationOptions]
+//        if let screen = NSScreen.main {
+//            view.enterFullScreenMode(screen, withOptions: [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions:presentationOptions.rawValue])
+//        }
+//        //view.enterFullScreenMode(NSScreen.main!, withOptions: optionsDictionary)
 
-extension Scene {
-    func windowResizabilityContentSize() -> some Scene {
-        if #available(macOS 13.0, *) {
-            return windowResizability(.contentSize)
-        } else {
-            return self
+#if DEBUG
+struct MainView_Previews: PreviewProvider {
+    static var previews: some View {
+        ForEach(["en", "es"], id: \.self) { id in
+            StandardMode()
+                .environmentObject(nudgePrimaryState)
+                .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+                .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("StandardMode (\(id))")
+        }
+        ForEach(["en", "es"], id: \.self) { id in
+            SimpleMode()
+                .environmentObject(nudgePrimaryState)
+                .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+                .environment(\.locale, .init(identifier: id))
+                .previewDisplayName("SimpleMode (\(id))")
         }
     }
 }
-
-
-@main
-struct Main: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var viewState = nudgePrimaryState
-    
-    var body: some Scene {
-        WindowGroup {
-            if Utils().debugUIModeEnabled() {
-                VSplitView {
-                    ContentView(viewObserved: viewState)
-                        .frame(width: declaredWindowWidth, height: declaredWindowHeight)
-                    ContentView(viewObserved: viewState, forceSimpleMode: true)
-                        .frame(width: declaredWindowWidth, height: declaredWindowHeight)
-                }
-                .frame(height: declaredWindowHeight*2)
-            } else {
-                ContentView(viewObserved: viewState)
-                    .frame(width: declaredWindowWidth, height: declaredWindowHeight)
-            }
-        }.windowResizabilityContentSize()
-        // Hide Title Bar
-        .windowStyle(.hiddenTitleBar)
-    }
-}
-
+#endif

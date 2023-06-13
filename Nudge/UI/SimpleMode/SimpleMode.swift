@@ -10,20 +10,8 @@ import SwiftUI
 
 // SimpleMode
 struct SimpleMode: View {
-    @ObservedObject var viewObserved: ViewState
-    // Get the color scheme so we can dynamically change properties
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.openURL) var openURL
-    @Environment(\.locale) var locale: Locale
-    @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
-    
-    let bottomPadding: CGFloat = 10
-    let contentWidthPadding: CGFloat = 25
-    
-    let logoWidth: CGFloat = 200
-    let logoHeight: CGFloat = 150
-    
-    // Nudge UI
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
         VStack {
             // display the (?) info button
@@ -33,31 +21,31 @@ struct SimpleMode: View {
             VStack(alignment: .center, spacing: 10) {
                 Spacer()
                 // Company Logo
-                CompanyLogo(width: logoWidth, height: logoHeight)
+                CompanyLogo()
                 Spacer()
                 
                 // mainHeader
                 HStack {
-                    Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                    Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         .font(.title)
                         .fontWeight(.bold)
                 }
                 
                 // Days or Hours Remaining
                 HStack(spacing: 3.5) {
-                    if (viewObserved.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
-                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                        Text(String(viewObserved.daysRemaining))
-                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                    } else if viewObserved.daysRemaining == 0 && !Utils().demoModeEnabled() {
-                        Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                        Text(String(viewObserved.hoursRemaining))
-                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                    if (appState.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
+                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(String(appState.daysRemaining))
+                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                    } else if appState.daysRemaining == 0 && !Utils().demoModeEnabled() {
+                        Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(String(appState.hoursRemaining))
+                            .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                             .fontWeight(.bold)
                     } else {
-                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                        Text(String(viewObserved.daysRemaining))
-                            .foregroundColor(differentiateWithoutColor ? .accessibleRed : .red)
+                        Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(String(appState.daysRemaining))
+                            .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                             .fontWeight(.bold)
                         
                     }
@@ -66,19 +54,19 @@ struct SimpleMode: View {
                 // Deferral Count
                 if showDeferralCount {
                     HStack{
-                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.title2)
-                        Text(String(viewObserved.userDeferrals))
-                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        Text(String(appState.userDeferrals))
+                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }
                 } else {
                     HStack{
-                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.title2)
-                        Text(String(viewObserved.userDeferrals))
-                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        Text(String(appState.userDeferrals))
+                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }
@@ -90,7 +78,7 @@ struct SimpleMode: View {
                 Button(action: {
                     Utils().updateDevice()
                 }) {
-                    Text(actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                    Text(actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         .frame(minWidth: 120)
                 }
                 .keyboardShortcut(.defaultAction)
@@ -103,8 +91,8 @@ struct SimpleMode: View {
                 // informationButton
                 InformationButton()
                 
-                if viewObserved.allowButtons || Utils().demoModeEnabled() {
-                    QuitButtons(viewObserved: viewObserved)
+                if appState.allowButtons || Utils().demoModeEnabled() {
+                    QuitButtons()
                 }
             }
             .padding(.bottom, bottomPadding)
@@ -119,7 +107,8 @@ struct SimpleMode: View {
 struct SimpleMode_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
-            SimpleMode(viewObserved: nudgePrimaryState)
+            SimpleMode()
+                .environmentObject(nudgePrimaryState)
                 .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("SimpleMode (\(id))")

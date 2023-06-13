@@ -8,24 +8,10 @@
 import SwiftUI
 
 struct CompanyLogo: View {
-    
-    // Get the color scheme so we can dynamically change properties
-    @Environment(\.colorScheme) var colorScheme
-    
-    let defaultWidth: CGFloat = 200
-    let defaultHeight: CGFloat = 150
-    
-    var logoWidth: CGFloat
-    var logoHeight: CGFloat
-    
-    init(width: CGFloat?, height: CGFloat?) {
-        logoWidth = width ?? defaultWidth
-        logoHeight = height ?? defaultHeight
-    }
-    
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
-        let darkMode = colorScheme == .dark
-        let companyLogoPath = Utils().getCompanyLogoPath(darkMode: darkMode)
+        let companyLogoPath = Utils().getCompanyLogoPath(colorScheme: appState.colorScheme)
         
         // Company Logo
         Group {
@@ -71,7 +57,7 @@ struct CompanyLogo: View {
 // Xcode preview for both light and dark mode
 struct CompanyLogo_Previews: PreviewProvider {
     static var previews: some View {
-        CompanyLogo(width: 200, height: 150)
+        CompanyLogo()
             .previewDisplayName("CompanyLogo")
     }
 }

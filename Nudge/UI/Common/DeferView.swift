@@ -8,21 +8,18 @@
 import Foundation
 import SwiftUI
 
-// Sheet view for Device Information
+// Sheet view for Custom Deferral
 struct DeferView: View {
-    @ObservedObject var viewObserved: ViewState
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.locale) var locale: Locale
-    
-    @State var nudgeCustomEventDate = Utils().getCurrentDate()
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         VStack(alignment: .center) {
             HStack {
                 Button(
                     action: {
-                        self.presentationMode.wrappedValue.dismiss()})
+                        appState.deferViewIsPresented = false
+                    }
+                )
                 {
                     Image(systemName: "xmark.circle")
                         .resizable()
@@ -31,7 +28,7 @@ struct DeferView: View {
                 }
                 .keyboardShortcut(.escape)
                 .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .onHover { inside in
                     if inside {
                         NSCursor.pointingHand.push()
@@ -46,10 +43,10 @@ struct DeferView: View {
             
             VStack() {
                 // We have two DatePickers because DatePicker is non-ideal
-                DatePicker("", selection: $nudgeCustomEventDate, in: limitRange)
+                DatePicker("", selection: $appState.nudgeCustomEventDate, in: limitRange)
                     .datePickerStyle(.graphical)
                     .labelsHidden()
-                DatePicker("", selection: $nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
+                DatePicker("", selection: $appState.nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
                     .labelsHidden()
                     .frame(maxWidth: 100)
             }
@@ -60,16 +57,16 @@ struct DeferView: View {
             Divider()
             
             Button {
-                Utils().setDeferralTime(deferralTime: nudgeCustomEventDate)
-                userHasClickedDeferralQuitButton(deferralTime: nudgeCustomEventDate)
-                viewObserved.shouldExit = true
-                viewObserved.userQuitDeferrals += 1
-                viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
+                Utils().setDeferralTime(deferralTime: appState.nudgeCustomEventDate)
+                userHasClickedDeferralQuitButton(deferralTime: appState.nudgeCustomEventDate)
+                appState.shouldExit = true
+                appState.userQuitDeferrals += 1
+                appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
                 Utils().logUserQuitDeferrals()
                 Utils().logUserDeferrals()
                 Utils().userInitiatedExit()
             } label: {
-                Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     .frame(minWidth: 35)
             }
             // a bit of space at the bottom to raise the Defer button away from the very edge
@@ -85,9 +82,9 @@ struct DeferView: View {
         } else {
             windowTime = (imminentWindowTime / 24)
         }
-        if viewObserved.daysRemaining > 0 {
+        if appState.daysRemaining > 0 {
             // Do not let the user defer past the point of the windowTime
-            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: viewObserved.daysRemaining-(windowTime), to: Utils().getCurrentDate())!
+            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: appState.daysRemaining-(windowTime), to: Utils().getCurrentDate())!
         } else {
             return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: 0, to: Utils().getCurrentDate())!
         }
@@ -99,7 +96,8 @@ struct DeferView: View {
 struct DeferView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
-            DeferView(viewObserved: nudgePrimaryState)
+            DeferView()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("DeferView (\(id))")
         }

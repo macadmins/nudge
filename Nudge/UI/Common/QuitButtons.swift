@@ -9,107 +9,101 @@ import Foundation
 import SwiftUI
 
 struct QuitButtons: View {
-    @ObservedObject var viewObserved: ViewState
-    @Environment(\.locale) var locale: Locale
-    @State var showDeferView = false
-    @State var nudgeEventDate = Utils().getCurrentDate()
-    @State var nudgeCustomEventDate = Utils().getCurrentDate()
-    
-    let buttonTextMinWidth: CGFloat = 35
-    
-    let hourTimeInterval: CGFloat = 3600
-    let dayTimeInterval: CGFloat = 86400
-    
-    func updateDeferralUI() {
-        viewObserved.userQuitDeferrals += 1
-        viewObserved.userDeferrals = viewObserved.userSessionDeferrals + viewObserved.userQuitDeferrals
-        Utils().logUserQuitDeferrals()
-        Utils().logUserDeferrals()
-        Utils().userInitiatedExit()
-    }
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         HStack {
             // secondaryQuitButton
-            if viewObserved.requireDualQuitButtons {
+            if appState.requireDualQuitButtons {
                 HStack(spacing: 20) {
-                    if viewObserved.hasClickedSecondaryQuitButton == false {
-                        Button {
-                            viewObserved.hasClickedSecondaryQuitButton = true
-                            userHasClickedSecondaryQuitButton()
-                        } label: {
-                            Text(secondaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
-                        }
+                    if appState.hasClickedSecondaryQuitButton == false {
+                        Button(
+                            action: {
+                                // TODO: Xcode 15 Compiler warning suddenly. Investigate
+                                appState.hasClickedSecondaryQuitButton = true
+                                userHasClickedSecondaryQuitButton()
+                            }, label: {
+                                Text(secondaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                            }
+                        )
                         .padding(.leading, -200.0)
                     }
                 }
                 .frame(maxWidth:100, maxHeight: 30)
             }
             // primaryQuitButton
-            if viewObserved.requireDualQuitButtons == false || viewObserved.hasClickedSecondaryQuitButton {
+            if appState.requireDualQuitButtons == false || appState.hasClickedSecondaryQuitButton {
                 HStack {
                     if allowUserQuitDeferrals {
                         Menu {
                             if allowLaterDeferralButton {
                                 Button {
-                                    Utils().setDeferralTime(deferralTime: nudgeEventDate)
+                                    Utils().setDeferralTime(deferralTime: appState.nudgeEventDate)
                                     updateDeferralUI()
                                 } label: {
-                                    Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                    Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
                             if Utils().allow1HourDeferral() {
                                 Button {
-                                    nudgeEventDate = Utils().getCurrentDate()
-                                    Utils().setDeferralTime(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
-                                    userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(hourTimeInterval))
+                                    appState.nudgeEventDate = Utils().getCurrentDate()
+                                    Utils().setDeferralTime(deferralTime: appState.nudgeEventDate.addingTimeInterval(hourTimeInterval))
+                                    userHasClickedDeferralQuitButton(deferralTime: appState.nudgeEventDate.addingTimeInterval(hourTimeInterval))
                                     updateDeferralUI()
                                 } label: {
-                                    Text(oneHourDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                    Text(oneHourDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
                             if Utils().allow24HourDeferral() {
                                 Button {
-                                    nudgeEventDate = Utils().getCurrentDate()
-                                    Utils().setDeferralTime(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
-                                    userHasClickedDeferralQuitButton(deferralTime: nudgeEventDate.addingTimeInterval(dayTimeInterval))
+                                    appState.nudgeEventDate = Utils().getCurrentDate()
+                                    Utils().setDeferralTime(deferralTime: appState.nudgeEventDate.addingTimeInterval(dayTimeInterval))
+                                    userHasClickedDeferralQuitButton(deferralTime: appState.nudgeEventDate.addingTimeInterval(dayTimeInterval))
                                     updateDeferralUI()
                                 } label: {
-                                    Text(oneDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                    Text(oneDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
                             if Utils().allowCustomDeferral() {
                                 Divider()
                                 Button {
-                                    self.showDeferView.toggle()
+                                    appState.deferViewIsPresented = true
                                 } label: {
-                                    Text(customDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                                    Text(customDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                         .frame(minWidth: buttonTextMinWidth)
                                 }
                             }
                         }
                     label: {
-                        Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                        Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     }
                     .frame(maxWidth:215, maxHeight: 30)
                     } else {
                         Button {
                             Utils().userInitiatedExit()
                         } label: {
-                            Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+                            Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                 .frame(minWidth: buttonTextMinWidth)
                         }
                     }
                 }
-                .sheet(isPresented: $showDeferView) {
+                .sheet(isPresented: $appState.deferViewIsPresented) {
                 } content: {
-                    DeferView(viewObserved: viewObserved)
+                    DeferView()
                 }
             }
         }
+    }
+    
+    func updateDeferralUI() {
+        appState.userQuitDeferrals += 1
+        appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+        Utils().logUserQuitDeferrals()
+        Utils().logUserDeferrals()
+        Utils().userInitiatedExit()
     }
 }
 
@@ -118,7 +112,8 @@ struct QuitButtons: View {
 struct QuitButtons_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["en", "es"], id: \.self) { id in
-            QuitButtons(viewObserved: nudgePrimaryState)
+            QuitButtons()
+                .environmentObject(nudgePrimaryState)
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("QuitButtons (\(id))")
         }

@@ -9,19 +9,19 @@ import Foundation
 
 var loopedScreen = NSScreen()
 
-class BlurWindow: NSWindow {
+class BackgroundBlurWindow: NSWindow {
     override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask, backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
         super.init(contentRect: contentRect, styleMask: [.fullSizeContentView],  backing: .buffered, defer: true)
     }
 }
 
-class BlurWindowController: NSWindowController {
+class BackgroundBlurWindowController: NSWindowController {
     convenience init() {
-        self.init(windowNibName: "BlurWindow")
+        self.init(windowNibName: "BackgroundBlur")
     }
     
     override func loadWindow() {
-        window = BlurWindow(contentRect: NSMakeRect(0, 0, 0, 0), styleMask: [], backing: .buffered, defer: true)
+        window = BackgroundBlurWindow(contentRect: NSMakeRect(0, 0, 0, 0), styleMask: [], backing: .buffered, defer: true)
         self.window?.contentViewController = BlurViewController()
         self.window?.setFrame((loopedScreen.frame), display: true)
         self.window?.collectionBehavior = [.canJoinAllSpaces]

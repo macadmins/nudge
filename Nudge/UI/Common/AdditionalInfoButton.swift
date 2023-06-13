@@ -8,22 +8,19 @@
 import SwiftUI
 
 struct AdditionalInfoButton: View {
-    // Modal view for screenshot and device info
-    @State var showDeviceInfo = false
-    
-    @Environment(\.locale) var locale: Locale
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         HStack {
             Button(action: {
                 Utils().userInitiatedDeviceInfo()
-                self.showDeviceInfo.toggle()
+                appState.additionalInfoViewIsPresented = true
             }) {
                 Image(systemName: "questionmark.circle")
             }
             .padding(.top, 1.0)
             .buttonStyle(.plain)
-            .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage(locale: locale)))
+            .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
             .onHover { inside in
                 if inside {
                     NSCursor.pointingHand.push()
@@ -31,7 +28,7 @@ struct AdditionalInfoButton: View {
                     NSCursor.pop()
                 }
             }
-            .sheet(isPresented: $showDeviceInfo) {
+            .sheet(isPresented: $appState.additionalInfoViewIsPresented) {
                 DeviceInfo()
             }
             Spacer()
@@ -44,6 +41,7 @@ struct AdditionalInfoButton: View {
 struct AdditionalInfoButton_Previews: PreviewProvider {
     static var previews: some View {
         AdditionalInfoButton()
+            .environmentObject(nudgePrimaryState)
             .previewDisplayName("AdditionalInfoButton")
     }
 }
