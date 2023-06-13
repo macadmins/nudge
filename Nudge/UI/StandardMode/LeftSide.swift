@@ -12,16 +12,12 @@ import SwiftUI
 struct StandardModeLeftSide: View {
     @EnvironmentObject var appState: AppState
     
-    // Nudge UI
     var body: some View {
-        // Left side of Nudge
         VStack {
             VStack(alignment: .center, spacing: 20) {
-                // display the (?) info button
-                AdditionalInfoButton()
+                AdditionalInfoButton() // (?) button
                     .padding(3)
-                
-                // Company Logo
+
                 CompanyLogo()
                 
                 // Horizontal line
@@ -34,7 +30,6 @@ struct StandardModeLeftSide: View {
                 .padding(.trailing,contentWidthPadding)
                 
                 VStack(alignment: .center, spacing: 10) {
-                    // Required OS Version
                     HStack{
                         Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .fontWeight(.bold)
@@ -43,16 +38,14 @@ struct StandardModeLeftSide: View {
                             .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .fontWeight(.bold)
                     }
-                    
-                    // Current OS Version
+
                     HStack{
                         Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         Spacer()
                         Text(currentOSVersion)
                             .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     }
-                    
-                    // Days or Hours Remaining
+
                     HStack{
                         if (appState.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
                             Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
@@ -74,9 +67,7 @@ struct StandardModeLeftSide: View {
                             
                         }
                     }
-                    
-                    // Deferred Count
-                    // Show by default, allow to be hidden via preference
+
                     if showDeferralCount {
                         HStack{
                             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))

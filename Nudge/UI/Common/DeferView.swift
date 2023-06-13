@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-// Sheet view for Custom Deferral
 struct DeferView: View {
     @EnvironmentObject var appState: AppState
     

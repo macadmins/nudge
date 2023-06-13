@@ -16,7 +16,6 @@ struct NudgePreferences: Codable {
 }
 
 // MARK: NudgePreferences convenience initializers and mutators
-
 extension NudgePreferences {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(NudgePreferences.self, from: data)
@@ -74,7 +73,6 @@ struct OptionalFeatures: Codable {
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
-
 extension OptionalFeatures {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(OptionalFeatures.self, from: data)
@@ -146,7 +144,6 @@ struct OSVersionRequirement: Codable {
 }
 
 // MARK: OSVersionRequirement convenience initializers and mutators
-
 extension OSVersionRequirement {
     init(fromDictionary: [String:AnyObject]) {
         // Thanks again mactroll
@@ -230,7 +227,6 @@ struct AboutUpdateURL: Codable {
 }
 
 // MARK: AboutUpdateURL convenience initializers and mutators
-
 extension AboutUpdateURL {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(AboutUpdateURL.self, from: data)
@@ -283,7 +279,6 @@ struct UserExperience: Codable {
 }
 
 // MARK: UserExperience convenience initializers and mutators
-
 extension UserExperience {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UserExperience.self, from: data)
@@ -367,7 +362,6 @@ struct UserInterface: Codable {
 }
 
 // MARK: UserInterface convenience initializers and mutators
-
 extension UserInterface {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UserInterface.self, from: data)
@@ -436,7 +430,6 @@ struct UpdateElement: Codable {
 }
 
 // MARK: Element convenience initializers and mutators
-
 extension UpdateElement {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(UpdateElement.self, from: data)
@@ -499,7 +492,6 @@ extension UpdateElement {
 }
 
 // MARK: - Helper functions for creating encoders and decoders
-
 func newJSONDecoder() -> JSONDecoder {
     let decoder = JSONDecoder()
     if #available(iOS 10.0, OSX 10.12, tvOS 10.0, watchOS 3.0, *) {

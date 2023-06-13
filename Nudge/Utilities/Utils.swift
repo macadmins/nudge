@@ -14,45 +14,6 @@ import ServiceManagement
 import SwiftUI
 import SystemConfiguration
 
-extension Color {
-    static let accessibleBlue = Color(red: 26 / 255, green: 133 / 255, blue: 255 / 255)
-    static let accessibleRed = Color(red: 230 / 255, green: 97 / 255, blue: 0 / 255)
-    static let accessibleSecondaryLight = Color(red: 100 / 255, green: 100 / 255, blue: 100 / 255)
-    static let accessibleSecondaryDark = Color(red: 150 / 255, green: 150 / 255, blue: 150 / 255)
-}
-
-extension Date {
-    func getFormattedDate(format: String) -> String {
-        let dateformat = DateFormatter()
-        dateformat.dateFormat = format
-        return dateformat.string(from: self)
-    }
-}
-
-extension FixedWidthInteger {
-    // https://stackoverflow.com/a/63539782
-    var byteWidth:Int {
-        return self.bitWidth/UInt8.bitWidth
-    }
-    static var byteWidth:Int {
-        return Self.bitWidth/UInt8.bitWidth
-    }
-}
-
-// https://stackoverflow.com/questions/29985614/how-can-i-change-locale-programmatically-with-swift
-// Apple recommends against this, but this is super frustrating since Nudge does dynamic UIs
-extension String {
-    func localized(desiredLanguage :String) ->String {
-        // Try to get the language passed and if it does not exist, use en
-        let path = bundle.path(forResource: desiredLanguage, ofType: "lproj") ?? bundle.path(forResource: "en", ofType: "lproj")
-        let bundle = Bundle(path: path!)
-        return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
-    }
-}
-
-var demoModeArgumentPassed = false
-var unitTestingArgumentPassed = false
-
 // https://stackoverflow.com/questions/37470201/how-can-i-tell-if-the-camera-is-in-use-by-another-process
 // led me to https://github.com/antonfisher/go-media-devices-state/blob/main/pkg/camera/camera_darwin.mm
 // Complete credit to https://github.com/ttimpe/camera-usage-detector-mac/blob/845df180f9d19463e8fd382277e2f61d88ca7d5d/CameraUsage/CameraUsageController.swift
@@ -136,11 +97,9 @@ var cameras: [Camera]  {
         }
         
         free(devices)
-        
-        
+
         return innerArray
     }
-    
 }
 
 struct Utils {

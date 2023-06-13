@@ -10,27 +10,6 @@ import Foundation
 import IOKit.pwr_mgt // Asertions
 import SwiftUI
 
-// Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
-let DNDServer = Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")?.load() ?? false
-var isPreview: Bool {
-    // https://zacwhite.com/2020/detecting-swiftui-previews/
-    return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-}
-
-class DNDConfig {
-    static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as? NSObject.Type ?? nil
-    let rawValue: NSObject?
-    
-    init() {
-        self.rawValue = Self.rawType == nil ? nil : (Self.rawType!).init()
-    }
-    
-    required init(rawValue: NSObject?) {
-        guard rawValue!.isKind(of: Self.rawType!) else { fatalError() }
-        self.rawValue = rawValue == nil ? nil : rawValue
-    }
-}
-
 // Start doing a basic check
 func nudgeStartLogic() {
     if Utils().unitTestingEnabled() {
@@ -275,35 +254,4 @@ func needToActivateNudge() -> Bool {
     
     nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
     return true
-}
-
-// https://github.com/brackeen/calculate-widget/blob/master/Calculate/NSWindow%2BMoveToActiveSpace.swift#L64
-extension NSWorkspace {
-    func isActiveSpaceFullScreen() -> Bool {
-        guard let winInfoArray = CGWindowListCopyWindowInfo([.excludeDesktopElements, .optionOnScreenOnly], kCGNullWindowID) as? Array<[String : Any]> else {
-            return false
-        }
-        for winInfo in winInfoArray {
-            guard let windowLayer = winInfo[kCGWindowLayer as String] as? NSNumber, windowLayer == 0 else {
-                continue
-            }
-            guard let boundsDict = winInfo[kCGWindowBounds as String] as? [String : Any], let bounds = CGRect(dictionaryRepresentation: boundsDict as CFDictionary) else {
-                continue
-            }
-            if bounds.size == NSScreen.main?.frame.size {
-                return true
-            }
-        }
-        return false
-    }
-}
-
-extension Scene {
-    func windowResizabilityContentSize() -> some Scene {
-        if #available(macOS 13.0, *) {
-            return windowResizability(.contentSize)
-        } else {
-            return self
-        }
-    }
 }

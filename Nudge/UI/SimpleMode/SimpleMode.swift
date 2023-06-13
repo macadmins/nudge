@@ -14,24 +14,20 @@ struct SimpleMode: View {
 
     var body: some View {
         VStack {
-            // display the (?) info button
-            AdditionalInfoButton()
+            AdditionalInfoButton() // (?) button
                 .padding(3)
             
             VStack(alignment: .center, spacing: 10) {
                 Spacer()
-                // Company Logo
                 CompanyLogo()
                 Spacer()
-                
-                // mainHeader
+
                 HStack {
                     Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         .font(.title)
                         .fontWeight(.bold)
                 }
-                
-                // Days or Hours Remaining
+
                 HStack(spacing: 3.5) {
                     if (appState.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
                         Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
@@ -50,8 +46,7 @@ struct SimpleMode: View {
                         
                     }
                 }
-                
-                // Deferral Count
+
                 if showDeferralCount {
                     HStack{
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
@@ -73,8 +68,7 @@ struct SimpleMode: View {
                     .hidden()
                 }
                 Spacer()
-                
-                // actionButton
+
                 Button(action: {
                     Utils().updateDevice()
                 }) {
@@ -85,10 +79,8 @@ struct SimpleMode: View {
                 Spacer()
             }
             .frame(alignment: .center)
-            
-            // Bottom buttons
+
             HStack {
-                // informationButton
                 InformationButton()
                 
                 if appState.allowButtons || Utils().demoModeEnabled() {
