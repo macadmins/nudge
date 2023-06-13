@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-// Sheet view for Device Information
 struct DeviceInfo: View {
     @EnvironmentObject var appState: AppState
     

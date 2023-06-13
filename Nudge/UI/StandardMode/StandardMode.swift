@@ -8,14 +8,12 @@
 import Foundation
 import SwiftUI
 
-// Standard Mode
 struct StandardMode: View {
     @EnvironmentObject var appState: AppState
 
     var body: some View {
         VStack {
             HStack {
-                // Left side of Nudge
                 StandardModeLeftSide()
                     .frame(width: leftSideWidth)
                 
@@ -25,13 +23,11 @@ struct StandardMode: View {
                         .fill(Color.gray.opacity(0.5))
                         .frame(width: 1)
                 }
-                
-                // Right side of Nudge
+
                 StandardModeRightSide()
             }
             // Bottom buttons
             HStack {
-                // informationButton
                 InformationButton()
                 
                 if appState.allowButtons || Utils().demoModeEnabled() {

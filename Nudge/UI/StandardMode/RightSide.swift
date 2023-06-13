@@ -15,14 +15,11 @@ struct StandardModeRightSide: View {
     var body: some View {
         let screenShotPath = Utils().getScreenShotPath(colorScheme: appState.colorScheme)
         let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
-        // Right side of Nudge
         VStack {
             Spacer()
-            // mainHeader
             VStack(alignment: .center) {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
-                        // mainHeader
                         HStack {
                             Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                 .font(.largeTitle)
@@ -30,7 +27,7 @@ struct StandardModeRightSide: View {
                                 .frame(maxHeight: 25)
                                 .lineLimit(1)
                         }
-                        // subHeader
+
                         HStack {
                             Text(subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                 .font(.body)
@@ -44,13 +41,11 @@ struct StandardModeRightSide: View {
             .padding(.leading, contentWidthPadding)
             .padding(.trailing, contentWidthPadding)
             .padding(.bottom, bottomPadding)
-            
-            // I'm kind of impressed with myself
+
             VStack {
                 VStack {
                     Spacer()
                         .frame(height: 10)
-                    // mainContentHeader / mainContentSubHeader
                     HStack(alignment: .center) {
                         VStack(alignment: .leading, spacing: 1) {
                             HStack {
@@ -66,7 +61,7 @@ struct StandardModeRightSide: View {
                             }
                         }
                         Spacer()
-                        // actionButton
+
                         Button(action: {
                             Utils().updateDevice()
                         }) {
@@ -81,8 +76,7 @@ struct StandardModeRightSide: View {
                             .fill(Color.gray.opacity(0.5))
                             .frame(height: 1)
                     }
-                    
-                    // mainContentNote
+
                     HStack {
                         Text(mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.callout)
@@ -90,8 +84,7 @@ struct StandardModeRightSide: View {
                             .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                         Spacer()
                     }
-                    
-                    // mainContentText
+
                     ScrollView(.vertical) {
                         VStack {
                             HStack {
@@ -106,7 +99,6 @@ struct StandardModeRightSide: View {
                     if screenShotExists || forceScreenShotIconMode() {
                         HStack {
                             Spacer()
-                            // screenShot
                             if screenShotExists {
                                 Button {
                                     appState.screenShotZoomViewIsPresented = true

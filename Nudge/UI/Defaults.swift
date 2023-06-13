@@ -9,33 +9,50 @@ import Foundation
 import UserNotifications
 import SwiftUI
 
-let windowDelegate = AppDelegate.WindowDelegate()
+// Generics
+let bundle = Bundle.main
+let bundleID = bundle.bundleIdentifier ?? "com.github.macadmins.Nudge"
 let dnc = DistributedNotificationCenter.default()
 let nc = NotificationCenter.default
 let snc = NSWorkspace.shared.notificationCenter
-let bundle = Bundle.main
-let serialNumber = Utils().getSerialNumber()
-let configJSON = Utils().getConfigurationAsJSON()
-let configProfile = Utils().getConfigurationAsProfile()
-let screens = NSScreen.screens
-
-// Pixels for Nudge UI
-var declaredWindowHeight: CGFloat = 450
-var declaredWindowWidth: CGFloat = 900
-let leftSideWidth: CGFloat = 300
-let bottomPadding: CGFloat = 10
-let contentWidthPadding: CGFloat = 25
-var logoWidth: CGFloat = 200
-var logoHeight: CGFloat = 150
-let buttonTextMinWidth: CGFloat = 35
-let screenshotTopPadding: CGFloat = 28
-let screenshotMaxHeight: CGFloat = 120
 
 // Intervals
-let hourTimeInterval: CGFloat = 3600
 let dayTimeInterval: CGFloat = 86400
-// Setup the main refresh timer that controls the child refresh logic
-let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect()
+let hourTimeInterval: CGFloat = 3600
+let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect() // Setup the main refresh timer that controls the child refresh logic
+
+// Preferences
+let configJSON = Utils().getConfigurationAsJSON()
+let configProfile = Utils().getConfigurationAsProfile()
+let nudgeDefaults = UserDefaults.standard
+let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
+
+// State
+var demoModeArgumentPassed = false
+let DNDServer = Bundle(path: "/System/Library/PrivateFrameworks/DoNotDisturbServer.framework")?.load() ?? false // Idea from https://github.com/saagarjha/vers/blob/d9460f6e14311e0a90c4c171975c93419481586b/vers/Headers.swift
+var isPreview: Bool {
+    return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" // https://zacwhite.com/2020/detecting-swiftui-previews/
+}
+var nudgePrimaryState = AppState()
+var nudgeLogState = LogState()
+let serialNumber = Utils().getSerialNumber()
+var unitTestingArgumentPassed = false
+
+// UI
+let bottomPadding: CGFloat = 10
+let buttonTextMinWidth: CGFloat = 35
+let contentWidthPadding: CGFloat = 25
+var declaredWindowHeight: CGFloat = 450
+var declaredWindowWidth: CGFloat = 900
+let languageCode = NSLocale.current.languageCode!
+let languageID = Locale.current.identifier
+let leftSideWidth: CGFloat = 300
+var logoHeight: CGFloat = 150
+var logoWidth: CGFloat = 200
+let screens = NSScreen.screens
+let screenshotMaxHeight: CGFloat = 120
+let screenshotTopPadding: CGFloat = 28
+let windowDelegate = AppDelegate.WindowDelegate()
 
 class AppState: ObservableObject {
     @Published var afterFirstStateChange = false
@@ -66,4 +83,18 @@ class AppState: ObservableObject {
     @Published var deferViewIsPresented = false
     @Published var additionalInfoViewIsPresented = false
     @Published var differentiateWithoutColor = NSWorkspace.shared.accessibilityDisplayShouldDifferentiateWithoutColor
+}
+
+class DNDConfig {
+    static let rawType = NSClassFromString("DNDSAuxiliaryStateMonitor") as? NSObject.Type ?? nil
+    let rawValue: NSObject?
+    
+    init() {
+        self.rawValue = Self.rawType == nil ? nil : (Self.rawType!).init()
+    }
+    
+    required init(rawValue: NSObject?) {
+        guard rawValue!.isKind(of: Self.rawType!) else { fatalError() }
+        self.rawValue = rawValue == nil ? nil : rawValue
+    }
 }

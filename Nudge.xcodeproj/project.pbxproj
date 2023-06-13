@@ -32,6 +32,7 @@
 		639E198225CD885D008F618B /* PreferencesStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198125CD885D008F618B /* PreferencesStructure.swift */; };
 		639E198A25CD9E21008F618B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639E198925CD9E21008F618B /* Utils.swift */; };
 		63C39C192A38CF540049EF62 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C39C182A38CF540049EF62 /* Defaults.swift */; };
+		63C39C1B2A38D33C0049EF62 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C39C1A2A38D33C0049EF62 /* Extensions.swift */; };
 		63C6A08E2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json in Resources */ = {isa = PBXBuildFile; fileRef = 63C6A08D2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json */; };
 		63D7D0E325C9E9A400236281 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0E225C9E9A400236281 /* Main.swift */; };
 		63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63D7D0E625C9E9A500236281 /* Assets.xcassets */; };
@@ -100,6 +101,7 @@
 		639E198125CD885D008F618B /* PreferencesStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesStructure.swift; sourceTree = "<group>"; };
 		639E198925CD9E21008F618B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		63C39C182A38CF540049EF62 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		63C39C1A2A38D33C0049EF62 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		63C6A08D2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = com.github.macadmins.Nudge.tester.json; sourceTree = "<group>"; };
 		63D7D0DF25C9E9A400236281 /* Nudge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nudge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63D7D0E225C9E9A400236281 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		639B6B4725DF218900E38EC1 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				63C39C1A2A38D33C0049EF62 /* Extensions.swift */,
 				5836861325DACFE90004514C /* Logger.swift */,
 				0B0CCED925CE1C7C00A93D43 /* OSVersion.swift */,
 				639B6B3A25DF200C00E38EC1 /* Preferences.swift */,
@@ -438,6 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C39C1B2A38D33C0049EF62 /* Extensions.swift in Sources */,
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
