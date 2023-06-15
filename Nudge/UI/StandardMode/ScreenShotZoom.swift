@@ -11,9 +11,10 @@ import SwiftUI
 // Sheet view for Screenshot zoom
 struct ScreenShotZoom: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        let screenShotPath = Utils().getScreenShotPath(colorScheme: appState.colorScheme)
+        let screenShotPath = Utils().getScreenShotPath(colorScheme: colorScheme)
         VStack(alignment: .center) {
             HStack {
                 Button(

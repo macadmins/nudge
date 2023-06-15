@@ -11,6 +11,7 @@ import SwiftUI
 // SimpleMode
 struct SimpleMode: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack {
@@ -32,7 +33,7 @@ struct SimpleMode: View {
                     if (appState.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
                         Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         Text(String(appState.daysRemaining))
-                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     } else if appState.daysRemaining == 0 && !Utils().demoModeEnabled() {
                         Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         Text(String(appState.hoursRemaining))
@@ -52,7 +53,7 @@ struct SimpleMode: View {
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.title2)
                         Text(String(appState.userDeferrals))
-                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }
@@ -61,7 +62,7 @@ struct SimpleMode: View {
                         Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.title2)
                         Text(String(appState.userDeferrals))
-                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .font(.title2)
                             .fontWeight(.bold)
                     }

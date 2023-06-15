@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DeviceInfo: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack(alignment: .center, spacing: 7.5) {
@@ -48,31 +49,31 @@ struct DeviceInfo: View {
                 HStack{
                     Text("Username:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     Text(Utils().getSystemConsoleUsername())
-                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Serial Number
                 HStack{
                     Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     Text(Utils().getSerialNumber())
-                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Architecture
                 HStack{
                     Text("Architecture:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     Text(Utils().getCPUTypeString())
-                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Language
                 HStack{
                     Text("Language:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     Text(languageCode)
-                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
                 // Nudge Version
                 HStack{
                     Text("Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     Text(Utils().getNudgeVersion())
-                        .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                 }
             }
             

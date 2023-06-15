@@ -76,7 +76,6 @@ class AppState: ObservableObject {
     @Published var backgroundBlur = [BackgroundBlurWindowController]()
     @Published var screenCurrentlyLocked = false
     @Published var locale = Locale.current
-    @Published var colorScheme = ColorScheme.light
     @Published var nudgeCustomEventDate = Utils().getCurrentDate()
     @Published var nudgeEventDate = Utils().getCurrentDate()
     @Published var screenShotZoomViewIsPresented = false

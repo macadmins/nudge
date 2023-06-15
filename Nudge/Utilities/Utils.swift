@@ -284,6 +284,19 @@ struct Utils {
         return dateFormatter.date(from: dateString) ?? Utils().getCurrentDate()
     }
     
+    func createImageBase64(base64String: String) -> NSImage {
+        let url = URL(string: base64String)
+        var imageData = NSData()
+        do {
+            imageData = try NSData(contentsOf: url! as URL)
+        } catch {
+            uiLog.error("Error decoding base64 string")
+            let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
+            return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+        }
+        return NSImage(data: imageData as Data)!
+    }
+    
     func createImageData(fileImagePath: String) -> NSImage {
         utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
         let urlPath = NSURL(fileURLWithPath: fileImagePath)

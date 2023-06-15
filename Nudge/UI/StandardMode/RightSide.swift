@@ -11,9 +11,10 @@ import SwiftUI
 // StandardModeRightSide
 struct StandardModeRightSide: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        let screenShotPath = Utils().getScreenShotPath(colorScheme: appState.colorScheme)
+        let screenShotPath = Utils().getScreenShotPath(colorScheme: colorScheme)
         let screenShotExists = FileManager.default.fileExists(atPath: screenShotPath)
         VStack {
             Spacer()

@@ -11,6 +11,7 @@ import SwiftUI
 // StandardModeLeftSide
 struct StandardModeLeftSide: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -35,7 +36,7 @@ struct StandardModeLeftSide: View {
                             .fontWeight(.bold)
                         Spacer()
                         Text(String(requiredMinimumOSVersion))
-                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                             .fontWeight(.bold)
                     }
 
@@ -43,7 +44,7 @@ struct StandardModeLeftSide: View {
                         Text("Current OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                         Spacer()
                         Text(currentOSVersion)
-                            .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                            .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     }
 
                     HStack{
@@ -51,7 +52,7 @@ struct StandardModeLeftSide: View {
                             Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
                             Text(String(appState.daysRemaining))
-                                .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         } else if appState.daysRemaining == 0 && !Utils().demoModeEnabled() {
                             Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
@@ -73,7 +74,7 @@ struct StandardModeLeftSide: View {
                             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             Spacer()
                             Text(String(appState.userDeferrals))
-                                .foregroundColor(appState.colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+                                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                         }
                     }
                 }
