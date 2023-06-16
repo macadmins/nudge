@@ -80,6 +80,7 @@ struct DeviceInfo: View {
             // Vertically align Additional Device Information to center
             Spacer()
         }
+        .background(Color(NSColor.windowBackgroundColor))
         .frame(width: 400, height: 200)
     }
 }

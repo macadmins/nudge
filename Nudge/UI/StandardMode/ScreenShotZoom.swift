@@ -15,6 +15,7 @@ struct ScreenShotZoom: View {
     
     var body: some View {
         let screenShotPath = Utils().getScreenShotPath(colorScheme: colorScheme)
+
         VStack(alignment: .center) {
             HStack {
                 Button(
@@ -48,18 +49,26 @@ struct ScreenShotZoom: View {
                     action: {
                         appState.screenShotZoomViewIsPresented = false
                     }, label: {
-                    if FileManager.default.fileExists(atPath: screenShotPath) {
-                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                    if screenShotPath.starts(with: "data:") {
+                        Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
                             .resizable()
-                            .scaledToFit()
                             .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
+                            .scaledToFit()
+                            .frame(maxHeight: 675)
                     } else {
-                        Image("CompanyScreenshotIcon")
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 512)
+                        if FileManager.default.fileExists(atPath: screenShotPath) {
+                            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                                .resizable()
+                                .scaledToFit()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxHeight: 675)
+                        } else {
+                            Image("CompanyScreenshotIcon")
+                                .resizable()
+                                .scaledToFit()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxHeight: 675)
+                        }
                     }
                 }
                 )
@@ -76,7 +85,8 @@ struct ScreenShotZoom: View {
             // Vertically align Screenshot to center
             Spacer()
         }
-        .frame(maxWidth: 900, maxHeight: 450)
+        .background(Color(NSColor.windowBackgroundColor))
+        .frame(maxWidth: 900)
     }
 }
 
