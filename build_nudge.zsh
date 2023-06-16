@@ -40,14 +40,13 @@ else
 fi
 
 # Perform unit tests
-# Unit tests are broken on github for now. Need a new image.
-# echo "Running Nudge unit tests"
-# $XCODE_BUILD test -project "$TOOLSDIR/Nudge.xcodeproj" -scheme "Nudge - Debug" -destination 'platform=macos'
-# XCBT_RESULT="$?"
-# if [ "${XCBT_RESULT}" != "0" ]; then
-#     echo "Error running xcodebuild: ${XCBT_RESULT}" 1>&2
-#     exit 1
-# fi
+echo "Running Nudge unit tests"
+$XCODE_BUILD test -project "$TOOLSDIR/Nudge.xcodeproj" -scheme "Nudge - Debug" -destination 'platform=macos'
+XCBT_RESULT="$?"
+if [ "${XCBT_RESULT}" != "0" ]; then
+    echo "Error running xcodebuild: ${XCBT_RESULT}" 1>&2
+    exit 1
+fi
 
 # build nudge
 echo "Building Nudge"
