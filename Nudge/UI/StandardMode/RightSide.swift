@@ -97,37 +97,37 @@ struct StandardModeRightSide: View {
                         }
                     }
                     
-                    if screenShotExists || forceScreenShotIconMode() {
-                        HStack {
-                            Spacer()
-                            if screenShotExists {
-                                Button {
-                                    appState.screenShotZoomViewIsPresented = true
-                                } label: {
-                                    Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                                        .resizable()
-                                        .scaledToFit()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(maxHeight: screenshotMaxHeight)
-                                }
-                                .buttonStyle(.plain)
-                                .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
-                                    ScreenShotZoom()
-                                }
-                                .onHover { inside in
-                                    if inside {
-                                        NSCursor.pointingHand.push()
-                                    } else {
-                                        NSCursor.pop()
-                                    }
-                                }
+                    if screenShotPath.starts(with: "data:") {
+                        Button {
+                            appState.screenShotZoomViewIsPresented = true
+                        } label: {
+                            Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .scaledToFit()
+                                .frame(width: logoWidth, height: logoHeight)
+                        }
+                        .buttonStyle(.plain)
+                        .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
+                            ScreenShotZoom()
+                        }
+                        .onHover { inside in
+                            if inside {
+                                NSCursor.pointingHand.push()
                             } else {
-                                if forceScreenShotIconMode() {
+                                NSCursor.pop()
+                            }
+                        }
+                    } else {
+                        if screenShotExists || forceScreenShotIconMode() {
+                            HStack {
+                                Spacer()
+                                if screenShotExists {
                                     Button {
                                         appState.screenShotZoomViewIsPresented = true
                                     } label: {
-                                        Image("CompanyScreenshotIcon")
+                                        Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
                                             .resizable()
                                             .scaledToFit()
                                             .aspectRatio(contentMode: .fit)
@@ -146,24 +146,48 @@ struct StandardModeRightSide: View {
                                         }
                                     }
                                 } else {
-                                    Button {
-                                        appState.screenShotZoomViewIsPresented = true
-                                    } label: {
-                                        Image("CompanyScreenshotIcon")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(maxHeight: screenshotMaxHeight)
-                                    }
-                                    .buttonStyle(.plain)
-                                    .hidden()
-                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                    .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
-                                        ScreenShotZoom()
+                                    if forceScreenShotIconMode() {
+                                        Button {
+                                            appState.screenShotZoomViewIsPresented = true
+                                        } label: {
+                                            Image("CompanyScreenshotIcon")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxHeight: screenshotMaxHeight)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                                        .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
+                                            ScreenShotZoom()
+                                        }
+                                        .onHover { inside in
+                                            if inside {
+                                                NSCursor.pointingHand.push()
+                                            } else {
+                                                NSCursor.pop()
+                                            }
+                                        }
+                                    } else {
+                                        Button {
+                                            appState.screenShotZoomViewIsPresented = true
+                                        } label: {
+                                            Image("CompanyScreenshotIcon")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxHeight: screenshotMaxHeight)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .hidden()
+                                        .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                                        .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
+                                            ScreenShotZoom()
+                                        }
                                     }
                                 }
+                                Spacer()
                             }
-                            Spacer()
                         }
                     }
                 }

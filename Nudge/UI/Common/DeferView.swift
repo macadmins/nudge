@@ -71,6 +71,7 @@ struct DeferView: View {
             // a bit of space at the bottom to raise the Defer button away from the very edge
             .padding(.bottom, 10)
         }
+        .background(Color(NSColor.windowBackgroundColor))
     }
     var limitRange: ClosedRange<Date> {
         var windowTime: Int
