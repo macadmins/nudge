@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Run base64 cli and convert to a string `base64 -b 100000000 < ~Downloads/tinified/screenShotDark.png | pbcopy`
   - Added them to your management file and prefixed the base64 encoded string with `data:image/png;base64,`
   - Ensure there is no extra lines on the preferences
+- [Ability to load Launchagent with new SMAppService for macOS 13 and higher](https://github.com/macadmins/nudge/pull/456)
 
 ### Changed
 - Improved Github Actions build time - Nudge.app is no longer directly notarized during the build process as it was a redundant action
