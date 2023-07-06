@@ -37,12 +37,9 @@ struct AdditionalInfoButton: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct AdditionalInfoButton_Previews: PreviewProvider {
-    static var previews: some View {
-        AdditionalInfoButton()
-            .environmentObject(nudgePrimaryState)
-            .previewDisplayName("AdditionalInfoButton")
-    }
+#Preview {
+    AdditionalInfoButton()
+        .environmentObject(nudgePrimaryState)
+        .previewDisplayName("AdditionalInfoButton")
 }
 #endif

@@ -91,15 +91,12 @@ struct ScreenShotZoom: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct ScreenShotZoom_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(["en", "es"], id: \.self) { id in
-            ScreenShotZoom()
-                .environmentObject(nudgePrimaryState)
-                .environment(\.locale, .init(identifier: id))
-                .previewDisplayName("ScreenShotZoom (\(id))")
-        }
+#Preview {
+    ForEach(["en", "es"], id: \.self) { id in
+        ScreenShotZoom()
+            .environmentObject(nudgePrimaryState)
+            .environment(\.locale, .init(identifier: id))
+            .previewDisplayName("ScreenShotZoom (\(id))")
     }
 }
 #endif

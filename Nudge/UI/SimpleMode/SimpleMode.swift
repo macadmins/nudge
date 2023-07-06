@@ -96,16 +96,13 @@ struct SimpleMode: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct SimpleMode_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(["en", "es"], id: \.self) { id in
-            SimpleMode()
-                .environmentObject(nudgePrimaryState)
-                .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
-                .environment(\.locale, .init(identifier: id))
-                .previewDisplayName("SimpleMode (\(id))")
-        }
+#Preview {
+    ForEach(["en", "es"], id: \.self) { id in
+        SimpleMode()
+            .environmentObject(nudgePrimaryState)
+            .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+            .environment(\.locale, .init(identifier: id))
+            .previewDisplayName("SimpleMode (\(id))")
     }
 }
 #endif

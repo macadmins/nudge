@@ -108,15 +108,12 @@ struct QuitButtons: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct QuitButtons_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(["en", "es"], id: \.self) { id in
-            QuitButtons()
-                .environmentObject(nudgePrimaryState)
-                .environment(\.locale, .init(identifier: id))
-                .previewDisplayName("QuitButtons (\(id))")
-        }
+#Preview {
+    ForEach(["en", "es"], id: \.self) { id in
+        QuitButtons()
+            .environmentObject(nudgePrimaryState)
+            .environment(\.locale, .init(identifier: id))
+            .previewDisplayName("QuitButtons (\(id))")
     }
 }
 #endif

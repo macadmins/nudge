@@ -62,13 +62,9 @@ struct CompanyLogo: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct CompanyLogo_Previews: PreviewProvider {
-    static var previews: some View {
-        CompanyLogo()
-            .environmentObject(nudgePrimaryState)
-            .previewDisplayName("CompanyLogo")
-    }
+#Preview {
+    CompanyLogo()
+        .environmentObject(nudgePrimaryState)
+        .previewDisplayName("CompanyLogo")
 }
 #endif
-

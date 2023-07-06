@@ -38,15 +38,12 @@ struct InformationButton: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct InformationButton_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(["en", "es"], id: \.self) { id in
-            InformationButton()
-                .environmentObject(nudgePrimaryState)
-                .environment(\.locale, .init(identifier: id))
-                .previewDisplayName("InformationButton (\(id))")
-        }
+#Preview {
+    ForEach(["en", "es"], id: \.self) { id in
+        InformationButton()
+            .environmentObject(nudgePrimaryState)
+            .environment(\.locale, .init(identifier: id))
+            .previewDisplayName("InformationButton (\(id))")
     }
 }
 #endif

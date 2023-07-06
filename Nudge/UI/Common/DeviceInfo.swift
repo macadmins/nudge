@@ -86,16 +86,12 @@ struct DeviceInfo: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct DeviceInfo_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(["en", "es"], id: \.self) { id in
-            DeviceInfo()
-                .environmentObject(nudgePrimaryState)
-                .environment(\.locale, .init(identifier: id))
-                .previewDisplayName("DeviceInfo (\(id))")
-        }
+#Preview {
+    ForEach(["en", "es"], id: \.self) { id in
+        DeviceInfo()
+            .environmentObject(nudgePrimaryState)
+            .environment(\.locale, .init(identifier: id))
+            .previewDisplayName("DeviceInfo (\(id))")
     }
 }
 #endif
-

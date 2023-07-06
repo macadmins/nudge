@@ -205,15 +205,12 @@ struct StandardModeRightSide: View {
 }
 
 #if DEBUG
-// Xcode preview for both light and dark mode
-struct StandardModeRightSide_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(["en", "es"], id: \.self) { id in
-            StandardModeRightSide()
-                .environmentObject(nudgePrimaryState)
-                .environment(\.locale, .init(identifier: id))
-                .previewDisplayName("RightSide (\(id))")
-        }
+#Preview {
+    ForEach(["en", "es"], id: \.self) { id in
+        StandardModeRightSide()
+            .environmentObject(nudgePrimaryState)
+            .environment(\.locale, .init(identifier: id))
+            .previewDisplayName("RightSide (\(id))")
     }
 }
 #endif
