@@ -159,6 +159,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             utilsLog.info("\("Screen was locked", privacy: .public)")
         }
         
+        nc.addObserver(
+            forName: NSApplication.didChangeScreenParametersNotification,
+            object: NSApplication.shared,
+            queue: .main)
+        {
+            notification -> Void in
+            print("Screen parameters changed - Notification Center")
+            Utils().centerNudge()
+        }
+
+        nc.addObserver(
+            forName: NSWindow.didChangeScreenProfileNotification,
+            object: NSApplication.shared,
+            queue: .main)
+        {
+            notification -> Void in
+            print("Display has changed profiles - Notification Center")
+            Utils().centerNudge()
+        }
+        
+        nc.addObserver(
+            forName: NSWindow.didChangeScreenNotification,
+            object: NSApplication.shared,
+            queue: .main)
+        {
+            notification -> Void in
+            print("Window object frame moved - Notification Center")
+            Utils().centerNudge()
+        }
+        
         dnc.addObserver(
             forName: NSNotification.Name("com.apple.screenIsUnlocked"),
             object: nil,
@@ -420,9 +450,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     class WindowDelegate: NSObject, NSWindowDelegate {
         func windowDidMove(_ notification: Notification) {
+            print("Window attempted to move - Window Delegate")
             Utils().centerNudge()
         }
         func windowDidChangeScreen(_ notification: Notification) {
+            print("Window moved screens - Window Delegate")
+            Utils().centerNudge()
+        }
+        func windowDidChangeScreenProfile(_ notification: Notification) {
+            print("Display has changed profiles - Window Delegate")
             Utils().centerNudge()
         }
     }
