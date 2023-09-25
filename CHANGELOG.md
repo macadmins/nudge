@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.12] - 2023-08-01
+## [1.1.12] - 2023-09-25
 ### Added
 - `calendarDeferralUnit` key to utilize the `approachingWindowTime` or `imminentWindowTime` for calendar deferrals
 - Ukrainian localization
-- Create an inverted nudge icon for company logo tests
+- Created an inverted nudge icon for company logo tests
 - Added base64 string support directly to `iconDarkPath`, `iconLightPath`, `screenShotDarkPath`, and `screenShotLightPath`
   - Some MDMs have issues deplyoying larger mdm profiles > 1MB, so please run your pngs through https://tinypng.com/ to compress them
   - Run base64 cli and convert to a string `base64 -b 100000000 < ~Downloads/tinified/screenShotDark.png | pbcopy`
@@ -18,26 +18,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Improved Github Actions build time - Nudge.app is no longer directly notarized during the build process as it was a redundant action
-- Move to generic macOS icon for logo use. Will no longer have to maintain this logo for each major macOS version
+- Moved to generic macOS icon for logo use. Will no longer have to maintain this logo for each major macOS version
 - Github runner is now macOS 13
 - Xcode 15 is now required to build Nudge
 - Built with Swift 5.9
 - Moved back to `apple-actions/import-codesign-certs` for codesigning certs
-- Move to Xcode 15's new `String Catalog` feature for all localization
+- Moved to Xcode 15's new `String Catalog` feature for all localization
 - Enhancements to localization efforts to allow SwiftUI previews to properly work
-- Update SwiftUI previews for every view to properly preview the UI changes without rendering the entire application
-- Update `builtInAcceptableApplicationBundleIDs` for Big Sur, updates and Sonoma
-- Rename background blur calls to a more appropriate name
-- Move as many things as possible to `EnvironmentObject` instead of `ObservedObject` to allow objects to flow to other UI views without directly calling them as a variable.
-- Rename `viewObserved` to `appState` due to EnvironmentObject changes
-- Remove ContentView.swift and move everything to Main.swift to better understand its logic
-- Make a new `Defaults` swift file for common things used across every swift file
+- Updated SwiftUI previews for every view to properly preview the UI changes without rendering the entire application
+- Moved to new Swift/SwiftUI previews built on macros
+- Updated `builtInAcceptableApplicationBundleIDs` for Big Sur, updates and Sonoma
+- Renamed background blur calls to a more appropriate name
+- Moved as many things as possible to `EnvironmentObject` instead of `ObservedObject` to allow objects to flow to other UI views without directly calling them as a variable.
+- Renamed `viewObserved` to `appState` due to EnvironmentObject changes
+- Removed ContentView.swift and move everything to Main.swift to better understand its logic
+- Made a new `Defaults` swift file for common things used across every swift file
 - More sorting of files and order to better read the codebase
+- Ran all pngs through TinyPNG to further reduce the size of the application (approximately 15% app size reduction)
+- Ran all screen shots through TinyPNG to reduce code repo (muliple megabytes of reduction)
 
 ### Fixed
 - [Window size was not adhering to ContentView size due to changes in Ventura and Xcode14](https://github.com/macadmins/nudge/pull/490)
 - [Fix bug where softwareupdate could download the wrong update](https://github.com/macadmins/nudge/pull/497)
+- Correctly centers window as soon as any screen properties change (Number of displays, order/position of displays, nudge window moved to another screen)
 - Screen shot zoom functionality was too small
+- Small changes to french localization
 
 ## [1.1.11] - 2023-02-08
 ### Changed
