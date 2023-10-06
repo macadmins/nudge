@@ -21,9 +21,9 @@ launch_agent_plist_name='com.github.macadmins.Nudge.plist'
 launch_agent_base_path='Library/LaunchAgents/'
 
 # In Nudge 1.1.12.81501, a duplicate label caused corruption in the BTM database.
-# Check if we are upgrading from 81501, and if so, remediate the corruption.
-if /usr/bin/grep -q -e ".*1.1.12.81501.*" /Applications/Utilities/Nudge.app/Contents/Info.plist; then
-  echo "Nudge 1.1.12.81501 is installed - proceeding with remediation."
+# Check for the touch file left by preinstall, and if present, remediate the corruption.
+if [[ -f /private/var/tmp/nudge_remediate ]]; then
+  echo "Upgrading from Nudge 1.1.12.81501 - proceeding with remediation."
 
   # Determine BTM plist path. On macOS 13.3 and lower, v4; higher and on to 14, v8.
   if [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm" ]]; then
@@ -36,25 +36,33 @@ if /usr/bin/grep -q -e ".*1.1.12.81501.*" /Applications/Utilities/Nudge.app/Cont
     echo "Error: unable to locate a BTM plist, no remediation occurred. Does this OS support BTM features?"
   fi
 
-  line_count = 0
+  line_count=0
   signing_re='.*"com.github.macadmins.Nudge".*T4SK8ZXCXG\)'
+  dne_re=", Does Not Exist"
+  signing_string='anchor apple generic and identifier \"com.github.macadmins.Nudge\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = T4SK8ZXCXG)"'
 
   while True; do
     plist_entry=$(/usr/libexec/PlistBuddy -c "Print :\$objects:$line_count" $btm_plist_path 2>&1)
     if [[ "${plist_entry}" =~ $signing_re ]]; then
       # Remove the bad entry
-      /usr/libexec/PlistBuddy -c "Delete :\$objects:$line_count" $btm_plist
+      /usr/libexec/PlistBuddy -c "Delete :\$objects:$line_count" $btm_plist_path
       # Kickstart BTM to load in the modified DB
       /bin/launchctl kickstart -k system/com.apple.backgroundtaskmanagementd
+      echo "Remediated BTM DB and kickstarted service."
       break
 
     elif [[ ${plist_entry} =~ ", Does Not Exist" ]] || [[ $line_count -gt 100000 ]]; then
-      # Exit if we've ran through the entire plist or we hit 100,000 lines (to avoid runaway)
+      # Exit if we hit the end of the file or 100,000 lines (to avoid runaway)
       echo "Error: did not find signing data entry, or timed out at 100,000 lines processed."
+
     else
-      ((LINE_COUNT++))
+      ((line_count++))
     fi
   done
+
+  # Remove the touch file to not trigger remediation again.
+  rm /private/var/tmp/nudge_remediate
+
 else
   echo "No remediation needed for BTM issues."
 fi
