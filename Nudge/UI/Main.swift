@@ -387,7 +387,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
         if #available(macOS 13, *) {
-            let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
+            let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.SMAppService.plist")
             let appServiceStatus = appService.status
             if CommandLine.arguments.contains("--register") || loadLaunchAgent {
                 Utils().loadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
