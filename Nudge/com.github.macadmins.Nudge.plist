@@ -7,7 +7,7 @@
 		<string>com.github.macadmins.Nudge</string>
 	</array>
 	<key>Label</key>
-	<string>com.github.macadmins.Nudge.SMAppService</string>
+	<string>com.github.macadmins.Nudge</string>
 	<key>LimitLoadToSessionType</key>
 	<array>
 		<string>Aqua</string>
