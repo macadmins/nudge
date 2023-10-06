@@ -54,7 +54,7 @@ if [[ -f /private/var/tmp/nudge_remediate ]]; then
     elif [[ ${plist_entry} =~ ", Does Not Exist" ]] || [[ $line_count -gt 100000 ]]; then
       # Exit if we hit the end of the file or 100,000 lines (to avoid runaway)
       echo "Error: did not find signing data entry, or timed out at 100,000 lines processed."
-
+      break
     else
       ((line_count++))
     fi

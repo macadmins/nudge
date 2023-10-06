@@ -41,7 +41,7 @@ if [[ -f /private/var/tmp/nudge_remediate ]]; then
 
   while True; do
     plist_entry=$(/usr/libexec/PlistBuddy -c "Print :\$objects:$line_count" $btm_plist_path 2>&1)
-    if [[ "${plist_entry}" =~ $signing_re ]]; then
+    if [[ "$plist_entry" =~ $signing_re ]]; then
       # Remove the bad entry
       /usr/libexec/PlistBuddy -c "Delete :\$objects:$line_count" $btm_plist_path
       # Kickstart BTM to load in the modified DB
@@ -49,10 +49,10 @@ if [[ -f /private/var/tmp/nudge_remediate ]]; then
       echo "Remediated BTM DB and kickstarted service."
       break
 
-    elif [[ ${plist_entry} =~ ", Does Not Exist" ]] || [[ $line_count -gt 100000 ]]; then
+    elif [[ "$plist_entry" =~ ", Does Not Exist" ]] || [[ $line_count -gt 100000 ]]; then
       # Exit if we hit the end of the file or 100,000 lines (to avoid runaway)
       echo "Error: did not find signing data entry, or timed out at 100,000 lines processed."
-
+      break
     else
       ((line_count++))
     fi
