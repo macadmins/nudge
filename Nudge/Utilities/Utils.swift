@@ -8,9 +8,6 @@
 import AppKit
 import CoreMediaIO
 import Foundation
-#if canImport(ServiceManagement)
-import ServiceManagement
-#endif
 import SwiftUI
 import SystemConfiguration
 
@@ -145,96 +142,6 @@ struct Utils {
             uiLog.info("Device allow1HourDeferralButton: \(allow1HourDeferralButton, privacy: .public)")
         }
         return allow1HourDeferralButton
-    }
-    
-    @available(macOS 13.0, *)
-    func loadSMAppLaunchAgent(appService: SMAppService, appServiceStatus: SMAppService.Status) {
-        let url = URL(string: "/Library/LaunchAgents/\(launchAgentIdentifier).plist")!
-        let legacyStatus = SMAppService.statusForLegacyPlist(at: url)
-        let passedThroughCLI = CommandLine.arguments.contains("--register")
-        if legacyStatus == .enabled {
-            if passedThroughCLI {
-                print("Legacy Nudge LaunchAgent currently loaded. Please disable this agent before attempting to register modern agent.")
-                exit(1)
-            } else {
-                osLog.info("Legacy Nudge LaunchAgent currently loaded. Please disable this agent before attempting to register modern agent.")
-            }
-        } else {
-            if appServiceStatus == .enabled {
-                if passedThroughCLI {
-                    print("Nudge LaunchAgent is currently registered and enabled")
-                    exit(0)
-                } else {
-                    osLog.info("Nudge LaunchAgent is currently registered and enabled")
-                }
-            } else {
-                do {
-                    if passedThroughCLI {
-                        print("Registering Nudge LaunchAgent")
-                    } else {
-                        osLog.info("Registering Nudge LaunchAgent")
-                    }
-                    try appService.register()
-                } catch {
-                    if passedThroughCLI {
-                        print("Failed to register Nudge LaunchAgent")
-                        exit(1)
-                    } else {
-                        osLog.info("Failed to register Nudge LaunchAgent")
-                        return
-                    }
-                }
-                if passedThroughCLI {
-                    print("Successfully registered Nudge LaunchAgent")
-                    exit(0)
-                } else {
-                    osLog.info("Successfully registered Nudge LaunchAgent")
-                }
-            }
-        }
-    }
-    
-    @available(macOS 13.0, *)
-    func unloadSMAppLaunchAgent(appService: SMAppService, appServiceStatus: SMAppService.Status) {
-        let passedThroughCLI = CommandLine.arguments.contains("--unregister")
-        if appServiceStatus == .notFound {
-            if passedThroughCLI {
-                print("Nudge LaunchAgent has never been registered")
-                exit(0)
-            } else {
-                osLog.info("Nudge LaunchAgent has never been registered")
-            }
-        } else if appServiceStatus == .notRegistered {
-                if passedThroughCLI {
-                    print("Nudge LaunchAgent is not currently registered")
-                    exit(0)
-                } else {
-                    osLog.info("Nudge LaunchAgent is not currently registered")
-                }
-        } else {
-            do {
-                if passedThroughCLI {
-                    print("Unregistering Nudge LaunchAgent")
-                } else {
-                    osLog.info("Unregistering Nudge LaunchAgent")
-                }
-                try appService.unregister()
-            } catch {
-                if passedThroughCLI {
-                    print("Failed to unregister Nudge LaunchAgent")
-                    exit(1)
-                } else {
-                    osLog.info("Failed to unregister Nudge LaunchAgent")
-                    return
-                }
-            }
-            if passedThroughCLI {
-                print("Successfully unregistered Nudge LaunchAgent")
-                exit(0)
-            } else {
-                osLog.info("Successfully unregistered Nudge LaunchAgent")
-            }
-        }
     }
     
     func allow24HourDeferral() -> Bool {

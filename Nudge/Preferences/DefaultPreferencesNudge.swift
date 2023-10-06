@@ -77,7 +77,6 @@ let imminentRefreshCycle = userExperienceProfile?["imminentRefreshCycle"] as? In
 let imminentWindowTime = userExperienceProfile?["imminentWindowTime"] as? Int ?? userExperienceJSON?.imminentWindowTime ?? 24
 let initialRefreshCycle = userExperienceProfile?["initialRefreshCycle"] as? Int ?? userExperienceJSON?.initialRefreshCycle ?? 18000
 let launchAgentIdentifier = userExperienceProfile?["launchAgentIdentifier"] as? String ?? userExperienceJSON?.launchAgentIdentifier ?? "com.github.macadmins.Nudge"
-let loadLaunchAgent = userExperienceProfile?["loadLaunchAgent"] as? Bool ?? userExperienceJSON?.loadLaunchAgent ?? false
 let maxRandomDelayInSeconds = userExperienceProfile?["maxRandomDelayInSeconds"] as? Int ?? userExperienceJSON?.maxRandomDelayInSeconds ?? 1200
 let noTimers = userExperienceProfile?["noTimers"] as? Bool ?? userExperienceJSON?.noTimers ?? false
 let nudgeRefreshCycle = userExperienceProfile?["nudgeRefreshCycle"] as? Int ?? userExperienceJSON?.nudgeRefreshCycle ?? 60

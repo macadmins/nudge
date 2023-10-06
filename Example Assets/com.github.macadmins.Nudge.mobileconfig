@@ -126,8 +126,6 @@
                     <integer>18000</integer>
                     <key>launchAgentIdentifier</key>
                     <string>com.github.macadmins.Nudge</string>
-                    <key>loadLaunchAgent</key>
-                    <false/>
                     <key>maxRandomDelayInSeconds</key>
                     <integer>1200</integer>
                     <key>noTimers</key>

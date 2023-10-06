@@ -386,16 +386,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        if #available(macOS 13, *) {
-            let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.plist")
-            let appServiceStatus = appService.status
-            if CommandLine.arguments.contains("--register") || loadLaunchAgent {
-                Utils().loadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
-            } else if CommandLine.arguments.contains("--unregister") || !loadLaunchAgent {
-                Utils().unloadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
-            }
-        }
-        
         if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
             prefsProfileLog.warning("\("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist", privacy: .public)")
             exit(1)

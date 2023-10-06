@@ -27,7 +27,6 @@
     "userExperience": {
         "elapsedRefreshCycle": 10,
         "initialRefreshCycle": 10,
-        "loadLaunchAgent": false,
         "nudgeRefreshCycle": 5,
         "randomDelay": false
     },

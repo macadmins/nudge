@@ -744,20 +744,6 @@
                                 }
                             ]
                         },
-                        "loadLaunchAgent": {
-                            "description": "Loads the Nudge LaunchAgent using macOS Ventura's SMAppService API (macOS 13+ required).",
-                            "anyOf": [
-                                {
-                                    "title": "Not Configured",
-                                    "type": "null"
-                                },
-                                {
-                                    "title": "Configured",
-                                    "default": false,
-                                    "type": "boolean"
-                                }
-                            ]
-                        },
                         "maxRandomDelayInSeconds": {
                             "description": "The maximum amount of delay Nudge will utilize before launching the UI. This is useful if you do not want your users to all receive the Nudge prompt at the exact time of the LaunchAgent. Note: This functionality only applies when also enabling `randomDelay`.",
                             "anyOf": [
