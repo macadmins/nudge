@@ -18,6 +18,45 @@
 launch_agent_plist_name='com.github.macadmins.Nudge.plist'
 launch_daemon_plist_name='com.github.macadmins.Nudge.logger.plist'
 
+# In Nudge 1.1.12.81501, a duplicate label caused corruption in the BTM database.
+# Check if we are upgrading from 81501, and if so, remediate the corruption.
+if /usr/bin/grep -q -e ".*1.1.12.81501.*" /Applications/Utilities/Nudge.app/Contents/Info.plist; then
+  echo "Nudge 1.1.12.81501 is installed - proceeding with remediation."
+
+  # Determine BTM plist path. On macOS 13.3 and lower, v4; higher and on to 14, v8.
+  if [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm" ]]; then
+    btm_plist_path="/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm"
+    echo "Set BTM plist path to v8"
+  elif [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm" ]]; then
+    btm_plist_path="/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm"
+    echo "Set BTM plist path to v4"
+  else
+    echo "Error: unable to locate a BTM plist, no remediation occurred. Does this OS support BTM features?"
+  fi
+
+  line_count = 0
+  signing_re='.*"com.github.macadmins.Nudge".*T4SK8ZXCXG\)'
+
+  while True; do
+    plist_entry=$(/usr/libexec/PlistBuddy -c "Print :\$objects:$line_count" $btm_plist_path 2>&1)
+    if [[ "${plist_entry}" =~ $signing_re ]]; then
+      # Remove the bad entry
+      /usr/libexec/PlistBuddy -c "Delete :\$objects:$line_count" $btm_plist
+      # Kickstart BTM to load in the modified DB
+      /bin/launchctl kickstart -k system/com.apple.backgroundtaskmanagementd
+      break
+
+    elif [[ ${plist_entry} =~ ", Does Not Exist" ]] || [[ $line_count -gt 100000 ]]; then
+      # Exit if we've ran through the entire plist or we hit 100,000 lines (to avoid runaway)
+      echo "Error: did not find signing data entry, or timed out at 100,000 lines processed."
+    else
+      ((LINE_COUNT++))
+    fi
+  done
+else
+  echo "No remediation needed for BTM issues."
+fi
+
 # Base paths
 launch_agent_base_path='Library/LaunchAgents/'
 launch_daemon_base_path='Library/LaunchDaemons/'

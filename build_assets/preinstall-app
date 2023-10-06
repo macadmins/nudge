@@ -32,4 +32,12 @@ if [[ $3 == "/" ]] ; then
     # Kill Nudge is running
     /usr/bin/pgrep -i Nudge | /usr/bin/xargs kill
   fi
+
+  # In Nudge 1.1.12.81501, a duplicate label caused corruption in the BTM database.
+  # Check if we are upgrading from 81501, and if so, touch a file to trigger postinstall
+  # to remediate the corruption.
+  if /usr/bin/grep -q -e ".*1.1.12.81501.*" /Applications/Utilities/Nudge.app/Contents/Info.plist; then
+    echo "Nudge 1.1.12.81501 is installed - flagging for remediation."
+    touch /private/var/tmp/nudge_remediate
+  fi
 fi
