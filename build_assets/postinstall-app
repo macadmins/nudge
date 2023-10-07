@@ -22,19 +22,23 @@ if [[ -f /private/var/tmp/nudge_remediate ]]; then
   # Determine BTM plist path. On macOS 13.3 and lower, v4; higher and on to 14, v8.
   if [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm" ]]; then
     btm_plist_path="/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm"
+    remediate=True
     echo "Set BTM plist path to v8"
   elif [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm" ]]; then
     btm_plist_path="/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm"
+    remediate=True
     echo "Set BTM plist path to v4"
   else
     echo "Error: unable to locate a BTM plist, no remediation occurred. Does this OS support BTM features?"
+    remediate=False
+    break
   fi  
 
   line_count=0
   signing_re='.*"com.github.macadmins.Nudge".*T4SK8ZXCXG\)'
   dne_re=", Does Not Exist"
 
-  while True; do
+  while $remediate; do
     plist_entry=$(/usr/libexec/PlistBuddy -c "Print :\$objects:$line_count" $btm_plist_path 2>&1)
     plist_entry=$(iconv -f ISO-8859-1 <<< $plist_entry)
     if [[ "$plist_entry" =~ $signing_re ]]; then
