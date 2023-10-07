@@ -90,6 +90,7 @@ fi
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
 /bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Nudge.app"
 /bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-app" "$NUDGE_PKG_PATH/scripts/postinstall"
 
 # Download specific version of munki-pkg
 echo "Downloading munki-pkg tool from github..."

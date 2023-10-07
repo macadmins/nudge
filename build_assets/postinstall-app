@@ -1,0 +1,62 @@
+#!/bin/zsh
+#
+# Copyright 2021-Present Erik Gomez.
+#
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# In Nudge 1.1.12.81501, a duplicate label caused corruption in the BTM database.
+# Check for the touch file left by preinstall, and if present, remediate the corruption.
+if [[ -f /private/var/tmp/nudge_remediate ]]; then
+  echo "Upgrading from Nudge 1.1.12.81501 - proceeding with remediation."
+
+  # Determine BTM plist path. On macOS 13.3 and lower, v4; higher and on to 14, v8.
+  if [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm" ]]; then
+    btm_plist_path="/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v8.btm"
+    echo "Set BTM plist path to v8"
+  elif [[ -f "/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm" ]]; then
+    btm_plist_path="/private/var/db/com.apple.backgroundtaskmanagement/BackgroundItems-v4.btm"
+    echo "Set BTM plist path to v4"
+  else
+    echo "Error: unable to locate a BTM plist, no remediation occurred. Does this OS support BTM features?"
+  fi  
+
+  line_count=0
+  signing_re='.*"com.github.macadmins.Nudge".*T4SK8ZXCXG\)'
+  dne_re=", Does Not Exist"
+
+  while True; do
+    plist_entry=$(/usr/libexec/PlistBuddy -c "Print :\$objects:$line_count" $btm_plist_path 2>&1)
+    plist_entry=$(iconv -f ISO-8859-1 <<< $plist_entry)
+    if [[ "$plist_entry" =~ $signing_re ]]; then
+      # Remove the bad entry
+      /usr/libexec/PlistBuddy -c "Delete :\$objects:$line_count" $btm_plist_path
+      # Kickstart BTM to load in the modified DB
+      /bin/launchctl kickstart -k system/com.apple.backgroundtaskmanagementd
+      echo "Remediated BTM DB and kickstarted service."
+      break
+
+    elif [[ "$plist_entry" =~ ", Does Not Exist" ]] || [[ $line_count -gt 100000 ]]; then
+      # Exit if we hit the end of the file or 100,000 lines (to avoid runaway)
+      echo "Error: did not find signing data entry, or timed out at 100,000 lines processed."
+      break
+    else
+      ((line_count++))
+    fi
+  done
+
+  # Remove the touch file to not trigger remediation again.
+  rm /private/var/tmp/nudge_remediate
+
+else
+  echo "No remediation needed for BTM issues."
+fi
