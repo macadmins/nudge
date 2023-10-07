@@ -37,10 +37,10 @@ if [[ -f /private/var/tmp/nudge_remediate ]]; then
   line_count=0
   signing_re='.*"com.github.macadmins.Nudge".*T4SK8ZXCXG\)'
   dne_re=", Does Not Exist"
-  signing_string='anchor apple generic and identifier \"com.github.macadmins.Nudge\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = T4SK8ZXCXG)"'
 
   while True; do
     plist_entry=$(/usr/libexec/PlistBuddy -c "Print :\$objects:$line_count" $btm_plist_path 2>&1)
+    plist_entry=$(iconv -f ISO-8859-1 <<< $plist_entry)
     if [[ "$plist_entry" =~ $signing_re ]]; then
       # Remove the bad entry
       /usr/libexec/PlistBuddy -c "Delete :\$objects:$line_count" $btm_plist_path
