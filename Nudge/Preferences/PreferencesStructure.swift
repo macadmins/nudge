@@ -387,11 +387,11 @@ extension UserInterface {
         iconLightPath: String?? = nil,
         screenShotDarkPath: String?? = nil,
         screenShotLightPath: String?? = nil,
+        screenShotAltText: String?? = nil,
         showDeferralCount: Bool?? = nil,
         simpleMode: Bool?? = nil,
         singleQuitButton: Bool?? = nil,
-        updateElements: [UpdateElement]?? = nil,
-        screenShotAltText: String?? = nil
+        updateElements: [UpdateElement]?? = nil
     ) -> UserInterface {
         return UserInterface(
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
@@ -402,11 +402,11 @@ extension UserInterface {
             iconLightPath: iconLightPath ?? self.iconLightPath,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
+            screenShotAltText: screenShotAltText ?? self.screenShotAltText,
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.simpleMode,
-            updateElements: updateElements ?? self.updateElements,
-            screenShotAltText: screenShotAltText ?? self.screenShotAltText
+            updateElements: updateElements ?? self.updateElements
         )
     }
     
@@ -463,8 +463,7 @@ extension UpdateElement {
         oneHourDeferralButtonText: String?? = nil,
         primaryQuitButtonText: String?? = nil,
         secondaryQuitButtonText: String?? = nil,
-        subHeader: String?? = nil,
-        screenShotAltText: String?? = nil
+        subHeader: String?? = nil
     ) -> UpdateElement {
         return UpdateElement(
             language: language ?? self.language,
@@ -481,8 +480,7 @@ extension UpdateElement {
             oneHourDeferralButtonText: oneHourDeferralButtonText ?? self.oneHourDeferralButtonText,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
             secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
-            subHeader: subHeader ?? self.subHeader,
-            screenShotAltText: screenShotAltText ?? self.screenShotAltText
+            subHeader: subHeader ?? self.subHeader
         )
     }
     

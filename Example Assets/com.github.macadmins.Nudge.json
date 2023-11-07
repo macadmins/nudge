@@ -73,6 +73,7 @@
         "iconLightPath": "/somewhere/logoLight.png",
         "screenShotDarkPath": "/somewhere/screenShotDark.png",
         "screenShotLightPath": "/somewhere/screenShotLight.png",
+        "screenShotAltText": "Click to zoom into screenshot",
         "showDeferralCount": true,
         "simpleMode": false,
         "singleQuitButton": false,

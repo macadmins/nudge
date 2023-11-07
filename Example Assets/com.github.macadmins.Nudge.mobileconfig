@@ -155,6 +155,8 @@
                     <string>/somewhere/screenShotDark.png</string>
                     <key>screenShotLightPath</key>
                     <string>/somewhere/screenShotLight.png</string>
+                    <key>screenShotAltText</key>
+                    <string>Click to zoom into screenshot</string>
                     <key>showDeferralCount</key>
                     <true/>
                     <key>simpleMode</key>
