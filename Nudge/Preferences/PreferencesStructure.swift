@@ -356,7 +356,7 @@ extension UserExperience {
 struct UserInterface: Codable {
     var actionButtonPath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
-    var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
+    var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath, screenShotAltText: String?
     var showDeferralCount, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
 }
@@ -390,7 +390,8 @@ extension UserInterface {
         showDeferralCount: Bool?? = nil,
         simpleMode: Bool?? = nil,
         singleQuitButton: Bool?? = nil,
-        updateElements: [UpdateElement]?? = nil
+        updateElements: [UpdateElement]?? = nil,
+        screenShotAltText: String?? = nil
     ) -> UserInterface {
         return UserInterface(
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
@@ -404,7 +405,8 @@ extension UserInterface {
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.simpleMode,
-            updateElements: updateElements ?? self.updateElements
+            updateElements: updateElements ?? self.updateElements,
+            screenShotAltText: screenShotAltText ?? self.screenShotAltText
         )
     }
     
@@ -421,11 +423,11 @@ extension UserInterface {
 struct UpdateElement: Codable {
     var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText: String?
     var mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
-    var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader: String?
+    var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, screenShotAltText: String?
     
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader
+        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, screenShotAltText
     }
 }
 
@@ -461,7 +463,8 @@ extension UpdateElement {
         oneHourDeferralButtonText: String?? = nil,
         primaryQuitButtonText: String?? = nil,
         secondaryQuitButtonText: String?? = nil,
-        subHeader: String?? = nil
+        subHeader: String?? = nil,
+        screenShotAltText: String?? = nil
     ) -> UpdateElement {
         return UpdateElement(
             language: language ?? self.language,
@@ -478,7 +481,8 @@ extension UpdateElement {
             oneHourDeferralButtonText: oneHourDeferralButtonText ?? self.oneHourDeferralButtonText,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
             secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
-            subHeader: subHeader ?? self.subHeader
+            subHeader: subHeader ?? self.subHeader,
+            screenShotAltText: screenShotAltText ?? self.screenShotAltText
         )
     }
     
