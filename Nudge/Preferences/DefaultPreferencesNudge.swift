@@ -109,6 +109,7 @@ let customDeferralDropdownText = userInterfaceUpdateElementsProfile?["customDefe
 let customDeferralButtonText = userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.customDeferralButtonText ?? "Custom"
 let oneDayDeferralButtonText = userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ?? "One Day"
 let oneHourDeferralButtonText = userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ?? userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ?? "One Hour"
+let screenShotAltText = userInterfaceUpdateElementsProfile?["screenShotAltText"] as? String ?? userInterfaceUpdateElementsJSON?.screenShotAltText ?? "Click to zoom into screenshot"
 
 // Other important defaults
 #if DEBUG
