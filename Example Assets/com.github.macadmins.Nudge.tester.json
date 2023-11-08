@@ -53,7 +53,8 @@
                 "oneHourDeferralButtonText": "oneHourDeferralButtonText",
                 "primaryQuitButtonText": "primaryQuitButtonText",
                 "secondaryQuitButtonText": "secondaryQuitButtonText",
-                "subHeader": "subHeader"
+                "subHeader": "subHeader",
+                "screenShotAltText": "Click to zoom into screenshot"
             }
         ]
     }
