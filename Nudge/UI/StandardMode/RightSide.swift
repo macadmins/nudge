@@ -134,7 +134,7 @@ struct StandardModeRightSide: View {
                                             .frame(maxHeight: screenshotMaxHeight)
                                     }
                                     .buttonStyle(.plain)
-                                    .help("Click to zoom into screenshot".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                                    .help(screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                                     .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
                                         ScreenShotZoom()
                                     }

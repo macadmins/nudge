@@ -356,7 +356,7 @@ extension UserExperience {
 struct UserInterface: Codable {
     var actionButtonPath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
-    var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath, screenShotAltText: String?
+    var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var showDeferralCount, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
 }
@@ -387,7 +387,6 @@ extension UserInterface {
         iconLightPath: String?? = nil,
         screenShotDarkPath: String?? = nil,
         screenShotLightPath: String?? = nil,
-        screenShotAltText: String?? = nil,
         showDeferralCount: Bool?? = nil,
         simpleMode: Bool?? = nil,
         singleQuitButton: Bool?? = nil,
@@ -402,7 +401,6 @@ extension UserInterface {
             iconLightPath: iconLightPath ?? self.iconLightPath,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
-            screenShotAltText: screenShotAltText ?? self.screenShotAltText,
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.simpleMode,
@@ -463,7 +461,8 @@ extension UpdateElement {
         oneHourDeferralButtonText: String?? = nil,
         primaryQuitButtonText: String?? = nil,
         secondaryQuitButtonText: String?? = nil,
-        subHeader: String?? = nil
+        subHeader: String?? = nil,
+        screenShotAltText: String?? = nil
     ) -> UpdateElement {
         return UpdateElement(
             language: language ?? self.language,
@@ -480,7 +479,8 @@ extension UpdateElement {
             oneHourDeferralButtonText: oneHourDeferralButtonText ?? self.oneHourDeferralButtonText,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
             secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,
-            subHeader: subHeader ?? self.subHeader
+            subHeader: subHeader ?? self.subHeader,
+            screenShotAltText: screenShotAltText ?? self.screenShotAltText
         )
     }
     

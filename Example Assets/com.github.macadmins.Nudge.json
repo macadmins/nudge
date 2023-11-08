@@ -73,7 +73,6 @@
         "iconLightPath": "/somewhere/logoLight.png",
         "screenShotDarkPath": "/somewhere/screenShotDark.png",
         "screenShotLightPath": "/somewhere/screenShotLight.png",
-        "screenShotAltText": "Click to zoom into screenshot",
         "showDeferralCount": true,
         "simpleMode": false,
         "singleQuitButton": false,
@@ -93,7 +92,8 @@
                 "oneHourDeferralButtonText": "One Hour",
                 "primaryQuitButtonText": "Later",
                 "secondaryQuitButtonText": "I understand",
-                "subHeader": "A friendly reminder from your local IT team"
+                "subHeader": "A friendly reminder from your local IT team",
+                "screenShotAltText": "Click to zoom into screenshot"
             },
             {
                 "_language": "es",
@@ -106,7 +106,8 @@
                 "mainHeader": "Tu dispositivo requiere una actualización de seguridad",
                 "primaryQuitButtonText": "Más tarde",
                 "secondaryQuitButtonText": "Entiendo",
-                "subHeader": "Un recordatorio amistoso de su equipo de IT local"
+                "subHeader": "Un recordatorio amistoso de su equipo de IT local",
+                "screenShotAltText": "Haga clic para ampliar la captura de pantalla"
             },
             {
                 "_language": "fr",
@@ -119,7 +120,8 @@
                 "mainHeader": "Votre appareil nécessite une mise à jour de sécurité.",
                 "primaryQuitButtonText": "Plus tard",
                 "secondaryQuitButtonText": "Je comprends",
-                "subHeader": "Un rappel amical de votre équipe informatique locale"
+                "subHeader": "Un rappel amical de votre équipe informatique locale",
+                "screenShotAltText": "Cliquez pour agrandir la capture d'écran"
             },
             {
                 "_language": "de",
@@ -132,7 +134,8 @@
                 "mainHeader": "Ihr Gerät benötigt ein Sicherheitsupdate",
                 "primaryQuitButtonText": "Später",
                 "secondaryQuitButtonText": "Ich verstehe",
-                "subHeader": "Eine freundliche Erinnerung von Ihrem IT-Team"
+                "subHeader": "Eine freundliche Erinnerung von Ihrem IT-Team",
+                "screenShotAltText": "Hier klicken, um den Screenshot zu vergrößern"
             }
         ]
     }

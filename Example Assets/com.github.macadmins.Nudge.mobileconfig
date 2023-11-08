@@ -155,8 +155,6 @@
                     <string>/somewhere/screenShotDark.png</string>
                     <key>screenShotLightPath</key>
                     <string>/somewhere/screenShotLight.png</string>
-                    <key>screenShotAltText</key>
-                    <string>Click to zoom into screenshot</string>
                     <key>showDeferralCount</key>
                     <true/>
                     <key>simpleMode</key>
@@ -200,6 +198,8 @@
                             <string>I understand</string>
                             <key>subHeader</key>
                             <string>A friendly reminder from your local IT team</string>
+                            <key>screenShotAltText</key>
+                            <string>Click to zoom into screenshot</string>
                         </dict>
                         <dict>
                             <key>_language</key>
@@ -228,6 +228,8 @@
                             <string>Entiendo</string>
                             <key>subHeader</key>
                             <string>Un recordatorio amistoso de su equipo de IT local</string>
+                            <key>screenShotAltText</key>
+                            <string>Haga clic para ampliar la captura de pantalla</string>
                         </dict>
                         <dict>
                             <key>_language</key>
@@ -256,6 +258,8 @@
                             <string>Je comprends</string>
                             <key>subHeader</key>
                             <string>Un rappel amical de votre équipe informatique locale</string>
+                            <key>screenShotAltText</key>
+                            <string>Cliquez pour agrandir la capture d'écran</string>
                         </dict>
                         <dict>
                             <key>_language</key>
@@ -283,6 +287,8 @@
                             <string>Ich verstehe</string>
                             <key>subHeader</key>
                             <string>Eine freundliche Erinnerung von Ihrem IT-Team</string>
+                            <key>screenShotAltText</key>
+                            <string>Hier klicken, um den Screenshot zu vergrößern</string>
                         </dict>
                     </array>
                 </dict>
