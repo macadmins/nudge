@@ -11,52 +11,57 @@ var loopedScreen = NSScreen()
 
 class BackgroundBlurWindow: NSWindow {
     override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask, backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
-        super.init(contentRect: contentRect, styleMask: [.fullSizeContentView],  backing: .buffered, defer: true)
+        super.init(contentRect: contentRect, styleMask: [.fullSizeContentView], backing: .buffered, defer: flag)
     }
 }
 
 class BackgroundBlurWindowController: NSWindowController {
-    convenience init() {
-        self.init(windowNibName: "BackgroundBlur")
+    override init(window: NSWindow?) {
+        super.init(window: window)
+        loadWindow()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func loadWindow() {
-        window = BackgroundBlurWindow(contentRect: NSMakeRect(0, 0, 0, 0), styleMask: [], backing: .buffered, defer: true)
-        self.window?.contentViewController = BlurViewController()
-        self.window?.setFrame((loopedScreen.frame), display: true)
-        self.window?.collectionBehavior = [.canJoinAllSpaces]
+        let window = BackgroundBlurWindow(contentRect: NSRect.zero, styleMask: [], backing: .buffered, defer: true)
+        window.contentViewController = BlurViewController()
+        window.setFrame(loopedScreen.frame, display: true)
+        window.collectionBehavior = [.canJoinAllSpaces]
+        self.window = window
     }
 }
 
 class BlurViewController: NSViewController {
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
+    private var blurView: NSVisualEffectView?
     
     override func loadView() {
-        super.viewDidLoad()
-        self.view = NSView()
+        view = NSView()
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        view.window?.isOpaque = false
-        view.window?.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) - 1 ))
-        
-        let blurView = NSVisualEffectView(frame: view.bounds)
-        blurView.blendingMode = .behindWindow
-        blurView.material = .fullScreenUI
-        blurView.state = .active
-        view.window?.contentView?.addSubview(blurView)
+        setupBlurView()
     }
     
     override func viewWillDisappear() {
         super.viewWillDisappear()
-        view.window?.contentView?.removeFromSuperview()
+        blurView?.removeFromSuperview()
     }
     
+    private func setupBlurView() {
+        guard let contentView = view.window?.contentView else { return }
+        
+        view.window?.isOpaque = false
+        view.window?.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow)) - 1)
+        
+        let blurView = NSVisualEffectView(frame: contentView.bounds)
+        blurView.blendingMode = .behindWindow
+        blurView.material = .fullScreenUI
+        blurView.state = .active
+        contentView.addSubview(blurView)
+        self.blurView = blurView
+    }
 }

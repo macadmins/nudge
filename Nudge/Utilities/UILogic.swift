@@ -44,7 +44,7 @@ func nudgeStartLogic() {
         Utils().logUserQuitDeferrals()
         Utils().logUserSessionDeferrals()
     }
-    if Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+    if Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
         nudgePrimaryState.requireDualQuitButtons = true
     }
     let deferralDate = nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime
@@ -60,7 +60,7 @@ func nudgeStartLogic() {
             uiLog.notice("\("Device is fully updated", privacy: .public)")
             Utils().exitNudge()
         }
-    } else if enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
+    } else if OptionalFeatureVariables.enforceMinorUpdates == false && Utils().requireMajorUpgrade() == false {
         uiLog.warning("\("Device requires a minor update but enforceMinorUpdates is false", privacy: .public)")
         Utils().exitNudge()
     }
@@ -87,7 +87,7 @@ func needToActivateNudge() -> Bool {
     Utils().logUserSessionDeferrals()
     Utils().logUserDeferrals()
     
-    nudgePrimaryState.deferralCountPastThreshhold = nudgePrimaryState.userDeferrals > allowedDeferrals
+    nudgePrimaryState.deferralCountPastThreshhold = nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferrals
     
     if nudgePrimaryState.deferralCountPastThreshhold {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThreshhold {
@@ -96,7 +96,7 @@ func needToActivateNudge() -> Bool {
         }
     }
     
-    if nudgePrimaryState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+    if nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
             uiLog.notice("\("allowedDeferralsUntilForcedSecondaryQuitButton has been passed", privacy: .public)")
             nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
@@ -105,7 +105,7 @@ func needToActivateNudge() -> Bool {
     
     // Print both controllers back to back
     if !nudgeLogState.afterFirstRun {
-        uiLog.info("\("nudgeRefreshCycle: \(nudgeRefreshCycle)", privacy: .public)")
+        uiLog.info("\("nudgeRefreshCycle: \(UserExperienceVariables.nudgeRefreshCycle)", privacy: .public)")
         if !DNDServer {
             uiLog.error("\("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable", privacy: .public)")
         }
@@ -132,7 +132,7 @@ func needToActivateNudge() -> Bool {
     }
     
     // If noTimers is true, just bail
-    if noTimers {
+    if UserExperienceVariables.noTimers {
         uiLog.info("\("Ignoring Nudge activation - noTimers is set", privacy: .public)")
         return false
     }
@@ -145,7 +145,7 @@ func needToActivateNudge() -> Bool {
     
     // Don't nudge if major upgrade is frontmostApplication
     if majorUpgradeAppPathExists {
-        if NSURL.fileURL(withPath: majorUpgradeAppPath) == frontmostApplication?.bundleURL {
+        if NSURL.fileURL(withPath: OSVersionRequirementVariables.majorUpgradeAppPath) == frontmostApplication?.bundleURL {
             uiLog.info("\("Ignoring Nudge activation - majorUpgradeApp is currently the frontmostApplication", privacy: .public)")
             return false
         }
@@ -159,7 +159,7 @@ func needToActivateNudge() -> Bool {
     }
     
     // Don't nudge if camera is on and prior to requiredInstallationDate
-    if acceptableCameraUsage && !pastRequiredInstallationDate {
+    if OptionalFeatureVariables.acceptableCameraUsage && !pastRequiredInstallationDate {
         for camera in cameras {
             if camera.isOn {
                 uiLog.info("\("Ignoring Nudge activation - Camera is currently on and not pastRequiredInstallationDate", privacy: .public)")
@@ -169,7 +169,7 @@ func needToActivateNudge() -> Bool {
     }
     
     // Don't nudge if screen sharing and prior to requiredInstallationDate
-    if DNDServer && acceptableScreenSharingUsage && !pastRequiredInstallationDate {
+    if DNDServer && OptionalFeatureVariables.acceptableScreenSharingUsage && !pastRequiredInstallationDate {
         if (DNDConfig().rawValue?.value(forKey: "isScreenShared") as? Bool ?? false) == true && !pastRequiredInstallationDate {
             uiLog.info("\("Ignoring Nudge activation - Screen sharing is currently active and not pastRequiredInstallationDate", privacy: .public)")
             return false
@@ -177,7 +177,7 @@ func needToActivateNudge() -> Bool {
     }
     
     // Don't nudge if assertions are set and prior to requiredInstallationDate
-    if acceptableAssertionUsage && !pastRequiredInstallationDate {
+    if OptionalFeatureVariables.acceptableAssertionUsage && !pastRequiredInstallationDate {
         // Credit to https://github.com/francescofact/DualDimmer/blob/main/DualDimmer/Worker.swift
         var assertions: Unmanaged<CFDictionary>?
         if IOPMCopyAssertionsByProcess(&assertions) != kIOReturnSuccess {
@@ -189,7 +189,7 @@ func needToActivateNudge() -> Bool {
             for value in assertionValues as! [NSDictionary]{
                 let processName = value["Process Name"] as? String ?? ""
                 let assertionType = value["AssertionTrueType"] as? String ?? ""
-                if acceptableAssertionApplicationNames.contains(processName) {
+                if OptionalFeatureVariables.acceptableAssertionApplicationNames.contains(processName) {
                     uiLog.info("\("Ignoring Nudge activation - Assertion \(assertionType) is set for \(processName)", privacy: .public)")
                     return false
                 }
@@ -198,7 +198,7 @@ func needToActivateNudge() -> Bool {
     }
     
     // Don't nudge if acceptable apps are frontmostApplication
-    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) || customAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) {
+    if builtInAcceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) || OptionalFeatureVariables.acceptableApplicationBundleIDs.contains((frontmostApplication?.bundleIdentifier ?? "")!) {
         uiLog.info("\("Ignoring Nudge activation - acceptableApplication (\(frontmostApplication?.bundleIdentifier ?? "")) is currently the frontmostApplication", privacy: .public)")
         return false
     }
@@ -214,16 +214,16 @@ func needToActivateNudge() -> Bool {
         uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
     }
     
-    if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && aggressiveUserExperience {
+    if (nudgePrimaryState.deferralCountPastThreshhold || Utils().pastRequiredInstallationDate()) && OptionalFeatureVariables.aggressiveUserExperience {
         // Loop through all the running applications and hide them
         for runningApplication in runningApplications {
             let appName = runningApplication.bundleIdentifier ?? ""
             let appBundle = runningApplication.bundleURL
-            if builtInAcceptableApplicationBundleIDs.contains(appName) || customAcceptableApplicationBundleIDs.contains(appName) {
+            if builtInAcceptableApplicationBundleIDs.contains(appName) || OptionalFeatureVariables.acceptableApplicationBundleIDs.contains(appName) {
                 continue
             }
             if majorUpgradeAppPathExists {
-                if NSURL.fileURL(withPath: majorUpgradeAppPath) == appBundle {
+                if NSURL.fileURL(withPath: OSVersionRequirementVariables.majorUpgradeAppPath) == appBundle {
                     continue
                 }
             }

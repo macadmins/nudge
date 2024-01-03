@@ -14,74 +14,39 @@ struct DeviceInfo: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 7.5) {
-            HStack {
-                Button(
-                    action: {
-                        appState.additionalInfoViewIsPresented = false
-                    })
-                {
-                    Image(systemName: "xmark.circle")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                .frame(width: 30, height: 30)
-                
-                // Horizontally align close button to left
-                Spacer()
-            }
-            // Additional Device Information
-            Group {
-                HStack{
-                    Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                        .fontWeight(.bold)
-                }
-                // Username
-                HStack{
-                    Text("Username:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    Text(Utils().getSystemConsoleUsername())
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                }
-                // Serial Number
-                HStack{
-                    Text("Serial Number:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    Text(Utils().getSerialNumber())
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                }
-                // Architecture
-                HStack{
-                    Text("Architecture:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    Text(Utils().getCPUTypeString())
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                }
-                // Language
-                HStack{
-                    Text("Language:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    Text(languageCode)
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                }
-                // Nudge Version
-                HStack{
-                    Text("Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    Text(Utils().getNudgeVersion())
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                }
-            }
-            
-            // Vertically align Additional Device Information to center
-            Spacer()
+            closeButton
+            Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .fontWeight(.bold)
+            infoRow(label: "Username:", value: Utils().getSystemConsoleUsername())
+            infoRow(label: "Serial Number:", value: Utils().getSerialNumber())
+            infoRow(label: "Architecture:", value: Utils().getCPUTypeString())
+            infoRow(label: "Language:", value: languageCode)
+            infoRow(label: "Version:", value: Utils().getNudgeVersion())
+            Spacer() // Vertically align Additional Device Information to center
         }
         .background(Color(NSColor.windowBackgroundColor))
         .frame(width: 400, height: 200)
+    }
+    
+    private var closeButton: some View {
+        HStack {
+            Button(action: { appState.additionalInfoViewIsPresented = false }) {
+                CloseButton()
+            }
+            .buttonStyle(.plain)
+            .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            .onHoverEffect()
+            .frame(width: 30, height: 30)
+            Spacer() // Horizontally align close button to left
+        }
+    }
+    
+    private func infoRow(label: String, value: String) -> some View {
+        HStack {
+            Text(label.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            Text(value)
+                .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
+        }
     }
 }
 

@@ -18,6 +18,7 @@
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		6316F0E72832CA0700E1354D /* Schema in Resources */ = {isa = PBXBuildFile; fileRef = 6316F0E62832CA0700E1354D /* Schema */; };
+		6347351D2B45DC2400C3401D /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347351C2B45DC2400C3401D /* CloseButton.swift */; };
 		636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B9C0126CACCAB0007BE3B /* DeferView.swift */; };
 		636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
@@ -86,6 +87,7 @@
 		5836861325DACFE90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		6316F0E62832CA0700E1354D /* Schema */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Schema; sourceTree = "<group>"; };
+		6347351C2B45DC2400C3401D /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		636B9C0126CACCAB0007BE3B /* DeferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferView.swift; sourceTree = "<group>"; };
 		636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesNudge.swift; sourceTree = "<group>"; };
 		636C4B7525D4306A0004A791 /* UILogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogic.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				639B6B5725DF377B00E38EC1 /* DeviceInfo.swift */,
 				41AD2B0526DEDB61004C52B1 /* InformationButton.swift */,
 				41AD2AFF26DE65B1004C52B1 /* QuitButtons.swift */,
+				6347351C2B45DC2400C3401D /* CloseButton.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				41AD2B0026DE65B1004C52B1 /* QuitButtons.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */,
+				6347351D2B45DC2400C3401D /* CloseButton.swift in Sources */,
 				639B6B5825DF377B00E38EC1 /* DeviceInfo.swift in Sources */,
 				5836861425DACFE90004514C /* Logger.swift in Sources */,
 				41AD2B0426DE6A6B004C52B1 /* CompanyLogo.swift in Sources */,

@@ -76,7 +76,7 @@ struct ContentView: View {
     }
     
     func updateUI() {
-        if Utils().requireDualQuitButtons() || appState.userDeferrals > allowedDeferralsUntilForcedSecondaryQuitButton {
+        if Utils().requireDualQuitButtons() || appState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
             appState.requireDualQuitButtons = true
         }
         if Utils().pastRequiredInstallationDate() || appState.deferralCountPastThreshhold {
@@ -213,9 +213,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil
         )
         
-        if attemptToBlockApplicationLaunches {
+        if OptionalFeatureVariables.attemptToBlockApplicationLaunches {
             registerLocal()
-            if !nudgeLogState.afterFirstLaunch && terminateApplicationsOnLaunch {
+            if !nudgeLogState.afterFirstLaunch && OptionalFeatureVariables.terminateApplicationsOnLaunch {
                 terminateApplications()
             }
             snc.addObserver(
@@ -274,7 +274,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if appBundleID == "com.github.macadmins.Nudge" {
                 continue
             }
-            if blockedApplicationBundleIDs.contains(appBundleID) {
+            if OptionalFeatureVariables.blockedApplicationBundleIDs.contains(appBundleID) {
                 utilsLog.info("\("Found \(appName), terminating application", privacy: .public)")
                 scheduleLocal(applicationIdentifier: appName)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
@@ -374,7 +374,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         
-        if asynchronousSoftwareUpdate && Utils().requireMajorUpgrade() == false && !Utils().pastRequiredInstallationDate() {
+        if OptionalFeatureVariables.asynchronousSoftwareUpdate && Utils().requireMajorUpgrade() == false && !Utils().pastRequiredInstallationDate() {
             DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
                 SoftwareUpdate().Download()
             })
@@ -389,9 +389,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if #available(macOS 13, *) {
             let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.SMAppService.plist")
             let appServiceStatus = appService.status
-            if CommandLine.arguments.contains("--register") || loadLaunchAgent {
+            if CommandLine.arguments.contains("--register") || UserExperienceVariables.loadLaunchAgent {
                 Utils().loadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
-            } else if CommandLine.arguments.contains("--unregister") || !loadLaunchAgent {
+            } else if CommandLine.arguments.contains("--unregister") || !UserExperienceVariables.loadLaunchAgent {
                 Utils().unloadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
             }
         }
@@ -419,16 +419,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             exit(0)
         }
         
-        if randomDelay {
-            let randomDelaySeconds = Int.random(in: 1...maxRandomDelayInSeconds)
+        if UserExperienceVariables.randomDelay {
+            let randomDelaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
             sleep(UInt32(randomDelaySeconds))
         }
         
         self.runSoftwareUpdate()
         if Utils().requireMajorUpgrade() {
-            if actionButtonPath != nil {
-                if !actionButtonPath!.isEmpty {
+            if FeatureVariables.actionButtonPath != nil {
+                if !FeatureVariables.actionButtonPath!.isEmpty {
                     return
                 } else {
                     prefsProfileLog.warning("\("actionButtonPath contains empty string - actionButton will be unable to trigger any action required for major upgrades", privacy: .public)")
@@ -436,11 +436,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
             
-            if attemptToFetchMajorUpgrade == true && fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
+            if OptionalFeatureVariables.attemptToFetchMajorUpgrade == true && GlobalVariables.fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
                 uiLog.error("\("Unable to fetch major upgrade and application missing, exiting Nudge", privacy: .public)")
                 nudgePrimaryState.shouldExit = true
                 exit(1)
-            } else if attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
+            } else if OptionalFeatureVariables.attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
                 uiLog.error("\("Unable to find major upgrade application, exiting Nudge", privacy: .public)")
                 nudgePrimaryState.shouldExit = true
                 exit(1)

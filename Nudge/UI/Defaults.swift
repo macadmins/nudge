@@ -19,7 +19,7 @@ let snc = NSWorkspace.shared.notificationCenter
 // Intervals
 let dayTimeInterval: CGFloat = 86400
 let hourTimeInterval: CGFloat = 3600
-let nudgeRefreshCycleTimer = Timer.publish(every: Double(nudgeRefreshCycle), on: .main, in: .common).autoconnect() // Setup the main refresh timer that controls the child refresh logic
+let nudgeRefreshCycleTimer = Timer.publish(every: Double(UserExperienceVariables.nudgeRefreshCycle), on: .main, in: .common).autoconnect() // Setup the main refresh timer that controls the child refresh logic
 
 // Preferences
 let configJSON = Utils().getConfigurationAsJSON()
