@@ -103,9 +103,9 @@ struct StandardModeRightSide: View {
                         } label: {
                             Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
                                 .scaledToFit()
-                                .frame(width: logoWidth, height: logoHeight)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxHeight: screenshotMaxHeight)
                         }
                         .buttonStyle(.plain)
                         .help(screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
