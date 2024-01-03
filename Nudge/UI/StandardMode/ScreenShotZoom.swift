@@ -13,80 +13,55 @@ struct ScreenShotZoom: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.colorScheme) var colorScheme
     
+    private var screenShotPath: String {
+        Utils().getScreenShotPath(colorScheme: colorScheme)
+    }
+    
     var body: some View {
-        let screenShotPath = Utils().getScreenShotPath(colorScheme: colorScheme)
-
         VStack(alignment: .center) {
-            HStack {
-                Button(
-                    action: {
-                        appState.screenShotZoomViewIsPresented = false
-                    }
-                )
-                {
-                    Image(systemName: "xmark.circle")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                .frame(width: 30, height: 30)
-                
-                // Horizontally align close button to left
-                Spacer()
-            }
-            
-            HStack {
-                Button(
-                    action: {
-                        appState.screenShotZoomViewIsPresented = false
-                    }, label: {
-                    if screenShotPath.starts(with: "data:") {
-                        Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
-                            .resizable()
-                            .scaledToFit()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 675)
-                    } else {
-                        if FileManager.default.fileExists(atPath: screenShotPath) {
-                            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                                .resizable()
-                                .scaledToFit()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: 675)
-                        } else {
-                            Image("CompanyScreenshotIcon")
-                                .resizable()
-                                .scaledToFit()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: 675)
-                        }
-                    }
-                }
-                )
-                .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-            }
-            // Vertically align Screenshot to center
-            Spacer()
+            closeButton
+            screenShotButton
+            Spacer() // Vertically align Screenshot to center
         }
         .background(Color(NSColor.windowBackgroundColor))
         .frame(maxWidth: 900)
+    }
+    
+    private var closeButton: some View {
+        HStack {
+            Button(action: { appState.screenShotZoomViewIsPresented = false }) {
+                CloseButton()
+            }
+            .buttonStyle(.plain)
+            .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            .onHoverEffect()
+            .frame(width: 30, height: 30)
+            Spacer() // Horizontally align close button to left
+        }
+    }
+    
+    private var screenShotButton: some View {
+        HStack {
+            Button(action: { appState.screenShotZoomViewIsPresented = false }) {
+                screenShotImage
+            }
+            .buttonStyle(.plain)
+            .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            .onHoverEffect()
+        }
+    }
+    
+    private var screenShotImage: some View {
+        if screenShotPath.starts(with: "data:") {
+            Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
+                .customMaxHeightResizable(maxHeight: 675)
+        } else if FileManager.default.fileExists(atPath: screenShotPath) {
+            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
+                .customMaxHeightResizable(maxHeight: 675)
+        } else {
+            Image("CompanyScreenshotIcon")
+                .customMaxHeightResizable(maxHeight: 675)
+        }
     }
 }
 

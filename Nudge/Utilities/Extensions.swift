@@ -33,6 +33,23 @@ extension FixedWidthInteger {
     }
 }
 
+extension Image {
+    func customResizable(width: CGFloat, height: CGFloat) -> some View {
+        self
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
+            .frame(width: width, height: height)
+    }
+    func customMaxHeightResizable(maxHeight: CGFloat) -> some View {
+        self
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
+            .frame(maxHeight: maxHeight)
+    }
+}
+
 // https://github.com/brackeen/calculate-widget/blob/master/Calculate/NSWindow%2BMoveToActiveSpace.swift#L64
 extension NSWorkspace {
     func isActiveSpaceFullScreen() -> Bool {
@@ -72,5 +89,17 @@ extension String {
         let path = bundle.path(forResource: desiredLanguage, ofType: "lproj") ?? bundle.path(forResource: "en", ofType: "lproj")
         let bundle = Bundle(path: path!)
         return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
+}
+
+extension View {
+    func onHoverEffect() -> some View {
+        self.onHover { inside in
+            if inside {
+                NSCursor.pointingHand.push()
+            } else {
+                NSCursor.pop()
+            }
+        }
     }
 }

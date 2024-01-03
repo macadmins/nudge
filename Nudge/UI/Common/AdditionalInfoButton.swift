@@ -12,27 +12,23 @@ struct AdditionalInfoButton: View {
     
     var body: some View {
         HStack {
-            Button(action: {
-                Utils().userInitiatedDeviceInfo()
-                appState.additionalInfoViewIsPresented = true
-            }) {
+            Button(action: buttonAction) {
                 Image(systemName: "questionmark.circle")
             }
             .padding(.top, 1.0)
             .buttonStyle(.plain)
             .help("Click for additional device information".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-            .onHover { inside in
-                if inside {
-                    NSCursor.pointingHand.push()
-                } else {
-                    NSCursor.pop()
-                }
-            }
+            .onHoverEffect()
             .sheet(isPresented: $appState.additionalInfoViewIsPresented) {
                 DeviceInfo()
             }
             Spacer()
         }
+    }
+    
+    private func buttonAction() {
+        Utils().userInitiatedDeviceInfo()
+        appState.additionalInfoViewIsPresented = true
     }
 }
 

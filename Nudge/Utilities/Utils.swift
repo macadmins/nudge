@@ -109,7 +109,7 @@ struct Utils {
         // Sheets do not count as windows though.
         
         // load the blur background and send it to the back if we are past the required install date
-        if pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
+        if pastRequiredInstallationDate() && OptionalFeatureVariables.aggressiveUserFullScreenExperience {
             Utils().centerNudge()
             NSApp.activate(ignoringOtherApps: true)
             NSApp.windows[0].makeKeyAndOrderFront(self)
@@ -149,7 +149,7 @@ struct Utils {
     
     @available(macOS 13.0, *)
     func loadSMAppLaunchAgent(appService: SMAppService, appServiceStatus: SMAppService.Status) {
-        let url = URL(string: "/Library/LaunchAgents/\(launchAgentIdentifier).plist")!
+        let url = URL(string: "/Library/LaunchAgents/\(UserExperienceVariables.launchAgentIdentifier).plist")!
         let legacyStatus = SMAppService.statusForLegacyPlist(at: url)
         let passedThroughCLI = CommandLine.arguments.contains("--register")
         if legacyStatus == .enabled {
@@ -241,7 +241,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allow24HourDeferralButton = getNumberOfHoursRemaining() > imminentWindowTime
+        let allow24HourDeferralButton = getNumberOfHoursRemaining() > UserExperienceVariables.imminentWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allow24HourDeferralButton: \(allow24HourDeferralButton, privacy: .public)")
@@ -253,7 +253,7 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        let allowCustomDeferralButton = getNumberOfHoursRemaining() > approachingWindowTime
+        let allowCustomDeferralButton = getNumberOfHoursRemaining() > UserExperienceVariables.approachingWindowTime
         // TODO: Technically we should also log when this value changes in the middle of a nudge run
         if !nudgeLogState.afterFirstRun {
             uiLog.info("Device allowCustomDeferralButton: \(allowCustomDeferralButton, privacy: .public)")
@@ -361,9 +361,9 @@ struct Utils {
     }
     
     func fullyUpdated() -> Bool {
-        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
+        let fullyUpdated = versionGreaterThanOrEqual(currentVersion: GlobalVariables.currentOSVersion, newVersion: OSVersionRequirementVariables.requiredMinimumOSVersion)
         if fullyUpdated {
-            utilsLog.notice("\("Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))", privacy: .public)")
+            utilsLog.notice("\("Current operating system (\(GlobalVariables.currentOSVersion)) is greater than or equal to required operating system (\(OSVersionRequirementVariables.requiredMinimumOSVersion))", privacy: .public)")
             return true
         } else {
             return false
@@ -382,9 +382,9 @@ struct Utils {
     
     func getCompanyLogoPath(colorScheme: ColorScheme) -> String {
         if colorScheme == .dark {
-            return iconDarkPath
+            return UserInterfaceVariables.iconDarkPath
         } else {
-            return iconLightPath
+            return UserInterfaceVariables.iconLightPath
         }
     }
     
@@ -549,7 +549,7 @@ struct Utils {
     }
     
     func getMajorRequiredNudgeOSVersion() -> Int {
-        let parts = requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
+        let parts = OSVersionRequirementVariables.requiredMinimumOSVersion.split(separator: ".", omittingEmptySubsequences: false)
         let majorRequiredNudgeOSVersion = Int((parts[0]))!
         if !nudgeLogState.hasLoggedMajorRequiredOSVersion {
             nudgeLogState.hasLoggedMajorRequiredOSVersion = true
@@ -648,11 +648,21 @@ struct Utils {
         return PatchOSVersion
     }
     
+    func getScreenShotImage(path: String) -> NSImage? {
+        if path.starts(with: "data:") {
+            // Path is a base64 string
+            return createImageBase64(base64String: path)
+        } else {
+            // Path is a file path
+            return createImageData(fileImagePath: path)
+        }
+    }
+    
     func getScreenShotPath(colorScheme: ColorScheme) -> String {
         if colorScheme == .dark {
-            return screenShotDarkPath
+            return UserInterfaceVariables.screenShotDarkPath
         } else {
-            return screenShotLightPath
+            return UserInterfaceVariables.screenShotLightPath
         }
     }
     
@@ -745,36 +755,36 @@ struct Utils {
     
     func getTimerControllerInt() -> Int {
         if 0 >= getNumberOfHoursRemaining() {
-            return elapsedRefreshCycle
-        } else if imminentWindowTime >= getNumberOfHoursRemaining() {
-            return imminentRefreshCycle
-        } else if approachingWindowTime >= getNumberOfHoursRemaining() {
-            return approachingRefreshCycle
+            return UserExperienceVariables.elapsedRefreshCycle
+        } else if UserExperienceVariables.imminentWindowTime >= getNumberOfHoursRemaining() {
+            return UserExperienceVariables.imminentRefreshCycle
+        } else if UserExperienceVariables.approachingWindowTime >= getNumberOfHoursRemaining() {
+            return UserExperienceVariables.approachingRefreshCycle
         } else {
-            return initialRefreshCycle
+            return UserExperienceVariables.initialRefreshCycle
         }
     }
     
     func gracePeriodLogic(currentDate: Date = Utils().getCurrentDate(), testFileDate: Date? = nil) -> Date {
-        if (allowGracePeriods || PrefsWrapper.allowGracePeriods) && !demoModeEnabled() {
-            if FileManager.default.fileExists(atPath: gracePeriodPath) || unitTestingEnabled() {
-                if let attributes = try? FileManager.default.attributesOfItem(atPath: gracePeriodPath) as [FileAttributeKey: Any],
+        if (UserExperienceVariables.allowGracePeriods || PrefsWrapper.allowGracePeriods) && !demoModeEnabled() {
+            if FileManager.default.fileExists(atPath: UserExperienceVariables.gracePeriodPath) || unitTestingEnabled() {
+                if let attributes = try? FileManager.default.attributesOfItem(atPath: UserExperienceVariables.gracePeriodPath) as [FileAttributeKey: Any],
                    var gracePeriodPathCreationDate = attributes[FileAttributeKey.creationDate] as? Date {
                     if testFileDate != nil {
                         gracePeriodPathCreationDate = testFileDate!
                     }
                     let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
-                    let combinedGracePeriod = gracePeriodInstallDelay + gracePeriodLaunchDelay
+                    let combinedGracePeriod = UserExperienceVariables.gracePeriodInstallDelay + UserExperienceVariables.gracePeriodLaunchDelay
                     uiLog.info("\("allowGracePeriods is set to true", privacy: .public)")
                     if (currentDate > PrefsWrapper.requiredInstallationDate) || combinedGracePeriod > getNumberOfHoursRemaining(currentDate: currentDate) {
                         // Exit Scenario
-                        if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
+                        if UserExperienceVariables.gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
                             uiLog.info("\("Device within gracePeriodLaunchDelay, exiting Nudge", privacy: .public)")
                             nudgePrimaryState.shouldExit = true
                         }
                         
                         // Launch Scenario
-                        if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
+                        if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
                             requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
                             uiLog.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate.getFormattedDate(format: "yyyy-MM-dd'T'HH:mm:ss'Z'"), privacy: .public)")
                             return requiredInstallationDate
@@ -832,15 +842,15 @@ struct Utils {
     }
     
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
     
     func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: OSVersionRequirementVariables.requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
     
     func openMoreInfo() {
-        guard let url = URL(string: aboutUpdateURL) else {
+        guard let url = URL(string: OSVersionRequirementVariables.aboutUpdateURL) else {
             return
         }
         uiLog.notice("\("User clicked moreInfo button", privacy: .public)")
@@ -863,11 +873,11 @@ struct Utils {
         if demoModeEnabled() {
             return true
         }
-        if singleQuitButton {
+        if UserInterfaceVariables.singleQuitButton {
             uiLog.info("Single quit button configured")
             return false
         }
-        let requireDualQuitButtons = (approachingWindowTime / 24) >= getNumberOfDaysBetween()
+        let requireDualQuitButtons = (UserExperienceVariables.approachingWindowTime / 24) >= getNumberOfDaysBetween()
         if !nudgePrimaryState.hasLoggedRequireDualQuitButtons {
             nudgePrimaryState.hasLoggedRequireDualQuitButtons = true
             uiLog.info("Device requireDualQuitButtons: \(requireDualQuitButtons, privacy: .public)")
@@ -911,16 +921,16 @@ struct Utils {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
         var url = String()
-        if actionButtonPath != nil {
-            if !actionButtonPath!.isEmpty {
-                url = actionButtonPath!
+        if FeatureVariables.actionButtonPath != nil {
+            if !FeatureVariables.actionButtonPath!.isEmpty {
+                url = FeatureVariables.actionButtonPath!
             } else {
                 prefsProfileLog.error("\("actionButtonPath contains empty string - actionButton will be unable to trigger any action.", privacy: .public)")
                 return
             }
         } else if requireMajorUpgrade() {
             if majorUpgradeAppPathExists {
-                url = majorUpgradeAppPath
+                url = OSVersionRequirementVariables.majorUpgradeAppPath
             } else if majorUpgradeBackupAppPathExists {
                 url = getBackupMajorUpgradeAppPath()
             } else { // Backup if all of these checks fail
@@ -973,11 +983,10 @@ struct Utils {
         if userClicked {
             uiLog.notice("\("User clicked updateDevice", privacy: .public)")
             // turn off blur and allow windows to come above Nudge
-            if Utils().pastRequiredInstallationDate() && aggressiveUserFullScreenExperience {
-                if nudgePrimaryState.backgroundBlur.count > 0 {
-                    for (index, _) in screens.enumerated() {
-                        nudgePrimaryState.backgroundBlur[index].close()
-                    }
+            if nudgePrimaryState.backgroundBlur.count > 0 {
+                uiLog.notice("\("Attempting to remove forced blur", privacy: .public)")
+                for (index, _) in screens.enumerated() {
+                    nudgePrimaryState.backgroundBlur[index].close()
                 }
                 NSApp.windows[0].level = .normal
             }

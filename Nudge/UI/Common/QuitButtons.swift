@@ -13,92 +13,111 @@ struct QuitButtons: View {
     
     var body: some View {
         HStack {
-            // secondaryQuitButton
-            if appState.requireDualQuitButtons {
-                HStack(spacing: 20) {
-                    if appState.hasClickedSecondaryQuitButton == false {
-                        Button(
-                            action: {
-                                // TODO: Xcode 15 Compiler warning suddenly. Investigate
-                                appState.hasClickedSecondaryQuitButton = true
-                                userHasClickedSecondaryQuitButton()
-                            }, label: {
-                                Text(secondaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                            }
-                        )
-                        .padding(.leading, -200.0)
-                    }
-                }
-                .frame(maxWidth:100, maxHeight: 30)
-            }
-            // primaryQuitButton
-            if appState.requireDualQuitButtons == false || appState.hasClickedSecondaryQuitButton {
-                HStack {
-                    if allowUserQuitDeferrals {
-                        Menu {
-                            if allowLaterDeferralButton {
-                                Button {
-                                    Utils().setDeferralTime(deferralTime: appState.nudgeEventDate)
-                                    updateDeferralUI()
-                                } label: {
-                                    Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                        .frame(minWidth: buttonTextMinWidth)
-                                }
-                            }
-                            if Utils().allow1HourDeferral() {
-                                Button {
-                                    appState.nudgeEventDate = Utils().getCurrentDate()
-                                    Utils().setDeferralTime(deferralTime: appState.nudgeEventDate.addingTimeInterval(hourTimeInterval))
-                                    userHasClickedDeferralQuitButton(deferralTime: appState.nudgeEventDate.addingTimeInterval(hourTimeInterval))
-                                    updateDeferralUI()
-                                } label: {
-                                    Text(oneHourDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                        .frame(minWidth: buttonTextMinWidth)
-                                }
-                            }
-                            if Utils().allow24HourDeferral() {
-                                Button {
-                                    appState.nudgeEventDate = Utils().getCurrentDate()
-                                    Utils().setDeferralTime(deferralTime: appState.nudgeEventDate.addingTimeInterval(dayTimeInterval))
-                                    userHasClickedDeferralQuitButton(deferralTime: appState.nudgeEventDate.addingTimeInterval(dayTimeInterval))
-                                    updateDeferralUI()
-                                } label: {
-                                    Text(oneDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                        .frame(minWidth: buttonTextMinWidth)
-                                }
-                            }
-                            if Utils().allowCustomDeferral() {
-                                Divider()
-                                Button {
-                                    appState.deferViewIsPresented = true
-                                } label: {
-                                    Text(customDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                        .frame(minWidth: buttonTextMinWidth)
-                                }
-                            }
-                        }
-                    label: {
-                        Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    }
+            if shouldShowSecondaryQuitButton {
+                secondaryQuitButton
                     .frame(maxWidth:215, maxHeight: 30)
-                    } else {
-                        Button {
-                            Utils().userInitiatedExit()
-                        } label: {
-                            Text(primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                                .frame(minWidth: buttonTextMinWidth)
-                        }
-                    }
-                }
-                .sheet(isPresented: $appState.deferViewIsPresented) {
-                } content: {
-                    DeferView()
-                }
+                Spacer()
+            }
+            if shouldShowPrimaryQuitButton {
+                Spacer()
+                primaryQuitButton
+                    .frame(maxWidth:215, maxHeight: 30)
+            }
+        }
+        .sheet(isPresented: $appState.deferViewIsPresented) {
+            DeferView()
+        }
+    }
+
+    private var customDeferralButton: some View {
+        Button(action: { appState.deferViewIsPresented = true }) {
+            Text(UserInterfaceVariables.customDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+        }
+    }
+
+    private func deferAction(by timeInterval: TimeInterval) {
+        appState.nudgeEventDate = Utils().getCurrentDate().addingTimeInterval(timeInterval)
+        Utils().setDeferralTime(deferralTime: appState.nudgeEventDate)
+        userHasClickedDeferralQuitButton(deferralTime: appState.nudgeEventDate)
+        updateDeferralUI()
+    }
+
+    private func deferralButton(title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+        }
+    }
+
+    private var deferralMenu: some View {
+        Menu {
+            deferralOptions
+        } label: {
+            Text(UserInterfaceVariables.customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+        }
+    }
+
+    private var deferralOptions: some View {
+        Group {
+            if UserExperienceVariables.allowLaterDeferralButton {
+                deferralButton(title: UserInterfaceVariables.primaryQuitButtonText, action: standardDeferralAction)
+            }
+            if Utils().allow1HourDeferral() {
+                deferralButton(title: UserInterfaceVariables.oneHourDeferralButtonText, action: { deferAction(by: hourTimeInterval) })
+            }
+            if Utils().allow24HourDeferral() {
+                deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText, action: { deferAction(by: dayTimeInterval) })
+            }
+            if Utils().allowCustomDeferral() {
+                customDeferralButton
+            }
+        }
+    }
+
+    private var primaryQuitButton: some View {
+        Group {
+            if UserExperienceVariables.allowUserQuitDeferrals {
+                deferralMenu
+            } else {
+                standardQuitButton
             }
         }
     }
     
-    func updateDeferralUI() {
+    private var secondaryQuitButton: some View {
+        Button(action: secondaryQuitButtonAction) {
+            Text(UserInterfaceVariables.secondaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+        }
+    }
+
+    private func secondaryQuitButtonAction() {
+        appState.hasClickedSecondaryQuitButton = true
+        userHasClickedSecondaryQuitButton()
+    }
+
+    // Determines if the secondary quit button should be shown
+    private var shouldShowSecondaryQuitButton: Bool {
+        appState.requireDualQuitButtons && !appState.hasClickedSecondaryQuitButton
+    }
+    
+    // Determines if the primary quit button should be shown
+    private var shouldShowPrimaryQuitButton: Bool {
+        !appState.requireDualQuitButtons || appState.hasClickedSecondaryQuitButton
+    }
+
+    private func standardDeferralAction() {
+        appState.nudgeEventDate = Utils().getCurrentDate()
+        Utils().setDeferralTime(deferralTime: appState.nudgeEventDate)
+        updateDeferralUI()
+    }
+    
+    private var standardQuitButton: some View {
+        Button(action: Utils().userInitiatedExit) {
+            Text(UserInterfaceVariables.primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+        }
+    }
+    
+    private func updateDeferralUI() {
+        // Update deferral UI logic
         appState.userQuitDeferrals += 1
         appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
         Utils().logUserQuitDeferrals()

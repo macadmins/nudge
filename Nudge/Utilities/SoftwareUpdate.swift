@@ -41,7 +41,7 @@ class SoftwareUpdate {
     }
     
     func Download() {
-        softwareupdateDownloadLog.notice("enforceMinorUpdates: \(enforceMinorUpdates, privacy: .public)")
+        softwareupdateDownloadLog.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates, privacy: .public)")
         
         if Utils().getCPUTypeString() == "Apple Silicon" && Utils().requireMajorUpgrade() == false {
             softwareupdateListLog.debug("\("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.", privacy: .public)")
@@ -49,11 +49,11 @@ class SoftwareUpdate {
         }
         
         if Utils().requireMajorUpgrade() {
-            if actionButtonPath != nil {
+            if FeatureVariables.actionButtonPath != nil {
                 return
             }
             
-            if attemptToFetchMajorUpgrade == true {
+            if OptionalFeatureVariables.attemptToFetchMajorUpgrade == true {
                 if majorUpgradeAppPathExists {
                     softwareupdateListLog.notice("\("Found major upgrade application - skipping download", privacy: .public)")
                     return
@@ -67,7 +67,7 @@ class SoftwareUpdate {
                 softwareupdateListLog.notice("\("Device requires major upgrade - attempting download", privacy: .public)")
                 let task = Process()
                 task.launchPath = "/usr/sbin/softwareupdate"
-                task.arguments = ["--fetch-full-installer", "--full-installer-version", requiredMinimumOSVersion]
+                task.arguments = ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion]
                 
                 let outputPipe = Pipe(), errorPipe = Pipe()
                 
@@ -91,27 +91,27 @@ class SoftwareUpdate {
                 } else {
                     softwareupdateListLog.notice("\("softwareupdate successfully downloaded available update application - updating application paths", privacy: .public)")
                     softwareupdateDownloadLog.info("\(output, privacy: .public)")
-                    fetchMajorUpgradeSuccessful = true
-                    majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: majorUpgradeAppPath)
+                    GlobalVariables.fetchMajorUpgradeSuccessful = true
+                    majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: OSVersionRequirementVariables.majorUpgradeAppPath)
                     majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
                 }
             } else {
                 softwareupdateListLog.notice("\("Device requires major upgrade but attemptToFetchMajorUpgrade is False - skipping download", privacy: .public)")
             }
         } else {
-            if disableSoftwareUpdateWorkflow {
+            if OptionalFeatureVariables.disableSoftwareUpdateWorkflow {
                 softwareupdateListLog.notice("\("Skip running softwareupdate because it's disabled by a preference.", privacy: .public)")
                 return
             }
             let softwareupdateList = self.List()
             var updateLabel = ""
             for update in softwareupdateList.components(separatedBy: "\n") {
-                if update.contains("Label:") && update.contains(requiredMinimumOSVersion) {
+                if update.contains("Label:") && update.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) {
                     updateLabel = update.components(separatedBy: ": ")[1]
                 }
             }
             
-            if softwareupdateList.contains(requiredMinimumOSVersion) && updateLabel.isEmpty == false {
+            if softwareupdateList.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) && updateLabel.isEmpty == false {
                 softwareupdateListLog.notice("softwareupdate found \(updateLabel, privacy: .public) available for download - attempting download")
                 let task = Process()
                 task.launchPath = "/usr/sbin/softwareupdate"
@@ -141,7 +141,7 @@ class SoftwareUpdate {
                     softwareupdateDownloadLog.info("\(output, privacy: .public)")
                 }
             } else {
-                softwareupdateListLog.notice("softwareupdate did not find \(requiredMinimumOSVersion, privacy: .public) available for download - skipping download attempt")
+                softwareupdateListLog.notice("softwareupdate did not find \(OSVersionRequirementVariables.requiredMinimumOSVersion, privacy: .public) available for download - skipping download attempt")
             }
         }
     }

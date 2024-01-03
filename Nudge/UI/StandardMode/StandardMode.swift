@@ -13,31 +13,34 @@ struct StandardMode: View {
 
     var body: some View {
         VStack {
-            HStack {
-                StandardModeLeftSide()
-                    .frame(width: leftSideWidth)
-                
-                // Vertical Line
-                VStack{
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.5))
-                        .frame(width: 1)
-                }
-
-                StandardModeRightSide()
-            }
-            // Bottom buttons
-            HStack {
-                InformationButton()
-                
-                if appState.allowButtons || Utils().demoModeEnabled() {
-                    QuitButtons()
-                }
-            }
-            .padding(.bottom, bottomPadding)
-            .padding(.leading, contentWidthPadding)
-            .padding(.trailing, contentWidthPadding)
+            standardModeContent
+            bottomButtons
         }
+    }
+    
+    private var standardModeContent: some View {
+        HStack {
+            StandardModeLeftSide()
+                .frame(width: leftSideWidth)
+            
+            Divider()
+                .padding(.vertical, contentWidthPadding)
+
+            StandardModeRightSide()
+        }
+    }
+    
+    private var bottomButtons: some View {
+        HStack {
+            InformationButton()
+            
+            if appState.allowButtons || Utils().demoModeEnabled() {
+                QuitButtons()
+            }
+        }
+        .padding(.bottom, bottomPadding)
+        .padding(.leading, contentWidthPadding)
+        .padding(.trailing, contentWidthPadding)
     }
 }
 

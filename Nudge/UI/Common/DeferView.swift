@@ -11,83 +11,75 @@ import SwiftUI
 struct DeferView: View {
     @EnvironmentObject var appState: AppState
     
+    private let edgePadding: CGFloat = 4
+    private let horizontalPadding: CGFloat = 30
+    private let bottomPadding: CGFloat = 10
+    
     var body: some View {
         VStack(alignment: .center) {
-            HStack {
-                Button(
-                    action: {
-                        appState.deferViewIsPresented = false
-                    }
-                )
-                {
-                    Image(systemName: "xmark.circle")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.red)
-                }
-                .keyboardShortcut(.escape)
-                .buttonStyle(.plain)
-                .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                // pulls the button away from the very edge of the view. Value of 4 seems a nice distance
-                .padding(4)
-                Spacer()
-            }
-            
-            VStack() {
-                // We have two DatePickers because DatePicker is non-ideal
-                DatePicker("", selection: $appState.nudgeCustomEventDate, in: limitRange)
-                    .datePickerStyle(.graphical)
-                    .labelsHidden()
-                DatePicker("", selection: $appState.nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
-                    .labelsHidden()
-                    .frame(maxWidth: 100)
-            }
-            // make space left and right of the stack
-            .padding(.leading, 30)
-            .padding(.trailing, 30)
-            
+            closeButton
+            datePickerStack
             Divider()
-            
-            Button {
-                Utils().setDeferralTime(deferralTime: appState.nudgeCustomEventDate)
-                userHasClickedDeferralQuitButton(deferralTime: appState.nudgeCustomEventDate)
-                appState.shouldExit = true
-                appState.userQuitDeferrals += 1
-                appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
-                Utils().logUserQuitDeferrals()
-                Utils().logUserDeferrals()
-                Utils().userInitiatedExit()
-            } label: {
-                Text(customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    .frame(minWidth: 35)
-            }
             // a bit of space at the bottom to raise the Defer button away from the very edge
-            .padding(.bottom, 10)
+            deferButton
+                .padding(.bottom, bottomPadding)
         }
         .background(Color(NSColor.windowBackgroundColor))
+        
+        
     }
-    var limitRange: ClosedRange<Date> {
-        var windowTime: Int
-        if calendarDeferralUnit == "approachingWindowTime" {
-            windowTime = (approachingWindowTime / 24)
-        } else if calendarDeferralUnit == "imminentWindowTime" {
-            windowTime = (imminentWindowTime / 24)
-        } else {
-            windowTime = (imminentWindowTime / 24)
+    
+    private var closeButton: some View {
+        HStack {
+            Button(action: { appState.deferViewIsPresented = false }) {
+                CloseButton()
+            }
+            .keyboardShortcut(.escape)
+            .buttonStyle(.plain)
+            .help("Click to close".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            .onHoverEffect()
+            .padding(edgePadding)
+            Spacer()
         }
-        if appState.daysRemaining > 0 {
-            // Do not let the user defer past the point of the windowTime
-            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: appState.daysRemaining-(windowTime), to: Utils().getCurrentDate())!
-        } else {
-            return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: 0, to: Utils().getCurrentDate())!
+    }
+    
+    private var datePickerStack: some View {
+        // We have two DatePickers because DatePicker is non-ideal
+        VStack {
+            DatePicker("", selection: $appState.nudgeCustomEventDate, in: limitRange)
+                .datePickerStyle(.graphical)
+                .labelsHidden()
+            DatePicker("", selection: $appState.nudgeCustomEventDate, in: limitRange, displayedComponents: [.hourAndMinute])
+                .labelsHidden()
+                .frame(maxWidth: 100)
         }
+        .padding(.horizontal, horizontalPadding)
+    }
+    
+    private var deferButton: some View {
+        Button(action: deferAction) {
+            Text(UserInterfaceVariables.customDeferralDropdownText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .frame(minWidth: 35)
+        }
+    }
+    
+    private func deferAction() {
+        Utils().setDeferralTime(deferralTime: appState.nudgeCustomEventDate)
+        userHasClickedDeferralQuitButton(deferralTime: appState.nudgeCustomEventDate)
+        appState.shouldExit = true
+        appState.userQuitDeferrals += 1
+        appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+        Utils().logUserQuitDeferrals()
+        Utils().logUserDeferrals()
+        Utils().userInitiatedExit()
+    }
+    
+    private var limitRange: ClosedRange<Date> {
+        let windowTime = [ "approachingWindowTime": UserExperienceVariables.approachingWindowTime,
+                           "imminentWindowTime": UserExperienceVariables.imminentWindowTime ]
+        let daysToAdd = appState.daysRemaining > 0 ? appState.daysRemaining - (windowTime[UserExperienceVariables.calendarDeferralUnit] ?? UserExperienceVariables.imminentWindowTime / 24) : 0
+        // Do not let the user defer past the point of the windowTime
+        return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: daysToAdd, to: Utils().getCurrentDate())!
     }
 }
 

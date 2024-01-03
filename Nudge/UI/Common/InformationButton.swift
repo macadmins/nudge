@@ -13,27 +13,27 @@ struct InformationButton: View {
 
     var body: some View {
         HStack {
-            // informationButton
-            if aboutUpdateURL != "" {
-                Button(action: Utils().openMoreInfo, label: {
-                    Text(informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                        .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-                }
-                )
+            informationButton
+            Spacer() // Force the button to the left
+        }
+    }
+    
+    private var informationButton: some View {
+        guard OSVersionRequirementVariables.aboutUpdateURL != "" else { return AnyView(EmptyView()) }
+        
+        return AnyView(
+            Button(action: Utils().openMoreInfo) {
+                Text(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    .foregroundColor(dynamicTextColor)
+            }
                 .buttonStyle(.plain)
                 .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                
-            }
-            // Force the button to the left with a spacer
-            Spacer()
-        }
+                .onHoverEffect()
+        )
+    }
+    
+    private var dynamicTextColor: Color {
+        colorScheme == .light ? Color.accessibleSecondaryLight : Color.accessibleSecondaryDark
     }
 }
 

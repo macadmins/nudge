@@ -17,8 +17,8 @@ func getDesiredLanguage(locale: Locale? = nil) -> String {
     } else {
         desiredLanguage = languageCode
     }
-    if forceFallbackLanguage {
-        desiredLanguage = fallbackLanguage
+    if UserInterfaceVariables.forceFallbackLanguage {
+        desiredLanguage = UserInterfaceVariables.fallbackLanguage
     }
     return desiredLanguage
 }
@@ -81,7 +81,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
         for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersionsRule == currentOSVersion {
+            if subPreferences.targetedOSVersionsRule == GlobalVariables.currentOSVersion {
                 fullMatch = subPreferences
                 // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
             } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
@@ -122,7 +122,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     }
     if !requirements.isEmpty {
         for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersionsRule == currentOSVersion {
+            if subPreferences.targetedOSVersionsRule == GlobalVariables.currentOSVersion {
                 fullMatch = subPreferences
                 // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
             } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
@@ -180,7 +180,7 @@ func forceScreenShotIconMode() -> Bool {
     if Utils().forceScreenShotIconModeEnabled() {
         return true
     } else {
-        return userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
+        return UserInterfaceVariables.userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
     }
 }
 
@@ -231,7 +231,7 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
     if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
         return nil
     }
-    let updateElements = userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
+    let updateElements = UserInterfaceVariables.userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
     if updateElements != nil {
         for (_ , subPreferences) in updateElements!.enumerated() {
             if subPreferences["_language"] as? String == getDesiredLanguage() {
@@ -251,7 +251,7 @@ func getMainHeader() -> String {
     } else if Utils().unitTestingEnabled() {
         return "Your device requires a security update (Unit Testing Mode)"
     } else {
-        return userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
+        return UserInterfaceVariables.userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
     }
 }
 
@@ -259,6 +259,6 @@ func simpleMode() -> Bool {
     if Utils().simpleModeEnabled() {
         return true
     } else {
-        return userInterfaceProfile?["simpleMode"] as? Bool ?? nudgeJSONPreferences?.userInterface?.simpleMode ?? false
+        return UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ?? nudgeJSONPreferences?.userInterface?.simpleMode ?? false
     }
 }
