@@ -52,8 +52,8 @@ struct ScreenShotZoom: View {
                     if screenShotPath.starts(with: "data:") {
                         Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
                             .scaledToFit()
+                            .aspectRatio(contentMode: .fit)
                             .frame(maxHeight: 675)
                     } else {
                         if FileManager.default.fileExists(atPath: screenShotPath) {

@@ -47,6 +47,7 @@ struct CompanyLogo: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .scaledToFit()
+                                .frame(width: logoWidth, height: logoHeight)
                         )
                     } else {
                         Image(systemName: "applelogo")
