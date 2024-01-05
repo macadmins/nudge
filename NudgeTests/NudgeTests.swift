@@ -14,7 +14,7 @@ class NudgeTests: XCTestCase {
     func coerceStringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        let formattedDate = dateFormatter.date(from: dateString) ?? Utils().getCurrentDate()
+        let formattedDate = dateFormatter.date(from: dateString) ?? DateManager().getCurrentDate()
         return formattedDate
     }
 

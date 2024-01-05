@@ -27,7 +27,7 @@ struct AdditionalInfoButton: View {
     }
     
     private func buttonAction() {
-        Utils().userInitiatedDeviceInfo()
+        LoggerUtilities().userInitiatedDeviceInfo()
         appState.additionalInfoViewIsPresented = true
     }
 }

@@ -24,12 +24,12 @@ class SoftwareUpdate {
     func download() {
         softwareupdateDownloadLog.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates, privacy: .public)")
 
-        if Utils().getCPUTypeString() == "Apple Silicon" && !Utils().requireMajorUpgrade() {
+        if DeviceManager().getCPUTypeString() == "Apple Silicon" && !AppStateManager().requireMajorUpgrade() {
             softwareupdateListLog.debug("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.")
             return
         }
 
-        if Utils().requireMajorUpgrade() {
+        if AppStateManager().requireMajorUpgrade() {
             guard FeatureVariables.actionButtonPath == nil else { return }
 
             if OptionalFeatureVariables.attemptToFetchMajorUpgrade, !majorUpgradeAppPathExists, !majorUpgradeBackupAppPathExists {

@@ -36,8 +36,8 @@ struct QuitButtons: View {
     }
 
     private func deferAction(by timeInterval: TimeInterval) {
-        appState.nudgeEventDate = Utils().getCurrentDate().addingTimeInterval(timeInterval)
-        Utils().setDeferralTime(deferralTime: appState.nudgeEventDate)
+        appState.nudgeEventDate = DateManager().getCurrentDate().addingTimeInterval(timeInterval)
+        UIUtilities().setDeferralTime(deferralTime: appState.nudgeEventDate)
         userHasClickedDeferralQuitButton(deferralTime: appState.nudgeEventDate)
         updateDeferralUI()
     }
@@ -61,13 +61,13 @@ struct QuitButtons: View {
             if UserExperienceVariables.allowLaterDeferralButton {
                 deferralButton(title: UserInterfaceVariables.primaryQuitButtonText, action: standardDeferralAction)
             }
-            if Utils().allow1HourDeferral() {
+            if AppStateManager().allow1HourDeferral() {
                 deferralButton(title: UserInterfaceVariables.oneHourDeferralButtonText, action: { deferAction(by: hourTimeInterval) })
             }
-            if Utils().allow24HourDeferral() {
+            if AppStateManager().allow24HourDeferral() {
                 deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText, action: { deferAction(by: dayTimeInterval) })
             }
-            if Utils().allowCustomDeferral() {
+            if AppStateManager().allowCustomDeferral() {
                 customDeferralButton
             }
         }
@@ -105,13 +105,13 @@ struct QuitButtons: View {
     }
 
     private func standardDeferralAction() {
-        appState.nudgeEventDate = Utils().getCurrentDate()
-        Utils().setDeferralTime(deferralTime: appState.nudgeEventDate)
+        appState.nudgeEventDate = DateManager().getCurrentDate()
+        UIUtilities().setDeferralTime(deferralTime: appState.nudgeEventDate)
         updateDeferralUI()
     }
     
     private var standardQuitButton: some View {
-        Button(action: Utils().userInitiatedExit) {
+        Button(action: UIUtilities().userInitiatedExit) {
             Text(UserInterfaceVariables.primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
         }
     }
@@ -120,9 +120,9 @@ struct QuitButtons: View {
         // Update deferral UI logic
         appState.userQuitDeferrals += 1
         appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
-        Utils().logUserQuitDeferrals()
-        Utils().logUserDeferrals()
-        Utils().userInitiatedExit()
+        LoggerUtilities().logUserQuitDeferrals()
+        LoggerUtilities().logUserDeferrals()
+        UIUtilities().userInitiatedExit()
     }
 }
 

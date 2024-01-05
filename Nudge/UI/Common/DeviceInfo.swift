@@ -17,11 +17,11 @@ struct DeviceInfo: View {
             closeButton
             Text("Additional Device Information".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .fontWeight(.bold)
-            infoRow(label: "Username:", value: Utils().getSystemConsoleUsername())
-            infoRow(label: "Serial Number:", value: Utils().getSerialNumber())
-            infoRow(label: "Architecture:", value: Utils().getCPUTypeString())
+            infoRow(label: "Username:", value: DeviceManager().getSystemConsoleUsername())
+            infoRow(label: "Serial Number:", value: DeviceManager().getSerialNumber())
+            infoRow(label: "Architecture:", value: DeviceManager().getCPUTypeString())
             infoRow(label: "Language:", value: languageCode)
-            infoRow(label: "Version:", value: Utils().getNudgeVersion())
+            infoRow(label: "Version:", value: VersionManager().getNudgeVersion())
             Spacer() // Vertically align Additional Device Information to center
         }
         .background(Color(NSColor.windowBackgroundColor))

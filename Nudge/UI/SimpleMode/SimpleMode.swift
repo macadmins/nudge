@@ -47,11 +47,11 @@ struct SimpleMode: View {
     
     private var remainingTimeView: some View {
         HStack(spacing: 3.5) {
-            if (appState.daysRemaining > 0 && !Utils().demoModeEnabled()) || Utils().demoModeEnabled() {
+            if (appState.daysRemaining > 0 && !CommandLineUtilities().demoModeEnabled()) || CommandLineUtilities().demoModeEnabled() {
                 Text("Days Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 Text(String(appState.daysRemaining))
                     .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
-            } else if appState.daysRemaining == 0 && !Utils().demoModeEnabled() {
+            } else if appState.daysRemaining == 0 && !CommandLineUtilities().demoModeEnabled() {
                 Text("Hours Remaining To Update:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 Text(String(appState.hoursRemaining))
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
@@ -78,7 +78,7 @@ struct SimpleMode: View {
     
     private var updateButton: some View {
         Button(action: {
-            Utils().updateDevice()
+            UIUtilities().updateDevice()
         }) {
             Text(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .frame(minWidth: 120)
@@ -90,7 +90,7 @@ struct SimpleMode: View {
         HStack {
             InformationButton()
             
-            if appState.allowButtons || Utils().demoModeEnabled() {
+            if appState.allowButtons || CommandLineUtilities().demoModeEnabled() {
                 QuitButtons()
             }
         }

@@ -22,10 +22,10 @@ let hourTimeInterval: CGFloat = 3600
 let nudgeRefreshCycleTimer = Timer.publish(every: Double(UserExperienceVariables.nudgeRefreshCycle), on: .main, in: .common).autoconnect() // Setup the main refresh timer that controls the child refresh logic
 
 // Preferences
-let configJSON = Utils().getConfigurationAsJSON()
-let configProfile = Utils().getConfigurationAsProfile()
+let configJSON = ConfigurationManager().getConfigurationAsJSON()
+let configProfile = ConfigurationManager().getConfigurationAsProfile()
 let nudgeDefaults = UserDefaults.standard
-let nudgeJSONPreferences = Utils().getNudgeJSONPreferences()
+let nudgeJSONPreferences = NetworkFileManager().getNudgeJSONPreferences()
 
 // State
 var demoModeArgumentPassed = false
@@ -35,7 +35,7 @@ var isPreview: Bool {
 }
 var nudgePrimaryState = AppState()
 var nudgeLogState = LogState()
-let serialNumber = Utils().getSerialNumber()
+let serialNumber = DeviceManager().getSerialNumber()
 var unitTestingArgumentPassed = false
 
 // UI
@@ -57,15 +57,15 @@ let windowDelegate = AppDelegate.WindowDelegate()
 class AppState: ObservableObject {
     @Published var afterFirstStateChange = false
     @Published var allowButtons = true
-    @Published var daysRemaining = Utils().getNumberOfDaysBetween()
+    @Published var daysRemaining = DateManager().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
     @Published var hasClickedSecondaryQuitButton = false
     @Published var hasLoggedDeferralCountPastThreshold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
     @Published var hasLoggedRequireDualQuitButtons = false
-    @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()
-    @Published var lastRefreshTime = Utils().getFormattedDate()
+    @Published var hoursRemaining = DateManager().getNumberOfHoursRemaining()
+    @Published var lastRefreshTime = DateManager().getFormattedDate()
     @Published var requireDualQuitButtons = false
     @Published var shouldExit = false
     @Published var timerCycle = 0
@@ -76,8 +76,8 @@ class AppState: ObservableObject {
     @Published var backgroundBlur = [BackgroundBlurWindowController]()
     @Published var screenCurrentlyLocked = false
     @Published var locale = Locale.current
-    @Published var nudgeCustomEventDate = Utils().getCurrentDate()
-    @Published var nudgeEventDate = Utils().getCurrentDate()
+    @Published var nudgeCustomEventDate = DateManager().getCurrentDate()
+    @Published var nudgeEventDate = DateManager().getCurrentDate()
     @Published var screenShotZoomViewIsPresented = false
     @Published var deferViewIsPresented = false
     @Published var additionalInfoViewIsPresented = false

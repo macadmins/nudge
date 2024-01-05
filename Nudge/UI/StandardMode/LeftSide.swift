@@ -57,7 +57,7 @@ struct StandardModeLeftSide: View {
     }
     
     private var shouldShowDaysRemaining: Bool {
-        ((appState.daysRemaining > 0 || 0 > appState.hoursRemaining) && !Utils().demoModeEnabled()) || Utils().demoModeEnabled()
+        ((appState.daysRemaining > 0 || 0 > appState.hoursRemaining) && !CommandLineUtilities().demoModeEnabled()) || CommandLineUtilities().demoModeEnabled()
     }
 }
 

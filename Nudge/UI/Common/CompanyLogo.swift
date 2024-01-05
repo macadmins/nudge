@@ -12,32 +12,24 @@ struct CompanyLogo: View {
     @Environment(\.colorScheme) var colorScheme
     
     private var companyLogoPath: String {
-        Utils().getCompanyLogoPath(colorScheme: colorScheme)
+        ImageManager().getCompanyLogoPath(colorScheme: colorScheme)
     }
     
     var body: some View {
         Group {
             if shouldShowCompanyLogo() {
                 companyImage
-            } else if Utils().showEasterEgg() {
+            } else if UIUtilities().showEasterEgg() {
                 easterEggView
             } else {
                 defaultImage
             }
         }
     }
-    
-    private var companyImage: some View {
-        Image(nsImage: createCompanyImage())
-            .customResizable(width: logoWidth, height: logoHeight)
-    }
 
-    private func createCompanyImage() -> NSImage {
-        if companyLogoPath.starts(with: "data:") {
-            return Utils().createImageBase64(base64String: companyLogoPath)
-        } else {
-            return Utils().createImageData(fileImagePath: companyLogoPath)
-        }
+    private var companyImage: some View {
+        Image(nsImage: ImageManager().getCorrectImage(path: companyLogoPath, type: "CompanyLogo"))
+            .customResizable(maxHeight: 675)
     }
 
     private var defaultImage: some View {

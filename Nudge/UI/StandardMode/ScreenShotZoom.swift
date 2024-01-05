@@ -14,7 +14,7 @@ struct ScreenShotZoom: View {
     @Environment(\.colorScheme) var colorScheme
     
     private var screenShotPath: String {
-        Utils().getScreenShotPath(colorScheme: colorScheme)
+        ImageManager().getScreenShotPath(colorScheme: colorScheme)
     }
     
     var body: some View {
@@ -50,18 +50,10 @@ struct ScreenShotZoom: View {
             .onHoverEffect()
         }
     }
-    
+
     private var screenShotImage: some View {
-        if screenShotPath.starts(with: "data:") {
-            Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
-                .customResizable(maxHeight: 675)
-        } else if FileManager.default.fileExists(atPath: screenShotPath) {
-            Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                .customResizable(maxHeight: 675)
-        } else {
-            Image("CompanyScreenshotIcon")
-                .customResizable(maxHeight: 675)
-        }
+        Image(nsImage: ImageManager().getCorrectImage(path: screenShotPath, type: "ScreenShot"))
+            .customResizable(maxHeight: 675)
     }
 }
 

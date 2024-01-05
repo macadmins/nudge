@@ -12,7 +12,11 @@ import SwiftUI
 struct StandardModeRightSide: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.colorScheme) var colorScheme
-    
+
+    private var screenShotPath: String {
+        ImageManager().getScreenShotPath(colorScheme: colorScheme)
+    }
+
     var body: some View {
         VStack {
             Spacer()
@@ -74,7 +78,7 @@ struct StandardModeRightSide: View {
                 Spacer()
                 
                 Button(action: {
-                    Utils().updateDevice()
+                    UIUtilities().updateDevice()
                 }) {
                     Text(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 }
@@ -115,22 +119,11 @@ struct StandardModeRightSide: View {
             }
         }
     }
-    
+
     private var screenshotButton: some View {
         Button(action: { appState.screenShotZoomViewIsPresented = true }) {
-            if let image = Utils().getScreenShotImage(path: Utils().getScreenShotPath(colorScheme: colorScheme)) {
-                Image(nsImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: screenshotMaxHeight)
-            } else {
-                Image("CompanyScreenshotIcon") // Fallback image
-                    .resizable()
-                    .scaledToFit()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: screenshotMaxHeight)
-            }
+            Image(nsImage: ImageManager().getCorrectImage(path: screenShotPath, type: "ScreenShot"))
+                .customResizable(maxHeight: screenshotMaxHeight)
         }
         .buttonStyle(.plain)
         .help(UserInterfaceVariables.screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
@@ -142,7 +135,7 @@ struct StandardModeRightSide: View {
     
     private var shouldShowScreenshot: Bool {
         // Logic to determine if the screenshot should be shown
-        let imagePath = Utils().getScreenShotPath(colorScheme: colorScheme)
+        let imagePath = ImageManager().getScreenShotPath(colorScheme: colorScheme)
         return FileManager.default.fileExists(atPath: imagePath) || imagePath.starts(with: "data:") || forceScreenShotIconMode()
     }
 }
