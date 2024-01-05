@@ -245,121 +245,112 @@ struct CameraManager {
 }
 
 struct CommandLineUtilities {
+    let arguments = Set(CommandLine.arguments)
+
     func bundleModeEnabled() -> Bool {
-        let bundleModeArgumentPassed = CommandLine.arguments.contains("-bundle-mode")
-        if !nudgeLogState.hasLoggedBundleMode {
-            if bundleModeArgumentPassed {
-                nudgeLogState.hasLoggedBundleMode = true
-                uiLog.debug("\("-bundle-mode argument passed", privacy: .public)")
-            }
+        let argumentPassed = arguments.contains("-bundle-mode")
+        if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
+            uiLog.debug("\("-bundle-mode argument passed", privacy: .public)")
+            nudgeLogState.hasLoggedBundleMode = true
         }
-        return bundleModeArgumentPassed
+        return argumentPassed
     }
 
     func debugUIModeEnabled() -> Bool {
-        let debugUIModeArgumentPassed = CommandLine.arguments.contains("-debug-ui-mode")
-        if !nudgeLogState.afterFirstRun {
-            if debugUIModeArgumentPassed {
-                uiLog.debug("\("-debug-ui-mode argument passed", privacy: .public)")
-            }
+        let argumentPassed = arguments.contains("-debug-ui-mode")
+        if argumentPassed && !nudgeLogState.afterFirstRun {
+            uiLog.debug("\("-debug-ui-mode argument passed", privacy: .public)")
         }
-        return debugUIModeArgumentPassed
+        return argumentPassed
     }
 
     func demoModeEnabled() -> Bool {
-        demoModeArgumentPassed = CommandLine.arguments.contains("-demo-mode")
-        if !nudgeLogState.hasLoggedDemoMode {
-            if demoModeArgumentPassed {
-                nudgeLogState.hasLoggedDemoMode = true
-                uiLog.debug("\("-demo-mode argument passed", privacy: .public)")
-            }
+        let argumentPassed = arguments.contains("-demo-mode")
+        if argumentPassed && !nudgeLogState.hasLoggedDemoMode {
+            nudgeLogState.hasLoggedDemoMode = true
+            uiLog.debug("\("-demo-mode argument passed", privacy: .public)")
         }
-        return demoModeArgumentPassed
+        return argumentPassed
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
-        let forceScreenShotIconMode = CommandLine.arguments.contains("-force-screenshot-icon")
-        if !nudgeLogState.hasLoggedScreenshotIconMode {
-            if forceScreenShotIconMode {
-                nudgeLogState.hasLoggedScreenshotIconMode = true
-                uiLog.debug("\("-force-screenshot-icon argument passed", privacy: .public)")
-            }
+        let argumentPassed = arguments.contains("-force-screenshot-icon")
+        if argumentPassed && !nudgeLogState.hasLoggedScreenshotIconMode {
+            nudgeLogState.hasLoggedScreenshotIconMode = true
+            uiLog.debug("\("-force-screenshot-icon argument passed", privacy: .public)")
         }
-        return forceScreenShotIconMode
+        return argumentPassed
     }
 
     func registerSMAppArgumentPassed() -> Bool {
-        return CommandLine.arguments.contains("--register")
+        arguments.contains("--register")
     }
 
     func simpleModeEnabled() -> Bool {
-        let simpleModeEnabled = CommandLine.arguments.contains("-simple-mode")
-        if !nudgeLogState.hasLoggedSimpleMode {
-            if simpleModeEnabled {
-                nudgeLogState.hasLoggedSimpleMode = true
-                uiLog.debug("\("-simple-mode argument passed", privacy: .public)")
-            }
+        let argumentPassed = arguments.contains("-simple-mode")
+        if argumentPassed && !nudgeLogState.hasLoggedSimpleMode {
+            nudgeLogState.hasLoggedSimpleMode = true
+            uiLog.debug("\("-simple-mode argument passed", privacy: .public)")
         }
-        return simpleModeEnabled
+        return argumentPassed
     }
 
     func unitTestingEnabled() -> Bool {
-        unitTestingArgumentPassed = CommandLine.arguments.contains("-unit-testing")
+        let argumentPassed = arguments.contains("-unit-testing")
         if !nudgeLogState.hasLoggedUnitTestingMode {
-            if demoModeArgumentPassed {
+            if argumentPassed {
                 nudgeLogState.hasLoggedUnitTestingMode = true
                 uiLog.debug("\("-unit-testing argument passed", privacy: .public)")
             }
         }
-        return unitTestingArgumentPassed
+        return argumentPassed
     }
 
     func unregisterSMAppArgumentPassed() -> Bool {
-        return CommandLine.arguments.contains("--unregister")
+        arguments.contains("--unregister")
     }
 
     func versionArgumentPassed() -> Bool {
-        let versionArgumentPassed = CommandLine.arguments.contains("-version")
-        if versionArgumentPassed {
+        let argumentPassed = arguments.contains("-version")
+        if argumentPassed {
             uiLog.debug("\("-version argument passed", privacy: .public)")
         }
-        return versionArgumentPassed
+        return argumentPassed
     }
 }
 
 struct ConfigurationManager {
     func getConfigurationAsJSON() -> Data {
-        let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences)
-        if ((nudgeJSONConfig) != nil) {
-            if let json = try? JSONSerialization.jsonObject(with: newJSONEncoder().encode(nudgeJSONPreferences), options: .mutableContainers),
-               let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) {
-                return jsonData
-            }
+        guard let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences),
+              let json = try? JSONSerialization.jsonObject(with: nudgeJSONConfig),
+              let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
+            uiLog.error("Failed to serialize JSON configuration")
+            return Data()
         }
-        return Data.init()
+        return jsonData
     }
 
     func getConfigurationAsProfile() -> Data {
-        var nudgeProfileConfig = [String:Any]()
-        nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures") as? [String:AnyObject]
-        nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]]
-        nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience") as? [String:AnyObject]
-        nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface") as? [String:AnyObject]
-        if !nudgeProfileConfig.isEmpty {
-            do {
-                let plistData = try PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0)
-                let xmlPlistData = try XMLDocument.init(data: plistData, options: .nodePreserveAll)
-                let prettyXMLData = xmlPlistData.xmlData(options: .nodePrettyPrint)
-                return prettyXMLData
-            } catch {
-                print("issue with profile data!")
-            }
+        var nudgeProfileConfig = [String: Any]()
+        nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures")
+        nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements")
+        nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience")
+        nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface")
+
+        guard !nudgeProfileConfig.isEmpty,
+              let plistData = try? PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0),
+              let xmlPlistData = try? XMLDocument(data: plistData, options: .nodePreserveAll) else {
+            uiLog.error("Failed to serialize profile configuration")
+            return Data()
         }
-        return Data.init()
+
+        return xmlPlistData.xmlData(options: .nodePrettyPrint)
     }
 
     func getTimerController() -> Int {
-        let timerCycle = getTimerControllerInt()
+        let hoursRemaining = DateManager().getNumberOfHoursRemaining()
+        let timerCycle = determineTimerCycle(basedOn: hoursRemaining)
+
         if timerCycle != nudgePrimaryState.timerCycle {
             uiLog.info("timerCycle: \(timerCycle, privacy: .public)")
             nudgePrimaryState.timerCycle = timerCycle
@@ -367,118 +358,84 @@ struct ConfigurationManager {
         return timerCycle
     }
 
-    func getTimerControllerInt() -> Int {
-        if 0 >= DateManager().getNumberOfHoursRemaining() {
-            return UserExperienceVariables.elapsedRefreshCycle
-        } else if UserExperienceVariables.imminentWindowTime >= DateManager().getNumberOfHoursRemaining() {
-            return UserExperienceVariables.imminentRefreshCycle
-        } else if UserExperienceVariables.approachingWindowTime >= DateManager().getNumberOfHoursRemaining() {
-            return UserExperienceVariables.approachingRefreshCycle
-        } else {
-            return UserExperienceVariables.initialRefreshCycle
+    private func determineTimerCycle(basedOn hoursRemaining: Int) -> Int {
+        switch hoursRemaining {
+            case ...0:
+                return UserExperienceVariables.elapsedRefreshCycle
+            case ...UserExperienceVariables.imminentWindowTime:
+                return UserExperienceVariables.imminentRefreshCycle
+            case ...UserExperienceVariables.approachingWindowTime:
+                return UserExperienceVariables.approachingRefreshCycle
+            default:
+                return UserExperienceVariables.initialRefreshCycle
         }
     }
 }
 
 struct DateManager {
+    private let dateFormatterISO8601: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        return formatter
+    }()
+
+    private let dateFormatterCurrent: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        return formatter
+    }()
+
     func coerceStringToDate(dateString: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        return dateFormatter.date(from: dateString) ?? getCurrentDate()
+        dateFormatterISO8601.date(from: dateString) ?? getCurrentDate()
     }
 
     func getFormattedDate(date: Date? = nil) -> Date {
-        var endDate = Date()
-        // Date fixing stuff for non Gregorian calendars
-        let dateFormatterCurrent = DateFormatter()
-        let dateFormatterISO8601 = DateFormatter()
-        let dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        dateFormatterCurrent.dateFormat = dateFormat
-
-        dateFormatterISO8601.dateFormat = dateFormat
-        dateFormatterISO8601.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatterISO8601.calendar = Calendar(identifier: .iso8601)
-        dateFormatterISO8601.timeZone = TimeZone(identifier: "UTC")
-        var initialDate = dateFormatterISO8601.date(from: "2020-08-06T00:00:00Z") ?? Date() // <3
-        if date != nil {
-            initialDate = date!
-        }
-
+        let initialDate = dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: date ?? Date())) ?? Date()
         switch Calendar.current.identifier {
             case .gregorian, .buddhist, .iso8601, .japanese:
-                endDate = initialDate
-            case .coptic, .ethiopicAmeteMihret, .hebrew, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
-                endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
-            case .chinese, .republicOfChina: // TODO: These are untested
-                endDate =  dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
-            case .ethiopicAmeteAlem: // TODO: Need to figure out
-                break
-            @unknown default:
-                break
+                return initialDate
+            default:
+                return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
         }
-        return endDate
     }
 
     func getCurrentDate() -> Date {
-        // Date fixing stuff for non Gregorian calendars
-        let dateFormatterCurrent = DateFormatter()
-        let dateFormatterISO8601 = DateFormatter()
-        let dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        dateFormatterCurrent.dateFormat = dateFormat
-
-        dateFormatterISO8601.dateFormat = dateFormat
-        dateFormatterISO8601.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatterISO8601.calendar = Calendar(identifier: .iso8601)
-        dateFormatterISO8601.timeZone = TimeZone(identifier: "UTC")
         switch Calendar.current.identifier {
-            case .buddhist, .japanese:
+            case .buddhist, .japanese, .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian:
                 return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-            case .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian :
-                return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-            case .chinese, .republicOfChina: // TODO: These are untested
-                return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-            case .ethiopicAmeteAlem: // TODO: Need to figure out
-                return Date()
-            @unknown default:
+            default:
                 return Date()
         }
     }
 
     func getNumberOfDaysBetween() -> Int {
-        if CommandLineUtilities().demoModeEnabled() {
-            return 0
-        }
-        let currentCal = Calendar.current
-        let fromDate = currentCal.startOfDay(for: getCurrentDate())
-        let toDate = currentCal.startOfDay(for: requiredInstallationDate)
-        let numberOfDays = currentCal.dateComponents([.day], from: fromDate, to: toDate)
-        return numberOfDays.day!
+        guard !CommandLineUtilities().demoModeEnabled() else { return 0 }
+        let fromDate = Calendar.current.startOfDay(for: getCurrentDate())
+        let toDate = Calendar.current.startOfDay(for: requiredInstallationDate)
+        return Calendar.current.dateComponents([.day], from: fromDate, to: toDate).day ?? 0
     }
 
     func getNumberOfHoursRemaining(currentDate: Date = DateManager().getCurrentDate()) -> Int {
-        if CommandLineUtilities().demoModeEnabled() {
-            return 24
-        }
-        if CommandLineUtilities().unitTestingEnabled() {
-            return Int(PrefsWrapper.requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
-        }
-        return Int(requiredInstallationDate.timeIntervalSince(currentDate) / 3600 )
+        guard !CommandLineUtilities().demoModeEnabled() else { return 24 }
+        let interval = CommandLineUtilities().unitTestingEnabled() ? PrefsWrapper.requiredInstallationDate : requiredInstallationDate
+        return Int(interval.timeIntervalSince(currentDate) / 3600)
     }
 
     func pastRequiredInstallationDate() -> Bool {
-        var pastRequiredInstallationDate = getCurrentDate() > requiredInstallationDate
-        if CommandLineUtilities().demoModeEnabled() {
-            pastRequiredInstallationDate = false
-        }
-        if !nudgeLogState.hasLoggedPastRequiredInstallationDate {
+        let isPast = getCurrentDate() > requiredInstallationDate
+        if !CommandLineUtilities().demoModeEnabled() && !nudgeLogState.hasLoggedPastRequiredInstallationDate {
             nudgeLogState.hasLoggedPastRequiredInstallationDate = true
-            utilsLog.notice("Device pastRequiredInstallationDate: \(pastRequiredInstallationDate, privacy: .public)")
+            utilsLog.notice("Device pastRequiredInstallationDate: \(isPast, privacy: .public)")
         }
-        return pastRequiredInstallationDate
+        return isPast
     }
 }
 
 struct DeviceManager {
+    // https://stackoverflow.com/a/63539782
     func getCPUTypeInt() -> Int {
         // https://stackoverflow.com/a/63539782
         var cputype = UInt32(0)
@@ -514,27 +471,11 @@ struct DeviceManager {
     }
 
     func getHardwareUUID() -> String {
-        if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+        guard !CommandLineUtilities().demoModeEnabled(),
+              !CommandLineUtilities().unitTestingEnabled() else {
             return "DC3F0981-D881-408F-BED7-8D6F1DEE8176"
         }
-        var hardwareUUID: String? {
-            let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-
-            guard platformExpert > 0 else {
-                return nil
-            }
-
-            guard let hardwareUUID = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
-                return nil
-            }
-
-            IOObjectRelease(platformExpert)
-
-            utilsLog.debug("Hardware UUID: \(hardwareUUID, privacy: .public)")
-            return hardwareUUID
-        }
-
-        return hardwareUUID ?? ""
+        return getPropertyFromPlatformExpert(key: String(kIOPlatformUUIDKey)) ?? ""
     }
 
     func getPatchOSVersion() -> Int {
@@ -544,99 +485,80 @@ struct DeviceManager {
     }
 
     func getSerialNumber() -> String {
-        if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+        guard !CommandLineUtilities().demoModeEnabled(),
+              !CommandLineUtilities().unitTestingEnabled() else {
             return "C00000000000"
         }
-        // https://ourcodeworld.com/articles/read/1113/how-to-retrieve-the-serial-number-of-a-mac-with-swift
-        var serialNumber: String? {
-            let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-
-            guard platformExpert > 0 else {
-                return nil
-            }
-
-            guard let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
-                return nil
-            }
-
-            IOObjectRelease(platformExpert)
-
-            utilsLog.debug("Serial Number: \(serialNumber, privacy: .public)")
-            return serialNumber
-        }
-
-        return serialNumber ?? ""
+        return getPropertyFromPlatformExpert(key: String(kIOPlatformSerialNumberKey)) ?? ""
     }
 
     func getSystemConsoleUsername() -> String {
-        // https://gist.github.com/joncardasis/2c46c062f8450b96bb1e571950b26bf7
         var uid: uid_t = 0
         var gid: gid_t = 0
-        let SystemConsoleUsername = SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
-        utilsLog.debug("System console username: \(SystemConsoleUsername, privacy: .public)")
-        return SystemConsoleUsername
+        let username = SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
+        utilsLog.debug("System console username: \(username)")
+        return username
+    }
+
+    private func getPropertyFromPlatformExpert(key: String) -> String? {
+        let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        defer { IOObjectRelease(platformExpert) }
+
+        guard platformExpert > 0,
+              let property = IORegistryEntryCreateCFProperty(platformExpert, key as CFString, kCFAllocatorDefault, 0).takeRetainedValue() as? String else {
+            return nil
+        }
+        return property.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
 struct ImageManager {
     func createImageBase64(base64String: String) -> NSImage {
-        let url = URL(string: base64String)
-        var imageData = NSData()
-        do {
-            imageData = try NSData(contentsOf: url! as URL)
-        } catch {
-            uiLog.error("Error decoding base64 string")
-            let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
-            return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+        let base64Prefix = "data:image/png;base64,"
+        let cleanBase64String = base64String.hasPrefix(base64Prefix) ? String(base64String.dropFirst(base64Prefix.count)) : base64String
+
+        guard let imageData = Data(base64Encoded: cleanBase64String, options: .ignoreUnknownCharacters) else {
+            uiLog.error("Failed to decode base64 string to data")
+            return createErrorImage()
         }
-        return NSImage(data: imageData as Data)!
+
+        guard let image = NSImage(data: imageData) else {
+            uiLog.error("Failed to create image from decoded data")
+            return createErrorImage()
+        }
+
+        return image
     }
 
     func createImageData(fileImagePath: String) -> NSImage {
-        utilsLog.debug("Creating image path for \(fileImagePath, privacy: .public)")
-        let urlPath = NSURL(fileURLWithPath: fileImagePath)
-        var imageData = NSData()
-        do {
-            imageData = try NSData(contentsOf: urlPath as URL)
-        } catch {
+        guard let imageData = try? Data(contentsOf: URL(fileURLWithPath: fileImagePath)) else {
             uiLog.error("Error accessing file \(fileImagePath). Incorrect permissions")
-            let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
-            return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil)!.withSymbolConfiguration(errorImageConfig)!
+            return createErrorImage()
         }
-        return NSImage(data: imageData as Data)!
+        return NSImage(data: imageData) ?? createErrorImage()
+    }
+
+    private func createErrorImage() -> NSImage {
+        let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
+        return NSImage(systemSymbolName: "questionmark", accessibilityDescription: nil)?.withSymbolConfiguration(errorImageConfig) ?? NSImage()
     }
 
     func getCompanyLogoPath(colorScheme: ColorScheme) -> String {
-        if colorScheme == .dark {
-            return UserInterfaceVariables.iconDarkPath
-        } else {
-            return UserInterfaceVariables.iconLightPath
-        }
+        colorScheme == .dark ? UserInterfaceVariables.iconDarkPath : UserInterfaceVariables.iconLightPath
     }
 
     func getCorrectImage(path: String, type: String) -> NSImage {
         if path.starts(with: "data:") {
-            // Path is a base64 string
             return createImageBase64(base64String: path)
         } else if FileManager.default.fileExists(atPath: path) {
-            // Path is a file path
             return createImageData(fileImagePath: path)
         } else {
-            // Fallback NSImage
-            if type == "ScreenShot" {
-                return NSImage(named: "CompanyScreenshotIcon") ?? NSImage()
-            } else {
-                return NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil) ?? NSImage()
-            }
+            return type == "ScreenShot" ? NSImage(named: "CompanyScreenshotIcon") ?? NSImage() : NSImage(systemSymbolName: "applelogo", accessibilityDescription: nil) ?? NSImage()
         }
     }
 
     func getScreenShotPath(colorScheme: ColorScheme) -> String {
-        if colorScheme == .dark {
-            return UserInterfaceVariables.screenShotDarkPath
-        } else {
-            return UserInterfaceVariables.screenShotLightPath
-        }
+        colorScheme == .dark ? UserInterfaceVariables.screenShotDarkPath : UserInterfaceVariables.screenShotLightPath
     }
 }
 

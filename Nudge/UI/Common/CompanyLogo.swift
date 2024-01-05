@@ -29,7 +29,7 @@ struct CompanyLogo: View {
 
     private var companyImage: some View {
         Image(nsImage: ImageManager().getCorrectImage(path: companyLogoPath, type: "CompanyLogo"))
-            .customResizable(maxHeight: 675)
+            .customResizable(width: logoWidth, height: logoHeight)
     }
 
     private var defaultImage: some View {
