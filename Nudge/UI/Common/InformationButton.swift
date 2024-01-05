@@ -22,7 +22,7 @@ struct InformationButton: View {
         guard OSVersionRequirementVariables.aboutUpdateURL != "" else { return AnyView(EmptyView()) }
         
         return AnyView(
-            Button(action: Utils().openMoreInfo) {
+            Button(action: UIUtilities().openMoreInfo) {
                 Text(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     .foregroundColor(dynamicTextColor)
             }

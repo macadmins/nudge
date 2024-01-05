@@ -11,16 +11,16 @@ import IOKit.pwr_mgt // Asertions
 import SwiftUI
 
 func initialLaunchLogic() {
-    guard !Utils().unitTestingEnabled() else {
+    guard !CommandLineUtilities().unitTestingEnabled() else {
         uiLog.debug("App being ran in test mode")
         return
     }
 
-    if Utils().simpleModeEnabled() {
+    if CommandLineUtilities().simpleModeEnabled() {
         uiLog.debug("Device in simple mode")
     }
 
-    if Utils().demoModeEnabled() {
+    if CommandLineUtilities().demoModeEnabled() {
         uiLog.debug("Device in demo mode")
         resetDeferralsForDemoMode()
         return
@@ -35,8 +35,8 @@ func initialLaunchLogic() {
 private func checkDeferralDate() {
     let deferralDate = nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime
     if shouldExitBasedOnDeferralDate(deferralDate: deferralDate) {
-        uiLog.notice("\("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(Utils().getCurrentDate()))", privacy: .public)")
-        Utils().exitNudge()
+        uiLog.notice("\("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(DateManager().getCurrentDate()))", privacy: .public)")
+        AppStateManager().exitNudge()
     }
 }
 
@@ -47,21 +47,21 @@ private func handleDemoMode() -> Bool {
         return false
     } else {
         uiLog.notice("Nudge activating - Launching demo mode UI")
-        Utils().activateNudge()
+        AppStateManager().activateNudge()
         return true
     }
 }
 
 private func handleUpdateStatus() {
-    if Utils().fullyUpdated() {
+    if VersionManager().fullyUpdated() {
         uiLog.notice("Device is fully updated")
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         if !isPreview {
-            Utils().exitNudge()
+            AppStateManager().exitNudge()
         }
-    } else if !OptionalFeatureVariables.enforceMinorUpdates && !Utils().requireMajorUpgrade() {
+    } else if !OptionalFeatureVariables.enforceMinorUpdates && !AppStateManager().requireMajorUpgrade() {
         uiLog.warning("Device requires a minor update but enforceMinorUpdates is false")
-        Utils().exitNudge()
+        AppStateManager().exitNudge()
     }
 }
 
@@ -125,7 +125,7 @@ private func isMajorUpgradeAppFrontmost(_ frontmostApplication: NSRunningApplica
     }
 
     if majorUpgradeBackupAppPathExists {
-        let backupAppURL = URL(fileURLWithPath: Utils().getBackupMajorUpgradeAppPath(), isDirectory: false)
+        let backupAppURL = URL(fileURLWithPath: NetworkFileManager().getBackupMajorUpgradeAppPath(), isDirectory: false)
         if frontmostApplication?.bundleURL == backupAppURL {
             uiLog.info("Ignoring Nudge activation - majorUpgradeBackupApp is currently the frontmostApplication")
             return true
@@ -137,16 +137,16 @@ private func isMajorUpgradeAppFrontmost(_ frontmostApplication: NSRunningApplica
 
 private func isMajorUpgradeAppBackup(_ runningApplication: NSRunningApplication) -> Bool {
     if majorUpgradeBackupAppPathExists {
-        let backupAppURL = URL(fileURLWithPath: Utils().getBackupMajorUpgradeAppPath(), isDirectory: false)
+        let backupAppURL = URL(fileURLWithPath: NetworkFileManager().getBackupMajorUpgradeAppPath(), isDirectory: false)
         return runningApplication.bundleURL == backupAppURL
     }
     return false
 }
 
 private func isRefreshTimerPassedThreshold() -> Bool {
-    let currentTime = Utils().getCurrentDate().timeIntervalSince1970
+    let currentTime = DateManager().getCurrentDate().timeIntervalSince1970
     let timeSinceLastRefresh = currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970
-    if nudgeLogState.afterFirstLaunch && Double(Utils().getTimerController()) > timeSinceLastRefresh {
+    if nudgeLogState.afterFirstLaunch && Double(ConfigurationManager().getTimerController()) > timeSinceLastRefresh {
         uiLog.info("Ignoring Nudge activation - Device is currently within current timer range")
         return true
     }
@@ -171,14 +171,14 @@ private func logControllers() {
 }
 
 private func logDeferralStates() {
-    Utils().logRequiredMinimumOSVersion()
-    Utils().logUserDeferrals()
-    Utils().logUserQuitDeferrals()
+    LoggerUtilities().logRequiredMinimumOSVersion()
+    LoggerUtilities().logUserDeferrals()
+    LoggerUtilities().logUserQuitDeferrals()
     logUserSessionDeferrals()
 }
 
 private func logUserSessionDeferrals(resetCount: Bool = false) {
-    if Utils().demoModeEnabled() {
+    if CommandLineUtilities().demoModeEnabled() {
         nudgePrimaryState.userSessionDeferrals = 0
         return
     }
@@ -202,7 +202,7 @@ func needToActivateNudge() -> Bool {
     updateNudgeState()
     logControllers()
 
-    if Utils().demoModeEnabled() {
+    if CommandLineUtilities().demoModeEnabled() {
         return handleDemoMode()
     }
 
@@ -218,7 +218,7 @@ func needToActivateNudge() -> Bool {
 }
 
 private func processNudgeEvent() {
-    if Utils().newNudgeEvent() {
+    if VersionManager().newNudgeEvent() {
         uiLog.notice("New Nudge event detected - resetting all deferral values")
         resetAllDeferralValues()
     } else {
@@ -227,9 +227,9 @@ private func processNudgeEvent() {
 }
 
 private func resetAllDeferralValues() {
-    Utils().logRequiredMinimumOSVersion()
-    Utils().logUserDeferrals(resetCount: true)
-    Utils().logUserQuitDeferrals(resetCount: true)
+    LoggerUtilities().logRequiredMinimumOSVersion()
+    LoggerUtilities().logUserDeferrals(resetCount: true)
+    LoggerUtilities().logUserQuitDeferrals(resetCount: true)
     logUserSessionDeferrals(resetCount: true)
     nudgeDefaults.removeObject(forKey: "deferRunUntil")
 }
@@ -244,7 +244,7 @@ private func shouldActivateNudgeBasedOnAggressiveExperience(_ runningApplication
         uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
     }
 
-    let shouldActivate = nudgePrimaryState.deferralCountPastThreshold || Utils().pastRequiredInstallationDate()
+    let shouldActivate = nudgePrimaryState.deferralCountPastThreshold || DateManager().pastRequiredInstallationDate()
 
     if shouldActivate && OptionalFeatureVariables.aggressiveUserExperience {
         // Loop through all running applications and hide them if needed
@@ -256,13 +256,13 @@ private func shouldActivateNudgeBasedOnAggressiveExperience(_ runningApplication
                 }
             }
         }
-        Utils().activateNudge()
-        if !Utils().unitTestingEnabled() {
-            Utils().updateDevice(userClicked: false)
+        AppStateManager().activateNudge()
+        if !CommandLineUtilities().unitTestingEnabled() {
+            UIUtilities().updateDevice(userClicked: false)
         }
         return true
     } else {
-        Utils().activateNudge()
+        AppStateManager().activateNudge()
         return true
     }
 }
@@ -277,7 +277,7 @@ private func shouldBailOutEarly() -> Bool {
     /// 7. Acceptable Apps are in front
     /// 8. Refresh Timer hasn't been met
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
-    let pastRequiredInstallationDate = Utils().pastRequiredInstallationDate()
+    let pastRequiredInstallationDate = DateManager().pastRequiredInstallationDate()
 
     // Check if admin has set noTimers
     if UserExperienceVariables.noTimers {
@@ -339,7 +339,7 @@ private func shouldHideApplication(_ runningApplication: NSRunningApplication) -
 }
 
 private func shouldExitBasedOnDeferralDate(deferralDate: Date) -> Bool {
-    return (deferralDate > Utils().getCurrentDate()) && !(deferralDate > requiredInstallationDate) && !Utils().pastRequiredInstallationDate()
+    return (deferralDate > DateManager().getCurrentDate()) && !(deferralDate > requiredInstallationDate) && !DateManager().pastRequiredInstallationDate()
 }
 
 private func updateDeferralCounts() {
@@ -351,7 +351,7 @@ private func updateDeferralCounts() {
 
 private func updateDualQuitButtonRequirement() {
     let deferralThreshold = UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton
-    nudgePrimaryState.requireDualQuitButtons = Utils().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > deferralThreshold
+    nudgePrimaryState.requireDualQuitButtons = AppStateManager().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > deferralThreshold
 }
 
 private func updateNudgeState() {

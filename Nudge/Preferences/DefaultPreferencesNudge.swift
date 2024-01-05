@@ -146,8 +146,8 @@ struct OptionalFeatureVariables {
 
 // OS Version Requirements
 var majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: OSVersionRequirementVariables.majorUpgradeAppPath)
-var majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
-var requiredInstallationDate = Utils().getFormattedDate(date: PrefsWrapper.requiredInstallationDate)
+var majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: NetworkFileManager().getBackupMajorUpgradeAppPath())
+var requiredInstallationDate = DateManager().getFormattedDate(date: PrefsWrapper.requiredInstallationDate)
 struct OSVersionRequirementVariables {
     static var osVersionRequirementsProfile: OSVersionRequirement? = getOSVersionRequirementsProfile()
     static var osVersionRequirementsJSON: OSVersionRequirement? = getOSVersionRequirementsJSON()

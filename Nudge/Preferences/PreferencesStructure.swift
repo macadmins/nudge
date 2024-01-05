@@ -159,7 +159,7 @@ extension OSVersionRequirement {
         // In order to support this, an admin would need to pass a string and then coerce it into our Date format
         // https://docs.jamf.com/technical-papers/jamf-pro/json-schema/10.26.0/Understanding_the_Structure_of_a_JSON_Schema_Manifest.html
         if fromDictionary["requiredInstallationDate"] is String {
-            self.requiredInstallationDate = Utils().coerceStringToDate(dateString: fromDictionary["requiredInstallationDate"] as! String)
+            self.requiredInstallationDate = DateManager().coerceStringToDate(dateString: fromDictionary["requiredInstallationDate"] as! String)
         } else {
             self.requiredInstallationDate = fromDictionary["requiredInstallationDate"] as? Date
         }

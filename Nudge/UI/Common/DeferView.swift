@@ -64,14 +64,14 @@ struct DeferView: View {
     }
     
     private func deferAction() {
-        Utils().setDeferralTime(deferralTime: appState.nudgeCustomEventDate)
+        UIUtilities().setDeferralTime(deferralTime: appState.nudgeCustomEventDate)
         userHasClickedDeferralQuitButton(deferralTime: appState.nudgeCustomEventDate)
         appState.shouldExit = true
         appState.userQuitDeferrals += 1
         appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
-        Utils().logUserQuitDeferrals()
-        Utils().logUserDeferrals()
-        Utils().userInitiatedExit()
+        LoggerUtilities().logUserQuitDeferrals()
+        LoggerUtilities().logUserDeferrals()
+        UIUtilities().userInitiatedExit()
     }
     
     private var limitRange: ClosedRange<Date> {
@@ -79,7 +79,7 @@ struct DeferView: View {
                            "imminentWindowTime": UserExperienceVariables.imminentWindowTime ]
         let daysToAdd = appState.daysRemaining > 0 ? appState.daysRemaining - (windowTime[UserExperienceVariables.calendarDeferralUnit] ?? UserExperienceVariables.imminentWindowTime / 24) : 0
         // Do not let the user defer past the point of the windowTime
-        return Utils().getCurrentDate()...Calendar.current.date(byAdding: .day, value: daysToAdd, to: Utils().getCurrentDate())!
+        return DateManager().getCurrentDate()...Calendar.current.date(byAdding: .day, value: daysToAdd, to: DateManager().getCurrentDate())!
     }
 }
 

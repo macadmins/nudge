@@ -34,7 +34,7 @@ struct StandardMode: View {
         HStack {
             InformationButton()
             
-            if appState.allowButtons || Utils().demoModeEnabled() {
+            if appState.allowButtons || CommandLineUtilities().demoModeEnabled() {
                 QuitButtons()
             }
         }

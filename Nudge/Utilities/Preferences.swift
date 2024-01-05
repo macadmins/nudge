@@ -26,7 +26,7 @@ func getDesiredLanguage(locale: Locale? = nil) -> String {
 // optionalFeatures
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getOptionalFeaturesJSON() -> OptionalFeatures? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let optionalFeatures = nudgeJSONPreferences?.optionalFeatures {
@@ -38,7 +38,7 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
 }
 
 func getOptionalFeaturesProfile() -> [String:Any]? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures") {
@@ -55,7 +55,7 @@ func getOptionalFeaturesProfile() -> [String:Any]? {
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
     // Compare current language against the available updateURLs
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return "https://apple.com"
     }
     if let update = OSVerReq?.aboutUpdateURL {
@@ -76,7 +76,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     var partialMatch = OSVersionRequirement()
     var defaultMatch = OSVersionRequirement()
     var defaultMatchSet = false
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let requirements = nudgeJSONPreferences?.osVersionRequirements {
@@ -111,7 +111,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
     var partialMatch = OSVersionRequirement()
     var defaultMatch = OSVersionRequirement()
     var defaultMatchSet = false
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     var requirements = [OSVersionRequirement]()
@@ -150,7 +150,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
 // userExperience
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getUserExperienceJSON() -> UserExperience? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let userExperience = nudgeJSONPreferences?.userExperience {
@@ -162,7 +162,7 @@ func getUserExperienceJSON() -> UserExperience? {
 }
 
 func getUserExperienceProfile() -> [String:Any]? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let userExperience = nudgeDefaults.dictionary(forKey: "userExperience") {
@@ -177,7 +177,7 @@ func getUserExperienceProfile() -> [String:Any]? {
 // userInterface
 // Even if profile/JSON is installed, return nil if in demo-mode
 func forceScreenShotIconMode() -> Bool {
-    if Utils().forceScreenShotIconModeEnabled() {
+    if CommandLineUtilities().forceScreenShotIconModeEnabled() {
         return true
     } else {
         return UserInterfaceVariables.userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
@@ -185,7 +185,7 @@ func forceScreenShotIconMode() -> Bool {
 }
 
 func getUserInterfaceJSON() -> UserInterface? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let userInterface = nudgeJSONPreferences?.userInterface {
@@ -197,7 +197,7 @@ func getUserInterfaceJSON() -> UserInterface? {
 }
 
 func getUserInterfaceProfile() -> [String:Any]? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     if let userInterface = nudgeDefaults.dictionary(forKey: "userInterface") {
@@ -210,7 +210,7 @@ func getUserInterfaceProfile() -> [String:Any]? {
 
 // Loop through JSON userInterface -> updateElements preferences and then compare language
 func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     let updateElements = getUserInterfaceJSON()?.updateElements
@@ -228,7 +228,7 @@ func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
 
 // Mutate the profile into our required construct
 func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
-    if Utils().demoModeEnabled() || Utils().unitTestingEnabled() {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
     let updateElements = UserInterfaceVariables.userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
@@ -246,9 +246,9 @@ func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
 
 // Returns the mainHeader
 func getMainHeader() -> String {
-    if Utils().demoModeEnabled() {
+    if CommandLineUtilities().demoModeEnabled() {
         return "Your device requires a security update (Demo Mode)"
-    } else if Utils().unitTestingEnabled() {
+    } else if CommandLineUtilities().unitTestingEnabled() {
         return "Your device requires a security update (Unit Testing Mode)"
     } else {
         return UserInterfaceVariables.userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
@@ -256,7 +256,7 @@ func getMainHeader() -> String {
 }
 
 func simpleMode() -> Bool {
-    if Utils().simpleModeEnabled() {
+    if CommandLineUtilities().simpleModeEnabled() {
         return true
     } else {
         return UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ?? nudgeJSONPreferences?.userInterface?.simpleMode ?? false
