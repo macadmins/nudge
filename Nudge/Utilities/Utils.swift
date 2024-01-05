@@ -20,86 +20,74 @@ import SystemConfiguration
 // kCMIODevicePropertyDeviceIsRunningSomewhere is the key here
 struct Camera {
     var id: CMIOObjectID
+
     var name: String? {
-        get {
-            var address:CMIOObjectPropertyAddress = CMIOObjectPropertyAddress(
-                mSelector:CMIOObjectPropertySelector(kCMIOObjectPropertyName),
-                mScope:CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
-                mElement:CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
-            
-            var name:CFString? = nil
-            let propsize:UInt32 = UInt32(MemoryLayout<CFString?>.size)
-            var dataUsed: UInt32 = 0
-            
-            let result:OSStatus = CMIOObjectGetPropertyData(self.id, &address, 0, nil, propsize, &dataUsed, &name)
-            if (result != 0) {
-                return ""
-            }
-            
-            return name as String?
+        var address = CMIOObjectPropertyAddress(
+            mSelector: CMIOObjectPropertySelector(kCMIOObjectPropertyName),
+            mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
+            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
+
+        var nameCFString: CFString?
+        let propsize = UInt32(MemoryLayout<UnsafeMutablePointer<CFString?>>.size)
+        var dataUsed = UInt32(0)
+        var result: OSStatus = 0
+
+        withUnsafeMutablePointer(to: &nameCFString) { namePtr in
+            result = CMIOObjectGetPropertyData(id, &address, 0, nil, propsize, &dataUsed, namePtr)
         }
+
+        guard result == 0 else { return "" }
+        return nameCFString as String?
     }
+
     var isOn: Bool {
         var opa = CMIOObjectPropertyAddress(
             mSelector: CMIOObjectPropertySelector(kCMIODevicePropertyDeviceIsRunningSomewhere),
             mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeWildcard),
-            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementWildcard)
-        )
-        
-        
+            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementWildcard))
+
         var isUsed = false
-        
         var dataSize: UInt32 = 0
         var dataUsed: UInt32 = 0
-        var result = CMIOObjectGetPropertyDataSize(self.id, &opa, 0, nil, &dataSize)
-        if result == OSStatus(kCMIOHardwareNoError) {
-            if let data = malloc(Int(dataSize)) {
-                result = CMIOObjectGetPropertyData(self.id, &opa, 0, nil, dataSize, &dataUsed, data)
-                let on = data.assumingMemoryBound(to: UInt8.self)
-                isUsed = on.pointee != 0
-            }
+        var result = CMIOObjectGetPropertyDataSize(id, &opa, 0, nil, &dataSize)
+        guard result == kCMIOHardwareNoError, let data = malloc(Int(dataSize)) else { return false }
+
+        result = CMIOObjectGetPropertyData(id, &opa, 0, nil, dataSize, &dataUsed, data)
+        if result == kCMIOHardwareNoError {
+            let on = data.assumingMemoryBound(to: UInt8.self)
+            isUsed = on.pointee != 0
         }
-        
+        free(data)
+
         return isUsed
     }
 }
 
-var cameras: [Camera]  {
-    get {
-        var innerArray :[Camera] = []
-        var opa = CMIOObjectPropertyAddress(
-            mSelector: CMIOObjectPropertySelector(kCMIOHardwarePropertyDevices),
-            mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
-            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster)
-        )
-        
-        var dataSize: UInt32 = 0
-        var dataUsed: UInt32 = 0
-        var result = CMIOObjectGetPropertyDataSize(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, &dataSize)
-        var devices: UnsafeMutableRawPointer?
-        
-        repeat {
-            if devices != nil {
-                free(devices)
-                devices = nil
-            }
-            
-            devices = malloc(Int(dataSize))
-            result = CMIOObjectGetPropertyData(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, dataSize, &dataUsed, devices)
-        } while result == OSStatus(kCMIOHardwareBadPropertySizeError)
-        
-        
-        if let devices = devices {
-            for offset in stride(from: 0, to: dataSize, by: MemoryLayout<CMIOObjectID>.size) {
-                let current = devices.advanced(by: Int(offset)).assumingMemoryBound(to: CMIOObjectID.self)
-                innerArray.append(Camera(id: current.pointee))
-            }
-        }
-        
-        free(devices)
+var cameras: [Camera] {
+    var innerArray: [Camera] = []
+    var opa = CMIOObjectPropertyAddress(
+        mSelector: CMIOObjectPropertySelector(kCMIOHardwarePropertyDevices),
+        mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
+        mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
 
-        return innerArray
+    var dataSize: UInt32 = 0
+    var dataUsed: UInt32 = 0
+    var result = CMIOObjectGetPropertyDataSize(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, &dataSize)
+    guard result == kCMIOHardwareNoError, let devices = malloc(Int(dataSize)) else { return [] }
+
+    result = CMIOObjectGetPropertyData(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, dataSize, &dataUsed, devices)
+    guard result == kCMIOHardwareNoError else {
+        free(devices)
+        return []
     }
+
+    for offset in stride(from: 0, to: Int(dataSize), by: MemoryLayout<CMIOObjectID>.size) {
+        let current = devices.advanced(by: offset).assumingMemoryBound(to: CMIOObjectID.self)
+        innerArray.append(Camera(id: current.pointee))
+    }
+
+    free(devices)
+    return innerArray
 }
 
 struct Utils {
