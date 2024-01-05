@@ -58,10 +58,10 @@ class AppState: ObservableObject {
     @Published var afterFirstStateChange = false
     @Published var allowButtons = true
     @Published var daysRemaining = Utils().getNumberOfDaysBetween()
-    @Published var deferralCountPastThreshhold = false
+    @Published var deferralCountPastThreshold = false
     @Published var deferRunUntil = nudgeDefaults.object(forKey: "deferRunUntil") as? Date
     @Published var hasClickedSecondaryQuitButton = false
-    @Published var hasLoggedDeferralCountPastThreshhold = false
+    @Published var hasLoggedDeferralCountPastThreshold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
     @Published var hasLoggedRequireDualQuitButtons = false
     @Published var hoursRemaining = Utils().getNumberOfHoursRemaining()

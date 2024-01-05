@@ -58,11 +58,11 @@ struct ContentView: View {
                     window?.isMovable = false // not movable
                     window?.collectionBehavior = [.fullScreenAuxiliary]
                     window?.delegate = windowDelegate
-                    _ = needToActivateNudge()
+                    // _ = needToActivateNudge()
                 }
             )
             .edgesIgnoringSafeArea(.all)
-            .onAppear(perform: nudgeStartLogic)
+            .onAppear(perform: initialLaunchLogic)
             .onAppear() {
                 updateUI()
             }
@@ -70,6 +70,7 @@ struct ContentView: View {
                 if needToActivateNudge() {
                     appState.userSessionDeferrals += 1
                     appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+                    Utils().activateNudge()
                 }
                 updateUI()
             }
@@ -79,7 +80,7 @@ struct ContentView: View {
         if Utils().requireDualQuitButtons() || appState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
             appState.requireDualQuitButtons = true
         }
-        if Utils().pastRequiredInstallationDate() || appState.deferralCountPastThreshhold {
+        if Utils().pastRequiredInstallationDate() || appState.deferralCountPastThreshold {
             appState.allowButtons = false
         }
         appState.daysRemaining = Utils().getNumberOfDaysBetween()
@@ -376,10 +377,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if OptionalFeatureVariables.asynchronousSoftwareUpdate && Utils().requireMajorUpgrade() == false && !Utils().pastRequiredInstallationDate() {
             DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
-                SoftwareUpdate().Download()
+                SoftwareUpdate().download()
             })
         } else {
-            SoftwareUpdate().Download()
+            SoftwareUpdate().download()
         }
     }
     
