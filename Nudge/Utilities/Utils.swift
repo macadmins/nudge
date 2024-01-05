@@ -105,6 +105,7 @@ var cameras: [Camera]  {
 struct Utils {
     func activateNudge() {
         utilsLog.info("\("Activating Nudge", privacy: .public)")
+        nudgePrimaryState.lastRefreshTime = Utils().getCurrentDate()
         // NSApp.windows[0] is only safe because we have a single window. Should we increase windows, this will be a problem.
         // Sheets do not count as windows though.
         
@@ -825,20 +826,6 @@ struct Utils {
         } else {
             nudgeDefaults.set(nudgePrimaryState.userQuitDeferrals, forKey: "userQuitDeferrals")
         }
-    }
-    
-    func logUserSessionDeferrals(resetCount: Bool = false) {
-        if Utils().demoModeEnabled() {
-            nudgePrimaryState.userSessionDeferrals = 0
-            return
-        }
-        if resetCount {
-            nudgePrimaryState.userSessionDeferrals = 0
-            nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
-        } else {
-            nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
-        }
-        
     }
     
     func logRequiredMinimumOSVersion() {

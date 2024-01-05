@@ -54,13 +54,13 @@ struct ScreenShotZoom: View {
     private var screenShotImage: some View {
         if screenShotPath.starts(with: "data:") {
             Image(nsImage: Utils().createImageBase64(base64String: screenShotPath))
-                .customMaxHeightResizable(maxHeight: 675)
+                .customResizable(maxHeight: 675)
         } else if FileManager.default.fileExists(atPath: screenShotPath) {
             Image(nsImage: Utils().createImageData(fileImagePath: screenShotPath))
-                .customMaxHeightResizable(maxHeight: 675)
+                .customResizable(maxHeight: 675)
         } else {
             Image("CompanyScreenshotIcon")
-                .customMaxHeightResizable(maxHeight: 675)
+                .customResizable(maxHeight: 675)
         }
     }
 }

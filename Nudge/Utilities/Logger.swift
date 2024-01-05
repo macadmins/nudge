@@ -8,15 +8,26 @@
 import Foundation
 import os
 
-let utilsLog = Logger(subsystem: bundleID, category: "utilities")
-let osLog = Logger(subsystem: bundleID, category: "operating-system")
-let loggingLog = Logger(subsystem: bundleID, category: "logging")
-let prefsProfileLog = Logger(subsystem: bundleID, category: "preferences-profile")
-let prefsJSONLog = Logger(subsystem: bundleID, category: "preferences-json")
-let uiLog = Logger(subsystem: bundleID, category: "user-interface")
-let softwareupdateListLog = Logger(subsystem: bundleID, category: "softwareupdate-list")
-let softwareupdateDownloadLog = Logger(subsystem: bundleID, category: "softwareupdate-download")
+// Logger Manager
+struct LogManager {
+    static private let bundleID = Bundle.main.bundleIdentifier ?? "com.github.macadmins.Nudge"
 
+    static func createLogger(category: String) -> Logger {
+        return Logger(subsystem: bundleID, category: category)
+    }
+}
+
+// Usage of Logger Manager
+let utilsLog = LogManager.createLogger(category: "utilities")
+let osLog = LogManager.createLogger(category: "operating-system")
+let loggingLog = LogManager.createLogger(category: "logging")
+let prefsProfileLog = LogManager.createLogger(category: "preferences-profile")
+let prefsJSONLog = LogManager.createLogger(category: "preferences-json")
+let uiLog = LogManager.createLogger(category: "user-interface")
+let softwareupdateListLog = LogManager.createLogger(category: "softwareupdate-list")
+let softwareupdateDownloadLog = LogManager.createLogger(category: "softwareupdate-download")
+
+// Log State
 class LogState {
     var afterFirstLaunch = false
     var afterFirstRun = false
@@ -31,8 +42,9 @@ class LogState {
     var hasLoggedUnitTestingMode = false
 }
 
+// NudgeLogger
 class NudgeLogger {
     init() {
-        loggingLog.debug("\("Starting log events", privacy: .public)")
+        loggingLog.debug("Starting log events")
     }
 }

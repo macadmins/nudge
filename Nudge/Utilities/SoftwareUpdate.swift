@@ -6,143 +6,110 @@
 //
 
 import Foundation
+import os
 
 class SoftwareUpdate {
-    func List() -> String {
-        let task = Process()
-        task.launchPath = "/usr/sbin/softwareupdate"
-        task.arguments = ["--list", "--all"]
-        
-        let outputPipe = Pipe(), errorPipe = Pipe()
-        
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
-        
-        do {
-            try task.run()
-        } catch {
-            softwareupdateListLog.error("\("Error listing software updates", privacy: .public)")
-        }
-        
-        task.waitUntilExit()
-        
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-        
-        let output = String(decoding: outputData, as: UTF8.self), error = String(decoding: errorData, as: UTF8.self)
-        
-        if task.terminationStatus != 0 {
+    func list() -> String {
+        let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--list", "--all"])
+
+        if exitCode != 0 {
             softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
             return error
         } else {
             softwareupdateListLog.info("\(output, privacy: .public)")
             return output
         }
-        
     }
-    
-    func Download() {
+
+    func download() {
         softwareupdateDownloadLog.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates, privacy: .public)")
-        
-        if Utils().getCPUTypeString() == "Apple Silicon" && Utils().requireMajorUpgrade() == false {
-            softwareupdateListLog.debug("\("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.", privacy: .public)")
+
+        if Utils().getCPUTypeString() == "Apple Silicon" && !Utils().requireMajorUpgrade() {
+            softwareupdateListLog.debug("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.")
             return
         }
-        
+
         if Utils().requireMajorUpgrade() {
-            if FeatureVariables.actionButtonPath != nil {
-                return
-            }
-            
-            if OptionalFeatureVariables.attemptToFetchMajorUpgrade == true {
-                if majorUpgradeAppPathExists {
-                    softwareupdateListLog.notice("\("Found major upgrade application - skipping download", privacy: .public)")
-                    return
-                }
-                
-                if majorUpgradeBackupAppPathExists {
-                    softwareupdateListLog.notice("\("Found backup major upgrade application - skipping download", privacy: .public)")
-                    return
-                }
-                
-                softwareupdateListLog.notice("\("Device requires major upgrade - attempting download", privacy: .public)")
-                let task = Process()
-                task.launchPath = "/usr/sbin/softwareupdate"
-                task.arguments = ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion]
-                
-                let outputPipe = Pipe(), errorPipe = Pipe()
-                
-                task.standardOutput = outputPipe
-                task.standardError = errorPipe
-                
-                do {
-                    try task.run()
-                } catch {
-                    softwareupdateListLog.error("\("Error downloading software update", privacy: .public)")
-                }
-                
-                task.waitUntilExit()
-                
-                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-                
-                let output = String(decoding: outputData, as: UTF8.self), _ = String(decoding: errorData, as: UTF8.self)
-                
-                if task.terminationStatus != 0 {
-                    softwareupdateDownloadLog.error("Error downloading software update: \(output, privacy: .public)")
+            guard FeatureVariables.actionButtonPath == nil else { return }
+
+            if OptionalFeatureVariables.attemptToFetchMajorUpgrade, !majorUpgradeAppPathExists, !majorUpgradeBackupAppPathExists {
+                softwareupdateListLog.notice("Device requires major upgrade - attempting download")
+                let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion])
+
+                if exitCode != 0 {
+                    softwareupdateDownloadLog.error("Error downloading software update: \(error, privacy: .public)")
                 } else {
-                    softwareupdateListLog.notice("\("softwareupdate successfully downloaded available update application - updating application paths", privacy: .public)")
                     softwareupdateDownloadLog.info("\(output, privacy: .public)")
                     GlobalVariables.fetchMajorUpgradeSuccessful = true
-                    majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: OSVersionRequirementVariables.majorUpgradeAppPath)
-                    majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: Utils().getBackupMajorUpgradeAppPath())
+                    // Update the state based on the download result
                 }
             } else {
-                softwareupdateListLog.notice("\("Device requires major upgrade but attemptToFetchMajorUpgrade is False - skipping download", privacy: .public)")
+                softwareupdateListLog.notice("Found major upgrade application or backup - skipping download")
             }
         } else {
             if OptionalFeatureVariables.disableSoftwareUpdateWorkflow {
-                softwareupdateListLog.notice("\("Skip running softwareupdate because it's disabled by a preference.", privacy: .public)")
+                softwareupdateListLog.notice("Skipping running softwareupdate because it's disabled by a preference.")
                 return
             }
-            let softwareupdateList = self.List()
-            var updateLabel = ""
-            for update in softwareupdateList.components(separatedBy: "\n") {
-                if update.contains("Label:") && update.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) {
-                    updateLabel = update.components(separatedBy: ": ")[1]
-                }
+            let softwareupdateList = self.list()
+            let updateLabel = extractUpdateLabel(from: softwareupdateList)
+
+            if !softwareupdateList.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) || updateLabel.isEmpty {
+                softwareupdateListLog.notice("Software update did not find \(OSVersionRequirementVariables.requiredMinimumOSVersion) available for download - skipping download attempt")
+                return
             }
-            
-            if softwareupdateList.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) && updateLabel.isEmpty == false {
-                softwareupdateListLog.notice("softwareupdate found \(updateLabel, privacy: .public) available for download - attempting download")
-                let task = Process()
-                task.launchPath = "/usr/sbin/softwareupdate"
-                task.arguments = ["--download", "\(updateLabel)"]
-                
-                let outputPipe = Pipe(), errorPipe = Pipe()
-                
-                task.standardOutput = outputPipe
-                task.standardError = errorPipe
-                
-                do {
-                    try task.run()
-                } catch {
-                    softwareupdateListLog.error("\("Error downloading software update", privacy: .public)")
-                }
-                
-                task.waitUntilExit()
-                
-                let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile(), errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-                
-                let output = String(decoding: outputData, as: UTF8.self), error = String(decoding: errorData, as: UTF8.self)
-                
-                if task.terminationStatus != 0 {
-                    softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")
-                } else {
-                    softwareupdateListLog.notice("\("softwareupdate successfully downloaded available update", privacy: .public)")
-                    softwareupdateDownloadLog.info("\(output, privacy: .public)")
-                }
+
+            softwareupdateListLog.notice("Software update found \(updateLabel) available for download - attempting download")
+            let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--download", updateLabel])
+
+            if exitCode != 0 {
+                softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")
             } else {
-                softwareupdateListLog.notice("softwareupdate did not find \(OSVersionRequirementVariables.requiredMinimumOSVersion, privacy: .public) available for download - skipping download attempt")
+                softwareupdateDownloadLog.info("\(output, privacy: .public)")
             }
         }
+    }
+
+    private func extractUpdateLabel(from softwareupdateList: String) -> String {
+        let lines = softwareupdateList.split(separator: "\n")
+        var updateLabel: String?
+
+        for line in lines {
+            if line.contains("Label:") {
+                let labelPart = line.split(separator: ":").map { $0.trimmingCharacters(in: .whitespaces) }
+                if labelPart.count > 1 && labelPart[1].contains(OSVersionRequirementVariables.requiredMinimumOSVersion) {
+                    updateLabel = labelPart[1]
+                    break
+                }
+            }
+        }
+
+        return updateLabel ?? ""
+    }
+
+    private func runProcess(launchPath: String, arguments: [String]) -> (output: String, error: String, exitCode: Int32) {
+        let task = Process()
+        task.launchPath = launchPath
+        task.arguments = arguments
+
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+        task.standardOutput = outputPipe
+        task.standardError = errorPipe
+
+        do {
+            try task.run()
+        } catch {
+            return ("", "Error running process", -1)
+        }
+
+        task.waitUntilExit()
+
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(decoding: outputData, as: UTF8.self)
+        let error = String(decoding: errorData, as: UTF8.self)
+
+        return (output, error, task.terminationStatus)
     }
 }
