@@ -82,7 +82,7 @@ private func isAcceptableAssertionRunning() -> Bool {
         return false
     }
 
-    for (process, value) in assertionDict {
+    for (_, value) in assertionDict {
         if let assertionValues = value as? [NSDictionary] {
             for assertion in assertionValues {
                 if let processName = assertion["Process Name"] as? String,
@@ -190,7 +190,7 @@ private func logUserSessionDeferrals(resetCount: Bool = false) {
     }
 }
 
-private func needToActivateNudge() -> Bool {
+func needToActivateNudge() -> Bool {
     if NSApplication.shared.isActive {
         uiLog.notice("Nudge is currently the frontmostApplication")
         return false
@@ -376,10 +376,10 @@ private func updateNudgeState() {
     }
 }
 
-private func userHasClickedSecondaryQuitButton() {
+func userHasClickedSecondaryQuitButton() {
     uiLog.notice("\("User clicked secondaryQuitButton", privacy: .public)")
 }
 
-private func userHasClickedDeferralQuitButton(deferralTime: Date) {
+func userHasClickedDeferralQuitButton(deferralTime: Date) {
     uiLog.notice("\("User initiated a deferral: \(deferralTime)", privacy: .public)")
 }
