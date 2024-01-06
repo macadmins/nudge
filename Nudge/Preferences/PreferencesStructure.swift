@@ -5,6 +5,7 @@
 //  Created by Erik Gomez on 2/5/21.
 //
 
+// TODO: Finish refactor
 import Foundation
 
 // MARK: - NudgePreferences

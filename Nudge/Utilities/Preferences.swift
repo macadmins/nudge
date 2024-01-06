@@ -5,6 +5,7 @@
 //  Created by Erik Gomez on 2/18/21.
 //
 
+// TODO: Finish refactor
 import Foundation
 
 // Generics

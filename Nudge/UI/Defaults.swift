@@ -5,6 +5,7 @@
 //  Created by Erik Gomez on 6/13/23.
 //
 
+// TODO: Finish refactor
 import Foundation
 import UserNotifications
 import SwiftUI
