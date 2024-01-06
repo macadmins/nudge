@@ -99,7 +99,7 @@ private func isAcceptableAssertionRunning() -> Bool {
 }
 
 private func isCameraOn() -> Bool {
-    for camera in cameras {
+    for camera in CameraUtilities().getCameras() {
         if camera.isOn {
             return true
         }

@@ -36,6 +36,18 @@ struct AppStateManager {
         }
     }
 
+    func allow1HourDeferral() -> Bool {
+        return isDeferralAllowed(threshold: 0, logMessage: "Device allow1HourDeferralButton")
+    }
+
+    func allow24HourDeferral() -> Bool {
+        return isDeferralAllowed(threshold: UserExperienceVariables.imminentWindowTime, logMessage: "Device allow24HourDeferralButton")
+    }
+
+    func allowCustomDeferral() -> Bool {
+        return isDeferralAllowed(threshold: UserExperienceVariables.approachingWindowTime, logMessage: "Device allowCustomDeferralButton")
+    }
+
     private func applyBackgroundBlur(to window: NSWindow) {
         // load the blur background and send it to the back if we are past the required install date
         uiLog.info("Enabling blurred background")
@@ -50,34 +62,37 @@ struct AppStateManager {
         window.level = .floating
     }
 
-    func allow1HourDeferral() -> Bool {
-        return isDeferralAllowed(threshold: 0, logMessage: "Device allow1HourDeferralButton")
-    }
+    private func calculateNewRequiredInstallationDateIfNeeded(currentDate: Date, gracePeriodPathCreationDate: Date) -> Date {
+        let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
+        let combinedGracePeriod = UserExperienceVariables.gracePeriodInstallDelay + UserExperienceVariables.gracePeriodLaunchDelay
 
-    func allow24HourDeferral() -> Bool {
-        return isDeferralAllowed(threshold: UserExperienceVariables.imminentWindowTime, logMessage: "Device allow24HourDeferralButton")
-    }
+        if currentDate > PrefsWrapper.requiredInstallationDate || combinedGracePeriod > DateManager().getNumberOfHoursRemaining(currentDate: currentDate) {
+            if UserExperienceVariables.gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
+                uiLog.info("Device within gracePeriodLaunchDelay, exiting Nudge")
+                nudgePrimaryState.shouldExit = true
+                return currentDate
+            }
 
-    func allowCustomDeferral() -> Bool {
-        return isDeferralAllowed(threshold: UserExperienceVariables.approachingWindowTime, logMessage: "Device allowCustomDeferralButton")
-    }
-
-    private func isDeferralAllowed(threshold: Int, logMessage: String) -> Bool {
-        if CommandLineUtilities().demoModeEnabled() {
-            return true
+            if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
+                let newDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
+                uiLog.notice("Device permitted for gracePeriods - setting date to: \(newDate)")
+                return newDate
+            }
         }
-        let hoursRemaining = DateManager().getNumberOfHoursRemaining()
-        let isAllowed = hoursRemaining > threshold
-        if !nudgeLogState.afterFirstRun {
-            uiLog.info("\(logMessage): \(isAllowed, privacy: .public)")
-        }
-        return isAllowed
+
+        return PrefsWrapper.requiredInstallationDate
     }
 
     func exitNudge() {
         uiLog.notice("\("Nudge is terminating due to condition met", privacy: .public)")
         nudgePrimaryState.shouldExit = true
         exit(0)
+    }
+
+    private func getCreationDateForPath(_ path: String, testFileDate: Date?) -> Date? {
+        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
+        let creationDate = attributes?[.creationDate] as? Date
+        return testFileDate ?? creationDate
     }
 
     // Adapted from https://github.com/ProfileCreator/ProfileCreator/blob/master/ProfileCreator/ProfileCreator/Extensions/ExtensionBundle.swift
@@ -130,31 +145,23 @@ struct AppStateManager {
         return calculateNewRequiredInstallationDateIfNeeded(currentDate: currentDate, gracePeriodPathCreationDate: gracePeriodPathCreationDate)
     }
 
-    private func getCreationDateForPath(_ path: String, testFileDate: Date?) -> Date? {
-        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
-        let creationDate = attributes?[.creationDate] as? Date
-        return testFileDate ?? creationDate
+    private func isDeferralAllowed(threshold: Int, logMessage: String) -> Bool {
+        if CommandLineUtilities().demoModeEnabled() {
+            return true
+        }
+        let hoursRemaining = DateManager().getNumberOfHoursRemaining()
+        let isAllowed = hoursRemaining > threshold
+        if !nudgeLogState.afterFirstRun {
+            uiLog.info("\(logMessage): \(isAllowed, privacy: .public)")
+        }
+        return isAllowed
     }
 
-    private func calculateNewRequiredInstallationDateIfNeeded(currentDate: Date, gracePeriodPathCreationDate: Date) -> Date {
-        let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
-        let combinedGracePeriod = UserExperienceVariables.gracePeriodInstallDelay + UserExperienceVariables.gracePeriodLaunchDelay
-
-        if currentDate > PrefsWrapper.requiredInstallationDate || combinedGracePeriod > DateManager().getNumberOfHoursRemaining(currentDate: currentDate) {
-            if UserExperienceVariables.gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
-                uiLog.info("Device within gracePeriodLaunchDelay, exiting Nudge")
-                nudgePrimaryState.shouldExit = true
-                return currentDate
-            }
-
-            if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
-                let newDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
-                uiLog.notice("Device permitted for gracePeriods - setting date to: \(newDate)")
-                return newDate
-            }
+    private func logOnce(_ message: String, state: inout Bool) {
+        if !state {
+            uiLog.info("\(message), privacy: .public)")
+            state = true
         }
-
-        return PrefsWrapper.requiredInstallationDate
     }
 
     func requireDualQuitButtons() -> Bool {
@@ -177,13 +184,6 @@ struct AppStateManager {
         logOnce("Device requireMajorUpgrade: \(requireMajorUpdate)", state: &nudgeLogState.hasLoggedRequireMajorUgprade)
         return requireMajorUpdate
     }
-
-    private func logOnce(_ message: String, state: inout Bool) {
-        if !state {
-            uiLog.info("\(message), privacy: .public)")
-            state = true
-        }
-    }
 }
 
 // https://stackoverflow.com/questions/37470201/how-can-i-tell-if-the-camera-is-in-use-by-another-process
@@ -192,25 +192,6 @@ struct AppStateManager {
 // kCMIODevicePropertyDeviceIsRunningSomewhere is the key here
 struct CameraManager {
     var id: CMIOObjectID
-
-    var name: String? {
-        var address = CMIOObjectPropertyAddress(
-            mSelector: CMIOObjectPropertySelector(kCMIOObjectPropertyName),
-            mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
-            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
-
-        var nameCFString: CFString?
-        let propsize = UInt32(MemoryLayout<UnsafeMutablePointer<CFString?>>.size)
-        var dataUsed = UInt32(0)
-        var result: OSStatus = 0
-
-        withUnsafeMutablePointer(to: &nameCFString) { namePtr in
-            result = CMIOObjectGetPropertyData(id, &address, 0, nil, propsize, &dataUsed, namePtr)
-        }
-
-        guard result == 0 else { return "" }
-        return nameCFString as String?
-    }
 
     var isOn: Bool {
         var opa = CMIOObjectPropertyAddress(
@@ -232,6 +213,54 @@ struct CameraManager {
         free(data)
 
         return isUsed
+    }
+
+    var name: String? {
+        var address = CMIOObjectPropertyAddress(
+            mSelector: CMIOObjectPropertySelector(kCMIOObjectPropertyName),
+            mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
+            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
+
+        var nameCFString: CFString?
+        let propsize = UInt32(MemoryLayout<UnsafeMutablePointer<CFString?>>.size)
+        var dataUsed = UInt32(0)
+        var result: OSStatus = 0
+
+        withUnsafeMutablePointer(to: &nameCFString) { namePtr in
+            result = CMIOObjectGetPropertyData(id, &address, 0, nil, propsize, &dataUsed, namePtr)
+        }
+
+        guard result == 0 else { return "" }
+        return nameCFString as String?
+    }
+}
+
+struct CameraUtilities {
+    func getCameras() -> [CameraManager] {
+        var innerArray: [CameraManager] = []
+        var opa = CMIOObjectPropertyAddress(
+            mSelector: CMIOObjectPropertySelector(kCMIOHardwarePropertyDevices),
+            mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
+            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
+
+        var dataSize: UInt32 = 0
+        var dataUsed: UInt32 = 0
+        var result = CMIOObjectGetPropertyDataSize(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, &dataSize)
+        guard result == kCMIOHardwareNoError, let devices = malloc(Int(dataSize)) else { return [] }
+
+        result = CMIOObjectGetPropertyData(CMIOObjectID(kCMIOObjectSystemObject), &opa, 0, nil, dataSize, &dataUsed, devices)
+        guard result == kCMIOHardwareNoError else {
+            free(devices)
+            return []
+        }
+
+        for offset in stride(from: 0, to: Int(dataSize), by: MemoryLayout<CMIOObjectID>.size) {
+            let current = devices.advanced(by: offset).assumingMemoryBound(to: CMIOObjectID.self)
+            innerArray.append(CameraManager(id: current.pointee))
+        }
+
+        free(devices)
+        return innerArray
     }
 }
 
@@ -311,6 +340,19 @@ struct CommandLineUtilities {
 }
 
 struct ConfigurationManager {
+    private func determineTimerCycle(basedOn hoursRemaining: Int) -> Int {
+        switch hoursRemaining {
+            case ...0:
+                return UserExperienceVariables.elapsedRefreshCycle
+            case ...UserExperienceVariables.imminentWindowTime:
+                return UserExperienceVariables.imminentRefreshCycle
+            case ...UserExperienceVariables.approachingWindowTime:
+                return UserExperienceVariables.approachingRefreshCycle
+            default:
+                return UserExperienceVariables.initialRefreshCycle
+        }
+    }
+
     func getConfigurationAsJSON() -> Data {
         guard let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences),
               let json = try? JSONSerialization.jsonObject(with: nudgeJSONConfig),
@@ -348,19 +390,6 @@ struct ConfigurationManager {
         }
         return timerCycle
     }
-
-    private func determineTimerCycle(basedOn hoursRemaining: Int) -> Int {
-        switch hoursRemaining {
-            case ...0:
-                return UserExperienceVariables.elapsedRefreshCycle
-            case ...UserExperienceVariables.imminentWindowTime:
-                return UserExperienceVariables.imminentRefreshCycle
-            case ...UserExperienceVariables.approachingWindowTime:
-                return UserExperienceVariables.approachingRefreshCycle
-            default:
-                return UserExperienceVariables.initialRefreshCycle
-        }
-    }
 }
 
 struct DateManager {
@@ -383,6 +412,15 @@ struct DateManager {
         dateFormatterISO8601.date(from: dateString) ?? getCurrentDate()
     }
 
+    func getCurrentDate() -> Date {
+        switch Calendar.current.identifier {
+            case .buddhist, .japanese, .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian:
+                return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
+            default:
+                return Date()
+        }
+    }
+
     func getFormattedDate(date: Date? = nil) -> Date {
         let initialDate = dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: date ?? Date())) ?? Date()
         switch Calendar.current.identifier {
@@ -393,14 +431,6 @@ struct DateManager {
         }
     }
 
-    func getCurrentDate() -> Date {
-        switch Calendar.current.identifier {
-            case .buddhist, .japanese, .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian:
-                return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
-            default:
-                return Date()
-        }
-    }
 
     func getNumberOfDaysBetween() -> Int {
         guard !CommandLineUtilities().demoModeEnabled() else { return 0 }
@@ -470,6 +500,17 @@ struct DeviceManager {
         return PatchOSVersion
     }
 
+    private func getPropertyFromPlatformExpert(key: String) -> String? {
+        let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        defer { IOObjectRelease(platformExpert) }
+
+        guard platformExpert > 0,
+              let property = IORegistryEntryCreateCFProperty(platformExpert, key as CFString, kCFAllocatorDefault, 0).takeRetainedValue() as? String else {
+            return nil
+        }
+        return property.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     func getSerialNumber() -> String {
         guard !CommandLineUtilities().demoModeEnabled(),
               !CommandLineUtilities().unitTestingEnabled() else {
@@ -485,20 +526,14 @@ struct DeviceManager {
         utilsLog.debug("System console username: \(username)")
         return username
     }
-
-    private func getPropertyFromPlatformExpert(key: String) -> String? {
-        let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-        defer { IOObjectRelease(platformExpert) }
-
-        guard platformExpert > 0,
-              let property = IORegistryEntryCreateCFProperty(platformExpert, key as CFString, kCFAllocatorDefault, 0).takeRetainedValue() as? String else {
-            return nil
-        }
-        return property.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
 }
 
 struct ImageManager {
+    private func createErrorImage() -> NSImage {
+        let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
+        return NSImage(systemSymbolName: "questionmark", accessibilityDescription: nil)?.withSymbolConfiguration(errorImageConfig) ?? NSImage()
+    }
+
     func createImageBase64(base64String: String) -> NSImage {
         let base64Prefix = "data:image/png;base64,"
         let cleanBase64String = base64String.hasPrefix(base64Prefix) ? String(base64String.dropFirst(base64Prefix.count)) : base64String
@@ -524,11 +559,6 @@ struct ImageManager {
         return NSImage(data: imageData) ?? createErrorImage()
     }
 
-    private func createErrorImage() -> NSImage {
-        let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
-        return NSImage(systemSymbolName: "questionmark", accessibilityDescription: nil)?.withSymbolConfiguration(errorImageConfig) ?? NSImage()
-    }
-
     func getCompanyLogoPath(colorScheme: ColorScheme) -> String {
         colorScheme == .dark ? UserInterfaceVariables.iconDarkPath : UserInterfaceVariables.iconLightPath
     }
@@ -549,6 +579,10 @@ struct ImageManager {
 }
 
 struct LoggerUtilities {
+    func logRequiredMinimumOSVersion() {
+        nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+    }
+
     func logUserDeferrals(resetCount: Bool = false) {
         updateDeferralCount(&nudgePrimaryState.userDeferrals, resetCount: resetCount, key: "userDeferrals")
     }
@@ -566,10 +600,6 @@ struct LoggerUtilities {
             count = 0
         }
         nudgeDefaults.set(count, forKey: key)
-    }
-
-    func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
 
     func userInitiatedDeviceInfo() {
@@ -621,6 +651,20 @@ struct MemoizationManager {
 }
 
 struct NetworkFileManager {
+    private func decodeNudgePreferences(from url: URL) -> NudgePreferences? {
+        guard let data = try? Data(contentsOf: url) else {
+            prefsJSONLog.error("Failed to load data from URL: \(url)")
+            return nil
+        }
+
+        do {
+            return try NudgePreferences(data: data)
+        } catch {
+            prefsJSONLog.error("Decoding error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
     func getBackupMajorUpgradeAppPath() -> String {
         switch VersionManager.getMajorRequiredNudgeOSVersion() {
             case 12:
@@ -658,23 +702,13 @@ struct NetworkFileManager {
         prefsJSONLog.error("Could not find or decode JSON configuration")
         return nil
     }
-
-    private func decodeNudgePreferences(from url: URL) -> NudgePreferences? {
-        guard let data = try? Data(contentsOf: url) else {
-            prefsJSONLog.error("Failed to load data from URL: \(url)")
-            return nil
-        }
-
-        do {
-            return try NudgePreferences(data: data)
-        } catch {
-            prefsJSONLog.error("Decoding error: \(error.localizedDescription)")
-            return nil
-        }
-    }
 }
 
 struct SMAppManager {
+    private func handleLegacyLaunchAgent(passedThroughCLI: Bool, action: String) {
+        logOrPrint("Legacy Nudge LaunchAgent currently loaded. Please disable this agent before attempting to \(action) modern agent.", passedThroughCLI: passedThroughCLI, exitCode: 1)
+    }
+
     @available(macOS 13.0, *)
     func loadSMAppLaunchAgent(appService: SMAppService, appServiceStatus: SMAppService.Status) {
         let url = URL(fileURLWithPath: "/Library/LaunchAgents/\(UserExperienceVariables.launchAgentIdentifier).plist")
@@ -694,18 +728,15 @@ struct SMAppManager {
         }
     }
 
-    @available(macOS 13.0, *)
-    func unloadSMAppLaunchAgent(appService: SMAppService, appServiceStatus: SMAppService.Status) {
-        let passedThroughCLI = CommandLineUtilities().unregisterSMAppArgumentPassed()
-
-        switch appServiceStatus {
-            case .notFound, .notRegistered:
-                logOrPrint("Nudge LaunchAgent has never been registered or is not currently registered", passedThroughCLI: passedThroughCLI, exitCode: 0)
-            default:
-                registerOrUnregister(appService: appService, passedThroughCLI: passedThroughCLI, action: "unregister")
+    private func logOrPrint(_ message: String, passedThroughCLI: Bool, exitCode: Int? = nil) {
+        if passedThroughCLI {
+            print(message)
+            if let code = exitCode { exit(Int32(code)) }
+        } else {
+            osLog.info("\(message, privacy: .public)")
         }
     }
-    
+
     @available(macOS 13.0, *)
     private func registerOrUnregister(appService: SMAppService, passedThroughCLI: Bool, action: String) {
         do {
@@ -717,16 +748,15 @@ struct SMAppManager {
         }
     }
 
-    private func handleLegacyLaunchAgent(passedThroughCLI: Bool, action: String) {
-        logOrPrint("Legacy Nudge LaunchAgent currently loaded. Please disable this agent before attempting to \(action) modern agent.", passedThroughCLI: passedThroughCLI, exitCode: 1)
-    }
+    @available(macOS 13.0, *)
+    func unloadSMAppLaunchAgent(appService: SMAppService, appServiceStatus: SMAppService.Status) {
+        let passedThroughCLI = CommandLineUtilities().unregisterSMAppArgumentPassed()
 
-    private func logOrPrint(_ message: String, passedThroughCLI: Bool, exitCode: Int? = nil) {
-        if passedThroughCLI {
-            print(message)
-            if let code = exitCode { exit(Int32(code)) }
-        } else {
-            osLog.info("\(message, privacy: .public)")
+        switch appServiceStatus {
+            case .notFound, .notRegistered:
+                logOrPrint("Nudge LaunchAgent has never been registered or is not currently registered", passedThroughCLI: passedThroughCLI, exitCode: 0)
+            default:
+                registerOrUnregister(appService: appService, passedThroughCLI: passedThroughCLI, action: "unregister")
         }
     }
 }
@@ -736,12 +766,84 @@ struct UIUtilities {
         NSApp.windows.first?.center()
     }
 
+    private func determineUpdateURL() -> URL? {
+        if let actionButtonPath = FeatureVariables.actionButtonPath {
+            if actionButtonPath.isEmpty {
+                utilsLog.warning("actionButtonPath is set but contains an empty string. No action will be triggered.")
+                return nil
+            }
+
+            // Check if it's a shell command
+            if isShellCommand(path: actionButtonPath) {
+                return nil
+            }
+
+            return URL(string: actionButtonPath) ?? URL(fileURLWithPath: actionButtonPath)
+        }
+
+        if AppStateManager().requireMajorUpgrade() {
+            if majorUpgradeAppPathExists {
+                return URL(fileURLWithPath: OSVersionRequirementVariables.majorUpgradeAppPath)
+            } else if majorUpgradeBackupAppPathExists {
+                return URL(fileURLWithPath: NetworkFileManager().getBackupMajorUpgradeAppPath())
+            }
+        }
+
+        return URL(fileURLWithPath: "/System/Library/CoreServices/Software Update.app")
+    }
+
+    func executeShellCommand(command: String, userClicked: Bool, configuration: NSWorkspace.OpenConfiguration) {
+        let cmds = command.components(separatedBy: " ")
+        guard let launchPath = cmds.first, let argument = cmds.last else {
+            uiLog.error("Invalid shell command format")
+            return
+        }
+
+        let task = Process()
+        task.launchPath = launchPath
+        task.arguments = [argument]
+
+        if userClicked {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                do {
+                    try task.run()
+                } catch {
+                    uiLog.error("Error running script: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            do {
+                try task.run()
+            } catch {
+                uiLog.error("Error running script: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func isShellCommand(path: String) -> Bool {
+        let shellCommands = ["/bin/bash", "/bin/sh", "/bin/zsh"]
+        return shellCommands.contains(where: path.hasPrefix)
+    }
+
     func openMoreInfo() {
         guard let url = URL(string: OSVersionRequirementVariables.aboutUpdateURL) else {
             return
         }
         uiLog.notice("User clicked moreInfo button")
         NSWorkspace.shared.open(url)
+    }
+
+    private func postUpdateDeviceActions(userClicked: Bool) {
+        if userClicked {
+            uiLog.notice("User clicked updateDevice")
+            // Remove forced blur and reset window level
+            nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
+                blurWindowController.close()
+            }
+            NSApp.windows.first?.level = .normal
+        } else {
+            uiLog.notice("Synthetically clicked updateDevice due to allowedDeferral count")
+        }
     }
 
     func setDeferralTime(deferralTime: Date) {
@@ -777,78 +879,6 @@ struct UIUtilities {
         }
 
         postUpdateDeviceActions(userClicked: userClicked)
-    }
-
-    private func determineUpdateURL() -> URL? {
-        if let actionButtonPath = FeatureVariables.actionButtonPath {
-            if actionButtonPath.isEmpty {
-                utilsLog.warning("actionButtonPath is set but contains an empty string. No action will be triggered.")
-                return nil
-            }
-
-            // Check if it's a shell command
-            if isShellCommand(path: actionButtonPath) {
-                return nil
-            }
-
-            return URL(string: actionButtonPath) ?? URL(fileURLWithPath: actionButtonPath)
-        }
-
-        if AppStateManager().requireMajorUpgrade() {
-            if majorUpgradeAppPathExists {
-                return URL(fileURLWithPath: OSVersionRequirementVariables.majorUpgradeAppPath)
-            } else if majorUpgradeBackupAppPathExists {
-                return URL(fileURLWithPath: NetworkFileManager().getBackupMajorUpgradeAppPath())
-            }
-        }
-
-        return URL(fileURLWithPath: "/System/Library/CoreServices/Software Update.app")
-    }
-
-    private func isShellCommand(path: String) -> Bool {
-        let shellCommands = ["/bin/bash", "/bin/sh", "/bin/zsh"]
-        return shellCommands.contains(where: path.hasPrefix)
-    }
-
-    func executeShellCommand(command: String, userClicked: Bool, configuration: NSWorkspace.OpenConfiguration) {
-        let cmds = command.components(separatedBy: " ")
-        guard let launchPath = cmds.first, let argument = cmds.last else {
-            uiLog.error("Invalid shell command format")
-            return
-        }
-
-        let task = Process()
-        task.launchPath = launchPath
-        task.arguments = [argument]
-
-        if userClicked {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                do {
-                    try task.run()
-                } catch {
-                    uiLog.error("Error running script: \(error.localizedDescription)")
-                }
-            }
-        } else {
-            do {
-                try task.run()
-            } catch {
-                uiLog.error("Error running script: \(error.localizedDescription)")
-            }
-        }
-    }
-
-    private func postUpdateDeviceActions(userClicked: Bool) {
-        if userClicked {
-            uiLog.notice("User clicked updateDevice")
-            // Remove forced blur and reset window level
-            nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
-                blurWindowController.close()
-            }
-            NSApp.windows.first?.level = .normal
-        } else {
-            uiLog.notice("Synthetically clicked updateDevice due to allowedDeferral count")
-        }
     }
 
     func userInitiatedExit() {
@@ -895,6 +925,10 @@ struct VersionManager {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
     }
 
+    private static func logOSVersion(_ version: Int, for description: String) {
+        utilsLog.info("\(description): \(version)")
+    }
+
     static func newNudgeEvent() -> Bool {
         versionGreaterThan(currentVersion: OSVersionRequirementVariables.requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
@@ -918,10 +952,6 @@ struct VersionManager {
 
     static func versionLessThanOrEqual(currentVersion: String, newVersion: String) -> Bool {
         return currentVersion.compare(newVersion, options: .numeric) != .orderedDescending
-    }
-
-    private static func logOSVersion(_ version: Int, for description: String) {
-        utilsLog.info("\(description): \(version)")
     }
 }
 
