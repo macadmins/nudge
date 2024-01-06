@@ -53,7 +53,7 @@ private func handleDemoMode() -> Bool {
 }
 
 private func handleUpdateStatus() {
-    if VersionManager().fullyUpdated() {
+    if VersionManager.fullyUpdated() {
         uiLog.notice("Device is fully updated")
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         if !isPreview {
@@ -218,7 +218,7 @@ func needToActivateNudge() -> Bool {
 }
 
 private func processNudgeEvent() {
-    if VersionManager().newNudgeEvent() {
+    if VersionManager.newNudgeEvent() {
         uiLog.notice("New Nudge event detected - resetting all deferral values")
         resetAllDeferralValues()
     } else {

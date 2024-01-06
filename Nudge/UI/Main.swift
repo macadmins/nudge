@@ -97,7 +97,7 @@ struct HostingWindowFinder: NSViewRepresentable {
     func makeNSView(context: Self.Context) -> NSView {
         let view = NSView()
         if CommandLineUtilities().versionArgumentPassed() {
-            print(VersionManager().getNudgeVersion())
+            print(VersionManager.getNudgeVersion())
             AppStateManager().exitNudge()
         }
         
