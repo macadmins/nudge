@@ -354,7 +354,10 @@ struct ConfigurationManager {
     }
 
     func getConfigurationAsJSON() -> Data {
-        guard let nudgeJSONConfig = try? newJSONEncoder().encode(Globals.nudgeJSONPreferences),
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601  // Use ISO 8601 date format
+
+        guard let nudgeJSONConfig = try? encoder.encode(Globals.nudgeJSONPreferences),
               let json = try? JSONSerialization.jsonObject(with: nudgeJSONConfig),
               let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
             uiLog.error("Failed to serialize JSON configuration")
