@@ -8,8 +8,6 @@
 import Foundation
 import os
 
-// TODO: Remove all .public calls from logs
-
 // Logger Manager
 struct LogManager {
     static private let bundleID = Bundle.main.bundleIdentifier ?? "com.github.macadmins.Nudge"
