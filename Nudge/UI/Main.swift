@@ -24,14 +24,14 @@ struct Main: App {
                     ForEach([true, false], id: \.self) { id in
                         ContentView(forceSimpleMode: id)
                             .environmentObject(appState)
-                            .frame(width: declaredWindowWidth, height: declaredWindowHeight)
+                            .frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
                     }
                 }
-                .frame(height: declaredWindowHeight*2)
+                .frame(height: uiConstants.declaredWindowHeight*2)
             } else {
                 ContentView()
                     .environmentObject(appState)
-                    .frame(width: declaredWindowWidth, height: declaredWindowHeight)
+                    .frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
             }
         }
         .windowResizabilityContentSize()
@@ -58,7 +58,7 @@ struct ContentView: View {
                     window?.center() // center
                     window?.isMovable = false // not movable
                     window?.collectionBehavior = [.fullScreenAuxiliary]
-                    window?.delegate = windowDelegate
+                    window?.delegate = UIConstants.windowDelegate
                     // _ = needToActivateNudge()
                 }
             )
@@ -67,7 +67,7 @@ struct ContentView: View {
             .onAppear() {
                 updateUI()
             }
-            .onReceive(nudgeRefreshCycleTimer) { _ in
+            .onReceive(Intervals.nudgeRefreshCycleTimer) { _ in
                 if needToActivateNudge() {
                     appState.userSessionDeferrals += 1
                     appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
@@ -152,7 +152,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //        }
         
         // Observe screen locking. Maybe useful later
-        dnc.addObserver(
+        Globals.dnc.addObserver(
             forName: NSNotification.Name("com.apple.screenIsLocked"),
             object: nil,
             queue: .main
@@ -161,7 +161,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             utilsLog.info("\("Screen was locked", privacy: .public)")
         }
         
-        nc.addObserver(
+        Globals.nc.addObserver(
             forName: NSApplication.didChangeScreenParametersNotification,
             object: NSApplication.shared,
             queue: .main)
@@ -171,7 +171,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             UIUtilities().centerNudge()
         }
 
-        nc.addObserver(
+        Globals.nc.addObserver(
             forName: NSWindow.didChangeScreenProfileNotification,
             object: NSApplication.shared,
             queue: .main)
@@ -181,7 +181,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             UIUtilities().centerNudge()
         }
         
-        nc.addObserver(
+        Globals.nc.addObserver(
             forName: NSWindow.didChangeScreenNotification,
             object: NSApplication.shared,
             queue: .main)
@@ -191,7 +191,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             UIUtilities().centerNudge()
         }
         
-        dnc.addObserver(
+        Globals.dnc.addObserver(
             forName: NSNotification.Name("com.apple.screenIsUnlocked"),
             object: nil,
             queue: .main
@@ -201,14 +201,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         // Entering/leaving/exiting a full screen app or space
-        snc.addObserver(
+        Globals.snc.addObserver(
             self,
             selector: #selector(spacesStateChanged(_:)),
             name: NSWorkspace.activeSpaceDidChangeNotification,
             object: nil
         )
         
-        snc.addObserver(
+        Globals.snc.addObserver(
             self,
             selector: #selector(logHiddenApplication(_:)),
             name: NSWorkspace.didHideApplicationNotification,
@@ -220,7 +220,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if !nudgeLogState.afterFirstLaunch && OptionalFeatureVariables.terminateApplicationsOnLaunch {
                 terminateApplications()
             }
-            snc.addObserver(
+            Globals.snc.addObserver(
                 self,
                 selector: #selector(terminateApplicationSender(_:)),
                 name: NSWorkspace.didLaunchApplicationNotification,
@@ -404,13 +404,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         if CommandLine.arguments.contains("-print-profile-config") {
-            if !configProfile.isEmpty {
-                print(String(data: configProfile, encoding: .utf8) as AnyObject)
+            if !Globals.configProfile.isEmpty {
+                print(String(data: Globals.configProfile, encoding: .utf8) as AnyObject)
             }
             exit(0)
         } else if CommandLine.arguments.contains("-print-json-config") {
-            if !configJSON.isEmpty {
-                print(String(decoding: configJSON, as: UTF8.self))
+            if !Globals.configJSON.isEmpty {
+                print(String(decoding: Globals.configJSON, as: UTF8.self))
             }
             exit(0)
         }
@@ -490,14 +490,14 @@ struct MainView_Previews: PreviewProvider {
         ForEach(["en", "es"], id: \.self) { id in
             StandardMode()
                 .environmentObject(nudgePrimaryState)
-                .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+                .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("StandardMode (\(id))")
         }
         ForEach(["en", "es"], id: \.self) { id in
             SimpleMode()
                 .environmentObject(nudgePrimaryState)
-                .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+                .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
                 .environment(\.locale, .init(identifier: id))
                 .previewDisplayName("SimpleMode (\(id))")
         }

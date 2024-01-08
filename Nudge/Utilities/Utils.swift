@@ -52,7 +52,7 @@ struct AppStateManager {
         // load the blur background and send it to the back if we are past the required install date
         uiLog.info("Enabling blurred background")
         nudgePrimaryState.backgroundBlur.removeAll()
-        screens.forEach { screen in
+        UIConstants.screens.forEach { screen in
             let blurWindowController = BackgroundBlurWindowController()
             nudgePrimaryState.backgroundBlur.append(blurWindowController)
             blurWindowController.close()
@@ -354,7 +354,7 @@ struct ConfigurationManager {
     }
 
     func getConfigurationAsJSON() -> Data {
-        guard let nudgeJSONConfig = try? newJSONEncoder().encode(nudgeJSONPreferences),
+        guard let nudgeJSONConfig = try? newJSONEncoder().encode(Globals.nudgeJSONPreferences),
               let json = try? JSONSerialization.jsonObject(with: nudgeJSONConfig),
               let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
             uiLog.error("Failed to serialize JSON configuration")
@@ -365,10 +365,10 @@ struct ConfigurationManager {
 
     func getConfigurationAsProfile() -> Data {
         var nudgeProfileConfig = [String: Any]()
-        nudgeProfileConfig["optionalFeatures"] = nudgeDefaults.dictionary(forKey: "optionalFeatures")
-        nudgeProfileConfig["osVersionRequirements"] = nudgeDefaults.array(forKey: "osVersionRequirements")
-        nudgeProfileConfig["userExperience"] = nudgeDefaults.dictionary(forKey: "userExperience")
-        nudgeProfileConfig["userInterface"] = nudgeDefaults.dictionary(forKey: "userInterface")
+        nudgeProfileConfig["optionalFeatures"] = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures")
+        nudgeProfileConfig["osVersionRequirements"] = Globals.nudgeDefaults.array(forKey: "osVersionRequirements")
+        nudgeProfileConfig["userExperience"] = Globals.nudgeDefaults.dictionary(forKey: "userExperience")
+        nudgeProfileConfig["userInterface"] = Globals.nudgeDefaults.dictionary(forKey: "userInterface")
 
         guard !nudgeProfileConfig.isEmpty,
               let plistData = try? PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0),
@@ -580,7 +580,7 @@ struct ImageManager {
 
 struct LoggerUtilities {
     func logRequiredMinimumOSVersion() {
-        nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        Globals.nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
     }
 
     func logUserDeferrals(resetCount: Bool = false) {
@@ -599,7 +599,7 @@ struct LoggerUtilities {
         if resetCount {
             count = 0
         }
-        nudgeDefaults.set(count, forKey: key)
+        Globals.nudgeDefaults.set(count, forKey: key)
     }
 
     func userInitiatedDeviceInfo() {
@@ -679,7 +679,7 @@ struct NetworkFileManager {
     }
 
     func getJSONUrl() -> String {
-        nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
+        Globals.nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
     }
 
     func getNudgeJSONPreferences() -> NudgePreferences? {
@@ -691,7 +691,7 @@ struct NetworkFileManager {
             return nil
         }
 
-        if CommandLineUtilities().bundleModeEnabled(), let bundleUrl = bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
+        if CommandLineUtilities().bundleModeEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
             return decodeNudgePreferences(from: bundleUrl)
         }
 
@@ -848,7 +848,7 @@ struct UIUtilities {
 
     func setDeferralTime(deferralTime: Date) {
         guard !CommandLineUtilities().demoModeEnabled() else { return }
-        nudgeDefaults.set(deferralTime, forKey: "deferRunUntil")
+        Globals.nudgeDefaults.set(deferralTime, forKey: "deferRunUntil")
     }
 
     func showEasterEgg() -> Bool {

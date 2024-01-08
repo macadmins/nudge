@@ -21,10 +21,10 @@ struct StandardMode: View {
     private var standardModeContent: some View {
         HStack {
             StandardModeLeftSide()
-                .frame(width: leftSideWidth)
-            
+                .frame(width: UIConstants.leftSideWidth)
+
             Divider()
-                .padding(.vertical, contentWidthPadding)
+                .padding(.vertical, UIConstants.contentWidthPadding)
 
             StandardModeRightSide()
         }
@@ -38,9 +38,9 @@ struct StandardMode: View {
                 QuitButtons()
             }
         }
-        .padding(.bottom, bottomPadding)
-        .padding(.leading, contentWidthPadding)
-        .padding(.trailing, contentWidthPadding)
+        .padding(.bottom, UIConstants.bottomPadding)
+        .padding(.leading, UIConstants.contentWidthPadding)
+        .padding(.trailing, UIConstants.contentWidthPadding)
     }
 }
 
@@ -49,7 +49,7 @@ struct StandardMode: View {
     ForEach(["en", "es"], id: \.self) { id in
         StandardMode()
             .environmentObject(nudgePrimaryState)
-            .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+            .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
             .environment(\.locale, .init(identifier: id))
             .previewDisplayName("StandardMode (\(id))")
     }

@@ -21,16 +21,16 @@ struct StandardModeRightSide: View {
         VStack {
             Spacer()
             headerSection
-                .padding([.leading, .trailing], contentWidthPadding)
-                .padding(.bottom, bottomPadding)
+                .padding([.leading, .trailing], UIConstants.contentWidthPadding)
+                .padding(.bottom, UIConstants.bottomPadding)
             informationSection
                 .background(Color.secondary.opacity(0.1))
                 .cornerRadius(5)
             Spacer()
         }
-        .padding(.top, screenshotTopPadding)
-        .padding(.bottom, bottomPadding)
-        .padding([.leading, .trailing], contentWidthPadding)
+        .padding(.top, UIConstants.screenshotTopPadding)
+        .padding(.bottom, UIConstants.bottomPadding)
+        .padding([.leading, .trailing], UIConstants.contentWidthPadding)
     }
     
     private var headerSection: some View {
@@ -107,7 +107,7 @@ struct StandardModeRightSide: View {
             }
             screenshotDisplay
         }
-        .padding([.leading, .trailing], contentWidthPadding)
+        .padding([.leading, .trailing], UIConstants.contentWidthPadding)
     }
     
     private var screenshotDisplay: some View {
@@ -123,7 +123,7 @@ struct StandardModeRightSide: View {
     private var screenshotButton: some View {
         Button(action: { appState.screenShotZoomViewIsPresented = true }) {
             Image(nsImage: ImageManager().getCorrectImage(path: screenShotPath, type: "ScreenShot"))
-                .customResizable(maxHeight: screenshotMaxHeight)
+                .customResizable(maxHeight: UIConstants.screenshotMaxHeight)
         }
         .buttonStyle(.plain)
         .help(UserInterfaceVariables.screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))

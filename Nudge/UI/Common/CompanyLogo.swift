@@ -29,12 +29,12 @@ struct CompanyLogo: View {
 
     private var companyImage: some View {
         Image(nsImage: ImageManager().getCorrectImage(path: companyLogoPath, type: "CompanyLogo"))
-            .customResizable(width: logoWidth, height: logoHeight)
+            .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
     }
 
     private var defaultImage: some View {
         Image(systemName: "applelogo")
-            .customResizable(width: logoWidth, height: logoHeight)
+            .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
     }
     
     private var easterEggView: some View {
@@ -46,7 +46,7 @@ struct CompanyLogo: View {
             Color.purple
             Color.blue
         }
-        .frame(width: logoWidth, height: logoHeight)
+        .frame(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
         .mask(
             defaultImage
         )

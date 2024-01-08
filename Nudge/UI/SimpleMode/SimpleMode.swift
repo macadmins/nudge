@@ -94,7 +94,7 @@ struct SimpleMode: View {
                 QuitButtons()
             }
         }
-        .padding([.bottom, .leading, .trailing], contentWidthPadding)
+        .padding([.bottom, .leading, .trailing], UIConstants.contentWidthPadding)
     }
     
     private var infoTextColor: Color {
@@ -107,7 +107,7 @@ struct SimpleMode: View {
     ForEach(["en", "es"], id: \.self) { id in
         SimpleMode()
             .environmentObject(nudgePrimaryState)
-            .previewLayout(.fixed(width: declaredWindowWidth, height: declaredWindowHeight))
+            .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
             .environment(\.locale, .init(identifier: id))
             .previewDisplayName("SimpleMode (\(id))")
     }

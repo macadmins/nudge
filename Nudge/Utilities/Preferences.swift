@@ -10,13 +10,13 @@ import Foundation
 
 // Generics
 func getDesiredLanguage(locale: Locale? = nil) -> String {
-    var desiredLanguage = languageID
-    if isPreview {
+    var desiredLanguage = UIConstants.languageID
+    if uiConstants.isPreview {
         if locale?.identifier != nil {
             desiredLanguage = locale!.identifier
         }
     } else {
-        desiredLanguage = languageCode
+        desiredLanguage = UIConstants.languageCode
     }
     if UserInterfaceVariables.forceFallbackLanguage {
         desiredLanguage = UserInterfaceVariables.fallbackLanguage
@@ -30,7 +30,7 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let optionalFeatures = nudgeJSONPreferences?.optionalFeatures {
+    if let optionalFeatures = Globals.nudgeJSONPreferences?.optionalFeatures {
         return optionalFeatures
     } else if !nudgeLogState.afterFirstLaunch {
         prefsJSONLog.info("\("JSON optionalFeatures key is empty", privacy: .public)")
@@ -42,7 +42,7 @@ func getOptionalFeaturesProfile() -> [String:Any]? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let optionalFeatures = nudgeDefaults.dictionary(forKey: "optionalFeatures") {
+    if let optionalFeatures = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures") {
         return optionalFeatures
     } else if !nudgeLogState.afterFirstLaunch {
         prefsProfileLog.info("\("Profile optionalFeatures key is empty", privacy: .public)")
@@ -80,7 +80,7 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let requirements = nudgeJSONPreferences?.osVersionRequirements {
+    if let requirements = Globals.nudgeJSONPreferences?.osVersionRequirements {
         for (_ , subPreferences) in requirements.enumerated() {
             if subPreferences.targetedOSVersionsRule == GlobalVariables.currentOSVersion {
                 fullMatch = subPreferences
@@ -116,7 +116,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
         return nil
     }
     var requirements = [OSVersionRequirement]()
-    if let osRequirements = nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]] {
+    if let osRequirements = Globals.nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]] {
         for item in osRequirements {
             requirements.append(OSVersionRequirement(fromDictionary: item))
         }
@@ -154,7 +154,7 @@ func getUserExperienceJSON() -> UserExperience? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let userExperience = nudgeJSONPreferences?.userExperience {
+    if let userExperience = Globals.nudgeJSONPreferences?.userExperience {
         return userExperience
     } else if !nudgeLogState.afterFirstLaunch {
         prefsJSONLog.info("\("JSON userExperience key is empty", privacy: .public)")
@@ -166,7 +166,7 @@ func getUserExperienceProfile() -> [String:Any]? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let userExperience = nudgeDefaults.dictionary(forKey: "userExperience") {
+    if let userExperience = Globals.nudgeDefaults.dictionary(forKey: "userExperience") {
         return userExperience
     } else if !nudgeLogState.afterFirstLaunch {
         prefsProfileLog.info("\("Profile userExperience key is empty", privacy: .public)")
@@ -181,7 +181,7 @@ func forceScreenShotIconMode() -> Bool {
     if CommandLineUtilities().forceScreenShotIconModeEnabled() {
         return true
     } else {
-        return UserInterfaceVariables.userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
+        return UserInterfaceVariables.userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? Globals.nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
     }
 }
 
@@ -189,7 +189,7 @@ func getUserInterfaceJSON() -> UserInterface? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let userInterface = nudgeJSONPreferences?.userInterface {
+    if let userInterface = Globals.nudgeJSONPreferences?.userInterface {
         return userInterface
     } else if !nudgeLogState.afterFirstLaunch {
         prefsJSONLog.info("\("JSON userInterface key is empty", privacy: .public)")
@@ -201,7 +201,7 @@ func getUserInterfaceProfile() -> [String:Any]? {
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return nil
     }
-    if let userInterface = nudgeDefaults.dictionary(forKey: "userInterface") {
+    if let userInterface = Globals.nudgeDefaults.dictionary(forKey: "userInterface") {
         return userInterface
     } else if !nudgeLogState.afterFirstLaunch {
         prefsProfileLog.info("\("Profile userInterface key is empty", privacy: .public)")
@@ -260,6 +260,6 @@ func simpleMode() -> Bool {
     if CommandLineUtilities().simpleModeEnabled() {
         return true
     } else {
-        return UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ?? nudgeJSONPreferences?.userInterface?.simpleMode ?? false
+        return UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ?? Globals.nudgeJSONPreferences?.userInterface?.simpleMode ?? false
     }
 }
