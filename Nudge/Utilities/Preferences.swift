@@ -5,49 +5,48 @@
 //  Created by Erik Gomez on 2/18/21.
 //
 
-// TODO: Finish refactor
 import Foundation
 
 // Generics
 func getDesiredLanguage(locale: Locale? = nil) -> String {
-    var desiredLanguage = UIConstants.languageID
-    if uiConstants.isPreview {
-        if locale?.identifier != nil {
-            desiredLanguage = locale!.identifier
-        }
-    } else {
-        desiredLanguage = UIConstants.languageCode
-    }
     if UserInterfaceVariables.forceFallbackLanguage {
-        desiredLanguage = UserInterfaceVariables.fallbackLanguage
+        return UserInterfaceVariables.fallbackLanguage
     }
-    return desiredLanguage
+
+    if uiConstants.isPreview, let previewLocale = locale?.identifier {
+        return previewLocale
+    }
+
+    return UIConstants.languageCode
 }
 
 // optionalFeatures
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getOptionalFeaturesJSON() -> OptionalFeatures? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let optionalFeatures = Globals.nudgeJSONPreferences?.optionalFeatures else {
+        logEmptyKey("optionalFeatures", forJSON: true)
         return nil
     }
-    if let optionalFeatures = Globals.nudgeJSONPreferences?.optionalFeatures {
-        return optionalFeatures
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsJSONLog.info("\("JSON optionalFeatures key is empty", privacy: .public)")
-    }
-    return nil
+    return optionalFeatures
 }
 
-func getOptionalFeaturesProfile() -> [String:Any]? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+func getOptionalFeaturesProfile() -> [String: Any]? {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let optionalFeatures = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures") else {
+        logEmptyKey("optionalFeatures", forJSON: false)
         return nil
     }
-    if let optionalFeatures = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures") {
-        return optionalFeatures
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsProfileLog.info("\("Profile optionalFeatures key is empty", privacy: .public)")
+    return optionalFeatures
+}
+
+private func logEmptyKey(_ key: String, forJSON: Bool) {
+    if !nudgeLogState.afterFirstLaunch {
+        let log = forJSON ? prefsJSONLog : prefsProfileLog
+        log.info("\(key) key is empty")
     }
-    return nil
 }
 
 // osVersionRequirements
@@ -55,193 +54,176 @@ func getOptionalFeaturesProfile() -> [String:Any]? {
 // Mutates the profile into our required construct and then compare currentOS against targetedOSVersions
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getAboutUpdateURL(OSVerReq: OSVersionRequirement?) -> String? {
-    // Compare current language against the available updateURLs
     if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         return "https://apple.com"
     }
+
     if let update = OSVerReq?.aboutUpdateURL {
         return update
     }
+
+    let desiredLanguage = getDesiredLanguage()
     if let updates = OSVerReq?.aboutUpdateURLs {
-        for (_, subUpdates) in updates.enumerated() {
-            if subUpdates.language == getDesiredLanguage() {
-                return subUpdates.aboutUpdateURL ?? ""
+        for subUpdate in updates {
+            if subUpdate.language == desiredLanguage {
+                return subUpdate.aboutUpdateURL ?? ""
             }
         }
     }
+
     return nil
 }
 
 func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
-    var fullMatch = OSVersionRequirement()
-    var partialMatch = OSVersionRequirement()
-    var defaultMatch = OSVersionRequirement()
-    var defaultMatchSet = false
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+    guard let osRequirementsArray = Globals.nudgeJSONPreferences?.osVersionRequirements else {
+        logEmptyKey("osVersionRequirements", forJSON: true)
         return nil
     }
-    if let requirements = Globals.nudgeJSONPreferences?.osVersionRequirements {
-        for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersionsRule == GlobalVariables.currentOSVersion {
-                fullMatch = subPreferences
-                // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
-            } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
-                partialMatch = subPreferences
-            } else if subPreferences.targetedOSVersionsRule == "default" {
-                defaultMatch = subPreferences
-                defaultMatchSet = true
-            } else if subPreferences.targetedOSVersionsRule == nil && !(defaultMatchSet) {
-                defaultMatch = subPreferences
-            }
-        }
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsJSONLog.info("\("JSON osVersionRequirements key is empty", privacy: .public)")
-    }
-    if fullMatch.requiredMinimumOSVersion != nil {
-        return fullMatch
-    } else if partialMatch.requiredMinimumOSVersion != nil {
-        return partialMatch
-    } else if defaultMatch.requiredMinimumOSVersion != nil {
-        return defaultMatch
-    }
-    return nil
+    return getOSVersionRequirements(from: osRequirementsArray)
 }
 
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
-    var fullMatch = OSVersionRequirement()
-    var partialMatch = OSVersionRequirement()
-    var defaultMatch = OSVersionRequirement()
-    var defaultMatchSet = false
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+    guard let osRequirementsArray = Globals.nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String: AnyObject]] else {
+        logEmptyKey("osVersionRequirements", forJSON: false)
         return nil
     }
-    var requirements = [OSVersionRequirement]()
-    if let osRequirements = Globals.nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String:AnyObject]] {
-        for item in osRequirements {
-            requirements.append(OSVersionRequirement(fromDictionary: item))
+
+    let requirements = osRequirementsArray.map { OSVersionRequirement(fromDictionary: $0) }
+    return getOSVersionRequirements(from: requirements)
+}
+
+private func getOSVersionRequirements(from requirements: [OSVersionRequirement]?) -> OSVersionRequirement? {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let requirements = requirements else {
+        return nil
+    }
+
+    var fullMatch: OSVersionRequirement?
+    var partialMatch: OSVersionRequirement?
+    var defaultMatch: OSVersionRequirement?
+
+    let currentMajorVersion = String(ProcessInfo().operatingSystemVersion.majorVersion)
+    let currentOSVersion = GlobalVariables.currentOSVersion
+
+    for requirement in requirements {
+        if requirement.targetedOSVersionsRule == currentOSVersion {
+            fullMatch = requirement
+            break
+        } else if requirement.targetedOSVersionsRule == currentMajorVersion {
+            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+            partialMatch = requirement
+        } else if requirement.targetedOSVersionsRule == "default" {
+            defaultMatch = requirement
         }
     }
-    if !requirements.isEmpty {
-        for (_ , subPreferences) in requirements.enumerated() {
-            if subPreferences.targetedOSVersionsRule == GlobalVariables.currentOSVersion {
-                fullMatch = subPreferences
-                // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
-            } else if subPreferences.targetedOSVersionsRule == String(ProcessInfo().operatingSystemVersion.majorVersion) {
-                partialMatch = subPreferences
-            } else if subPreferences.targetedOSVersionsRule == "default" {
-                defaultMatch = subPreferences
-                defaultMatchSet = true
-            } else if !(defaultMatchSet) {
-                defaultMatch = subPreferences
-            }
-        }
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsProfileLog.info("\("Profile osVersionRequirements key is empty", privacy: .public)")
-    }
-    if fullMatch.requiredMinimumOSVersion != nil {
-        return fullMatch
-    } else if partialMatch.requiredMinimumOSVersion != nil {
-        return partialMatch
-    } else if defaultMatch.requiredMinimumOSVersion != nil {
-        return defaultMatch
-    }
-    return nil
+
+    return fullMatch ?? partialMatch ?? defaultMatch ?? nil
 }
 
 // userExperience
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getUserExperienceJSON() -> UserExperience? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let userExperience = Globals.nudgeJSONPreferences?.userExperience else {
+        logEmptyKey("userExperience", forJSON: true)
         return nil
     }
-    if let userExperience = Globals.nudgeJSONPreferences?.userExperience {
-        return userExperience
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsJSONLog.info("\("JSON userExperience key is empty", privacy: .public)")
-    }
-    return nil
+    return userExperience
 }
 
-func getUserExperienceProfile() -> [String:Any]? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+func getUserExperienceProfile() -> [String: Any]? {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let userExperience = Globals.nudgeDefaults.dictionary(forKey: "userExperience") else {
+        logEmptyKey("userExperience", forJSON: false)
         return nil
     }
-    if let userExperience = Globals.nudgeDefaults.dictionary(forKey: "userExperience") {
-        return userExperience
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsProfileLog.info("\("Profile userExperience key is empty", privacy: .public)")
-    }
-    return nil
+    return userExperience
 }
-
 
 // userInterface
 // Even if profile/JSON is installed, return nil if in demo-mode
 func forceScreenShotIconMode() -> Bool {
-    if CommandLineUtilities().forceScreenShotIconModeEnabled() {
-        return true
-    } else {
-        return UserInterfaceVariables.userInterfaceProfile?["forceScreenShotIcon"] as? Bool ?? Globals.nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
-    }
+    return CommandLineUtilities().forceScreenShotIconModeEnabled() ||
+    UserInterfaceVariables.userInterfaceProfile?["forceScreenShotIcon"] as? Bool ??
+    Globals.nudgeJSONPreferences?.userInterface?.forceScreenShotIcon ?? false
 }
 
 func getUserInterfaceJSON() -> UserInterface? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled() else {
         return nil
     }
+
     if let userInterface = Globals.nudgeJSONPreferences?.userInterface {
         return userInterface
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsJSONLog.info("\("JSON userInterface key is empty", privacy: .public)")
     }
+    logEmptyKey("userInterface", forJSON: true)
     return nil
 }
 
-func getUserInterfaceProfile() -> [String:Any]? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+func getUserInterfaceProfile() -> [String: Any]? {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let userInterface = Globals.nudgeDefaults.dictionary(forKey: "userInterface") else {
+        logEmptyKey("userInterface", forJSON: false)
         return nil
     }
-    if let userInterface = Globals.nudgeDefaults.dictionary(forKey: "userInterface") {
-        return userInterface
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsProfileLog.info("\("Profile userInterface key is empty", privacy: .public)")
-    }
-    return nil
+    return userInterface
 }
 
 // Loop through JSON userInterface -> updateElements preferences and then compare language
 func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
-        return nil
-    }
-    let updateElements = getUserInterfaceJSON()?.updateElements
-    if updateElements != nil {
-        for (_ , subPreferences) in updateElements!.enumerated() {
-            if subPreferences.language == getDesiredLanguage() {
-                return subPreferences
-            }
-        }
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsJSONLog.info("\("JSON updateElements key is empty", privacy: .public)")
-    }
-    return nil
+    return getMatchingUpdateElements(
+        updateElements: getUserInterfaceJSON()?.updateElements,
+        languageKey: "language",
+        logKey: "JSON"
+    )
 }
 
-// Mutate the profile into our required construct
-func getUserInterfaceUpdateElementsProfile() -> [String:AnyObject]? {
-    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+func getUserInterfaceUpdateElementsProfile() -> [String: AnyObject]? {
+    // Mutate the profile into our required construct
+    guard let updateElementsArray = UserInterfaceVariables.userInterfaceProfile?["updateElements"] as? [[String: AnyObject]] else {
+        logEmptyKey("updateElements", forJSON: false)
         return nil
     }
-    let updateElements = UserInterfaceVariables.userInterfaceProfile?["updateElements"] as? [[String:AnyObject]]
-    if updateElements != nil {
-        for (_ , subPreferences) in updateElements!.enumerated() {
-            if subPreferences["_language"] as? String == getDesiredLanguage() {
-                return subPreferences
+    return getMatchingUpdateElements(
+        updateElements: updateElementsArray,
+        languageKey: "_language",
+        logKey: "Profile"
+    )
+}
+
+private func getMatchingUpdateElements<T>(updateElements: [T]?, languageKey: String, logKey: String) -> T? {
+    guard !CommandLineUtilities().demoModeEnabled(),
+          !CommandLineUtilities().unitTestingEnabled(),
+          let updateElements = updateElements else {
+        logEmptyKey("updateElements", forJSON: logKey == "JSON")
+        return nil
+    }
+
+    let desiredLanguage = getDesiredLanguage()
+
+    if let elements = updateElements as? [[String: AnyObject]] {
+        // Handle dictionary (profile) type elements
+        for element in elements {
+            if element[languageKey] as? String == desiredLanguage {
+                return element as? T
             }
         }
-    } else if !nudgeLogState.afterFirstLaunch {
-        prefsProfileLog.info("\("Profile updateElements key is empty", privacy: .public)")
+    } else if let elements = updateElements as? [UpdateElement] {
+        // Handle UpdateElement (json) type elements
+        for element in elements {
+            if element.language == desiredLanguage {
+                return element as? T
+            }
+        }
     }
+
+    logEmptyKey("No match found in \(logKey) updateElements for the desired language \(desiredLanguage)", forJSON: logKey == "JSON")
+
     return nil
 }
 
@@ -251,15 +233,13 @@ func getMainHeader() -> String {
         return "Your device requires a security update (Demo Mode)"
     } else if CommandLineUtilities().unitTestingEnabled() {
         return "Your device requires a security update (Unit Testing Mode)"
-    } else {
-        return UserInterfaceVariables.userInterfaceUpdateElementsProfile?["mainHeader"] as? String ?? getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
     }
+    return UserInterfaceVariables.userInterfaceUpdateElementsProfile?["mainHeader"] as? String ??
+    getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
 }
 
 func simpleMode() -> Bool {
-    if CommandLineUtilities().simpleModeEnabled() {
-        return true
-    } else {
-        return UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ?? Globals.nudgeJSONPreferences?.userInterface?.simpleMode ?? false
-    }
+    return CommandLineUtilities().simpleModeEnabled() ||
+    UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ??
+    Globals.nudgeJSONPreferences?.userInterface?.simpleMode ?? false
 }
