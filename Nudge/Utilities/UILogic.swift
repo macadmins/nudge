@@ -35,7 +35,7 @@ func initialLaunchLogic() {
 private func checkDeferralDate() {
     let deferralDate = nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime
     if shouldExitBasedOnDeferralDate(deferralDate: deferralDate) {
-        uiLog.notice("\("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(DateManager().getCurrentDate()))", privacy: .public)")
+        uiLog.notice("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(DateManager().getCurrentDate())")
         AppStateManager().exitNudge()
     }
 }
@@ -165,7 +165,7 @@ private func logControllers() {
         uiLog.info("nudgeRefreshCycle: \(UserExperienceVariables.nudgeRefreshCycle)")
         nudgeLogState.afterFirstRun = true
         if !UIConstants.DNDServer {
-            uiLog.error("\("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable", privacy: .public)")
+            uiLog.error("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable")
         }
     }
 }
@@ -241,7 +241,7 @@ private func resetDeferralsForDemoMode() {
 
 private func shouldActivateNudgeBasedOnAggressiveExperience(_ runningApplications: [NSRunningApplication], _ frontmostApplication: NSRunningApplication?) -> Bool {
     if frontmostApplication?.bundleIdentifier != nil {
-        uiLog.info("\("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", privacy: .public)")
+        uiLog.info("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication")
     }
 
     let shouldActivate = nudgePrimaryState.deferralCountPastThreshold || DateManager().pastRequiredInstallationDate()
@@ -281,13 +281,13 @@ private func shouldBailOutEarly() -> Bool {
 
     // Check if admin has set noTimers
     if UserExperienceVariables.noTimers {
-        uiLog.info("\("Ignoring Nudge activation - noTimers is set", privacy: .public)")
+        uiLog.info("Ignoring Nudge activation - noTimers is set")
         return true
     }
 
     // Check if screen is locked
     if nudgePrimaryState.screenCurrentlyLocked {
-        uiLog.info("\("Ignoring Nudge activation - Screen is currently locked", privacy: .public)")
+        uiLog.info("Ignoring Nudge activation - Screen is currently locked")
         return true
     }
 
@@ -363,23 +363,23 @@ private func updateNudgeState() {
 
     if nudgePrimaryState.deferralCountPastThreshold {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThreshold {
-            uiLog.notice("\("allowedDeferrals has been passed", privacy: .public)")
+            uiLog.notice("allowedDeferrals has been passed")
             nudgePrimaryState.hasLoggedDeferralCountPastThreshold = true
         }
     }
 
     if nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            uiLog.notice("\("allowedDeferralsUntilForcedSecondaryQuitButton has been passed", privacy: .public)")
+            uiLog.notice("allowedDeferralsUntilForcedSecondaryQuitButton has been passed: \(UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton)")
             nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
         }
     }
 }
 
 func userHasClickedSecondaryQuitButton() {
-    uiLog.notice("\("User clicked secondaryQuitButton", privacy: .public)")
+    uiLog.notice("User clicked secondaryQuitButton")
 }
 
 func userHasClickedDeferralQuitButton(deferralTime: Date) {
-    uiLog.notice("\("User initiated a deferral: \(deferralTime)", privacy: .public)")
+    uiLog.notice("User initiated a deferral: \(deferralTime)")
 }

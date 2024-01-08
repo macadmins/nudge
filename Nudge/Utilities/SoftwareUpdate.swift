@@ -13,16 +13,16 @@ class SoftwareUpdate {
         let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--list", "--all"])
 
         if exitCode != 0 {
-            softwareupdateListLog.error("Error listing software updates: \(error, privacy: .public)")
+            softwareupdateListLog.error("Error listing software updates: \(error)")
             return error
         } else {
-            softwareupdateListLog.info("\(output, privacy: .public)")
+            softwareupdateListLog.info("\(output)")
             return output
         }
     }
 
     func download() {
-        softwareupdateDownloadLog.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates, privacy: .public)")
+        softwareupdateDownloadLog.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates)")
 
         if DeviceManager().getCPUTypeString() == "Apple Silicon" && !AppStateManager().requireMajorUpgrade() {
             softwareupdateListLog.debug("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.")
@@ -37,9 +37,9 @@ class SoftwareUpdate {
                 let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion])
 
                 if exitCode != 0 {
-                    softwareupdateDownloadLog.error("Error downloading software update: \(error, privacy: .public)")
+                    softwareupdateDownloadLog.error("Error downloading software update: \(error)")
                 } else {
-                    softwareupdateDownloadLog.info("\(output, privacy: .public)")
+                    softwareupdateDownloadLog.info("\(output)")
                     GlobalVariables.fetchMajorUpgradeSuccessful = true
                     // Update the state based on the download result
                 }
@@ -63,9 +63,9 @@ class SoftwareUpdate {
             let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--download", updateLabel])
 
             if exitCode != 0 {
-                softwareupdateDownloadLog.error("Error downloading software updates: \(error, privacy: .public)")
+                softwareupdateDownloadLog.error("Error downloading software updates: \(error)")
             } else {
-                softwareupdateDownloadLog.info("\(output, privacy: .public)")
+                softwareupdateDownloadLog.info("\(output)")
             }
         }
     }

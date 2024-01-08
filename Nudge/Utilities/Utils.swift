@@ -84,7 +84,7 @@ struct AppStateManager {
     }
 
     func exitNudge() {
-        uiLog.notice("\("Nudge is terminating due to condition met", privacy: .public)")
+        uiLog.notice("Nudge is terminating due to condition met")
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
@@ -152,14 +152,14 @@ struct AppStateManager {
         let hoursRemaining = DateManager().getNumberOfHoursRemaining()
         let isAllowed = hoursRemaining > threshold
         if !nudgeLogState.afterFirstRun {
-            uiLog.info("\(logMessage): \(isAllowed, privacy: .public)")
+            uiLog.info("\(logMessage): \(isAllowed)")
         }
         return isAllowed
     }
 
     private func logOnce(_ message: String, state: inout Bool) {
         if !state {
-            uiLog.info("\(message), privacy: .public)")
+            uiLog.info("\(message)")
             state = true
         }
     }
@@ -270,7 +270,7 @@ struct CommandLineUtilities {
     func bundleModeEnabled() -> Bool {
         let argumentPassed = arguments.contains("-bundle-mode")
         if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
-            uiLog.debug("\("-bundle-mode argument passed", privacy: .public)")
+            uiLog.debug("-bundle-mode argument passed")
             nudgeLogState.hasLoggedBundleMode = true
         }
         return argumentPassed
@@ -279,7 +279,7 @@ struct CommandLineUtilities {
     func debugUIModeEnabled() -> Bool {
         let argumentPassed = arguments.contains("-debug-ui-mode")
         if argumentPassed && !nudgeLogState.afterFirstRun {
-            uiLog.debug("\("-debug-ui-mode argument passed", privacy: .public)")
+            uiLog.debug("-debug-ui-mode argument passed")
         }
         return argumentPassed
     }
@@ -288,7 +288,7 @@ struct CommandLineUtilities {
         let argumentPassed = arguments.contains("-demo-mode")
         if argumentPassed && !nudgeLogState.hasLoggedDemoMode {
             nudgeLogState.hasLoggedDemoMode = true
-            uiLog.debug("\("-demo-mode argument passed", privacy: .public)")
+            uiLog.debug("-demo-mode argument passed")
         }
         return argumentPassed
     }
@@ -297,7 +297,7 @@ struct CommandLineUtilities {
         let argumentPassed = arguments.contains("-force-screenshot-icon")
         if argumentPassed && !nudgeLogState.hasLoggedScreenshotIconMode {
             nudgeLogState.hasLoggedScreenshotIconMode = true
-            uiLog.debug("\("-force-screenshot-icon argument passed", privacy: .public)")
+            uiLog.debug("-force-screenshot-icon argument passed")
         }
         return argumentPassed
     }
@@ -310,7 +310,7 @@ struct CommandLineUtilities {
         let argumentPassed = arguments.contains("-simple-mode")
         if argumentPassed && !nudgeLogState.hasLoggedSimpleMode {
             nudgeLogState.hasLoggedSimpleMode = true
-            uiLog.debug("\("-simple-mode argument passed", privacy: .public)")
+            uiLog.debug("-simple-mode argument passed")
         }
         return argumentPassed
     }
@@ -320,7 +320,7 @@ struct CommandLineUtilities {
         if !nudgeLogState.hasLoggedUnitTestingMode {
             if argumentPassed {
                 nudgeLogState.hasLoggedUnitTestingMode = true
-                uiLog.debug("\("-unit-testing argument passed", privacy: .public)")
+                uiLog.debug("-unit-testing argument passed")
             }
         }
         return argumentPassed
@@ -333,7 +333,7 @@ struct CommandLineUtilities {
     func versionArgumentPassed() -> Bool {
         let argumentPassed = arguments.contains("-version")
         if argumentPassed {
-            uiLog.debug("\("-version argument passed", privacy: .public)")
+            uiLog.debug("-version argument passed")
         }
         return argumentPassed
     }
@@ -388,7 +388,7 @@ struct ConfigurationManager {
         let timerCycle = determineTimerCycle(basedOn: hoursRemaining)
 
         if timerCycle != nudgePrimaryState.timerCycle {
-            uiLog.info("timerCycle: \(timerCycle, privacy: .public)")
+            uiLog.info("timerCycle: \(timerCycle)")
             nudgePrimaryState.timerCycle = timerCycle
         }
         return timerCycle
@@ -452,7 +452,7 @@ struct DateManager {
         let isPast = getCurrentDate() > requiredInstallationDate
         if !CommandLineUtilities().demoModeEnabled() && !nudgeLogState.hasLoggedPastRequiredInstallationDate {
             nudgeLogState.hasLoggedPastRequiredInstallationDate = true
-            utilsLog.notice("Device pastRequiredInstallationDate: \(isPast, privacy: .public)")
+            utilsLog.info("Device pastRequiredInstallationDate: \(isPast)")
         }
         return isPast
     }
@@ -499,7 +499,7 @@ struct DeviceManager {
 
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
-        utilsLog.info("Patch OS Version: \(PatchOSVersion, privacy: .public)")
+        utilsLog.info("Patch OS Version: \(PatchOSVersion)")
         return PatchOSVersion
     }
 
@@ -688,7 +688,7 @@ struct NetworkFileManager {
     func getNudgeJSONPreferences() -> NudgePreferences? {
         let url = getJSONUrl()
 
-        utilsLog.debug("JSON url: \(url, privacy: .public)")
+        utilsLog.debug("JSON url: \(url)")
 
         if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
             return nil
@@ -736,7 +736,7 @@ struct SMAppManager {
             print(message)
             if let code = exitCode { exit(Int32(code)) }
         } else {
-            osLog.info("\(message, privacy: .public)")
+            osLog.info("\(message)")
         }
     }
 

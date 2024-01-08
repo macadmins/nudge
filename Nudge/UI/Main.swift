@@ -158,7 +158,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             queue: .main
         ) { notification in
             nudgePrimaryState.screenCurrentlyLocked = true
-            utilsLog.info("\("Screen was locked", privacy: .public)")
+            utilsLog.info("Screen was locked")
         }
         
         Globals.nc.addObserver(
@@ -197,7 +197,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             queue: .main
         ) { notification in
             nudgePrimaryState.screenCurrentlyLocked = false
-            utilsLog.info("\("Screen was unlocked", privacy: .public)")
+            utilsLog.info("Screen was unlocked")
         }
         
         // Entering/leaving/exiting a full screen app or space
@@ -251,17 +251,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func logHiddenApplication(_ notification: Notification) {
-        utilsLog.info("\("Application hidden", privacy: .public)")
+        utilsLog.info("Application hidden")
     }
     
     @objc func spacesStateChanged(_ notification: Notification) {
         UIUtilities().centerNudge()
-        utilsLog.info("\("Spaces state changed", privacy: .public)")
+        utilsLog.info("Spaces state changed")
         nudgePrimaryState.afterFirstStateChange = true
     }
     
     @objc func terminateApplicationSender(_ notification: Notification) {
-        utilsLog.info("\("Application launched", privacy: .public)")
+        utilsLog.info("Application launched")
         terminateApplications()
     }
     
@@ -269,7 +269,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !DateManager().pastRequiredInstallationDate() {
             return
         }
-        utilsLog.info("\("Application launched", privacy: .public)")
+        utilsLog.info("Application launched")
         for runningApplication in NSWorkspace.shared.runningApplications {
             let appBundleID = runningApplication.bundleIdentifier ?? ""
             let appName = runningApplication.localizedName ?? ""
@@ -277,7 +277,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 continue
             }
             if OptionalFeatureVariables.blockedApplicationBundleIDs.contains(appBundleID) {
-                utilsLog.info("\("Found \(appName), terminating application", privacy: .public)")
+                utilsLog.info("Found \(appName), terminating application")
                 scheduleLocal(applicationIdentifier: appName)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
                     runningApplication.forceTerminate()
@@ -290,9 +290,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .provisional, .sound]) { (granted, error) in
             if granted {
-                uiLog.info("\("User granted notifications - application blocking status now available", privacy: .public)")
+                uiLog.info("User granted notifications - application blocking status now available")
             } else {
-                uiLog.info("\("User denied notifications - application blocking status will be unavailable", privacy: .public)")
+                uiLog.info("User denied notifications - application blocking status will be unavailable")
             }
         }
     }
@@ -313,14 +313,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 case .authorized:
                     center.add(request)
                 case .denied:
-                    uiLog.info("\("Application terminated without user notification", privacy: .public)")
+                    uiLog.info("Application terminated without user notification")
                 case .notDetermined:
-                    uiLog.info("\("Application terminated without user notification status", privacy: .public)")
+                    uiLog.info("Application terminated without user notification status")
                 case .provisional:
-                    uiLog.info("\("Application terminated with provisional user notification status", privacy: .public)")
+                    uiLog.info("Application terminated with provisional user notification status")
                     center.add(request)
                 @unknown default:
-                    uiLog.info("\("Application terminated with unknown user notification status", privacy: .public)")
+                    uiLog.info("Application terminated with unknown user notification status")
             }
         }
     }
@@ -331,27 +331,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
                     // Disable CMD + W - closes the Nudge window and breaks it
                 case [.command] where event.characters == "w":
-                    uiLog.warning("\("Nudge detected an attempt to close the application via CMD + W shortcut key.", privacy: .public)")
+                    uiLog.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.")
                     return true
                     // Disable CMD + N - closes the Nudge window and breaks it
                 case [.command] where event.characters == "n":
-                    uiLog.warning("\("Nudge detected an attempt to create a new window via CMD + N shortcut key.", privacy: .public)")
+                    uiLog.warning("Nudge detected an attempt to create a new window via CMD + N shortcut key.")
                     return true
                     // Disable CMD + M - closes the Nudge window and breaks it
                 case [.command] where event.characters == "m":
-                    uiLog.warning("\("Nudge detected an attempt to minimise the application via CMD + M shortcut key.", privacy: .public)")
+                    uiLog.warning("Nudge detected an attempt to minimise the application via CMD + M shortcut key.")
                     return true
                     // Disable CMD + Q - fully closes Nudge
                 case [.command] where event.characters == "q":
-                    uiLog.warning("\("Nudge detected an attempt to close the application via CMD + Q shortcut key.", privacy: .public)")
+                    uiLog.warning("Nudge detected an attempt to close the application via CMD + Q shortcut key.")
                     return true
                     // Disable CMD + Option + M - minimizes Nudge and could render it broken when blur is enabled
                 case [.command, .option] where event.characters == "µ":
-                    uiLog.warning("\("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.", privacy: .public)")
+                    uiLog.warning("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.")
                     return true
                     // Disable CMD + Option + N - Opens new tabs in Nudge and breaks UI
                 case [.command, .option] where event.characters == "~":
-                    uiLog.warning("\("Nudge detected an attempt add tabs to the application via CMD + Option + N shortcut key.", privacy: .public)")
+                    uiLog.warning("Nudge detected an attempt add tabs to the application via CMD + Option + N shortcut key.")
                     return true
                     // Don't care about any other shortcut keys
                 default:
@@ -366,7 +366,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if nudgePrimaryState.shouldExit {
             return NSApplication.TerminateReply.terminateNow
         } else {
-            uiLog.warning("\("Nudge detected an attempt to exit the application.", privacy: .public)")
+            uiLog.warning("Nudge detected an attempt to exit the application.")
             return NSApplication.TerminateReply.terminateCancel
         }
     }
@@ -399,7 +399,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
-            prefsProfileLog.warning("\("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist", privacy: .public)")
+            prefsProfileLog.warning("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist")
             exit(1)
         }
         
@@ -423,7 +423,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if UserExperienceVariables.randomDelay {
             let randomDelaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
-            uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds), privacy: .public)")
+            uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds))")
             sleep(UInt32(randomDelaySeconds))
         }
         
@@ -433,17 +433,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 if !FeatureVariables.actionButtonPath!.isEmpty {
                     return
                 } else {
-                    prefsProfileLog.warning("\("actionButtonPath contains empty string - actionButton will be unable to trigger any action required for major upgrades", privacy: .public)")
+                    prefsProfileLog.warning("actionButtonPath contains empty string - actionButton will be unable to trigger any action required for major upgrades")
                     return
                 }
             }
             
             if OptionalFeatureVariables.attemptToFetchMajorUpgrade == true && GlobalVariables.fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
-                uiLog.error("\("Unable to fetch major upgrade and application missing, exiting Nudge", privacy: .public)")
+                uiLog.error("Unable to fetch major upgrade and application missing, exiting Nudge")
                 nudgePrimaryState.shouldExit = true
                 exit(1)
             } else if OptionalFeatureVariables.attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
-                uiLog.error("\("Unable to find major upgrade application, exiting Nudge", privacy: .public)")
+                uiLog.error("Unable to find major upgrade application, exiting Nudge")
                 nudgePrimaryState.shouldExit = true
                 exit(1)
             }
