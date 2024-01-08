@@ -20,7 +20,7 @@ struct DeviceInfo: View {
             infoRow(label: "Username:", value: DeviceManager().getSystemConsoleUsername())
             infoRow(label: "Serial Number:", value: DeviceManager().getSerialNumber())
             infoRow(label: "Architecture:", value: DeviceManager().getCPUTypeString())
-            infoRow(label: "Language:", value: languageCode)
+            infoRow(label: "Language:", value: UIConstants.languageCode)
             infoRow(label: "Version:", value: VersionManager.getNudgeVersion())
             Spacer() // Vertically align Additional Device Information to center
         }

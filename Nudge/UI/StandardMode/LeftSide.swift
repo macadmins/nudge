@@ -29,7 +29,7 @@ struct StandardModeLeftSide: View {
         VStack(alignment: .center, spacing: interItemSpacing) {
             AdditionalInfoButton().padding(3) // (?) button
             CompanyLogo()
-            Divider().padding(.horizontal, contentWidthPadding)
+            Divider().padding(.horizontal, UIConstants.contentWidthPadding)
             informationStack
         }
     }
@@ -43,7 +43,7 @@ struct StandardModeLeftSide: View {
                 InfoRow(label: "Deferred Count:", value: String(appState.userDeferrals))
             }
         }
-        .padding(.horizontal, contentWidthPadding)
+        .padding(.horizontal, UIConstants.contentWidthPadding)
     }
     
     private var remainingTimeRow: some View {

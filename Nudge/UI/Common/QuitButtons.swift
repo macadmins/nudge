@@ -62,10 +62,10 @@ struct QuitButtons: View {
                 deferralButton(title: UserInterfaceVariables.primaryQuitButtonText, action: standardDeferralAction)
             }
             if AppStateManager().allow1HourDeferral() {
-                deferralButton(title: UserInterfaceVariables.oneHourDeferralButtonText, action: { deferAction(by: hourTimeInterval) })
+                deferralButton(title: UserInterfaceVariables.oneHourDeferralButtonText, action: { deferAction(by: Intervals.hourTimeInterval) })
             }
             if AppStateManager().allow24HourDeferral() {
-                deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText, action: { deferAction(by: dayTimeInterval) })
+                deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText, action: { deferAction(by: Intervals.dayTimeInterval) })
             }
             if AppStateManager().allowCustomDeferral() {
                 customDeferralButton

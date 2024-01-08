@@ -56,7 +56,7 @@ private func handleUpdateStatus() {
     if VersionManager.fullyUpdated() {
         uiLog.notice("Device is fully updated")
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
-        if !isPreview {
+        if !uiConstants.isPreview {
             AppStateManager().exitNudge()
         }
     } else if !OptionalFeatureVariables.enforceMinorUpdates && !AppStateManager().requireMajorUpgrade() {
@@ -164,7 +164,7 @@ private func logControllers() {
     if !nudgeLogState.afterFirstRun {
         uiLog.info("nudgeRefreshCycle: \(UserExperienceVariables.nudgeRefreshCycle)")
         nudgeLogState.afterFirstRun = true
-        if !DNDServer {
+        if !UIConstants.DNDServer {
             uiLog.error("\("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable", privacy: .public)")
         }
     }
@@ -184,9 +184,9 @@ private func logUserSessionDeferrals(resetCount: Bool = false) {
     }
     if resetCount {
         nudgePrimaryState.userSessionDeferrals = 0
-        nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
+        Globals.nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
     } else {
-        nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
+        Globals.nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
     }
 }
 
@@ -231,7 +231,7 @@ private func resetAllDeferralValues() {
     LoggerUtilities().logUserDeferrals(resetCount: true)
     LoggerUtilities().logUserQuitDeferrals(resetCount: true)
     logUserSessionDeferrals(resetCount: true)
-    nudgeDefaults.removeObject(forKey: "deferRunUntil")
+    Globals.nudgeDefaults.removeObject(forKey: "deferRunUntil")
 }
 
 private func resetDeferralsForDemoMode() {
