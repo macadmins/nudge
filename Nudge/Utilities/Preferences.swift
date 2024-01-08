@@ -103,7 +103,7 @@ private func getOSVersionRequirements(from requirements: [OSVersionRequirement]?
     var partialMatch: OSVersionRequirement?
     var defaultMatch: OSVersionRequirement?
 
-    let currentMajorVersion = String(ProcessInfo().operatingSystemVersion.majorVersion)
+    let currentMajorVersion = String(VersionManager.getMajorOSVersion())
     let currentOSVersion = GlobalVariables.currentOSVersion
 
     for requirement in requirements {
@@ -111,7 +111,7 @@ private func getOSVersionRequirements(from requirements: [OSVersionRequirement]?
             fullMatch = requirement
             break
         } else if requirement.targetedOSVersionsRule == currentMajorVersion {
-            // TODO: For some reason, Utils().getMajorOSVersion() triggers a crash, so I am directly calling ProcessInfo()
+
             partialMatch = requirement
         } else if requirement.targetedOSVersionsRule == "default" {
             defaultMatch = requirement
