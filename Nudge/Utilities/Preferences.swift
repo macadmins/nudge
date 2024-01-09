@@ -45,7 +45,7 @@ func getOptionalFeaturesProfile() -> [String: Any]? {
 private func logEmptyKey(_ key: String, forJSON: Bool) {
     if !nudgeLogState.afterFirstLaunch {
         let log = forJSON ? prefsJSONLog : prefsProfileLog
-        log.info("\(key) key is empty")
+        LogManager.info("\(key) key is empty", logger: log)
     }
 }
 

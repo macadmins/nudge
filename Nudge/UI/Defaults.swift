@@ -98,13 +98,13 @@ class DNDConfig {
             self.rawValue = rawType.init()
         } else {
             self.rawValue = nil
-            utilsLog.error("DNDSAuxiliaryStateMonitor class could not be found.")
+            LogManager.error("DNDSAuxiliaryStateMonitor class could not be found.", logger: utilsLog)
         }
     }
 
     required init?(rawValue: NSObject?) {
         guard let rawType = Self.rawType, let unwrappedRawValue = rawValue, unwrappedRawValue.isKind(of: rawType) else {
-            utilsLog.error("Initialization with rawValue failed.")
+            LogManager.error("Initialization with rawValue failed.", logger: utilsLog)
             return nil
         }
         self.rawValue = unwrappedRawValue
