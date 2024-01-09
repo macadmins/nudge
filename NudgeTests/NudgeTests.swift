@@ -14,10 +14,7 @@ var defaultPreferencesForTests = [:] as [String : Any]
 
 class NudgeTests: XCTestCase {
     func coerceStringToDate(dateString: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-        let formattedDate = dateFormatter.date(from: dateString) ?? DateManager().getCurrentDate()
-        return formattedDate
+        DateManager().dateFormatterISO8601.date(from: dateString) ?? DateManager().getCurrentDate()
     }
 
     override func setUp() {
@@ -89,7 +86,7 @@ class NudgeTests: XCTestCase {
         defaultPreferencesForTests["requiredMinimumOSVersion"] = "99.99.99"
         PrefsWrapper.prefsOverride = defaultPreferencesForTests
         XCTAssertEqual(
-            coerceStringToDate(dateString: "2022-01-03T00:00:00Z"),
+            coerceStringToDate(dateString: "2022-01-02T00:30:00Z"),
             AppStateManager().gracePeriodLogic(
                 currentDate: coerceStringToDate(dateString: "2022-01-02T00:30:00Z"),
                 testFileDate: coerceStringToDate(dateString: "2022-01-02T00:00:00Z")
