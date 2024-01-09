@@ -18,7 +18,6 @@ var nudgeLogState = LogState()
 struct Globals {
     static let bundle = Bundle.main
     static let bundleID = bundle.bundleIdentifier ?? "com.github.macadmins.Nudge"
-    static let dnc = DistributedNotificationCenter.default()
     static let nc = NotificationCenter.default
     static let snc = NSWorkspace.shared.notificationCenter
     // Preferences
@@ -47,7 +46,7 @@ struct UIConstants {
     static let screenshotMaxHeight: CGFloat = 120
     static let screenshotTopPadding: CGFloat = 28
     static let serialNumber = DeviceManager().getSerialNumber()
-    static let windowDelegate = AppDelegate.WindowDelegate()
+    static let windowDelegate = WindowDelegate()
 
     var declaredWindowHeight: CGFloat = 450
     var declaredWindowWidth: CGFloat = 900

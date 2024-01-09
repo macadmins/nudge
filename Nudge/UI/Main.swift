@@ -5,7 +5,6 @@
 //  Created by Erik Gomez on 2/2/21.
 //
 
-// TODO: Finish refactor
 #if canImport(ServiceManagement)
 import ServiceManagement
 #endif
@@ -16,67 +15,90 @@ import UserNotifications
 struct Main: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var appState = nudgePrimaryState
-    
+
     var body: some Scene {
         WindowGroup {
-            if CommandLineUtilities().debugUIModeEnabled() {
-                VSplitView {
-                    ForEach([true, false], id: \.self) { id in
-                        ContentView(forceSimpleMode: id)
-                            .environmentObject(appState)
-                            .frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
-                    }
-                }
-                .frame(height: uiConstants.declaredWindowHeight*2)
-            } else {
-                ContentView()
-                    .environmentObject(appState)
-                    .frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
-            }
+            mainContentView
         }
         .windowResizabilityContentSize()
         .windowStyle(.hiddenTitleBar)
     }
+
+    private var mainContentView: some View {
+        if CommandLineUtilities().debugUIModeEnabled() {
+            return AnyView(debugModeView)
+        } else {
+            return AnyView(
+                ContentView()
+                    .environmentObject(appState)
+                    .standardFrame
+            )
+        }
+    }
+
+    private var debugModeView: some View {
+        VSplitView {
+            ForEach([true, false], id: \.self) { forceSimpleMode in
+                ContentView(forceSimpleMode: forceSimpleMode)
+                    .environmentObject(appState)
+                    .standardFrame
+            }
+        }
+        .frame(height: uiConstants.declaredWindowHeight * 2)
+    }
+}
+
+extension View {
+    var standardFrame: some View {
+        self.frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
+    }
 }
 
 struct ContentView: View {
-    var forceSimpleMode: Bool = false // do not move
+    var forceSimpleMode: Bool = false
     @EnvironmentObject var appState: AppState
-    
+
     var body: some View {
-        let backgroundView = if simpleMode() || forceSimpleMode {
-            AnyView(SimpleMode())
-        } else {
-            AnyView(StandardMode())
-        }
-        backgroundView
-            .background(
-                HostingWindowFinder { window in
-                    window?.standardWindowButton(.closeButton)?.isHidden = true //hides the red close button
-                    window?.standardWindowButton(.miniaturizeButton)?.isHidden = true //hides the yellow miniaturize button
-                    window?.standardWindowButton(.zoomButton)?.isHidden = true //this removes the green zoom button
-                    window?.center() // center
-                    window?.isMovable = false // not movable
-                    window?.collectionBehavior = [.fullScreenAuxiliary]
-                    window?.delegate = UIConstants.windowDelegate
-                    // _ = needToActivateNudge()
-                }
-            )
+        contentView
+            .background(HostingWindowFinder(callback: configureWindow))
             .edgesIgnoringSafeArea(.all)
-            .onAppear(perform: initialLaunchLogic)
-            .onAppear() {
+            .onAppear {
+                initialLaunchLogic()
                 updateUI()
             }
             .onReceive(Intervals.nudgeRefreshCycleTimer) { _ in
-                if needToActivateNudge() {
-                    appState.userSessionDeferrals += 1
-                    appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
-                    AppStateManager().activateNudge()
-                }
-                updateUI()
+                handleNudgeActivation()
             }
     }
-    
+
+    private var contentView: some View {
+        if simpleMode() || forceSimpleMode {
+            return AnyView(SimpleMode())
+        } else {
+            return AnyView(StandardMode())
+        }
+    }
+
+    private func configureWindow(window: NSWindow?) {
+        window?.standardWindowButton(.closeButton)?.isHidden = true
+        window?.standardWindowButton(.miniaturizeButton)?.isHidden = true
+        window?.standardWindowButton(.zoomButton)?.isHidden = true
+        window?.center()
+        window?.isMovable = false
+        window?.collectionBehavior = [.fullScreenAuxiliary]
+        window?.delegate = UIConstants.windowDelegate
+        // _ = needToActivateNudge()
+    }
+
+    private func handleNudgeActivation() {
+        if needToActivateNudge() {
+            appState.userSessionDeferrals += 1
+            appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+            AppStateManager().activateNudge()
+        }
+        updateUI()
+    }
+
     func updateUI() {
         if AppStateManager().requireDualQuitButtons() || appState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
             appState.requireDualQuitButtons = true
@@ -92,16 +114,10 @@ struct ContentView: View {
 struct HostingWindowFinder: NSViewRepresentable {
     // https://stackoverflow.com/a/66039864
     // https://gist.github.com/steve228uk/c960b4880480c6ed186d
+    var callback: (NSWindow?) -> Void
 
-    var callback: (NSWindow?) -> ()
-    
-    func makeNSView(context: Self.Context) -> NSView {
+    func makeNSView(context: Context) -> NSView {
         let view = NSView()
-        if CommandLineUtilities().versionArgumentPassed() {
-            print(VersionManager.getNudgeVersion())
-            AppStateManager().exitNudge()
-        }
-        
         DispatchQueue.main.async { [weak view] in
             self.callback(view?.window)
         }
@@ -112,377 +128,445 @@ struct HostingWindowFinder: NSViewRepresentable {
 
 // Create an AppDelegate so that we can more finely control how Nudge operates
 class AppDelegate: NSObject, NSApplicationDelegate {
-    // This allows Nudge to terminate if all of the windows have been closed. It was needed when the close button was visible, but less needed now.
-    // However if someone does close all the windows, we still want this.
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return true
-    }
-    
-    func applicationWillResignActive(_ notification: Notification) {
-        // TODO: This function can be used to stop nudge from resigning its activation state
-        // print("applicationWillResignActive")
-    }
-    
-    func applicationDidResignActive(_ notification: Notification) {
-        // TODO: This function can be used to force nudge right back in front if a user moves to another app
-        // print("applicationDidResignActive")
-    }
-    
-    func applicationWillBecomeActive(_ notification: Notification) {
-        // TODO: Perhaps move some of the ContentView logic into this - Ex: updateUI()
-        // print("applicationWillBecomeActive")
-    }
-    
     func applicationDidBecomeActive(_ notification: Notification) {
         // TODO: Perhaps move some of the ContentView logic into this - Ex: centering UI, full screen
         // print("applicationDidBecomeActive")
     }
-    
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        UIUtilities().centerNudge()
-        // print("applicationDidFinishLaunching")
-        
-        // Observe all notifications generated by the default NotificationCenter
-        //        nc.addObserver(forName: nil, object: nil, queue: nil) { notification in
-        //            print("NotificationCenter: \(notification.name.rawValue), Object: \(notification)")
-        //        }
-        //        // Observe all notifications generated by the default DistributedNotificationCenter - No longer works as of Catalina
-        //        dnc.addObserver(forName: nil, object: nil, queue: nil) { notification in
-        //            print("DistributedNotificationCenter: \(notification.name.rawValue), Object: \(notification)")
-        //        }
-        
-        // Observe screen locking. Maybe useful later
-        Globals.dnc.addObserver(
-            forName: NSNotification.Name("com.apple.screenIsLocked"),
-            object: nil,
-            queue: .main
-        ) { notification in
-            nudgePrimaryState.screenCurrentlyLocked = true
-            utilsLog.info("Screen was locked")
-        }
-        
-        Globals.nc.addObserver(
-            forName: NSApplication.didChangeScreenParametersNotification,
-            object: NSApplication.shared,
-            queue: .main)
-        {
-            notification -> Void in
-            print("Screen parameters changed - Notification Center")
-            UIUtilities().centerNudge()
-        }
 
-        Globals.nc.addObserver(
-            forName: NSWindow.didChangeScreenProfileNotification,
-            object: NSApplication.shared,
-            queue: .main)
-        {
-            notification -> Void in
-            print("Display has changed profiles - Notification Center")
-            UIUtilities().centerNudge()
-        }
-        
-        Globals.nc.addObserver(
-            forName: NSWindow.didChangeScreenNotification,
-            object: NSApplication.shared,
-            queue: .main)
-        {
-            notification -> Void in
-            print("Window object frame moved - Notification Center")
-            UIUtilities().centerNudge()
-        }
-        
-        Globals.dnc.addObserver(
-            forName: NSNotification.Name("com.apple.screenIsUnlocked"),
-            object: nil,
-            queue: .main
-        ) { notification in
-            nudgePrimaryState.screenCurrentlyLocked = false
-            utilsLog.info("Screen was unlocked")
-        }
-        
-        // Entering/leaving/exiting a full screen app or space
-        Globals.snc.addObserver(
-            self,
-            selector: #selector(spacesStateChanged(_:)),
-            name: NSWorkspace.activeSpaceDidChangeNotification,
-            object: nil
-        )
-        
-        Globals.snc.addObserver(
-            self,
-            selector: #selector(logHiddenApplication(_:)),
-            name: NSWorkspace.didHideApplicationNotification,
-            object: nil
-        )
-        
-        if OptionalFeatureVariables.attemptToBlockApplicationLaunches {
-            registerLocal()
-            if !nudgeLogState.afterFirstLaunch && OptionalFeatureVariables.terminateApplicationsOnLaunch {
-                terminateApplications()
-            }
-            Globals.snc.addObserver(
-                self,
-                selector: #selector(terminateApplicationSender(_:)),
-                name: NSWorkspace.didLaunchApplicationNotification,
-                object: nil
-            )
-        }
-        
-        // Listen for keyboard events
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-            if self.detectBannedShortcutKeys(with: $0) {
-                return nil
-            } else {
-                return $0
-            }
-        }
-        
-        if !nudgeLogState.afterFirstLaunch {
-            nudgeLogState.afterFirstLaunch = true
-            if NSWorkspace.shared.isActiveSpaceFullScreen() {
-                NSApp.hide(self)
-                // NSApp.windows.first?.resignKey()
-                // NSApp.unhideWithoutActivation()
-                // NSApp.deactivate()
-                // NSApp.unhideAllApplications(nil)
-                // NSApp.hideOtherApplications(self)
-            }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        // print("applicationDidFinishLaunching")
+        UIUtilities().centerNudge()
+        setupNotificationObservers()
+        handleKeyboardEvents()
+        handleApplicationLaunchesIfNeeded()
+        checkFullScreenStateOnFirstLaunch()
+    }
+
+    func applicationDidResignActive(_ notification: Notification) {
+        // TODO: This function can be used to force nudge right back in front if a user moves to another app
+        // print("applicationDidResignActive")
+    }
+
+    // Only exit if primaryQuitButton is clicked
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if nudgePrimaryState.shouldExit {
+            return .terminateNow
+        } else {
+            // Log the attempt to exit the application if it should not exit yet
+            uiLog.warning("Attempt to exit Nudge was prevented.")
+            return .terminateCancel
         }
     }
-    
+
+    // Allows Nudge to terminate if all windows have been closed.
+    // Useful if the close button is visible or if windows are closed by other means.
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+
+    func applicationWillBecomeActive(_ notification: Notification) {
+        // TODO: Perhaps move some of the ContentView logic into this - Ex: updateUI()
+        // print("applicationWillBecomeActive")
+    }
+
+    // Pre-Launch Logic
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        // print("applicationWillFinishLaunching")
+        handleSMAppService()
+        checkForBadProfilePath()
+        handleCommandLineArguments()
+        applyGracePeriodLogic()
+        applyRandomDelayIfNecessary()
+        handleSoftwareUpdateRequirements()
+    }
+
+    func applicationWillResignActive(_ notification: Notification) {
+        // TODO: This function can be used to stop nudge from resigning its activation state
+        // print("applicationWillResignActive")
+    }
+
     @objc func logHiddenApplication(_ notification: Notification) {
         utilsLog.info("Application hidden")
     }
-    
+
+    @objc func scheduleLocal(applicationIdentifier: String) {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            let content = self.createNotificationContent(for: applicationIdentifier)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.001, repeats: false)
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+            switch settings.authorizationStatus {
+                case .authorized, .provisional:
+                    center.add(request)
+                    uiLog.info("Scheduled notification for terminated application \(applicationIdentifier)")
+                case .denied:
+                    uiLog.info("Notifications are denied; cannot schedule notification for \(applicationIdentifier)")
+                case .notDetermined:
+                    uiLog.info("Notification status not determined; cannot schedule notification for \(applicationIdentifier)")
+                @unknown default:
+                    uiLog.info("Unknown notification status; cannot schedule notification for \(applicationIdentifier)")
+            }
+        }
+    }
+
+    // Observe screen locking. Maybe useful later
+    @objc func screenLocked(_ notification: Notification) {
+        nudgePrimaryState.screenCurrentlyLocked = true
+        utilsLog.info("Screen was locked")
+    }
+
+    @objc func screenParametersChanged(_ notification: Notification) {
+        utilsLog.info("Screen parameters changed - Notification Center")
+        UIUtilities().centerNudge()
+    }
+
+    @objc func screenProfileChanged(_ notification: Notification) {
+        utilsLog.info("Display has changed profiles - Notification Center")
+        UIUtilities().centerNudge()
+    }
+
+    @objc func screenUnlocked(_ notification: Notification) {
+        nudgePrimaryState.screenCurrentlyLocked = false
+        utilsLog.info("Screen was unlocked")
+    }
+
     @objc func spacesStateChanged(_ notification: Notification) {
         UIUtilities().centerNudge()
         utilsLog.info("Spaces state changed")
         nudgePrimaryState.afterFirstStateChange = true
     }
-    
+
     @objc func terminateApplicationSender(_ notification: Notification) {
-        utilsLog.info("Application launched")
+        utilsLog.info("Application launched - checking if application should be terminated")
         terminateApplications()
     }
-    
-    func terminateApplications() {
-        if !DateManager().pastRequiredInstallationDate() {
-            return
-        }
-        utilsLog.info("Application launched")
-        for runningApplication in NSWorkspace.shared.runningApplications {
-            let appBundleID = runningApplication.bundleIdentifier ?? ""
-            let appName = runningApplication.localizedName ?? ""
-            if appBundleID == "com.github.macadmins.Nudge" {
-                continue
-            }
-            if OptionalFeatureVariables.blockedApplicationBundleIDs.contains(appBundleID) {
-                utilsLog.info("Found \(appName), terminating application")
-                scheduleLocal(applicationIdentifier: appName)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: {
-                    runningApplication.forceTerminate()
-                })
-            }
-        }
-    }
-    
-    @objc func registerLocal() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .badge, .provisional, .sound]) { (granted, error) in
-            if granted {
-                uiLog.info("User granted notifications - application blocking status now available")
-            } else {
-                uiLog.info("User denied notifications - application blocking status will be unavailable")
-            }
-        }
-    }
-    
-    @objc func scheduleLocal(applicationIdentifier: String) {
-        let center = UNUserNotificationCenter.current()
-        center.getNotificationSettings { (settings) in
-            let content = UNMutableNotificationContent()
-            content.title = "Application terminated".localized(desiredLanguage: getDesiredLanguage())
-            content.subtitle = "(\(applicationIdentifier))"
-            content.body = "Please update your device to use this application".localized(desiredLanguage: getDesiredLanguage())
-            content.categoryIdentifier = "alert"
-            content.sound = UNNotificationSound.default
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.001, repeats: false)
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-            switch settings.authorizationStatus {
-                    
-                case .authorized:
-                    center.add(request)
-                case .denied:
-                    uiLog.info("Application terminated without user notification")
-                case .notDetermined:
-                    uiLog.info("Application terminated without user notification status")
-                case .provisional:
-                    uiLog.info("Application terminated with provisional user notification status")
-                    center.add(request)
-                @unknown default:
-                    uiLog.info("Application terminated with unknown user notification status")
-            }
-        }
-    }
-    
-    func detectBannedShortcutKeys(with event: NSEvent) -> Bool {
-        // Only detect shortcut keys if Nudge is active - adapted from https://stackoverflow.com/questions/32446978/swift-capture-keydown-from-nsviewcontroller/40465919
-        if NSApplication.shared.isActive {
-            switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-                    // Disable CMD + W - closes the Nudge window and breaks it
-                case [.command] where event.characters == "w":
-                    uiLog.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.")
-                    return true
-                    // Disable CMD + N - closes the Nudge window and breaks it
-                case [.command] where event.characters == "n":
-                    uiLog.warning("Nudge detected an attempt to create a new window via CMD + N shortcut key.")
-                    return true
-                    // Disable CMD + M - closes the Nudge window and breaks it
-                case [.command] where event.characters == "m":
-                    uiLog.warning("Nudge detected an attempt to minimise the application via CMD + M shortcut key.")
-                    return true
-                    // Disable CMD + Q - fully closes Nudge
-                case [.command] where event.characters == "q":
-                    uiLog.warning("Nudge detected an attempt to close the application via CMD + Q shortcut key.")
-                    return true
-                    // Disable CMD + Option + M - minimizes Nudge and could render it broken when blur is enabled
-                case [.command, .option] where event.characters == "µ":
-                    uiLog.warning("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.")
-                    return true
-                    // Disable CMD + Option + N - Opens new tabs in Nudge and breaks UI
-                case [.command, .option] where event.characters == "~":
-                    uiLog.warning("Nudge detected an attempt add tabs to the application via CMD + Option + N shortcut key.")
-                    return true
-                    // Don't care about any other shortcut keys
-                default:
-                    return false
-            }
-        }
-        return false
-    }
-    
-    // Only exit if primaryQuitButton is clicked
-    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+
+    private func applyGracePeriodLogic() {
+        _ = AppStateManager().gracePeriodLogic()
         if nudgePrimaryState.shouldExit {
-            return NSApplication.TerminateReply.terminateNow
-        } else {
-            uiLog.warning("Nudge detected an attempt to exit the application.")
-            return NSApplication.TerminateReply.terminateCancel
+            exit(0)
         }
     }
-    
-    func runSoftwareUpdate() {
-        if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+
+    private func applyRandomDelayIfNecessary() {
+        if UserExperienceVariables.randomDelay {
+            let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
+            uiLog.notice("Delaying initial run (in seconds) by: \(delaySeconds)")
+            sleep(UInt32(delaySeconds))
+        }
+    }
+
+    private func checkForBadProfilePath() {
+        let badProfilePath = "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist"
+        if FileManager.default.fileExists(atPath: badProfilePath) {
+            prefsProfileLog.warning("Found bad profile path at \(badProfilePath)")
+            exit(1)
+        }
+    }
+
+    private func checkFullScreenStateOnFirstLaunch() {
+        guard !nudgeLogState.afterFirstLaunch else { return }
+        nudgeLogState.afterFirstLaunch = true
+        if NSWorkspace.shared.isActiveSpaceFullScreen() {
+            NSApp.hide(self)
+            // NSApp.windows.first?.resignKey()
+            // NSApp.unhideWithoutActivation()
+            // NSApp.deactivate()
+            // NSApp.unhideAllApplications(nil)
+            // NSApp.hideOtherApplications(self)
+        }
+    }
+
+    private func createNotificationContent(for applicationIdentifier: String) -> UNMutableNotificationContent {
+        let content = UNMutableNotificationContent()
+        content.title = "Application terminated".localized(desiredLanguage: getDesiredLanguage())
+        content.subtitle = "(\(applicationIdentifier))"
+        content.body = "Please update your device to use this application".localized(desiredLanguage: getDesiredLanguage())
+        content.categoryIdentifier = "alert"
+        content.sound = UNNotificationSound.default
+        return content
+    }
+
+    private func detectBannedShortcutKeys(with event: NSEvent) -> Bool {
+        guard NSApplication.shared.isActive else { return false }
+        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+                // Disable CMD + W - closes the Nudge window and breaks it
+            case [.command] where event.charactersIgnoringModifiers == "w":
+                utilsLog.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.")
+                return true
+                // Disable CMD + N - closes the Nudge window and breaks it
+            case [.command] where event.charactersIgnoringModifiers == "n":
+                utilsLog.warning("Nudge detected an attempt to close the application via CMD + N shortcut key.")
+                return true
+                // Disable CMD + Q - fully closes Nudge
+            case [.command] where event.charactersIgnoringModifiers == "q":
+                utilsLog.warning("Nudge detected an attempt to quit the application via CMD + Q shortcut key.")
+                return true
+                // Disable CMD + M - Minimizes Nudge
+            case [.command] where event.charactersIgnoringModifiers == "m":
+                utilsLog.warning("Nudge detected an attempt to minimize the application via CMD + M shortcut key.")
+                return true
+                // Disable CMD + H - Hides Nudge
+            case [.command] where event.charactersIgnoringModifiers == "h":
+                utilsLog.warning("Nudge detected an attempt to hide the application via CMD + H shortcut key.")
+                return true
+                // Disable CMD + Option + Esc (Force Quit Applications)
+            case [.command, .option] where event.charactersIgnoringModifiers == "\u{1b}": // Escape key
+                utilsLog.warning("Nudge detected an attempt to open Force Quit Applications via CMD + Option + Esc.")
+                return true
+                // Disable CMD + Option + M - Minimizes Nudge
+            case [.command, .option] where event.charactersIgnoringModifiers == "µ":
+                utilsLog.warning("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.")
+                return true
+                // Disable CMD + Option + N - Add tabs to Nudge window
+            case [.command, .option] where event.charactersIgnoringModifiers == "~":
+                utilsLog.warning("Nudge detected an attempt to add tabs to the application via CMD + Option + N shortcut key.")
+                return true
+            default:
+                // Don't care about any other shortcut keys
+                return false
+        }
+    }
+
+    private func handleApplicationLaunchesIfNeeded() {
+        guard OptionalFeatureVariables.attemptToBlockApplicationLaunches else { return }
+        registerLocalNotifications()
+        if !nudgeLogState.afterFirstLaunch && OptionalFeatureVariables.terminateApplicationsOnLaunch {
+            terminateApplications()
+        }
+        Globals.nc.addObserver(
+            self,
+            selector: #selector(terminateApplicationSender(_:)),
+            name: NSWorkspace.didLaunchApplicationNotification,
+            object: nil
+        )
+    }
+
+    private func handleAttemptToFetchMajorUpgrade() {
+        if GlobalVariables.fetchMajorUpgradeSuccessful == false && !majorUpgradeAppPathExists && !majorUpgradeBackupAppPathExists {
+            uiLog.error("Unable to fetch major upgrade and application missing, exiting Nudge")
+            nudgePrimaryState.shouldExit = true
+            exit(1)
+        }
+    }
+
+    private func handleNoAttemptToFetchMajorUpgrade() {
+        if !majorUpgradeAppPathExists && !majorUpgradeBackupAppPathExists {
+            uiLog.error("Unable to find major upgrade application, exiting Nudge")
+            nudgePrimaryState.shouldExit = true
+            exit(1)
+        }
+    }
+
+    private func handleCommandLineArguments() {
+        if CommandLineUtilities().versionArgumentPassed() {
+            print(VersionManager.getNudgeVersion())
+            AppStateManager().exitNudge()
+        } else if CommandLine.arguments.contains("-print-profile-config") {
+            printConfigProfileAndExit()
+        } else if CommandLine.arguments.contains("-print-json-config") {
+            printConfigJSONAndExit()
+        }
+    }
+
+    private func handleKeyboardEvents() {
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] in
+            self?.detectBannedShortcutKeys(with: $0) == true ? nil : $0
+        }
+    }
+
+
+    private func handleMajorUpgradeRequirements() {
+        if let actionButtonPath = FeatureVariables.actionButtonPath, !actionButtonPath.isEmpty {
+            if OptionalFeatureVariables.attemptToFetchMajorUpgrade {
+                handleAttemptToFetchMajorUpgrade()
+            } else {
+                handleNoAttemptToFetchMajorUpgrade()
+            }
+        } else {
+            prefsProfileLog.warning("actionButtonPath is nil or empty - actionButton will be unable to trigger any action required for major upgrades")
             return
         }
-        
-        if OptionalFeatureVariables.asynchronousSoftwareUpdate && AppStateManager().requireMajorUpgrade() == false && !DateManager().pastRequiredInstallationDate() {
-            DispatchQueue(label: "nudge-su", attributes: .concurrent).asyncAfter(deadline: .now(), execute: {
-                SoftwareUpdate().download()
-            })
-        } else {
-            SoftwareUpdate().download()
-        }
     }
-    
-    // Pre-Launch Logic
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        // print("applicationWillFinishLaunching")
+
+    private func handleSMAppService() {
         if #available(macOS 13, *) {
             let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.SMAppService.plist")
             let appServiceStatus = appService.status
+
             if CommandLine.arguments.contains("--register") || UserExperienceVariables.loadLaunchAgent {
                 SMAppManager().loadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
             } else if CommandLine.arguments.contains("--unregister") || !UserExperienceVariables.loadLaunchAgent {
                 SMAppManager().unloadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
             }
         }
-        
-        if FileManager.default.fileExists(atPath: "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist") {
-            prefsProfileLog.warning("Found bad profile path at /Library/Managed Preferences/com.github.macadmins.Nudge.json.plist")
-            exit(1)
-        }
-        
-        if CommandLine.arguments.contains("-print-profile-config") {
-            if !Globals.configProfile.isEmpty {
-                print(String(data: Globals.configProfile, encoding: .utf8) as AnyObject)
-            }
-            exit(0)
-        } else if CommandLine.arguments.contains("-print-json-config") {
-            if !Globals.configJSON.isEmpty {
-                print(String(decoding: Globals.configJSON, as: UTF8.self))
-            }
-            exit(0)
-        }
-        
-        _ = AppStateManager().gracePeriodLogic()
-        
-        if nudgePrimaryState.shouldExit {
-            exit(0)
-        }
-        
-        if UserExperienceVariables.randomDelay {
-            let randomDelaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
-            uiLog.notice("Delaying initial run (in seconds) by: \(String(randomDelaySeconds))")
-            sleep(UInt32(randomDelaySeconds))
-        }
-        
+    }
+
+    private func handleSoftwareUpdateRequirements() {
         self.runSoftwareUpdate()
+
         if AppStateManager().requireMajorUpgrade() {
-            if FeatureVariables.actionButtonPath != nil {
-                if !FeatureVariables.actionButtonPath!.isEmpty {
-                    return
-                } else {
-                    prefsProfileLog.warning("actionButtonPath contains empty string - actionButton will be unable to trigger any action required for major upgrades")
-                    return
-                }
-            }
-            
-            if OptionalFeatureVariables.attemptToFetchMajorUpgrade == true && GlobalVariables.fetchMajorUpgradeSuccessful == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
-                uiLog.error("Unable to fetch major upgrade and application missing, exiting Nudge")
-                nudgePrimaryState.shouldExit = true
-                exit(1)
-            } else if OptionalFeatureVariables.attemptToFetchMajorUpgrade == false && (majorUpgradeAppPathExists == false && majorUpgradeBackupAppPathExists == false) {
-                uiLog.error("Unable to find major upgrade application, exiting Nudge")
-                nudgePrimaryState.shouldExit = true
-                exit(1)
+            handleMajorUpgradeRequirements()
+        }
+    }
+
+    private func printConfigJSONAndExit() {
+        if !Globals.configJSON.isEmpty {
+            print(String(decoding: Globals.configJSON, as: UTF8.self))
+        }
+        AppStateManager().exitNudge()
+    }
+
+    private func printConfigProfileAndExit() {
+        if !Globals.configProfile.isEmpty {
+            print(String(data: Globals.configProfile, encoding: .utf8) as AnyObject)
+        }
+        AppStateManager().exitNudge()
+    }
+
+    private func registerLocalNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted {
+                utilsLog.info("User granted notifications - application blocking status now available")
+            } else if let error = error {
+                utilsLog.error("Error requesting notifications authorization: \(error.localizedDescription)")
+            } else {
+                utilsLog.info("User denied notifications - application blocking status will be unavailable")
             }
         }
     }
-    
-    class WindowDelegate: NSObject, NSWindowDelegate {
-        func windowDidMove(_ notification: Notification) {
-            print("Window attempted to move - Window Delegate")
-            UIUtilities().centerNudge()
+
+    private func runUpdateAsynchronously() {
+        DispatchQueue(label: "nudge-su", attributes: .concurrent).async {
+            SoftwareUpdate().download()
         }
-        func windowDidChangeScreen(_ notification: Notification) {
-            print("Window moved screens - Window Delegate")
-            UIUtilities().centerNudge()
+    }
+
+    private func setupNotificationObservers() {
+        setupNotificationCenterObservers()
+        setupScreenLockObservers()
+        setupScreenChangeObservers()
+        setupWorkspaceNotificationCenterObservers()
+    }
+
+    private func setupNotificationCenterObservers() {
+        Globals.nc.addObserver(
+            forName: NSWindow.didChangeScreenNotification,
+            object: NSApplication.shared,
+            queue: .main) { _ in
+                print("Window object frame moved - Notification Center")
+                UIUtilities().centerNudge()
+            }
+    }
+
+    private func setupScreenChangeObservers() {
+        Globals.nc.addObserver(
+            self,
+            selector: #selector(screenParametersChanged),
+            name: NSApplication.didChangeScreenParametersNotification,
+            object: nil
+        )
+
+        Globals.nc.addObserver(
+            self,
+            selector: #selector(screenProfileChanged),
+            name: NSWindow.didChangeScreenProfileNotification,
+            object: nil
+        )
+    }
+
+    private func setupScreenLockObservers() {
+        Globals.nc.addObserver(
+            self,
+            selector: #selector(screenLocked),
+            name: NSNotification.Name("com.apple.screenIsLocked"),
+            object: nil
+        )
+
+        Globals.nc.addObserver(
+            self,
+            selector: #selector(screenUnlocked),
+            name: NSNotification.Name("com.apple.screenIsUnlocked"),
+            object: nil
+        )
+    }
+
+    private func setupWorkspaceNotificationCenterObservers() {
+        Globals.snc.addObserver(
+            self,
+            selector: #selector(spacesStateChanged(_:)),
+            name: NSWorkspace.activeSpaceDidChangeNotification,
+            object: nil
+        )
+
+        Globals.snc.addObserver(
+            self,
+            selector: #selector(logHiddenApplication(_:)),
+            name: NSWorkspace.didHideApplicationNotification,
+            object: nil
+        )
+    }
+
+    private func terminateApplication(_ application: NSRunningApplication) {
+        guard application.terminate() else {
+            utilsLog.error("Failed to terminate application: \(application.bundleIdentifier ?? "")")
+            return
         }
-        func windowDidChangeScreenProfile(_ notification: Notification) {
-            print("Display has changed profiles - Window Delegate")
-            UIUtilities().centerNudge()
+        utilsLog.info("Successfully terminated application: \(application.bundleIdentifier ?? "")")
+    }
+
+    private func terminateApplications() {
+        guard DateManager().pastRequiredInstallationDate() else {
+            return
+        }
+
+        let runningApplications = NSWorkspace.shared.runningApplications
+        for runningApplication in runningApplications {
+            let appBundleID = runningApplication.bundleIdentifier ?? ""
+            if appBundleID == "com.github.macadmins.Nudge" {
+                continue
+            }
+            if OptionalFeatureVariables.blockedApplicationBundleIDs.contains(appBundleID) {
+                utilsLog.info("Found \(appBundleID), terminating application")
+                terminateApplication(runningApplication)
+            }
+        }
+    }
+
+    func runSoftwareUpdate() {
+        guard !CommandLineUtilities().demoModeEnabled(),
+              !CommandLineUtilities().unitTestingEnabled() else {
+            return
+        }
+
+        let shouldRunAsynchronously = OptionalFeatureVariables.asynchronousSoftwareUpdate &&
+        !AppStateManager().requireMajorUpgrade() &&
+        !DateManager().pastRequiredInstallationDate()
+
+        if shouldRunAsynchronously {
+            runUpdateAsynchronously()
+        } else {
+            SoftwareUpdate().download()
         }
     }
 }
 
-// Stuff if we ever implement fullscreen
-//        let presentationOptions: NSApplication.PresentationOptions = [
-//            .hideDock, // Dock is entirely unavailable. Spotlight menu is disabled.
-//            // .autoHideMenuBar,           // Menu Bar appears when moused to.
-//            // .disableAppleMenu,          // All Apple menu items are disabled.
-//            .disableProcessSwitching      // Cmd+Tab UI is disabled. All Exposé functionality is also disabled.
-//            // .disableForceQuit,             // Cmd+Opt+Esc panel is disabled.
-//            // .disableSessionTermination,    // PowerKey panel and Restart/Shut Down/Log Out are disabled.
-//            // .disableHideApplication,       // Application "Hide" menu item is disabled.
-//            // .autoHideToolbar,
-//            // .fullScreen
-//        ]
-//        let optionsDictionary = [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions: presentationOptions]
-//        if let screen = NSScreen.main {
-//            view.enterFullScreenMode(screen, withOptions: [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions:presentationOptions.rawValue])
-//        }
-//        //view.enterFullScreenMode(NSScreen.main!, withOptions: optionsDictionary)
+class WindowDelegate: NSObject, NSWindowDelegate {
+    func windowDidMove(_ notification: Notification) {
+        print("Window attempted to move - Window Delegate")
+        UIUtilities().centerNudge()
+    }
+    func windowDidChangeScreen(_ notification: Notification) {
+        print("Window moved screens - Window Delegate")
+        UIUtilities().centerNudge()
+    }
+    func windowDidChangeScreenProfile(_ notification: Notification) {
+        print("Display has changed profiles - Window Delegate")
+        UIUtilities().centerNudge()
+    }
+}
 
 #if DEBUG
 struct MainView_Previews: PreviewProvider {
@@ -504,3 +588,21 @@ struct MainView_Previews: PreviewProvider {
     }
 }
 #endif
+
+// Stuff if we ever implement fullscreen
+//        let presentationOptions: NSApplication.PresentationOptions = [
+//            .hideDock, // Dock is entirely unavailable. Spotlight menu is disabled.
+//            // .autoHideMenuBar,           // Menu Bar appears when moused to.
+//            // .disableAppleMenu,          // All Apple menu items are disabled.
+//            .disableProcessSwitching      // Cmd+Tab UI is disabled. All Exposé functionality is also disabled.
+//            // .disableForceQuit,             // Cmd+Opt+Esc panel is disabled.
+//            // .disableSessionTermination,    // PowerKey panel and Restart/Shut Down/Log Out are disabled.
+//            // .disableHideApplication,       // Application "Hide" menu item is disabled.
+//            // .autoHideToolbar,
+//            // .fullScreen
+//        ]
+//        let optionsDictionary = [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions: presentationOptions]
+//        if let screen = NSScreen.main {
+//            view.enterFullScreenMode(screen, withOptions: [NSView.FullScreenModeOptionKey.fullScreenModeApplicationPresentationOptions:presentationOptions.rawValue])
+//        }
+//        //view.enterFullScreenMode(NSScreen.main!, withOptions: optionsDictionary)
