@@ -5,6 +5,8 @@
 //  Created by Erik Gomez on 2/2/21.
 //
 
+// TODO: Refactor and rewrite all tests
+
 import XCTest
 @testable import Nudge
 
@@ -73,7 +75,7 @@ class NudgeTests: XCTestCase {
         PrefsWrapper.prefsOverride = defaultPreferencesForTests
         XCTAssertEqual(
             coerceStringToDate(dateString: "2022-02-01T00:00:00Z"),
-            Utils().gracePeriodLogic(
+            AppStateManager().gracePeriodLogic(
                 currentDate: coerceStringToDate(dateString: "2022-01-01T00:30:00Z"),
                 testFileDate: coerceStringToDate(dateString: "2022-01-01T00:00:00Z")
             )
@@ -88,7 +90,7 @@ class NudgeTests: XCTestCase {
         PrefsWrapper.prefsOverride = defaultPreferencesForTests
         XCTAssertEqual(
             coerceStringToDate(dateString: "2022-01-03T00:00:00Z"),
-            Utils().gracePeriodLogic(
+            AppStateManager().gracePeriodLogic(
                 currentDate: coerceStringToDate(dateString: "2022-01-02T00:30:00Z"),
                 testFileDate: coerceStringToDate(dateString: "2022-01-02T00:00:00Z")
             )
@@ -104,7 +106,7 @@ class NudgeTests: XCTestCase {
         PrefsWrapper.prefsOverride = defaultPreferencesForTests
         XCTAssertEqual(
             coerceStringToDate(dateString: "2022-01-01T00:00:00Z"),
-            Utils().gracePeriodLogic(
+            AppStateManager().gracePeriodLogic(
                 currentDate: coerceStringToDate(dateString: "2022-01-03T:00:00Z"),
                 testFileDate: coerceStringToDate(dateString: "2022-01-01T00:00:00Z")
             )
@@ -120,7 +122,7 @@ class NudgeTests: XCTestCase {
         PrefsWrapper.prefsOverride = defaultPreferencesForTests
         XCTAssertEqual(
             coerceStringToDate(dateString: "2022-01-01T00:00:00Z"),
-            Utils().gracePeriodLogic(
+            AppStateManager().gracePeriodLogic(
                 currentDate: coerceStringToDate(dateString: "2022-06-01T00:00:00Z"),
                 testFileDate: coerceStringToDate(dateString: "2021-12-01T00:00:00Z")
             )
