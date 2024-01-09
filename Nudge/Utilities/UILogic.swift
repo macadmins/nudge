@@ -12,16 +12,16 @@ import SwiftUI
 
 func initialLaunchLogic() {
     guard !CommandLineUtilities().unitTestingEnabled() else {
-        uiLog.debug("App being ran in test mode")
+        LogManager.debug("App being ran in test mode", logger: uiLog)
         return
     }
 
     if CommandLineUtilities().simpleModeEnabled() {
-        uiLog.debug("Device in simple mode")
+        LogManager.debug("Device in simple mode", logger: uiLog)
     }
 
     if CommandLineUtilities().demoModeEnabled() {
-        uiLog.debug("Device in demo mode")
+        LogManager.debug("Device in demo mode", logger: uiLog)
         resetDeferralsForDemoMode()
         return
     }
@@ -35,18 +35,18 @@ func initialLaunchLogic() {
 private func checkDeferralDate() {
     let deferralDate = nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime
     if shouldExitBasedOnDeferralDate(deferralDate: deferralDate) {
-        uiLog.notice("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(DateManager().getCurrentDate())")
+        LogManager.notice("User has selected a deferral date (\(nudgePrimaryState.deferRunUntil ?? nudgePrimaryState.lastRefreshTime)) that is greater than the launch date (\(DateManager().getCurrentDate())", logger: uiLog)
         AppStateManager().exitNudge()
     }
 }
 
 private func handleDemoMode() -> Bool {
     if nudgeLogState.afterFirstRun {
-        uiLog.info("Ignoring Nudge activation - Device is in demo mode")
+        LogManager.info("Ignoring Nudge activation - Device is in demo mode", logger: uiLog)
         nudgeLogState.afterFirstRun = true
         return false
     } else {
-        uiLog.notice("Nudge activating - Launching demo mode UI")
+        LogManager.notice("Nudge activating - Launching demo mode UI", logger: uiLog)
         AppStateManager().activateNudge()
         return true
     }
@@ -54,13 +54,13 @@ private func handleDemoMode() -> Bool {
 
 private func handleUpdateStatus() {
     if VersionManager.fullyUpdated() {
-        uiLog.notice("Device is fully updated")
+        LogManager.notice("Device is fully updated", logger: uiLog)
         // Because Nudge will bail if it detects installed OS >= required OS, this will cause the Xcode preview to fail.
         if !uiConstants.isPreview {
             AppStateManager().exitNudge()
         }
     } else if !OptionalFeatureVariables.enforceMinorUpdates && !AppStateManager().requireMajorUpgrade() {
-        uiLog.warning("Device requires a minor update but enforceMinorUpdates is false")
+        LogManager.warning("Device requires a minor update but enforceMinorUpdates is false", logger: uiLog)
         AppStateManager().exitNudge()
     }
 }
@@ -68,7 +68,7 @@ private func handleUpdateStatus() {
 private func isAcceptableApplicationFrontmost(_ frontmostApplication: NSRunningApplication?) -> Bool {
     if builtInAcceptableApplicationBundleIDs.contains(frontmostApplication?.bundleIdentifier ?? "") ||
         OptionalFeatureVariables.acceptableApplicationBundleIDs.contains(frontmostApplication?.bundleIdentifier ?? "") {
-        uiLog.info("Ignoring Nudge activation - acceptableApplication is currently the frontmostApplication")
+        LogManager.info("Ignoring Nudge activation - acceptableApplication is currently the frontmostApplication", logger: uiLog)
         return true
     }
     return false
@@ -78,7 +78,7 @@ private func isAcceptableAssertionRunning() -> Bool {
     var assertions: Unmanaged<CFDictionary>?
     guard IOPMCopyAssertionsByProcess(&assertions) == kIOReturnSuccess,
           let assertionDict = assertions?.takeRetainedValue() as NSDictionary? else {
-        uiLog.info("Could not assess assertions")
+        LogManager.error("Could not assess assertions", logger: uiLog)
         return false
     }
 
@@ -88,7 +88,7 @@ private func isAcceptableAssertionRunning() -> Bool {
                 if let processName = assertion["Process Name"] as? String,
                    let assertionType = assertion["AssertionTrueType"] as? String,
                    OptionalFeatureVariables.acceptableAssertionApplicationNames.contains(processName) {
-                    uiLog.info("Ignoring Nudge activation - Assertion \(assertionType) is set for \(processName)")
+                    LogManager.info("Ignoring Nudge activation - Assertion \(assertionType) is set for \(processName)", logger: uiLog)
                     return true
                 }
             }
@@ -119,7 +119,7 @@ private func isMajorUpgradeAppFrontmost(_ frontmostApplication: NSRunningApplica
     if majorUpgradeAppPathExists {
         let majorUpgradeAppURL = URL(fileURLWithPath: OSVersionRequirementVariables.majorUpgradeAppPath, isDirectory: false)
         if frontmostApplication?.bundleURL == majorUpgradeAppURL {
-            uiLog.info("Ignoring Nudge activation - majorUpgradeApp is currently the frontmostApplication")
+            LogManager.info("Ignoring Nudge activation - majorUpgradeApp is currently the frontmostApplication", logger: uiLog)
             return true
         }
     }
@@ -127,7 +127,7 @@ private func isMajorUpgradeAppFrontmost(_ frontmostApplication: NSRunningApplica
     if majorUpgradeBackupAppPathExists {
         let backupAppURL = URL(fileURLWithPath: NetworkFileManager().getBackupMajorUpgradeAppPath(), isDirectory: false)
         if frontmostApplication?.bundleURL == backupAppURL {
-            uiLog.info("Ignoring Nudge activation - majorUpgradeBackupApp is currently the frontmostApplication")
+            LogManager.info("Ignoring Nudge activation - majorUpgradeBackupApp is currently the frontmostApplication", logger: uiLog)
             return true
         }
     }
@@ -147,7 +147,7 @@ private func isRefreshTimerPassedThreshold() -> Bool {
     let currentTime = DateManager().getCurrentDate().timeIntervalSince1970
     let timeSinceLastRefresh = currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970
     if nudgeLogState.afterFirstLaunch && Double(ConfigurationManager().getTimerController()) > timeSinceLastRefresh {
-        uiLog.info("Ignoring Nudge activation - Device is currently within current timer range")
+        LogManager.info("Ignoring Nudge activation - Device is currently within current timer range", logger: uiLog)
         return true
     }
     return false
@@ -162,10 +162,10 @@ private func isScreenSharingActive() -> Bool {
 
 private func logControllers() {
     if !nudgeLogState.afterFirstRun {
-        uiLog.info("nudgeRefreshCycle: \(UserExperienceVariables.nudgeRefreshCycle)")
+        LogManager.info("nudgeRefreshCycle: \(UserExperienceVariables.nudgeRefreshCycle)", logger: uiLog)
         nudgeLogState.afterFirstRun = true
         if !UIConstants.DNDServer {
-            uiLog.error("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable")
+            LogManager.error("acceptableScreenSharingUsage is set but DoNotDisturbServer framework is unavailable", logger: uiLog)
         }
     }
 }
@@ -192,7 +192,7 @@ private func logUserSessionDeferrals(resetCount: Bool = false) {
 
 func needToActivateNudge() -> Bool {
     if NSApplication.shared.isActive {
-        uiLog.notice("Nudge is currently the frontmostApplication")
+        LogManager.notice("Nudge is currently the frontmostApplication", logger: uiLog)
         return false
     }
 
@@ -219,7 +219,7 @@ func needToActivateNudge() -> Bool {
 
 private func processNudgeEvent() {
     if VersionManager.newNudgeEvent() {
-        uiLog.notice("New Nudge event detected - resetting all deferral values")
+        LogManager.notice("New Nudge event detected - resetting all deferral values", logger: uiLog)
         resetAllDeferralValues()
     } else {
         updateDeferralCounts()
@@ -241,7 +241,7 @@ private func resetDeferralsForDemoMode() {
 
 private func shouldActivateNudgeBasedOnAggressiveExperience(_ runningApplications: [NSRunningApplication], _ frontmostApplication: NSRunningApplication?) -> Bool {
     if frontmostApplication?.bundleIdentifier != nil {
-        uiLog.info("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication")
+        LogManager.info("\(frontmostApplication!.bundleIdentifier ?? "") is currently the frontmostApplication", logger: uiLog)
     }
 
     let shouldActivate = nudgePrimaryState.deferralCountPastThreshold || DateManager().pastRequiredInstallationDate()
@@ -251,7 +251,7 @@ private func shouldActivateNudgeBasedOnAggressiveExperience(_ runningApplication
         for runningApplication in runningApplications {
             if shouldHideApplication(runningApplication) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-                    uiLog.info("Attempting to hide \(runningApplication.bundleIdentifier ?? "")")
+                    LogManager.info("Attempting to hide \(runningApplication.bundleIdentifier ?? "")", logger: uiLog)
                     runningApplication.hide()
                 }
             }
@@ -281,13 +281,13 @@ private func shouldBailOutEarly() -> Bool {
 
     // Check if admin has set noTimers
     if UserExperienceVariables.noTimers {
-        uiLog.info("Ignoring Nudge activation - noTimers is set")
+        LogManager.info("Ignoring Nudge activation - noTimers is set", logger: uiLog)
         return true
     }
 
     // Check if screen is locked
     if nudgePrimaryState.screenCurrentlyLocked {
-        uiLog.info("Ignoring Nudge activation - Screen is currently locked")
+        LogManager.info("Ignoring Nudge activation - Screen is currently locked", logger: uiLog)
         return true
     }
 
@@ -298,13 +298,13 @@ private func shouldBailOutEarly() -> Bool {
 
     // Check if camera is on and it's before the required installation date
     if OptionalFeatureVariables.acceptableCameraUsage && !pastRequiredInstallationDate && isCameraOn() {
-        uiLog.info("Ignoring Nudge activation - Camera is currently on and not past required installation date")
+        LogManager.info("Ignoring Nudge activation - Camera is currently on and not past required installation date", logger: uiLog)
         return true
     }
 
     // Check if screen sharing is active and it's before the required installation date
     if OptionalFeatureVariables.acceptableScreenSharingUsage && !pastRequiredInstallationDate && isScreenSharingActive() {
-        uiLog.info("Ignoring Nudge activation - Screen sharing is currently active and not past required installation date")
+        LogManager.info("Ignoring Nudge activation - Screen sharing is currently active and not past required installation date", logger: uiLog)
         return true
     }
 
@@ -363,23 +363,23 @@ private func updateNudgeState() {
 
     if nudgePrimaryState.deferralCountPastThreshold {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThreshold {
-            uiLog.notice("allowedDeferrals has been passed")
+            LogManager.notice("allowedDeferrals has been passed", logger: uiLog)
             nudgePrimaryState.hasLoggedDeferralCountPastThreshold = true
         }
     }
 
     if nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons {
-            uiLog.notice("allowedDeferralsUntilForcedSecondaryQuitButton has been passed: \(UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton)")
+            LogManager.notice("allowedDeferralsUntilForcedSecondaryQuitButton has been passed: \(UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton)", logger: uiLog)
             nudgePrimaryState.hasLoggedDeferralCountPastThresholdDualQuitButtons = true
         }
     }
 }
 
 func userHasClickedSecondaryQuitButton() {
-    uiLog.notice("User clicked secondaryQuitButton")
+    LogManager.notice("User clicked secondaryQuitButton", logger: uiLog)
 }
 
 func userHasClickedDeferralQuitButton(deferralTime: Date) {
-    uiLog.notice("User initiated a deferral: \(deferralTime)")
+    LogManager.notice("User initiated a deferral: \(deferralTime)", logger: uiLog)
 }

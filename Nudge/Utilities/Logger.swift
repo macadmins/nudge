@@ -15,6 +15,26 @@ struct LogManager {
     static func createLogger(category: String) -> Logger {
         return Logger(subsystem: bundleID, category: category)
     }
+
+    static func debug(_ message: String, logger: Logger) {
+        logger.debug("\(message, privacy: .public)")
+    }
+
+    static func error(_ message: String, logger: Logger) {
+        logger.error("\(message, privacy: .public)")
+    }
+
+    static func info(_ message: String, logger: Logger) {
+        logger.info("\(message, privacy: .public)")
+    }
+
+    static func notice(_ message: String, logger: Logger) {
+        logger.notice("\(message, privacy: .public)")
+    }
+
+    static func warning(_ message: String, logger: Logger) {
+        logger.warning("\(message, privacy: .public)")
+    }
 }
 
 // Usage of Logger Manager
@@ -45,6 +65,6 @@ class LogState {
 // NudgeLogger
 class NudgeLogger {
     init() {
-        loggingLog.debug("Starting log events")
+        LogManager.debug("Starting log events", logger: loggingLog)
     }
 }

@@ -13,19 +13,19 @@ class SoftwareUpdate {
         let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--list", "--all"])
 
         if exitCode != 0 {
-            softwareupdateListLog.error("Error listing software updates: \(error)")
+            LogManager.error("Error listing software updates: \(error)", logger: softwareupdateListLog)
             return error
         } else {
-            softwareupdateListLog.info("\(output)")
+            LogManager.info("\(output)", logger: softwareupdateListLog)
             return output
         }
     }
 
     func download() {
-        softwareupdateDownloadLog.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates)")
+        LogManager.notice("enforceMinorUpdates: \(OptionalFeatureVariables.enforceMinorUpdates)", logger: softwareupdateDownloadLog)
 
         if DeviceManager().getCPUTypeString() == "Apple Silicon" && !AppStateManager().requireMajorUpgrade() {
-            softwareupdateListLog.debug("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.")
+            LogManager.debug("Apple Silicon devices do not support automated softwareupdate downloads for minor updates. Please use MDM for this functionality.", logger: softwareupdateListLog)
             return
         }
 
@@ -33,39 +33,39 @@ class SoftwareUpdate {
             guard FeatureVariables.actionButtonPath == nil else { return }
 
             if OptionalFeatureVariables.attemptToFetchMajorUpgrade, !majorUpgradeAppPathExists, !majorUpgradeBackupAppPathExists {
-                softwareupdateListLog.notice("Device requires major upgrade - attempting download")
+                LogManager.notice("Device requires major upgrade - attempting download", logger: softwareupdateListLog)
                 let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion])
 
                 if exitCode != 0 {
-                    softwareupdateDownloadLog.error("Error downloading software update: \(error)")
+                    LogManager.error("Error downloading software update: \(error)", logger: softwareupdateDownloadLog)
                 } else {
-                    softwareupdateDownloadLog.info("\(output)")
+                    LogManager.info("\(output)", logger: softwareupdateDownloadLog)
                     GlobalVariables.fetchMajorUpgradeSuccessful = true
                     // Update the state based on the download result
                 }
             } else {
-                softwareupdateListLog.notice("Found major upgrade application or backup - skipping download")
+                LogManager.notice("Found major upgrade application or backup - skipping download", logger: softwareupdateListLog)
             }
         } else {
             if OptionalFeatureVariables.disableSoftwareUpdateWorkflow {
-                softwareupdateListLog.notice("Skipping running softwareupdate because it's disabled by a preference.")
+                LogManager.notice("Skipping running softwareupdate because it's disabled by a preference.", logger: softwareupdateListLog)
                 return
             }
             let softwareupdateList = self.list()
             let updateLabel = extractUpdateLabel(from: softwareupdateList)
 
             if !softwareupdateList.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) || updateLabel.isEmpty {
-                softwareupdateListLog.notice("Software update did not find \(OSVersionRequirementVariables.requiredMinimumOSVersion) available for download - skipping download attempt")
+                LogManager.notice("Software update did not find \(OSVersionRequirementVariables.requiredMinimumOSVersion) available for download - skipping download attempt", logger: softwareupdateListLog)
                 return
             }
 
-            softwareupdateListLog.notice("Software update found \(updateLabel) available for download - attempting download")
+            LogManager.notice("Software update found \(updateLabel) available for download - attempting download", logger: softwareupdateListLog)
             let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--download", updateLabel])
 
             if exitCode != 0 {
-                softwareupdateDownloadLog.error("Error downloading software updates: \(error)")
+                LogManager.error("Error downloading software updates: \(error)", logger: softwareupdateDownloadLog)
             } else {
-                softwareupdateDownloadLog.info("\(output)")
+                LogManager.info("\(output)", logger: softwareupdateDownloadLog)
             }
         }
     }

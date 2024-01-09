@@ -153,7 +153,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return .terminateNow
         } else {
             // Log the attempt to exit the application if it should not exit yet
-            uiLog.warning("Attempt to exit Nudge was prevented.")
+            LogManager.warning("Attempt to exit Nudge was prevented.", logger: uiLog)
             return .terminateCancel
         }
     }
@@ -186,7 +186,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func logHiddenApplication(_ notification: Notification) {
-        utilsLog.info("Application hidden")
+        LogManager.info("Application hidden", logger: utilsLog)
     }
 
     @objc func scheduleLocal(applicationIdentifier: String) {
@@ -199,13 +199,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             switch settings.authorizationStatus {
                 case .authorized, .provisional:
                     center.add(request)
-                    uiLog.info("Scheduled notification for terminated application \(applicationIdentifier)")
+                    LogManager.info("Scheduled notification for terminated application \(applicationIdentifier)", logger: uiLog)
                 case .denied:
-                    uiLog.info("Notifications are denied; cannot schedule notification for \(applicationIdentifier)")
+                    LogManager.info("Notifications are denied; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
                 case .notDetermined:
-                    uiLog.info("Notification status not determined; cannot schedule notification for \(applicationIdentifier)")
+                    LogManager.info("Notification status not determined; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
                 @unknown default:
-                    uiLog.info("Unknown notification status; cannot schedule notification for \(applicationIdentifier)")
+                    LogManager.info("Unknown notification status; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
             }
         }
     }
@@ -213,32 +213,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Observe screen locking. Maybe useful later
     @objc func screenLocked(_ notification: Notification) {
         nudgePrimaryState.screenCurrentlyLocked = true
-        utilsLog.info("Screen was locked")
+        LogManager.info("Screen was locked", logger: utilsLog)
     }
 
     @objc func screenParametersChanged(_ notification: Notification) {
-        utilsLog.info("Screen parameters changed - Notification Center")
+        LogManager.info("Screen parameters changed - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
     }
 
     @objc func screenProfileChanged(_ notification: Notification) {
-        utilsLog.info("Display has changed profiles - Notification Center")
+        LogManager.info("Display has changed profiles - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
     }
 
     @objc func screenUnlocked(_ notification: Notification) {
         nudgePrimaryState.screenCurrentlyLocked = false
-        utilsLog.info("Screen was unlocked")
+        LogManager.info("Screen was unlocked", logger: utilsLog)
     }
 
     @objc func spacesStateChanged(_ notification: Notification) {
         UIUtilities().centerNudge()
-        utilsLog.info("Spaces state changed")
+        LogManager.info("Spaces state changed", logger: utilsLog)
         nudgePrimaryState.afterFirstStateChange = true
     }
 
     @objc func terminateApplicationSender(_ notification: Notification) {
-        utilsLog.info("Application launched - checking if application should be terminated")
+        LogManager.info("Application launched - checking if application should be terminated", logger: utilsLog)
         terminateApplications()
     }
 
@@ -252,7 +252,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func applyRandomDelayIfNecessary() {
         if UserExperienceVariables.randomDelay {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
-            uiLog.notice("Delaying initial run (in seconds) by: \(delaySeconds)")
+            LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
             sleep(UInt32(delaySeconds))
         }
     }
@@ -260,7 +260,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func checkForBadProfilePath() {
         let badProfilePath = "/Library/Managed Preferences/com.github.macadmins.Nudge.json.plist"
         if FileManager.default.fileExists(atPath: badProfilePath) {
-            prefsProfileLog.warning("Found bad profile path at \(badProfilePath)")
+            LogManager.warning("Found bad profile path at \(badProfilePath)", logger: prefsProfileLog)
             exit(1)
         }
     }
@@ -293,35 +293,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
                 // Disable CMD + W - closes the Nudge window and breaks it
             case [.command] where event.charactersIgnoringModifiers == "w":
-                utilsLog.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.")
+                LogManager.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + N - closes the Nudge window and breaks it
             case [.command] where event.charactersIgnoringModifiers == "n":
-                utilsLog.warning("Nudge detected an attempt to close the application via CMD + N shortcut key.")
+                LogManager.warning("Nudge detected an attempt to close the application via CMD + N shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + Q - fully closes Nudge
             case [.command] where event.charactersIgnoringModifiers == "q":
-                utilsLog.warning("Nudge detected an attempt to quit the application via CMD + Q shortcut key.")
+                LogManager.warning("Nudge detected an attempt to quit the application via CMD + Q shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + M - Minimizes Nudge
             case [.command] where event.charactersIgnoringModifiers == "m":
-                utilsLog.warning("Nudge detected an attempt to minimize the application via CMD + M shortcut key.")
+                LogManager.warning("Nudge detected an attempt to minimize the application via CMD + M shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + H - Hides Nudge
             case [.command] where event.charactersIgnoringModifiers == "h":
-                utilsLog.warning("Nudge detected an attempt to hide the application via CMD + H shortcut key.")
+                LogManager.warning("Nudge detected an attempt to hide the application via CMD + H shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + Option + Esc (Force Quit Applications)
             case [.command, .option] where event.charactersIgnoringModifiers == "\u{1b}": // Escape key
-                utilsLog.warning("Nudge detected an attempt to open Force Quit Applications via CMD + Option + Esc.")
+                LogManager.warning("Nudge detected an attempt to open Force Quit Applications via CMD + Option + Esc.", logger: utilsLog)
                 return true
                 // Disable CMD + Option + M - Minimizes Nudge
             case [.command, .option] where event.charactersIgnoringModifiers == "µ":
-                utilsLog.warning("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.")
+                LogManager.warning("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + Option + N - Add tabs to Nudge window
             case [.command, .option] where event.charactersIgnoringModifiers == "~":
-                utilsLog.warning("Nudge detected an attempt to add tabs to the application via CMD + Option + N shortcut key.")
+                LogManager.warning("Nudge detected an attempt to add tabs to the application via CMD + Option + N shortcut key.", logger: utilsLog)
                 return true
             default:
                 // Don't care about any other shortcut keys
@@ -345,7 +345,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func handleAttemptToFetchMajorUpgrade() {
         if GlobalVariables.fetchMajorUpgradeSuccessful == false && !majorUpgradeAppPathExists && !majorUpgradeBackupAppPathExists {
-            uiLog.error("Unable to fetch major upgrade and application missing, exiting Nudge")
+            LogManager.error("Unable to fetch major upgrade and application missing, exiting Nudge", logger: uiLog)
             nudgePrimaryState.shouldExit = true
             exit(1)
         }
@@ -353,7 +353,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func handleNoAttemptToFetchMajorUpgrade() {
         if !majorUpgradeAppPathExists && !majorUpgradeBackupAppPathExists {
-            uiLog.error("Unable to find major upgrade application, exiting Nudge")
+            LogManager.error("Unable to find major upgrade application, exiting Nudge", logger: uiLog)
             nudgePrimaryState.shouldExit = true
             exit(1)
         }
@@ -385,7 +385,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 handleNoAttemptToFetchMajorUpgrade()
             }
         } else {
-            prefsProfileLog.warning("actionButtonPath is nil or empty - actionButton will be unable to trigger any action required for major upgrades")
+            LogManager.warning("actionButtonPath is nil or empty - actionButton will be unable to trigger any action required for major upgrades", logger: prefsProfileLog)
             return
         }
     }
@@ -429,11 +429,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if granted {
-                utilsLog.info("User granted notifications - application blocking status now available")
+                LogManager.info("User granted notifications - application blocking status now available", logger: utilsLog)
             } else if let error = error {
-                utilsLog.error("Error requesting notifications authorization: \(error.localizedDescription)")
+                LogManager.error("Error requesting notifications authorization: \(error.localizedDescription)", logger: utilsLog)
             } else {
-                utilsLog.info("User denied notifications - application blocking status will be unavailable")
+                LogManager.info("User denied notifications - application blocking status will be unavailable", logger: utilsLog)
             }
         }
     }
@@ -511,10 +511,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func terminateApplication(_ application: NSRunningApplication) {
         guard application.terminate() else {
-            utilsLog.error("Failed to terminate application: \(application.bundleIdentifier ?? "")")
+            LogManager.error("Failed to terminate application: \(application.bundleIdentifier ?? "")", logger: utilsLog)
             return
         }
-        utilsLog.info("Successfully terminated application: \(application.bundleIdentifier ?? "")")
+        LogManager.info("Successfully terminated application: \(application.bundleIdentifier ?? "")", logger: utilsLog)
     }
 
     private func terminateApplications() {
@@ -529,7 +529,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 continue
             }
             if OptionalFeatureVariables.blockedApplicationBundleIDs.contains(appBundleID) {
-                utilsLog.info("Found \(appBundleID), terminating application")
+                LogManager.info("Found \(appBundleID), terminating application", logger: utilsLog)
                 terminateApplication(runningApplication)
             }
         }

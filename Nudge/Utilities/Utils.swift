@@ -16,7 +16,7 @@ import SystemConfiguration
 
 struct AppStateManager {
     func activateNudge() {
-        utilsLog.info("Activating Nudge")
+        LogManager.info("Activating Nudge", logger: utilsLog)
         nudgePrimaryState.lastRefreshTime = DateManager().getCurrentDate()
         guard let mainWindow = NSApp.windows.first else { return }
 
@@ -29,7 +29,7 @@ struct AppStateManager {
         }
 
         if NSWorkspace.shared.isActiveSpaceFullScreen() && !nudgePrimaryState.afterFirstStateChange {
-            uiLog.notice("Bypassing activation due to full screen bugs in macOS")
+            LogManager.notice("Bypassing activation due to full screen bugs in macOS", logger: uiLog)
         } else {
             NSApp.activate(ignoringOtherApps: true)
             mainWindow.makeKeyAndOrderFront(nil)
@@ -50,7 +50,7 @@ struct AppStateManager {
 
     private func applyBackgroundBlur(to window: NSWindow) {
         // load the blur background and send it to the back if we are past the required install date
-        uiLog.info("Enabling blurred background")
+        LogManager.info("Enabling blurred background", logger: uiLog)
         nudgePrimaryState.backgroundBlur.removeAll()
         UIConstants.screens.forEach { screen in
             let blurWindowController = BackgroundBlurWindowController()
@@ -68,14 +68,14 @@ struct AppStateManager {
 
         if currentDate > PrefsWrapper.requiredInstallationDate || combinedGracePeriod > DateManager().getNumberOfHoursRemaining(currentDate: currentDate) {
             if UserExperienceVariables.gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
-                uiLog.info("Device within gracePeriodLaunchDelay, exiting Nudge")
+                LogManager.info("Device within gracePeriodLaunchDelay, exiting Nudge", logger: uiLog)
                 nudgePrimaryState.shouldExit = true
                 return currentDate
             }
 
             if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
                 let newDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
-                uiLog.notice("Device permitted for gracePeriods - setting date to: \(newDate)")
+                LogManager.notice("Device permitted for gracePeriods - setting date to: \(newDate)", logger: uiLog)
                 return newDate
             }
         }
@@ -84,7 +84,7 @@ struct AppStateManager {
     }
 
     func exitNudge() {
-        uiLog.notice("Nudge is terminating due to condition met")
+        LogManager.notice("Nudge is terminating due to condition met", logger: uiLog)
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
@@ -102,7 +102,7 @@ struct AppStateManager {
 
         osStatus = SecStaticCodeCreateWithPath(Bundle.main.bundleURL as CFURL, [], &codeRef)
         guard osStatus == noErr, let code = codeRef else {
-            utilsLog.error("Failed to create static code: \(SecCopyErrorMessageString(osStatus, nil) as String? ?? "")")
+            LogManager.error("Failed to create static code: \(SecCopyErrorMessageString(osStatus, nil) as String? ?? "")", logger: utilsLog)
             return nil
         }
 
@@ -110,19 +110,19 @@ struct AppStateManager {
         var codeInfoRef: CFDictionary?
         osStatus = SecCodeCopySigningInformation(code, flags, &codeInfoRef)
         guard osStatus == noErr, let codeInfo = codeInfoRef as? [String: Any] else {
-            utilsLog.error("Failed to copy code signing information: \(SecCopyErrorMessageString(osStatus, nil) as String? ?? "")")
+            LogManager.error("Failed to copy code signing information: \(SecCopyErrorMessageString(osStatus, nil) as String? ?? "")", logger: utilsLog)
             return nil
         }
 
         guard let teamIdentifier = codeInfo[kSecCodeInfoTeamIdentifier as String] as? String else {
-            utilsLog.error("No entry for team identifier in code signing info")
+            LogManager.error("No entry for team identifier in code signing info", logger: utilsLog)
             return nil
         }
 
         guard let certificates = codeInfo[kSecCodeInfoCertificates as String] as? [SecCertificate],
                 let firstCertificate = certificates.first,
               let signingCertificateSummary = SecCertificateCopySubjectSummary(firstCertificate) as String? else {
-            utilsLog.error("Failed to get certificate summary - returning teamIdentifier")
+            LogManager.error("Failed to get certificate summary - returning teamIdentifier", logger: utilsLog)
             return teamIdentifier
         }
 
@@ -138,7 +138,7 @@ struct AppStateManager {
         let gracePeriodPath = UserExperienceVariables.gracePeriodPath
         guard FileManager.default.fileExists(atPath: gracePeriodPath) || CommandLineUtilities().unitTestingEnabled(),
               let gracePeriodPathCreationDate = getCreationDateForPath(gracePeriodPath, testFileDate: testFileDate) else {
-            uiLog.error("Grace period path not found or unable to get creation date - bypassing allowGracePeriods logic")
+            LogManager.error("Grace period path not found or unable to get creation date - bypassing allowGracePeriods logic", logger: uiLog)
             return PrefsWrapper.requiredInstallationDate
         }
 
@@ -152,14 +152,14 @@ struct AppStateManager {
         let hoursRemaining = DateManager().getNumberOfHoursRemaining()
         let isAllowed = hoursRemaining > threshold
         if !nudgeLogState.afterFirstRun {
-            uiLog.info("\(logMessage): \(isAllowed)")
+            LogManager.info("\(logMessage): \(isAllowed)", logger: uiLog)
         }
         return isAllowed
     }
 
     private func logOnce(_ message: String, state: inout Bool) {
         if !state {
-            uiLog.info("\(message)")
+            LogManager.info("\(message)", logger: uiLog)
             state = true
         }
     }
@@ -270,7 +270,7 @@ struct CommandLineUtilities {
     func bundleModeEnabled() -> Bool {
         let argumentPassed = arguments.contains("-bundle-mode")
         if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
-            uiLog.debug("-bundle-mode argument passed")
+            LogManager.debug("-bundle-mode argument passed", logger: uiLog)
             nudgeLogState.hasLoggedBundleMode = true
         }
         return argumentPassed
@@ -279,7 +279,7 @@ struct CommandLineUtilities {
     func debugUIModeEnabled() -> Bool {
         let argumentPassed = arguments.contains("-debug-ui-mode")
         if argumentPassed && !nudgeLogState.afterFirstRun {
-            uiLog.debug("-debug-ui-mode argument passed")
+            LogManager.debug("-debug-ui-mode argument passed", logger: uiLog)
         }
         return argumentPassed
     }
@@ -288,7 +288,7 @@ struct CommandLineUtilities {
         let argumentPassed = arguments.contains("-demo-mode")
         if argumentPassed && !nudgeLogState.hasLoggedDemoMode {
             nudgeLogState.hasLoggedDemoMode = true
-            uiLog.debug("-demo-mode argument passed")
+            LogManager.debug("-demo-mode argument passed", logger: uiLog)
         }
         return argumentPassed
     }
@@ -297,7 +297,7 @@ struct CommandLineUtilities {
         let argumentPassed = arguments.contains("-force-screenshot-icon")
         if argumentPassed && !nudgeLogState.hasLoggedScreenshotIconMode {
             nudgeLogState.hasLoggedScreenshotIconMode = true
-            uiLog.debug("-force-screenshot-icon argument passed")
+            LogManager.debug("-force-screenshot-icon argument passed", logger: uiLog)
         }
         return argumentPassed
     }
@@ -310,7 +310,7 @@ struct CommandLineUtilities {
         let argumentPassed = arguments.contains("-simple-mode")
         if argumentPassed && !nudgeLogState.hasLoggedSimpleMode {
             nudgeLogState.hasLoggedSimpleMode = true
-            uiLog.debug("-simple-mode argument passed")
+            LogManager.debug("-simple-mode argument passed", logger: uiLog)
         }
         return argumentPassed
     }
@@ -320,7 +320,7 @@ struct CommandLineUtilities {
         if !nudgeLogState.hasLoggedUnitTestingMode {
             if argumentPassed {
                 nudgeLogState.hasLoggedUnitTestingMode = true
-                uiLog.debug("-unit-testing argument passed")
+                LogManager.debug("-unit-testing argument passed", logger: uiLog)
             }
         }
         return argumentPassed
@@ -333,7 +333,7 @@ struct CommandLineUtilities {
     func versionArgumentPassed() -> Bool {
         let argumentPassed = arguments.contains("-version")
         if argumentPassed {
-            uiLog.debug("-version argument passed")
+            LogManager.debug("-version argument passed", logger: uiLog)
         }
         return argumentPassed
     }
@@ -360,7 +360,7 @@ struct ConfigurationManager {
         guard let nudgeJSONConfig = try? encoder.encode(Globals.nudgeJSONPreferences),
               let json = try? JSONSerialization.jsonObject(with: nudgeJSONConfig),
               let jsonData = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
-            uiLog.error("Failed to serialize JSON configuration")
+            LogManager.error("Failed to serialize JSON configuration", logger: uiLog)
             return Data()
         }
         return jsonData
@@ -376,7 +376,7 @@ struct ConfigurationManager {
         guard !nudgeProfileConfig.isEmpty,
               let plistData = try? PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0),
               let xmlPlistData = try? XMLDocument(data: plistData, options: .nodePreserveAll) else {
-            uiLog.error("Failed to serialize profile configuration")
+            LogManager.error("Failed to serialize profile configuration", logger: uiLog)
             return Data()
         }
 
@@ -388,7 +388,7 @@ struct ConfigurationManager {
         let timerCycle = determineTimerCycle(basedOn: hoursRemaining)
 
         if timerCycle != nudgePrimaryState.timerCycle {
-            uiLog.info("timerCycle: \(timerCycle)")
+            LogManager.info("timerCycle: \(timerCycle)", logger: uiLog)
             nudgePrimaryState.timerCycle = timerCycle
         }
         return timerCycle
@@ -452,7 +452,7 @@ struct DateManager {
         let isPast = getCurrentDate() > requiredInstallationDate
         if !CommandLineUtilities().demoModeEnabled() && !nudgeLogState.hasLoggedPastRequiredInstallationDate {
             nudgeLogState.hasLoggedPastRequiredInstallationDate = true
-            utilsLog.info("Device pastRequiredInstallationDate: \(isPast)")
+            LogManager.info("Device pastRequiredInstallationDate: \(isPast)", logger: utilsLog)
         }
         return isPast
     }
@@ -478,13 +478,13 @@ struct DeviceManager {
 
         switch cpuArch {
             case Int(CPU_TYPE_X86) /* Intel */:
-                utilsLog.debug("CPU Type is Intel")
+                LogManager.debug("CPU Type is Intel", logger: utilsLog)
                 return "Intel"
             case Int(CPU_TYPE_ARM) /* Apple Silicon */:
-                utilsLog.debug("CPU Type is Apple Silicon")
+                LogManager.debug("CPU Type is Apple Silicon", logger: utilsLog)
                 return "Apple Silicon"
             default:
-                utilsLog.debug("Unknown CPU Type")
+                LogManager.debug("Unknown CPU Type", logger: utilsLog)
                 return "unknown"
         }
     }
@@ -499,7 +499,7 @@ struct DeviceManager {
 
     func getPatchOSVersion() -> Int {
         let PatchOSVersion = ProcessInfo().operatingSystemVersion.patchVersion
-        utilsLog.info("Patch OS Version: \(PatchOSVersion)")
+        LogManager.info("Patch OS Version: \(PatchOSVersion)", logger: utilsLog)
         return PatchOSVersion
     }
 
@@ -526,7 +526,7 @@ struct DeviceManager {
         var uid: uid_t = 0
         var gid: gid_t = 0
         let username = SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
-        utilsLog.debug("System console username: \(username)")
+        LogManager.debug("System console username: \(username)", logger: utilsLog)
         return username
     }
 }
@@ -542,12 +542,12 @@ struct ImageManager {
         let cleanBase64String = base64String.hasPrefix(base64Prefix) ? String(base64String.dropFirst(base64Prefix.count)) : base64String
 
         guard let imageData = Data(base64Encoded: cleanBase64String, options: .ignoreUnknownCharacters) else {
-            uiLog.error("Failed to decode base64 string to data")
+            LogManager.error("Failed to decode base64 string to data", logger: uiLog)
             return createErrorImage()
         }
 
         guard let image = NSImage(data: imageData) else {
-            uiLog.error("Failed to create image from decoded data")
+            LogManager.error("Failed to create image from decoded data", logger: uiLog)
             return createErrorImage()
         }
 
@@ -556,7 +556,7 @@ struct ImageManager {
 
     func createImageData(fileImagePath: String) -> NSImage {
         guard let imageData = try? Data(contentsOf: URL(fileURLWithPath: fileImagePath)) else {
-            uiLog.error("Error accessing file \(fileImagePath). Incorrect permissions")
+            LogManager.error("Error accessing file \(fileImagePath). Incorrect permissions", logger: uiLog)
             return createErrorImage()
         }
         return NSImage(data: imageData) ?? createErrorImage()
@@ -606,7 +606,7 @@ struct LoggerUtilities {
     }
 
     func userInitiatedDeviceInfo() {
-        uiLog.notice("User clicked deviceInfo")
+        LogManager.notice("User clicked deviceInfo", logger: uiLog)
     }
 }
 
@@ -656,14 +656,14 @@ struct MemoizationManager {
 struct NetworkFileManager {
     private func decodeNudgePreferences(from url: URL) -> NudgePreferences? {
         guard let data = try? Data(contentsOf: url) else {
-            prefsJSONLog.error("Failed to load data from URL: \(url)")
+            LogManager.error("Failed to load data from URL: \(url)", logger: prefsJSONLog)
             return nil
         }
 
         do {
             return try NudgePreferences(data: data)
         } catch {
-            prefsJSONLog.error("Decoding error: \(error.localizedDescription)")
+            LogManager.error("Decoding error: \(error.localizedDescription)", logger: prefsJSONLog)
             return nil
         }
     }
@@ -688,7 +688,7 @@ struct NetworkFileManager {
     func getNudgeJSONPreferences() -> NudgePreferences? {
         let url = getJSONUrl()
 
-        utilsLog.debug("JSON url: \(url)")
+        LogManager.debug("JSON url: \(url)", logger: utilsLog)
 
         if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
             return nil
@@ -702,7 +702,7 @@ struct NetworkFileManager {
             return decodeNudgePreferences(from: jsonUrl)
         }
 
-        prefsJSONLog.error("Could not find or decode JSON configuration")
+        LogManager.error("Could not find or decode JSON configuration", logger: prefsJSONLog)
         return nil
     }
 }
@@ -736,7 +736,7 @@ struct SMAppManager {
             print(message)
             if let code = exitCode { exit(Int32(code)) }
         } else {
-            osLog.info("\(message)")
+            LogManager.info("\(message)", logger: uiLog)
         }
     }
 
@@ -772,7 +772,7 @@ struct UIUtilities {
     private func determineUpdateURL() -> URL? {
         if let actionButtonPath = FeatureVariables.actionButtonPath {
             if actionButtonPath.isEmpty {
-                utilsLog.warning("actionButtonPath is set but contains an empty string. No action will be triggered.")
+                LogManager.warning("actionButtonPath is set but contains an empty string. No action will be triggered.", logger: utilsLog)
                 return nil
             }
 
@@ -798,7 +798,7 @@ struct UIUtilities {
     func executeShellCommand(command: String, userClicked: Bool, configuration: NSWorkspace.OpenConfiguration) {
         let cmds = command.components(separatedBy: " ")
         guard let launchPath = cmds.first, let argument = cmds.last else {
-            uiLog.error("Invalid shell command format")
+            LogManager.error("Invalid shell command format", logger: uiLog)
             return
         }
 
@@ -811,14 +811,14 @@ struct UIUtilities {
                 do {
                     try task.run()
                 } catch {
-                    uiLog.error("Error running script: \(error.localizedDescription)")
+                    LogManager.error("Error running script: \(error.localizedDescription)", logger: uiLog)
                 }
             }
         } else {
             do {
                 try task.run()
             } catch {
-                uiLog.error("Error running script: \(error.localizedDescription)")
+                LogManager.error("Error running script: \(error.localizedDescription)", logger: uiLog)
             }
         }
     }
@@ -832,20 +832,20 @@ struct UIUtilities {
         guard let url = URL(string: OSVersionRequirementVariables.aboutUpdateURL) else {
             return
         }
-        uiLog.notice("User clicked moreInfo button")
+        LogManager.notice("User clicked moreInfo button", logger: uiLog)
         NSWorkspace.shared.open(url)
     }
 
     private func postUpdateDeviceActions(userClicked: Bool) {
         if userClicked {
-            uiLog.notice("User clicked updateDevice")
+            LogManager.notice("User clicked updateDevice", logger: uiLog)
             // Remove forced blur and reset window level
             nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
                 blurWindowController.close()
             }
             NSApp.windows.first?.level = .normal
         } else {
-            uiLog.notice("Synthetically clicked updateDevice due to allowedDeferral count")
+            LogManager.notice("Synthetically clicked updateDevice due to allowedDeferral count", logger: uiLog)
         }
     }
 
@@ -885,7 +885,7 @@ struct UIUtilities {
     }
 
     func userInitiatedExit() {
-        uiLog.notice("User clicked primaryQuitButton")
+        LogManager.notice("User clicked primaryQuitButton", logger: uiLog)
         nudgePrimaryState.shouldExit = true
         exit(0)
     }
@@ -897,7 +897,7 @@ struct VersionManager {
         let requiredMinimumOSVersion = OSVersionRequirementVariables.requiredMinimumOSVersion
         let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
-            utilsLog.notice("Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))")
+            LogManager.notice("Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))", logger: utilsLog)
             return true
         }
         return false
@@ -911,7 +911,7 @@ struct VersionManager {
 
     static func getMajorRequiredNudgeOSVersion() -> Int {
         guard let majorVersion = Int(OSVersionRequirementVariables.requiredMinimumOSVersion.split(separator: ".").first ?? "") else {
-            utilsLog.error("Invalid format for requiredMinimumOSVersion")
+            LogManager.error("Invalid format for requiredMinimumOSVersion", logger: utilsLog)
             return 0
         }
         logOSVersion(majorVersion, for: "Major required OS version")
@@ -929,7 +929,7 @@ struct VersionManager {
     }
 
     private static func logOSVersion(_ version: Int, for description: String) {
-        utilsLog.info("\(description): \(version)")
+        LogManager.info("\(description): \(version)", logger: utilsLog)
     }
 
     static func newNudgeEvent() -> Bool {
