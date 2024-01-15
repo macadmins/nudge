@@ -375,6 +375,8 @@ struct Utils {
             return "/Applications/Install macOS Monterey.app"
         } else if getMajorRequiredNudgeOSVersion() == 13 {
             return "/Applications/Install macOS Ventura.app"
+        } else if getMajorRequiredNudgeOSVersion() == 14 {
+            return "/Applications/Install macOS Sonoma.app"
         } else { // TODO: Update this for next year with another else if
             return "/Applications/Install macOS Monterey.app"
         }
