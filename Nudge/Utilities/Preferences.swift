@@ -111,9 +111,10 @@ private func getOSVersionRequirements(from requirements: [OSVersionRequirement]?
             fullMatch = requirement
             break
         } else if requirement.targetedOSVersionsRule == currentMajorVersion {
-
             partialMatch = requirement
         } else if requirement.targetedOSVersionsRule == "default" {
+            defaultMatch = requirement
+        } else if requirement.targetedOSVersionsRule == nil {
             defaultMatch = requirement
         }
     }
