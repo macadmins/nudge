@@ -781,8 +781,15 @@ struct UIUtilities {
                 return nil
             }
 
-            return URL(string: actionButtonPath) ?? URL(fileURLWithPath: actionButtonPath)
+            // Check if the string is a URL with a scheme
+            if URL(string: actionButtonPath)?.scheme != nil {
+                return URL(string: actionButtonPath)
+            } else {
+                // It's a file path
+                return URL(fileURLWithPath: actionButtonPath)
+            }
         }
+
 
         if AppStateManager().requireMajorUpgrade() {
             if majorUpgradeAppPathExists {
