@@ -4,9 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.14] - 2024-01-09
+## [1.1.14] - 2024-01-30
+This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
+
+If there are any bugs present in the v1.1.14 branch, subsequent v1.1.14.x builds may be created to address them for legacy macOS versions.
+
+### Added
+- `screenShotAltText` key to customize the accessible hover over on screen shots
+
 ### Changed
+- GitHub Actions now use Xcode 15.2 for building/signing/notarizing Nudge
 - All code has been rewritten across all 29 Swift/SwiftUI files and Test files
+ - Many small code paths have had increased safety added to them
+- Slight changes to the unit tests based on new methods created
+
+### Fixed
+- Swift 5.9 compiler warnings have now been addressed
+- [Base64 screenshots now scale appopriately](https://github.com/macadmins/nudge/issues/529)
 
 ## [1.1.13] - 2023-10-05
 ### Fixed
