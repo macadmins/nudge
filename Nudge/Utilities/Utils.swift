@@ -656,7 +656,9 @@ struct MemoizationManager {
 struct NetworkFileManager {
     private func decodeNudgePreferences(from url: URL) -> NudgePreferences? {
         guard let data = try? Data(contentsOf: url) else {
-            LogManager.error("Failed to load data from URL: \(url)", logger: prefsJSONLog)
+            if Globals.configProfile != Data() {
+                LogManager.error("Failed to load data from URL: \(url)", logger: prefsJSONLog)
+            }
             return nil
         }
 
@@ -688,17 +690,17 @@ struct NetworkFileManager {
     func getNudgeJSONPreferences() -> NudgePreferences? {
         let url = getJSONUrl()
 
-        LogManager.debug("JSON url: \(url)", logger: utilsLog)
-
         if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
             return nil
         }
 
         if CommandLineUtilities().bundleModeEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
+            LogManager.debug("JSON url: \(bundleUrl)", logger: utilsLog)
             return decodeNudgePreferences(from: bundleUrl)
         }
 
         if let jsonUrl = URL(string: url) {
+            LogManager.debug("JSON url: \(url)", logger: utilsLog)
             return decodeNudgePreferences(from: jsonUrl)
         }
 
