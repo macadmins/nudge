@@ -656,7 +656,7 @@ struct MemoizationManager {
 struct NetworkFileManager {
     private func decodeNudgePreferences(from url: URL) -> NudgePreferences? {
         guard let data = try? Data(contentsOf: url) else {
-            if Globals.configProfile != Data() {
+            if Globals.configProfile.isEmpty {
                 LogManager.error("Failed to load data from URL: \(url)", logger: prefsJSONLog)
             }
             return nil
