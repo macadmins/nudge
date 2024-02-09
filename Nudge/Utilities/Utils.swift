@@ -774,8 +774,8 @@ struct UIUtilities {
     private func determineUpdateURL() -> URL? {
         if let actionButtonPath = FeatureVariables.actionButtonPath {
             if actionButtonPath.isEmpty {
-                LogManager.warning("actionButtonPath is set but contains an empty string. No action will be triggered.", logger: utilsLog)
-                return nil
+                LogManager.warning("actionButtonPath is set but contains an empty string. Defaulting to out of box behavior.", logger: utilsLog)
+                return URL(fileURLWithPath: "/System/Library/CoreServices/Software Update.app")
             }
 
             // Check if it's a shell command
@@ -804,7 +804,7 @@ struct UIUtilities {
         return URL(fileURLWithPath: "/System/Library/CoreServices/Software Update.app")
     }
 
-    func executeShellCommand(command: String, userClicked: Bool, configuration: NSWorkspace.OpenConfiguration) {
+    func executeShellCommand(command: String, userClicked: Bool) {
         let cmds = command.components(separatedBy: " ")
         guard let launchPath = cmds.first, let argument = cmds.last else {
             LogManager.error("Invalid shell command format", logger: uiLog)
@@ -872,22 +872,27 @@ struct UIUtilities {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = true
 
-        guard let url = determineUpdateURL() else {
-            return
-        }
-
-        let openAction = {
-            if url.isFileURL {
-                NSWorkspace.shared.openApplication(at: url, configuration: configuration)
-            } else {
-                NSWorkspace.shared.open(url)
+        if let url = determineUpdateURL() {
+            let openAction = {
+                if url.isFileURL {
+                    NSWorkspace.shared.openApplication(at: url, configuration: configuration)
+                } else {
+                    NSWorkspace.shared.open(url)
+                }
             }
-        }
 
-        if userClicked {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: openAction)
+            // Execute the action immediately or with a delay based on user interaction
+            if userClicked {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: openAction)
+            } else {
+                openAction()
+            }
         } else {
-            openAction()
+            if let actionButtonPath = FeatureVariables.actionButtonPath {
+                executeShellCommand(command: actionButtonPath, userClicked: userClicked)
+            } else {
+                LogManager.error("actionButtonPath is nil.", logger: uiLog)
+            }
         }
 
         postUpdateDeviceActions(userClicked: userClicked)
