@@ -64,6 +64,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             .onAppear {
                 initialLaunchLogic()
+                handleNudgeActivation()
                 updateUI()
             }
             .onReceive(Intervals.nudgeRefreshCycleTimer) { _ in

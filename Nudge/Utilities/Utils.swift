@@ -49,17 +49,24 @@ struct AppStateManager {
     }
 
     private func applyBackgroundBlur(to window: NSWindow) {
-        // load the blur background and send it to the back if we are past the required install date
-        LogManager.info("Enabling blurred background", logger: uiLog)
-        nudgePrimaryState.backgroundBlur.removeAll()
+        // Figure out all the screens upon Nudge launching
         UIConstants.screens.forEach { screen in
-            let blurWindowController = BackgroundBlurWindowController()
-            nudgePrimaryState.backgroundBlur.append(blurWindowController)
-            blurWindowController.close()
-            blurWindowController.loadWindow()
-            blurWindowController.showWindow(nil)
+            loopedScreen = screen
         }
-        window.level = .floating
+        // load the blur background and send it to the back if we are past the required install date
+        if nudgePrimaryState.backgroundBlur.isEmpty {
+            LogManager.info("Enabling blurred background", logger: uiLog)
+            UIConstants.screens.forEach { screen in
+                let blurWindowController = BackgroundBlurWindowController()
+                blurWindowController.loadWindow()
+                blurWindowController.showWindow(nil)
+                loopedScreen = screen
+                nudgePrimaryState.backgroundBlur.append(blurWindowController)
+            }
+            window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
+        } else {
+            LogManager.info("Background blur currently set", logger: uiLog)
+        }
     }
 
     private func calculateNewRequiredInstallationDateIfNeeded(currentDate: Date, gracePeriodPathCreationDate: Date) -> Date {
@@ -849,10 +856,14 @@ struct UIUtilities {
         if userClicked {
             LogManager.notice("User clicked updateDevice", logger: uiLog)
             // Remove forced blur and reset window level
-            nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
-                blurWindowController.close()
+            if !nudgePrimaryState.backgroundBlur.isEmpty {
+                nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
+                    uiLog.notice("\("Attempting to remove forced blur", privacy: .public)")
+                    blurWindowController.close()
+                    nudgePrimaryState.backgroundBlur.removeAll()
+                }
+                NSApp.windows.first?.level = .normal
             }
-            NSApp.windows.first?.level = .normal
         } else {
             LogManager.notice("Synthetically clicked updateDevice due to allowedDeferral count", logger: uiLog)
         }

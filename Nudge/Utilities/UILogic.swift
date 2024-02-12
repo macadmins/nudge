@@ -191,7 +191,7 @@ private func logUserSessionDeferrals(resetCount: Bool = false) {
 }
 
 func needToActivateNudge() -> Bool {
-    if NSApplication.shared.isActive {
+    if NSApplication.shared.isActive && nudgeLogState.afterFirstLaunch {
         LogManager.notice("Nudge is currently the frontmostApplication", logger: uiLog)
         return false
     }
