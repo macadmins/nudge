@@ -536,11 +536,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        let shouldRunAsynchronously = OptionalFeatureVariables.asynchronousSoftwareUpdate &&
-        !AppStateManager().requireMajorUpgrade() &&
-        !DateManager().pastRequiredInstallationDate()
-
-        if shouldRunAsynchronously {
+        if OptionalFeatureVariables.asynchronousSoftwareUpdate {
             runUpdateAsynchronously()
         } else {
             SoftwareUpdate().download()
