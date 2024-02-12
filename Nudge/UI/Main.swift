@@ -87,7 +87,6 @@ struct ContentView: View {
         window?.isMovable = false
         window?.collectionBehavior = [.fullScreenAuxiliary]
         window?.delegate = UIConstants.windowDelegate
-        // _ = needToActivateNudge()
     }
 
     private func handleNudgeActivation() {
@@ -177,6 +176,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleCommandLineArguments()
         applyGracePeriodLogic()
         applyRandomDelayIfNecessary()
+        updateNudgeState()
         handleSoftwareUpdateRequirements()
     }
 
