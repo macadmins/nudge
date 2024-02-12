@@ -210,12 +210,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // Observe screen locking. Maybe useful later
-    @objc func screenLocked(_ notification: Notification) {
-        nudgePrimaryState.screenCurrentlyLocked = true
-        LogManager.info("Screen was locked", logger: utilsLog)
-    }
-
     @objc func screenParametersChanged(_ notification: Notification) {
         LogManager.info("Screen parameters changed - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
@@ -224,11 +218,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func screenProfileChanged(_ notification: Notification) {
         LogManager.info("Display has changed profiles - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
-    }
-
-    @objc func screenUnlocked(_ notification: Notification) {
-        nudgePrimaryState.screenCurrentlyLocked = false
-        LogManager.info("Screen was unlocked", logger: utilsLog)
     }
 
     @objc func spacesStateChanged(_ notification: Notification) {
@@ -340,7 +329,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !nudgeLogState.afterFirstLaunch && OptionalFeatureVariables.terminateApplicationsOnLaunch {
             terminateApplications()
         }
-        Globals.nc.addObserver(
+        Globals.snc.addObserver(
             self,
             selector: #selector(terminateApplicationSender(_:)),
             name: NSWorkspace.didLaunchApplicationNotification,
@@ -451,8 +440,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupNotificationObservers() {
         setupNotificationCenterObservers()
-        setupScreenLockObservers()
         setupScreenChangeObservers()
+        setupScreenLockObservers()
         setupWorkspaceNotificationCenterObservers()
     }
 
@@ -483,19 +472,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupScreenLockObservers() {
-        Globals.nc.addObserver(
-            self,
-            selector: #selector(screenLocked),
-            name: NSNotification.Name("com.apple.screenIsLocked"),
-            object: nil
-        )
-
-        Globals.nc.addObserver(
-            self,
-            selector: #selector(screenUnlocked),
-            name: NSNotification.Name("com.apple.screenIsUnlocked"),
-            object: nil
-        )
+        Globals.dnc.addObserver(
+            forName: NSNotification.Name("com.apple.screenIsLocked"),
+            object: nil,
+            queue: .main) { _ in
+                nudgePrimaryState.screenCurrentlyLocked = true
+                utilsLog.info("Screen was locked")
+            }
+        Globals.dnc.addObserver(
+            forName: NSNotification.Name("com.apple.screenIsUnlocked"),
+            object: nil,
+            queue: .main) { _ in
+                nudgePrimaryState.screenCurrentlyLocked = false
+                utilsLog.info("Screen was unlocked")
+            }
     }
 
     private func setupWorkspaceNotificationCenterObservers() {
