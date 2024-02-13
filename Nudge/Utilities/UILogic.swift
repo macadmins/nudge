@@ -191,7 +191,7 @@ private func logUserSessionDeferrals(resetCount: Bool = false) {
 }
 
 func needToActivateNudge() -> Bool {
-    if NSApplication.shared.isActive {
+    if NSApplication.shared.isActive && nudgeLogState.afterFirstLaunch {
         LogManager.notice("Nudge is currently the frontmostApplication", logger: uiLog)
         return false
     }
@@ -354,7 +354,7 @@ private func updateDualQuitButtonRequirement() {
     nudgePrimaryState.requireDualQuitButtons = AppStateManager().requireDualQuitButtons() || nudgePrimaryState.userDeferrals > deferralThreshold
 }
 
-private func updateNudgeState() {
+func updateNudgeState() {
     nudgePrimaryState.deferralCountPastThreshold = nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferrals
 
     if nudgePrimaryState.userDeferrals > UserExperienceVariables.allowedDeferralsUntilForcedSecondaryQuitButton {
@@ -363,7 +363,7 @@ private func updateNudgeState() {
 
     if nudgePrimaryState.deferralCountPastThreshold {
         if !nudgePrimaryState.hasLoggedDeferralCountPastThreshold {
-            LogManager.notice("allowedDeferrals has been passed", logger: uiLog)
+            LogManager.notice("allowedDeferrals has been passed: \(UserExperienceVariables.allowedDeferrals)", logger: uiLog)
             nudgePrimaryState.hasLoggedDeferralCountPastThreshold = true
         }
     }

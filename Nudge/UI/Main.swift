@@ -64,6 +64,7 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             .onAppear {
                 initialLaunchLogic()
+                handleNudgeActivation()
                 updateUI()
             }
             .onReceive(Intervals.nudgeRefreshCycleTimer) { _ in
@@ -87,7 +88,6 @@ struct ContentView: View {
         window?.isMovable = false
         window?.collectionBehavior = [.fullScreenAuxiliary]
         window?.delegate = UIConstants.windowDelegate
-        // _ = needToActivateNudge()
     }
 
     private func handleNudgeActivation() {
@@ -177,6 +177,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleCommandLineArguments()
         applyGracePeriodLogic()
         applyRandomDelayIfNecessary()
+        updateNudgeState()
         handleSoftwareUpdateRequirements()
     }
 
@@ -210,12 +211,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // Observe screen locking. Maybe useful later
-    @objc func screenLocked(_ notification: Notification) {
-        nudgePrimaryState.screenCurrentlyLocked = true
-        LogManager.info("Screen was locked", logger: utilsLog)
-    }
-
     @objc func screenParametersChanged(_ notification: Notification) {
         LogManager.info("Screen parameters changed - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
@@ -224,11 +219,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func screenProfileChanged(_ notification: Notification) {
         LogManager.info("Display has changed profiles - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
-    }
-
-    @objc func screenUnlocked(_ notification: Notification) {
-        nudgePrimaryState.screenCurrentlyLocked = false
-        LogManager.info("Screen was unlocked", logger: utilsLog)
     }
 
     @objc func spacesStateChanged(_ notification: Notification) {
@@ -291,9 +281,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func detectBannedShortcutKeys(with event: NSEvent) -> Bool {
         guard NSApplication.shared.isActive else { return false }
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-                // Disable CMD + W - closes the Nudge window and breaks it
-            case [.command] where event.charactersIgnoringModifiers == "w":
-                LogManager.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.", logger: utilsLog)
+                // Disable CMD + H - Hides Nudge
+            case [.command] where event.charactersIgnoringModifiers == "h":
+                LogManager.warning("Nudge detected an attempt to hide the application via CMD + H shortcut key.", logger: utilsLog)
+                return true
+                // Disable CMD + M - Minimizes Nudge
+            case [.command] where event.charactersIgnoringModifiers == "m":
+                LogManager.warning("Nudge detected an attempt to minimize the application via CMD + M shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + N - closes the Nudge window and breaks it
             case [.command] where event.charactersIgnoringModifiers == "n":
@@ -303,25 +297,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             case [.command] where event.charactersIgnoringModifiers == "q":
                 LogManager.warning("Nudge detected an attempt to quit the application via CMD + Q shortcut key.", logger: utilsLog)
                 return true
-                // Disable CMD + M - Minimizes Nudge
-            case [.command] where event.charactersIgnoringModifiers == "m":
-                LogManager.warning("Nudge detected an attempt to minimize the application via CMD + M shortcut key.", logger: utilsLog)
-                return true
-                // Disable CMD + H - Hides Nudge
-            case [.command] where event.charactersIgnoringModifiers == "h":
-                LogManager.warning("Nudge detected an attempt to hide the application via CMD + H shortcut key.", logger: utilsLog)
-                return true
-                // Disable CMD + Option + Esc (Force Quit Applications)
-            case [.command, .option] where event.charactersIgnoringModifiers == "\u{1b}": // Escape key
-                LogManager.warning("Nudge detected an attempt to open Force Quit Applications via CMD + Option + Esc.", logger: utilsLog)
+                // Disable CMD + W - closes the Nudge window and breaks it
+            case [.command] where event.charactersIgnoringModifiers == "w":
+                LogManager.warning("Nudge detected an attempt to close the application via CMD + W shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + Option + M - Minimizes Nudge
-            case [.command, .option] where event.charactersIgnoringModifiers == "µ":
+            case [.command, .option] where event.charactersIgnoringModifiers == "m":
                 LogManager.warning("Nudge detected an attempt to minimise the application via CMD + Option + M shortcut key.", logger: utilsLog)
                 return true
                 // Disable CMD + Option + N - Add tabs to Nudge window
-            case [.command, .option] where event.charactersIgnoringModifiers == "~":
+            case [.command, .option] where event.charactersIgnoringModifiers == "n":
                 LogManager.warning("Nudge detected an attempt to add tabs to the application via CMD + Option + N shortcut key.", logger: utilsLog)
+                return true
+                // Disable CMD + Option + W - Close Window
+            case [.command, .option] where event.charactersIgnoringModifiers == "w":
+                LogManager.warning("Nudge detected an attempt to add tabs to the application via CMD + Option + W shortcut key.", logger: utilsLog)
+                return true
+                // Disable CMD + Option + Esc (Force Quit Applications)
+            case [.command, .option] where event.charactersIgnoringModifiers == "\u{1b}": // Escape key
+                // This doesn't work since Apple allows that shortcut to bypass the application's memory.
+                LogManager.warning("Nudge detected an attempt to open Force Quit Applications via CMD + Option + Esc.", logger: utilsLog)
                 return true
             default:
                 // Don't care about any other shortcut keys
@@ -335,7 +330,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !nudgeLogState.afterFirstLaunch && OptionalFeatureVariables.terminateApplicationsOnLaunch {
             terminateApplications()
         }
-        Globals.nc.addObserver(
+        Globals.snc.addObserver(
             self,
             selector: #selector(terminateApplicationSender(_:)),
             name: NSWorkspace.didLaunchApplicationNotification,
@@ -446,8 +441,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupNotificationObservers() {
         setupNotificationCenterObservers()
-        setupScreenLockObservers()
         setupScreenChangeObservers()
+        setupScreenLockObservers()
         setupWorkspaceNotificationCenterObservers()
     }
 
@@ -478,19 +473,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupScreenLockObservers() {
-        Globals.nc.addObserver(
-            self,
-            selector: #selector(screenLocked),
-            name: NSNotification.Name("com.apple.screenIsLocked"),
-            object: nil
-        )
-
-        Globals.nc.addObserver(
-            self,
-            selector: #selector(screenUnlocked),
-            name: NSNotification.Name("com.apple.screenIsUnlocked"),
-            object: nil
-        )
+        Globals.dnc.addObserver(
+            forName: NSNotification.Name("com.apple.screenIsLocked"),
+            object: nil,
+            queue: .main) { _ in
+                nudgePrimaryState.screenCurrentlyLocked = true
+                utilsLog.info("Screen was locked")
+            }
+        Globals.dnc.addObserver(
+            forName: NSNotification.Name("com.apple.screenIsUnlocked"),
+            object: nil,
+            queue: .main) { _ in
+                nudgePrimaryState.screenCurrentlyLocked = false
+                utilsLog.info("Screen was unlocked")
+            }
     }
 
     private func setupWorkspaceNotificationCenterObservers() {
@@ -541,11 +537,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        let shouldRunAsynchronously = OptionalFeatureVariables.asynchronousSoftwareUpdate &&
-        !AppStateManager().requireMajorUpgrade() &&
-        !DateManager().pastRequiredInstallationDate()
-
-        if shouldRunAsynchronously {
+        if OptionalFeatureVariables.asynchronousSoftwareUpdate {
             runUpdateAsynchronously()
         } else {
             SoftwareUpdate().download()

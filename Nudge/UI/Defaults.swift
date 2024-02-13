@@ -18,6 +18,7 @@ var nudgeLogState = LogState()
 struct Globals {
     static let bundle = Bundle.main
     static let bundleID = bundle.bundleIdentifier ?? "com.github.macadmins.Nudge"
+    static let dnc = DistributedNotificationCenter.default()
     static let nc = NotificationCenter.default
     static let snc = NSWorkspace.shared.notificationCenter
     // Preferences
