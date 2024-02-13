@@ -191,6 +191,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func scheduleLocal(applicationIdentifier: String) {
+        if applicationIdentifier.isEmpty { return }
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
             let content = self.createNotificationContent(for: applicationIdentifier)
@@ -228,6 +229,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func terminateApplicationSender(_ notification: Notification) {
+        guard DateManager().pastRequiredInstallationDate() else {
+            return
+        }
         LogManager.info("Application launched - checking if application should be terminated", logger: utilsLog)
         terminateApplications()
     }
@@ -514,18 +518,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func terminateApplications() {
-        guard DateManager().pastRequiredInstallationDate() else {
-            return
-        }
-
         let runningApplications = NSWorkspace.shared.runningApplications
         for runningApplication in runningApplications {
             let appBundleID = runningApplication.bundleIdentifier ?? ""
-            if appBundleID == "com.github.macadmins.Nudge" {
+            if appBundleID == "com.github.macadmins.Nudge" || appBundleID.isEmpty {
                 continue
             }
             if OptionalFeatureVariables.blockedApplicationBundleIDs.contains(appBundleID) {
                 LogManager.info("Found \(appBundleID), terminating application", logger: utilsLog)
+                scheduleLocal(applicationIdentifier: appBundleID)
                 terminateApplication(runningApplication)
             }
         }
