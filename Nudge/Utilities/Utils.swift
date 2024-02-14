@@ -78,17 +78,20 @@ struct AppStateManager {
                 LogManager.info("Device within gracePeriodLaunchDelay, exiting Nudge", logger: uiLog)
                 nudgePrimaryState.shouldExit = true
                 return currentDate
+            } else {
+                LogManager.info("gracePeriodPath (\(UserExperienceVariables.gracePeriodPath)) outside of gracePeriodLaunchDelay (\(UserExperienceVariables.gracePeriodLaunchDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
             }
 
             if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
-                let newDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
-                LogManager.notice("Device permitted for gracePeriods - setting date to: \(newDate)", logger: uiLog)
-                return newDate
+                requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
+                LogManager.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate)", logger: uiLog)
+                return requiredInstallationDate
             }
         }
 
         return PrefsWrapper.requiredInstallationDate
     }
+
 
     func exitNudge() {
         LogManager.notice("Nudge is terminating due to condition met", logger: uiLog)
@@ -145,7 +148,7 @@ struct AppStateManager {
         let gracePeriodPath = UserExperienceVariables.gracePeriodPath
         guard FileManager.default.fileExists(atPath: gracePeriodPath) || CommandLineUtilities().unitTestingEnabled(),
               let gracePeriodPathCreationDate = getCreationDateForPath(gracePeriodPath, testFileDate: testFileDate) else {
-            LogManager.error("Grace period path not found or unable to get creation date - bypassing allowGracePeriods logic", logger: uiLog)
+            LogManager.error("Grace period path \(UserExperienceVariables.gracePeriodPath) not found or unable to get creation date - bypassing allowGracePeriods logic", logger: uiLog)
             return PrefsWrapper.requiredInstallationDate
         }
 
