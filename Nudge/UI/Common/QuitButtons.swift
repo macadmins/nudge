@@ -120,6 +120,7 @@ struct QuitButtons: View {
         // Update deferral UI logic
         appState.userQuitDeferrals += 1
         appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+        LoggerUtilities().logUserSessionDeferrals()
         LoggerUtilities().logUserQuitDeferrals()
         LoggerUtilities().logUserDeferrals()
         UIUtilities().userInitiatedExit()

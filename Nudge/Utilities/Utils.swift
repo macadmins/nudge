@@ -19,6 +19,9 @@ struct AppStateManager {
         LogManager.info("Activating Nudge", logger: utilsLog)
         nudgePrimaryState.lastRefreshTime = DateManager().getCurrentDate()
         guard let mainWindow = NSApp.windows.first else { return }
+        LoggerUtilities().logUserSessionDeferrals()
+        LoggerUtilities().logUserQuitDeferrals()
+        LoggerUtilities().logUserDeferrals()
 
         if DateManager().pastRequiredInstallationDate() && OptionalFeatureVariables.aggressiveUserFullScreenExperience {
             UIUtilities().centerNudge()
@@ -602,6 +605,10 @@ struct LoggerUtilities {
 
     func logUserQuitDeferrals(resetCount: Bool = false) {
         updateDeferralCount(&nudgePrimaryState.userQuitDeferrals, resetCount: resetCount, key: "userQuitDeferrals")
+    }
+
+    func logUserSessionDeferrals(resetCount: Bool = false) {
+        updateDeferralCount(&nudgePrimaryState.userSessionDeferrals, resetCount: resetCount, key: "userSessionDeferrals")
     }
 
     private func updateDeferralCount(_ count: inout Int, resetCount: Bool, key: String) {

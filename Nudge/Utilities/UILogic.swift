@@ -172,22 +172,9 @@ private func logControllers() {
 
 private func logDeferralStates() {
     LoggerUtilities().logRequiredMinimumOSVersion()
-    LoggerUtilities().logUserDeferrals()
+    LoggerUtilities().logUserSessionDeferrals()
     LoggerUtilities().logUserQuitDeferrals()
-    logUserSessionDeferrals()
-}
-
-private func logUserSessionDeferrals(resetCount: Bool = false) {
-    if CommandLineUtilities().demoModeEnabled() {
-        nudgePrimaryState.userSessionDeferrals = 0
-        return
-    }
-    if resetCount {
-        nudgePrimaryState.userSessionDeferrals = 0
-        Globals.nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
-    } else {
-        Globals.nudgeDefaults.set(nudgePrimaryState.userSessionDeferrals, forKey: "userSessionDeferrals")
-    }
+    LoggerUtilities().logUserDeferrals()
 }
 
 func needToActivateNudge() -> Bool {
@@ -228,9 +215,9 @@ private func processNudgeEvent() {
 
 private func resetAllDeferralValues() {
     LoggerUtilities().logRequiredMinimumOSVersion()
-    LoggerUtilities().logUserDeferrals(resetCount: true)
+    LoggerUtilities().logUserSessionDeferrals(resetCount: true)
     LoggerUtilities().logUserQuitDeferrals(resetCount: true)
-    logUserSessionDeferrals(resetCount: true)
+    LoggerUtilities().logUserDeferrals(resetCount: true)
     Globals.nudgeDefaults.removeObject(forKey: "deferRunUntil")
 }
 

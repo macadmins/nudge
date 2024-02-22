@@ -69,6 +69,7 @@ struct DeferView: View {
         appState.shouldExit = true
         appState.userQuitDeferrals += 1
         appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+        LoggerUtilities().logUserSessionDeferrals()
         LoggerUtilities().logUserQuitDeferrals()
         LoggerUtilities().logUserDeferrals()
         UIUtilities().userInitiatedExit()
