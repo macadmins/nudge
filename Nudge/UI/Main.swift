@@ -92,8 +92,10 @@ struct ContentView: View {
 
     private func handleNudgeActivation() {
         if needToActivateNudge() {
-            appState.userSessionDeferrals += 1
-            appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+            if nudgeLogState.afterFirstLaunch {
+                appState.userSessionDeferrals += 1
+                appState.userDeferrals = appState.userSessionDeferrals + appState.userQuitDeferrals
+            }
             AppStateManager().activateNudge()
         }
         updateUI()
