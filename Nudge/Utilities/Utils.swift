@@ -696,7 +696,7 @@ struct NetworkFileManager {
             case 14:
                 return "/Applications/Install macOS Sonoma.app"
             default:
-                return "/Applications/Install macOS Monterey.app"
+                return "/System/Library/CoreServices/Software Update.app"
         }
     }
 
