@@ -354,9 +354,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func handleNoAttemptToFetchMajorUpgrade() {
         if !majorUpgradeAppPathExists && !majorUpgradeBackupAppPathExists {
-            LogManager.error("Unable to find major upgrade application, exiting Nudge", logger: uiLog)
-            nudgePrimaryState.shouldExit = true
-            exit(1)
+            LogManager.error("Unable to find major upgrade application, reverting to actionButtonPath", logger: uiLog)
         }
     }
 
@@ -386,7 +384,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 handleNoAttemptToFetchMajorUpgrade()
             }
         } else {
-            LogManager.warning("actionButtonPath is nil or empty - actionButton will be unable to trigger any action required for major upgrades", logger: prefsProfileLog)
+            LogManager.warning("actionButtonPath is nil or empty - actionButton will be attempt to use /System/Library/CoreServices/Software Update.app for major upgrades", logger: prefsProfileLog)
             return
         }
     }

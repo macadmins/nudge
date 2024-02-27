@@ -791,7 +791,7 @@ struct UIUtilities {
     private func determineUpdateURL() -> URL? {
         if let actionButtonPath = FeatureVariables.actionButtonPath {
             if actionButtonPath.isEmpty {
-                LogManager.warning("actionButtonPath is set but contains an empty string. Defaulting to out of box behavior.", logger: utilsLog)
+                LogManager.warning("actionButtonPath is set but contains an empty string. Defaulting to /System/Library/CoreServices/Software Update.app.", logger: utilsLog)
                 return URL(fileURLWithPath: "/System/Library/CoreServices/Software Update.app")
             }
 
@@ -818,6 +818,7 @@ struct UIUtilities {
             }
         }
 
+        LogManager.warning("Defaulting actionButtonPath to /System/Library/CoreServices/Software Update.app.", logger: utilsLog)
         return URL(fileURLWithPath: "/System/Library/CoreServices/Software Update.app")
     }
 
