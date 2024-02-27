@@ -43,7 +43,7 @@ class SoftwareUpdate {
                     GlobalVariables.fetchMajorUpgradeSuccessful = true
                     // Update the state based on the download result
                 }
-            } else {
+            } else if majorUpgradeAppPathExists || majorUpgradeBackupAppPathExists {
                 LogManager.notice("Found major upgrade application or backup - skipping download", logger: softwareupdateListLog)
             }
         } else {
