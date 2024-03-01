@@ -42,7 +42,7 @@ Nudge is maintained almost exclusively by a single author, Erik Gomez. Upon repo
 
 Upon review, the vulnerability will be assigned the following four levels: Low, Medium, High and Critical.
 
-SLAs will be currently defined per the following guidlines
+SLAs will be currently defined per the following guidelines
 
 | Criticality | Time to remediation |
 | ----------- | ------------------- |
