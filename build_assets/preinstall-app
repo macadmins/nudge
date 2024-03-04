@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 #
 # Copyright 2021-Present Erik Gomez.
 #
@@ -16,20 +16,7 @@
 
 # Only run if on a running system
 if [[ $3 == "/" ]] ; then
-  # Current console user information
-  console_user=$(/usr/bin/stat -f "%Su" /dev/console)
-
-  # Only run if there is a user logged in, otherwise do nothing
-  if [[ -z "$console_user" ]]; then
-    echo "Did not detect user"
-  elif [[ "$console_user" == "loginwindow" ]]; then
-    echo "Detected Loginwindow Environment"
-  elif [[ "$console_user" == "_mbsetupuser" ]]; then
-    echo "Detect SetupAssistant Environment"
-  elif [[ "$console_user" == "root" ]]; then
-    echo "Detect root as currently logged-in user"
-  else
-    # Kill Nudge is running
-    /usr/bin/pgrep -i Nudge | /usr/bin/xargs kill
-  fi
+  # TODO: There may be a race condition if this script materially changes in future versions
+  # where the install calls the current installed script
+  /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/preinstall-app'
 fi

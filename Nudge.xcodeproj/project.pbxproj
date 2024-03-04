@@ -41,6 +41,10 @@
 		63D7D0F625C9E9A500236281 /* NudgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D0F525C9E9A500236281 /* NudgeTests.swift */; };
 		63D7D10125C9E9A500236281 /* NudgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D10025C9E9A500236281 /* NudgeUITests.swift */; };
 		63D7D12725C9F1EE00236281 /* StandardMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D7D12625C9F1EE00236281 /* StandardMode.swift */; };
+		63FD280F2B96846A004E0108 /* postinstall-launchagent in Resources */ = {isa = PBXBuildFile; fileRef = 63FD280B2B9682CD004E0108 /* postinstall-launchagent */; };
+		63FD28102B96846E004E0108 /* postinstall-logger in Resources */ = {isa = PBXBuildFile; fileRef = 63FD280C2B9682F9004E0108 /* postinstall-logger */; };
+		63FD28112B968472004E0108 /* postinstall-suite in Resources */ = {isa = PBXBuildFile; fileRef = 63FD280D2B968309004E0108 /* postinstall-suite */; };
+		63FD28122B968475004E0108 /* preinstall-app in Resources */ = {isa = PBXBuildFile; fileRef = 63FD280E2B96831F004E0108 /* preinstall-app */; };
 		73CC1D7829B81EE500FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist */; };
 		73CC1D7A29B81F0600FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = 73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -118,6 +122,10 @@
 		63D7D10025C9E9A500236281 /* NudgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NudgeUITests.swift; sourceTree = "<group>"; };
 		63D7D10225C9E9A500236281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		63D7D12625C9F1EE00236281 /* StandardMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardMode.swift; sourceTree = "<group>"; };
+		63FD280B2B9682CD004E0108 /* postinstall-launchagent */ = {isa = PBXFileReference; lastKnownFileType = text; path = "postinstall-launchagent"; sourceTree = "<group>"; };
+		63FD280C2B9682F9004E0108 /* postinstall-logger */ = {isa = PBXFileReference; lastKnownFileType = text; path = "postinstall-logger"; sourceTree = "<group>"; };
+		63FD280D2B968309004E0108 /* postinstall-suite */ = {isa = PBXFileReference; lastKnownFileType = text; path = "postinstall-suite"; sourceTree = "<group>"; };
+		63FD280E2B96831F004E0108 /* preinstall-app */ = {isa = PBXFileReference; lastKnownFileType = text; path = "preinstall-app"; sourceTree = "<group>"; };
 		73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = com.github.macadmins.Nudge.SMAppService.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -255,6 +263,7 @@
 				639B6B5425DF374600E38EC1 /* UI */,
 				639B6B3925DF1FEB00E38EC1 /* Preferences */,
 				639B6B4725DF218900E38EC1 /* Utilities */,
+				63FD280A2B968290004E0108 /* Scripts */,
 				63D7D0E625C9E9A500236281 /* Assets.xcassets */,
 				63D7D0EB25C9E9A500236281 /* Info.plist */,
 				63D7D0EC25C9E9A500236281 /* Nudge.entitlements */,
@@ -289,6 +298,17 @@
 				63D7D10225C9E9A500236281 /* Info.plist */,
 			);
 			path = NudgeUITests;
+			sourceTree = "<group>";
+		};
+		63FD280A2B968290004E0108 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				63FD280B2B9682CD004E0108 /* postinstall-launchagent */,
+				63FD280C2B9682F9004E0108 /* postinstall-logger */,
+				63FD280D2B968309004E0108 /* postinstall-suite */,
+				63FD280E2B96831F004E0108 /* preinstall-app */,
+			);
+			path = Scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,13 +432,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63FD280F2B96846A004E0108 /* postinstall-launchagent in Resources */,
 				63D7D0EA25C9E9A500236281 /* Preview Assets.xcassets in Resources */,
+				63FD28122B968475004E0108 /* preinstall-app in Resources */,
 				63D7D0E725C9E9A500236281 /* Assets.xcassets in Resources */,
 				639B6B0F25DC9ED300E38EC1 /* com.github.macadmins.Nudge.mobileconfig in Resources */,
 				73CC1D7829B81EE500FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist in Resources */,
 				63C6A08E2833FB6500D5264A /* com.github.macadmins.Nudge.tester.json in Resources */,
 				035C2AEC25D8ABC400429458 /* com.github.macadmins.Nudge.json in Resources */,
+				63FD28112B968472004E0108 /* postinstall-suite in Resources */,
 				6316F0E72832CA0700E1354D /* Schema in Resources */,
+				63FD28102B96846E004E0108 /* postinstall-logger in Resources */,
 				637CEBC12A30C9E700EFA3E9 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
