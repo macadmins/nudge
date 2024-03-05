@@ -88,7 +88,7 @@ fi
 /bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
 /bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Nudge.app"
-/bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$NUDGE_PKG_PATH/scripts/preinstall"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-nudge" "$NUDGE_PKG_PATH/scripts/postinstall"
 
 # Download specific version of munki-pkg
 echo "Downloading munki-pkg tool from github..."
@@ -229,7 +229,6 @@ fi
 /bin/mkdir -p "$SUITE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$SUITE_PKG_PATH"
 /bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$SUITE_PKG_PATH/payload/Applications/Utilities/Nudge.app"
-/bin/cp "${TOOLSDIR}/build_assets/preinstall-app" "$SUITE_PKG_PATH/scripts/preinstall"
 echo "Moving LaunchAgent to payload folder"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$SUITE_PKG_PATH/payload/Library/LaunchAgents"
 echo "Moving LaunchDaemon to logging payload folder"
