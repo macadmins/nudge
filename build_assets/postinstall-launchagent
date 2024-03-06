@@ -16,5 +16,9 @@
 
 # Only run if on a running system
 if [[ $3 == "/" ]] ; then
-  /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-launchagent'
+  if [ -f '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-launchagent' ]; then
+    /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-launchagent'
+  else
+    echo "File does not exist: Please ensure Nudge is installed prior to installation of these packages"
+  fi
 fi
