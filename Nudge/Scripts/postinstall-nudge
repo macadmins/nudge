@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Only run if on a running system
-if [[ $3 == "/" ]] ; then
+if [[ $3 == "/" ]]; then
   # Current console user information
   console_user=$(/usr/bin/stat -f "%Su" /dev/console)
 
@@ -28,7 +28,16 @@ if [[ $3 == "/" ]] ; then
   elif [[ "$console_user" == "root" ]]; then
     echo "Detect root as currently logged-in user"
   else
-    # Kill Nudge is running
+    # Kill Nudge if it's already running
     /usr/bin/pgrep -i Nudge | /usr/bin/xargs kill
+
+    # Check for loadLaunchAgent preference key to configure internal Nudge LaunchAgent
+    console_user_uid=$(/usr/bin/id -u "$console_user")
+    load_launchagent=$(/usr/libexec/PlistBuddy -c "Print userExperience:loadLaunchAgent" "/Library/Managed Preferences/com.github.macadmins.Nudge.plist")
+
+    if [[ "$load_launchagent" == "true" ]]; then
+        echo "Running Nudge and exiting"
+        launchctl asuser "$console_user_uid" /Applications/Utilities/Nudge.app/Contents/MacOS/Nudge &>/dev/null 2>&1 &
+    fi
   fi
 fi
