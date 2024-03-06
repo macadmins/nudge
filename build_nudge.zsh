@@ -88,6 +88,7 @@ fi
 /bin/mkdir -p "$NUDGE_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_PKG_PATH"
 /bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$NUDGE_PKG_PATH/payload/Nudge.app"
+echo "Moving postinstall to scripts folder"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-nudge" "$NUDGE_PKG_PATH/scripts/postinstall"
 
 # Download specific version of munki-pkg
@@ -146,7 +147,9 @@ fi
 /bin/mkdir -p "$NUDGE_LA_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_LA_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LA_PKG_PATH"
+echo "Moving LaunchAgent to payload folder"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$NUDGE_LA_PKG_PATH/payload"
+echo "Moving postinstall to scripts folder"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-launchagent" "$NUDGE_LA_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
@@ -173,6 +176,9 @@ PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
+  # Notarize launchagent package
+  $XCODE_NOTARY_PATH submit "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" --keychain-profile "nudge" --wait
+  $XCODE_STAPLER_PATH staple "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg"
   # Move the signed pkg
   /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" "$OUTPUTSDIR"
 fi
@@ -186,7 +192,9 @@ fi
 /bin/mkdir -p "$NUDGE_LD_PKG_PATH/payload"
 /bin/mkdir -p "$NUDGE_LD_PKG_PATH/scripts"
 /usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$NUDGE_LD_PKG_PATH"
+echo "Moving LaunchDaemon to logging payload folder"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$NUDGE_LD_PKG_PATH/payload"
+echo "Moving postinstall to scripts folder"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-logger" "$NUDGE_LD_PKG_PATH/scripts/postinstall"
 
 # Create the json file for the signed munkipkg LaunchAgent pkg
@@ -213,8 +221,58 @@ PKG_RESULT="$?"
 if [ "${PKG_RESULT}" != "0" ]; then
   echo "Could not sign package: ${PKG_RESULT}" 1>&2
 else
+  # Notarize logger package
+  $XCODE_NOTARY_PATH submit "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" --keychain-profile "nudge" --wait
+  $XCODE_STAPLER_PATH staple "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg"
   # Move the signed pkg
   /bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" "$OUTPUTSDIR"
+fi
+
+# Create the Essentials package
+echo "Moving Nudge.app to payload folder"
+ESSENTIALS_PKG_PATH="$TOOLSDIR/NudgePkgEssentials"
+if [ -e $ESSENTIALS_PKG_PATH ]; then
+  /bin/rm -rf $ESSENTIALS_PKG_PATH
+fi
+/bin/mkdir -p "$ESSENTIALS_PKG_PATH/payload/Applications/Utilities"
+/bin/mkdir -p "$ESSENTIALS_PKG_PATH/payload/Library/LaunchAgents"
+/bin/mkdir -p "$ESSENTIALS_PKG_PATH/scripts"
+/usr/bin/sudo /usr/sbin/chown -R ${CONSOLEUSER}:wheel "$ESSENTIALS_PKG_PATH"
+/bin/cp -R "${BUILDSDIR}/Release/Nudge.app" "$ESSENTIALS_PKG_PATH/payload/Applications/Utilities/Nudge.app"
+echo "Moving LaunchAgent to payload folder"
+/bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$ESSENTIALS_PKG_PATH/payload/Library/LaunchAgents"
+echo "Moving postinstall to scripts folder"
+/bin/cp "${TOOLSDIR}/build_assets/postinstall-essentials" "$ESSENTIALS_PKG_PATH/scripts/postinstall"
+
+# Create the json file for signed munkipkg Nudge Essentials pkg
+/bin/cat << SIGNED_JSONFILE > "$ESSENTIALS_PKG_PATH/build-info.json"
+{
+  "ownership": "recommended",
+  "suppress_bundle_relocation": true,
+  "identifier": "com.github.macadmins.Nudge.Essentials",
+  "postinstall_action": "none",
+  "distribution_style": true,
+  "version": "$AUTOMATED_NUDGE_BUILD",
+  "name": "Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg",
+  "install_location": "/",
+  "signing_info": {
+    "identity": "$INSTALLER_SIGNING_IDENTITY",
+    "timestamp": true
+  }
+}
+SIGNED_JSONFILE
+
+# Create the signed Nudge Essentials pkg
+python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$ESSENTIALS_PKG_PATH"
+PKG_RESULT="$?"
+if [ "${PKG_RESULT}" != "0" ]; then
+  echo "Could not sign package: ${PKG_RESULT}" 1>&2
+else
+  # Notarize Nudge Essentials package
+  $XCODE_NOTARY_PATH submit "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+  $XCODE_STAPLER_PATH staple "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg"
+  # Move the Nudge Essentials signed/notarized pkg
+  /bin/mv "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
 fi
 
 # Create the Suite package
@@ -233,6 +291,7 @@ echo "Moving LaunchAgent to payload folder"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.plist" "$SUITE_PKG_PATH/payload/Library/LaunchAgents"
 echo "Moving LaunchDaemon to logging payload folder"
 /bin/cp "${TOOLSDIR}/build_assets/com.github.macadmins.Nudge.logger.plist" "$SUITE_PKG_PATH/payload/Library/LaunchDaemons"
+echo "Moving postinstall to scripts folder"
 /bin/cp "${TOOLSDIR}/build_assets/postinstall-suite" "$SUITE_PKG_PATH/scripts/postinstall"
 
 # Create the json file for signed munkipkg Nudge Suite pkg
