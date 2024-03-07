@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.15] - 2024-03-07
+This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
+
+Due to several bugs found in the v1.1.14 release, including many subsequent v1.1.14.x builds, this release is being created to address them.
+
+There are currently no known regressions from v1.1.13.
+
+### Added
+- `Essentials` Package
+  - This signed and notarized package contains the Nudge application and LaunchAgent
+- Additional shortcut keys to ignore list when Nudge is in the forefront
+- `Security.md` file added for pentesters to send potential security issues within the project
+
+### Changed
+- macOS upgrade logic now uses `/System/Library/CoreServices/Software Update.app` as the default path for unknown installer versions
+- The LaunchAgent and Logger packages are now signed and notarized
+- The Zsh package scripts are now embedded into the Nudge application
+  - Please note that if you install the LaunchAgent or Logger packages, you will need to install them **after** the Nudge application package. Failure to do this will result in the `postinstall` scripts not triggering.
+- The `postinstall` script is now in Bash, but calls Zsh without global/user environment variables
+- Moved the `preinstall` script logic to `postinstall`
+  - This materially changes the Nudge application package and the Suite package
+
+### Fixed
+- All known regressions in v1.1.14
+- Some ignored shortcut keys were improperly designed and not working
+- `userSessionDeferrals` were not being accurately calculated
+- When using `calendarDeferralUnit`, the upper bounds of the calendar may return a negative integer, causing Nudge to crash.
+  - The behavior will now return `0`
+
 ## [1.1.14] - 2024-01-30
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
 
