@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 #
 # Copyright 2021-Present Erik Gomez.
 #
@@ -14,22 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# If you change your agent file name, update the following line
-launch_daemon_plist_name='com.github.macadmins.Nudge.logger.plist'
-
-# Base paths
-launch_daemon_base_path='Library/LaunchDaemons/'
-
-# Load agent if installing to a running system
+# Only run if on a running system
 if [[ $3 == "/" ]] ; then
-  # Fail the install if the admin forgets to change their paths and they don't exist.
-  if [ ! -e "$3/${launch_daemon_base_path}${launch_daemon_plist_name}" ]; then
-    echo "LaunchDaemon missing, exiting"
-    exit 1
+  if [ -f '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-logger' ]; then
+    /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-logger'
+  else
+    echo "File does not exist: Please ensure Nudge is installed prior to installation of these packages"
   fi
-
-  # Unload the agent so it can be triggered on re-install
-  /bin/launchctl unload -w "$3${launch_daemon_base_path}${launch_daemon_plist_name}"
-  # Load the launch agent
-  /bin/launchctl load -w "$3${launch_daemon_base_path}${launch_daemon_plist_name}"
 fi

@@ -17,6 +17,4 @@
 # Only run if on a running system
 if [[ $3 == "/" ]] ; then
   /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-nudge'
-  /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-logger'
-  /bin/zsh --no-rcs -c '/Applications/Utilities/Nudge.app/Contents/Resources/postinstall-launchagent'
 fi

@@ -74,13 +74,32 @@ struct DeferView: View {
         LoggerUtilities().logUserDeferrals()
         UIUtilities().userInitiatedExit()
     }
-    
+
     private var limitRange: ClosedRange<Date> {
-        let windowTime = [ "approachingWindowTime": UserExperienceVariables.approachingWindowTime,
-                           "imminentWindowTime": UserExperienceVariables.imminentWindowTime ]
-        let daysToAdd = appState.daysRemaining > 0 ? appState.daysRemaining - (windowTime[UserExperienceVariables.calendarDeferralUnit] ?? UserExperienceVariables.imminentWindowTime / 24) : 0
-        // Do not let the user defer past the point of the windowTime
-        return DateManager().getCurrentDate()...Calendar.current.date(byAdding: .day, value: daysToAdd, to: DateManager().getCurrentDate())!
+        // Ensure the current date is consistently used throughout the calculation.
+        let currentDate = DateManager().getCurrentDate()
+
+        // Calculate the window time in days based on the UserExperienceVariables.calendarDeferralUnit.
+        let windowTimeInDays: Int
+        switch UserExperienceVariables.calendarDeferralUnit {
+            case "approachingWindowTime":
+                windowTimeInDays = UserExperienceVariables.approachingWindowTime / 24
+            case "imminentWindowTime":
+                windowTimeInDays = UserExperienceVariables.imminentWindowTime / 24
+            default:
+                windowTimeInDays = UserExperienceVariables.imminentWindowTime / 24 // Default or fallback case
+        }
+
+        // Calculate daysToAdd ensuring it's not negative.
+        // It subtracts the windowTimeInDays from appState.daysRemaining, falling back to 0 if daysRemaining is negative.
+        let daysToAdd = max(appState.daysRemaining - windowTimeInDays, 0)
+
+        // Safely calculate the upper bound date by adding daysToAdd to the current date.
+        guard let upperBoundDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: currentDate) else {
+            fatalError("Could not calculate the upper bound date.") // Consider handling this more gracefully in production code.
+        }
+
+        return currentDate...upperBoundDate
     }
 }
 
