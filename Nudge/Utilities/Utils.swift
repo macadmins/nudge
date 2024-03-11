@@ -596,19 +596,31 @@ struct ImageManager {
 
 struct LoggerUtilities {
     func logRequiredMinimumOSVersion() {
-        Globals.nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        if !requiredMinimumOSVersionNil() {
+            Globals.nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+        }
     }
 
     func logUserDeferrals(resetCount: Bool = false) {
-        updateDeferralCount(&nudgePrimaryState.userDeferrals, resetCount: resetCount, key: "userDeferrals")
+        if !requiredMinimumOSVersionNil() {
+            updateDeferralCount(&nudgePrimaryState.userDeferrals, resetCount: resetCount, key: "userDeferrals")
+        }
     }
 
     func logUserQuitDeferrals(resetCount: Bool = false) {
-        updateDeferralCount(&nudgePrimaryState.userQuitDeferrals, resetCount: resetCount, key: "userQuitDeferrals")
+        if !requiredMinimumOSVersionNil() {
+            updateDeferralCount(&nudgePrimaryState.userQuitDeferrals, resetCount: resetCount, key: "userQuitDeferrals")
+        }
     }
 
     func logUserSessionDeferrals(resetCount: Bool = false) {
-        updateDeferralCount(&nudgePrimaryState.userSessionDeferrals, resetCount: resetCount, key: "userSessionDeferrals")
+        if !requiredMinimumOSVersionNil() {
+            updateDeferralCount(&nudgePrimaryState.userSessionDeferrals, resetCount: resetCount, key: "userSessionDeferrals")
+        }
+    }
+
+    private func requiredMinimumOSVersionNil() -> Bool {
+        return PrefsWrapper.requiredMinimumOSVersion == "0.0"
     }
 
     private func updateDeferralCount(_ count: inout Int, resetCount: Bool, key: String) {
