@@ -231,9 +231,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func terminateApplicationSender(_ notification: Notification) {
-        guard DateManager().pastRequiredInstallationDate() else {
-            return
-        }
         LogManager.info("Application launched - checking if application should be terminated", logger: utilsLog)
         terminateApplications()
     }
@@ -518,6 +515,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func terminateApplications() {
+        guard DateManager().pastRequiredInstallationDate() else {
+            return
+        }
         let runningApplications = NSWorkspace.shared.runningApplications
         for runningApplication in runningApplications {
             let appBundleID = runningApplication.bundleIdentifier ?? ""
