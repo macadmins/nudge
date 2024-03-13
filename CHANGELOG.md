@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.16] - 2024-03-13
+This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
+
+A subsequent regression caused by the v1.1.14 refactor was found in v1.1.15.
+
+There are currently no known regressions from v1.1.13.
+
+### Changed
+- Nudge no longer resets or writes the User's plist file (`~/Library/Preferences/com.github.macadmins.Nudge.plist`) when there is a broken configuration, missing configuration or Nudge is unable to download a remote configuration file.
+  - This impacted the following keys: `requiredInstallationDate`, `userDeferrals`, `userQuitDeferrals`, and `userSessionDeferrals`
+  - When in this state, Nudge would improperly trigger the following log event: `New Nudge event detected - resetting all deferral values`
+  - Addresses https://github.com/macadmins/nudge/issues/561
+
+### Fixed
+- When using `terminateApplicationsOnLaunch`, Nudge was terminating applications listed in `blockedApplicationBundleIDs` prior to the `requiredInstallationDate`
+  - Application launches post Nudge launching were not impacted, but previously launched applications were.
+  - Addresses https://github.com/macadmins/nudge/issues/562
+
 ## [1.1.15] - 2024-03-07
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
 
