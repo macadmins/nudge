@@ -19,16 +19,13 @@ launch_daemon_plist_name='com.github.macadmins.Nudge.logger.plist'
 # Base paths
 launch_daemon_base_path='Library/LaunchDaemons/'
 
-# Load agent if installing to a running system
-if [[ $3 == "/" ]] ; then
-  # Fail the install if the admin forgets to change their paths and they don't exist.
-  if [ ! -e "$3/${launch_daemon_base_path}${launch_daemon_plist_name}" ]; then
-    echo "LaunchDaemon missing, exiting"
-    exit 1
-  fi
-
-  # Unload the agent so it can be triggered on re-install
-  /bin/launchctl unload -w "$3${launch_daemon_base_path}${launch_daemon_plist_name}"
-  # Load the launch agent
-  /bin/launchctl load -w "$3${launch_daemon_base_path}${launch_daemon_plist_name}"
+# Fail the install if the admin forgets to change their paths and they don't exist.
+if [ ! -e "$3/${launch_daemon_base_path}${launch_daemon_plist_name}" ]; then
+  echo "LaunchDaemon missing, exiting"
+  exit 1
 fi
+
+# Unload the agent so it can be triggered on re-install
+/bin/launchctl unload -w "$3${launch_daemon_base_path}${launch_daemon_plist_name}"
+# Load the launch agent
+/bin/launchctl load -w "$3${launch_daemon_base_path}${launch_daemon_plist_name}"
