@@ -24,7 +24,7 @@ struct ScreenShotZoom: View {
             Spacer() // Vertically align Screenshot to center
         }
         .background(Color(NSColor.windowBackgroundColor))
-        .frame(maxWidth: 900)
+        .frame(minWidth: 850, maxWidth: 1200, minHeight: 900, maxHeight: 1200)
     }
     
     private var closeButton: some View {
@@ -66,7 +66,7 @@ struct ScreenShotZoom: View {
                         .opacity(0.05)
                 case .success(let image):
                     image
-                        .scaledToFit()
+                        .customResizable()
                 @unknown default:
                     EmptyView()
             }
