@@ -28,8 +28,25 @@ struct CompanyLogo: View {
     }
 
     private var companyImage: some View {
-        Image(nsImage: ImageManager().getCorrectImage(path: companyLogoPath, type: "CompanyLogo"))
-            .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+        AsyncImage(url: UIUtilities().createCorrectURLType(from: companyLogoPath)) { phase in
+            switch phase {
+                case .empty:
+                    Image(systemName: "square.dashed")
+                        .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+                        .customFontWeight(fontWeight: .ultraLight)
+                        .opacity(0.05)
+                case .failure:
+                    Image(systemName: "questionmark.square.dashed")
+                        .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+                        .customFontWeight(fontWeight: .ultraLight)
+                        .opacity(0.05)
+                case .success(let image):
+                    image
+                        .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+                @unknown default:
+                    EmptyView()
+            }
+        }
     }
 
     private var defaultImage: some View {
@@ -53,7 +70,7 @@ struct CompanyLogo: View {
     }
     
     private func shouldShowCompanyLogo() -> Bool {
-        companyLogoPath.starts(with: "data:") || FileManager.default.fileExists(atPath: companyLogoPath)
+        ["data:", "https://", "http://", "file://"].contains(where: companyLogoPath.starts(with:)) || FileManager.default.fileExists(atPath: companyLogoPath)
     }
 }
 

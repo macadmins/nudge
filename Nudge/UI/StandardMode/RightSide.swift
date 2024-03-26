@@ -112,7 +112,7 @@ struct StandardModeRightSide: View {
     
     private var screenshotDisplay: some View {
         Group {
-            if shouldShowScreenshot {
+            if shouldShowScreenshot() {
                 screenshotButton
             } else {
                 EmptyView()
@@ -122,8 +122,25 @@ struct StandardModeRightSide: View {
 
     private var screenshotButton: some View {
         Button(action: { appState.screenShotZoomViewIsPresented = true }) {
-            Image(nsImage: ImageManager().getCorrectImage(path: screenShotPath, type: "ScreenShot"))
-                .customResizable(maxHeight: UIConstants.screenshotMaxHeight)
+            AsyncImage(url: UIUtilities().createCorrectURLType(from: screenShotPath)) { phase in
+                switch phase {
+                    case .empty:
+                        Image(systemName: "square.dashed")
+                            .customResizable(maxHeight: UIConstants.screenshotMaxHeight)
+                            .customFontWeight(fontWeight: .ultraLight)
+                            .opacity(0.05)
+                    case .failure:
+                        Image(systemName: "questionmark.square.dashed")
+                            .customResizable(maxHeight: UIConstants.screenshotMaxHeight)
+                            .customFontWeight(fontWeight: .ultraLight)
+                            .opacity(0.05)
+                    case .success(let image):
+                        image
+                            .customResizable(maxHeight: UIConstants.screenshotMaxHeight)
+                    @unknown default:
+                        EmptyView()
+                }
+            }
         }
         .buttonStyle(.plain)
         .help(UserInterfaceVariables.screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
@@ -132,11 +149,9 @@ struct StandardModeRightSide: View {
         }
         .onHoverEffect()
     }
-    
-    private var shouldShowScreenshot: Bool {
-        // Logic to determine if the screenshot should be shown
-        let imagePath = ImageManager().getScreenShotPath(colorScheme: colorScheme)
-        return FileManager.default.fileExists(atPath: imagePath) || imagePath.starts(with: "data:") || forceScreenShotIconMode()
+
+    private func shouldShowScreenshot() -> Bool {
+        ["data:", "https://", "http://", "file://"].contains(where: screenShotPath.starts(with:)) || FileManager.default.fileExists(atPath: screenShotPath) || forceScreenShotIconMode()
     }
 }
 
