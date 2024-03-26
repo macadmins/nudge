@@ -42,13 +42,23 @@ extension FixedWidthInteger {
 
 // Image Extension
 extension Image {
-    func customResizable(width: CGFloat? = nil, height: CGFloat? = nil, maxHeight: CGFloat? = nil) -> some View {
+    func customResizable(width: CGFloat? = nil, height: CGFloat? = nil, minHeight: CGFloat? = nil, minWidth: CGFloat? = nil, maxHeight: CGFloat? = nil, maxWidth: CGFloat? = nil) -> some View {
         self
             .resizable()
-            .aspectRatio(contentMode: .fit)
             .scaledToFit()
-            .frame(width: width, height: height)
-            .frame(maxHeight: maxHeight)
+            .frame(width: width, height: height, alignment: .center)
+            .frame(minWidth: minWidth, maxWidth: maxWidth, minHeight: minHeight, maxHeight: maxHeight)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func customFontWeight(fontWeight: Font.Weight? = nil) -> some View {
+        if #available(macOS 13.0, *), let weight = fontWeight {
+            self.fontWeight(weight)
+        } else {
+            self
+        }
     }
 }
 

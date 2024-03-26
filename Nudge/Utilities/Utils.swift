@@ -800,6 +800,14 @@ struct UIUtilities {
         NSApp.windows.first?.center()
     }
 
+    func createCorrectURLType(from input: String) -> URL? {
+        // Checks if the input contains "://", a simple heuristic to decide if it's a web URL
+        let isWebURL = ["data:", "https://", "http://", "file://"].contains(where: input.starts(with:))
+
+        // Returns a URL initialized appropriately based on the input type
+        return isWebURL ? URL(string: input) : URL(fileURLWithPath: input)
+    }
+
     private func determineUpdateURL() -> URL? {
         if let actionButtonPath = FeatureVariables.actionButtonPath {
             if actionButtonPath.isEmpty {
