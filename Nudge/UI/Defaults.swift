@@ -80,6 +80,7 @@ class AppState: ObservableObject {
     @Published var userRequiredMinimumOSVersion = Globals.nudgeDefaults.object(forKey: "requiredMinimumOSVersion") as? String ?? "0.0"
     @Published var userSessionDeferrals = Globals.nudgeDefaults.object(forKey: "userSessionDeferrals") as? Int ?? 0
     @Published var backgroundBlur = [BackgroundBlurWindowController]()
+    @Published var gdmfAssets: GDMFAssetInfo?
     @Published var screenCurrentlyLocked = false
     @Published var locale = Locale.current
     @Published var nudgeCustomEventDate = DateManager().getCurrentDate()
