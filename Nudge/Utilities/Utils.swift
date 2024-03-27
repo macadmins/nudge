@@ -23,6 +23,11 @@ struct AppStateManager {
         LoggerUtilities().logUserQuitDeferrals()
         LoggerUtilities().logUserDeferrals()
 
+        // When the window is allowed to be moved, all of the other controls no longer force centering, so we need to force centering when re-activating.
+        if UserExperienceVariables.allowMovableWindow {
+            UIUtilities().centerNudge()
+        }
+
         if DateManager().pastRequiredInstallationDate() && OptionalFeatureVariables.aggressiveUserFullScreenExperience {
             UIUtilities().centerNudge()
             NSApp.activate(ignoringOtherApps: true)

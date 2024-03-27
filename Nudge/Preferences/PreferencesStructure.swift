@@ -229,7 +229,7 @@ extension AboutUpdateURL {
 
 // MARK: - UserExperience
 struct UserExperience: Codable {
-    var allowGracePeriods, allowLaterDeferralButton, allowUserQuitDeferrals: Bool?
+    var allowGracePeriods, allowLaterDeferralButton, allowMovableWindow, allowUserQuitDeferrals: Bool?
     var allowedDeferrals, allowedDeferralsUntilForcedSecondaryQuitButton, approachingRefreshCycle, approachingWindowTime: Int?
     var calendarDeferralUnit: String?
     var elapsedRefreshCycle, gracePeriodInstallDelay, gracePeriodLaunchDelay: Int?
@@ -264,6 +264,7 @@ extension UserExperience {
     func with(
         allowGracePeriods: Bool? = nil,
         allowLaterDeferralButton: Bool? = nil,
+        allowMovableWindow: Bool? = nil,
         allowUserQuitDeferrals: Bool? = nil,
         allowedDeferrals: Int? = nil,
         allowedDeferralsUntilForcedSecondaryQuitButton: Int? = nil,
@@ -287,6 +288,7 @@ extension UserExperience {
         return UserExperience(
             allowGracePeriods: allowGracePeriods ?? self.allowGracePeriods,
             allowLaterDeferralButton: allowLaterDeferralButton ?? self.allowLaterDeferralButton,
+            allowMovableWindow: allowMovableWindow ?? self.allowMovableWindow,
             allowUserQuitDeferrals: allowUserQuitDeferrals ?? self.allowUserQuitDeferrals,
             allowedDeferrals: allowedDeferrals ?? self.allowedDeferrals,
             allowedDeferralsUntilForcedSecondaryQuitButton: allowedDeferralsUntilForcedSecondaryQuitButton ?? self.allowedDeferralsUntilForcedSecondaryQuitButton,

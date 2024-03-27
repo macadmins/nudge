@@ -178,11 +178,17 @@ struct UserExperienceVariables {
     static var allowGracePeriods: Bool {
         PrefsWrapper.allowGracePeriods
     }
-    
+
     static var allowLaterDeferralButton: Bool {
         userExperienceProfile?["allowLaterDeferralButton"] as? Bool ??
         userExperienceJSON?.allowLaterDeferralButton ??
         true
+    }
+
+    static var allowMovableWindow: Bool {
+        userExperienceProfile?["allowMovableWindow"] as? Bool ??
+        userExperienceJSON?.allowMovableWindow ??
+        false
     }
 
     static var allowUserQuitDeferrals: Bool {

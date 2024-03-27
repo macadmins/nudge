@@ -85,7 +85,7 @@ struct ContentView: View {
         window?.standardWindowButton(.miniaturizeButton)?.isHidden = true
         window?.standardWindowButton(.zoomButton)?.isHidden = true
         window?.center()
-        window?.isMovable = false
+        window?.isMovable = UserExperienceVariables.allowMovableWindow
         window?.collectionBehavior = [.fullScreenAuxiliary]
         window?.delegate = UIConstants.windowDelegate
     }
@@ -215,16 +215,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc func screenParametersChanged(_ notification: Notification) {
+        if UserExperienceVariables.allowMovableWindow { return }
         LogManager.info("Screen parameters changed - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
     }
 
     @objc func screenProfileChanged(_ notification: Notification) {
+        if UserExperienceVariables.allowMovableWindow { return }
         LogManager.info("Display has changed profiles - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
     }
 
     @objc func spacesStateChanged(_ notification: Notification) {
+        if UserExperienceVariables.allowMovableWindow { return }
         UIUtilities().centerNudge()
         LogManager.info("Spaces state changed", logger: utilsLog)
         nudgePrimaryState.afterFirstStateChange = true
@@ -452,6 +455,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             forName: NSWindow.didChangeScreenNotification,
             object: NSApplication.shared,
             queue: .main) { _ in
+                if UserExperienceVariables.allowMovableWindow { return }
                 print("Window object frame moved - Notification Center")
                 UIUtilities().centerNudge()
             }
@@ -548,14 +552,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 class WindowDelegate: NSObject, NSWindowDelegate {
     func windowDidMove(_ notification: Notification) {
+        if UserExperienceVariables.allowMovableWindow { return }
         print("Window attempted to move - Window Delegate")
         UIUtilities().centerNudge()
     }
     func windowDidChangeScreen(_ notification: Notification) {
+        if UserExperienceVariables.allowMovableWindow { return }
         print("Window moved screens - Window Delegate")
         UIUtilities().centerNudge()
     }
     func windowDidChangeScreenProfile(_ notification: Notification) {
+        if UserExperienceVariables.allowMovableWindow { return }
         print("Display has changed profiles - Window Delegate")
         UIUtilities().centerNudge()
     }
