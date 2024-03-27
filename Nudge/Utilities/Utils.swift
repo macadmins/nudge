@@ -8,6 +8,7 @@
 import AppKit
 import CoreMediaIO
 import Foundation
+import IOKit
 #if canImport(ServiceManagement)
 import ServiceManagement
 #endif
@@ -477,12 +478,59 @@ struct DateManager {
 }
 
 struct DeviceManager {
+    // print(DeviceManager().getBoardID())
+    func getBoardID() -> String? {
+        var service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+
+        defer {
+            IOObjectRelease(service)
+        }
+
+        guard service != 0 else {
+            print("Failed to get IOPlatformExpertDevice service")
+            return nil
+        }
+
+        guard let property = IORegistryEntryCreateCFProperty(service, "board-id" as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() else {
+            print("Failed to get board-id property")
+            return nil
+        }
+
+//        print(CFGetTypeID(property))
+//        print(CFStringGetTypeID())
+//        if let propertyDescription = CFCopyTypeIDDescription(CFGetTypeID(property)) {
+//            print("Property type is:", propertyDescription)
+//        }
+
+        // Check if the property is of type CFData
+        if CFGetTypeID(property) == CFDataGetTypeID(), let data = property as? Data {
+            // Attempt to convert the data to a string
+            let boardID = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0"))
+            return boardID
+        } else {
+            print("Failed to check board-id property")
+            return nil
+        }
+    }
+
+    func getSysctlValue(for key: String) -> String? {
+        var size: size_t = 0
+        sysctlbyname(key, nil, &size, nil, 0)
+        var value = [CChar](repeating: 0, count: size)
+        sysctlbyname(key, &value, &size, nil, 0)
+        return String(cString: value)
+    }
+
     func getCPUTypeInt() -> Int {
         // https://stackoverflow.com/a/63539782
         var cputype = cpu_type_t()
         var size = MemoryLayout.size(ofValue: cputype)
         let result = sysctlbyname("hw.cputype", &cputype, &size, nil, 0)
         return result == -1 ? -1 : Int(cputype)
+    }
+
+    func getHardwareModel() -> String {
+        getSysctlValue(for: "hw.model") ?? ""
     }
 
     func getCPUTypeString() -> String {
