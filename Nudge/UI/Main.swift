@@ -142,6 +142,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleKeyboardEvents()
         handleApplicationLaunchesIfNeeded()
         checkFullScreenStateOnFirstLaunch()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            print(nudgePrimaryState.gdmfAssets)
+        }
     }
 
     func applicationDidResignActive(_ notification: Notification) {
@@ -174,6 +177,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
+        NetworkFileManager().getGDMFAssets()
         handleSMAppService()
         checkForBadProfilePath()
         handleCommandLineArguments()

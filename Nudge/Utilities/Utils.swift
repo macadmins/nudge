@@ -704,6 +704,90 @@ struct NetworkFileManager {
         }
     }
 
+    func getGDMFAssets() {
+        // Define the URL you want to pin to
+        if let url = URL(string: "https://gdmf.apple.com/v2/pmv") {
+            // Call the pin method
+            GDMFPinnedSSL.shared.pin(url: url) { data, response, error in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                } else if let data = data {
+                    do {
+                        let assetInfo = try GDMFAssetInfo(data: data)
+                        // print(assetInfo)
+                        DispatchQueue.main.async {
+                            nudgePrimaryState.gdmfAssets = assetInfo
+                        }
+                    } catch {
+                        print("Failed to decode JSON: \(error.localizedDescription)")
+                    }
+                } else {
+                    print("Unknown error")
+                }
+            }
+        } else {
+            print("Invalid URL")
+        }
+    }
+
+//    func getGDMFAssets2() -> GDMFAssetInfo? {
+//        if let url = URL(string: "https://gdmf.apple.com/v2/pmv") {
+//            // Call the pin method
+//            GDMFPinnedSSL.shared.pin1(url: url) { result in
+//                switch result {
+//                    case .success(let assetInfo):
+//                        print(assetInfo)
+//                    case .failure(let error):
+//                        print("Error: \(error.localizedDescription)")
+//                }
+//            }
+//        }
+//        return nil
+//    }
+//
+//    func getGDMFAssetsSync() -> GDMFAssetInfo? {
+//        var info: GDMFAssetInfo?
+//        GDMFPinnedSSL.shared.fetchAssetInfoSynchronously(urlString: "https://gdmf.apple.com/v2/pmv") { assetInfo, error in
+//            if let error = error {
+//                print("Error: \(error.localizedDescription)")
+//            } else if let assetInfo = assetInfo {
+//                print("Asset Info: \(assetInfo)")
+//                info = assetInfo
+//            } else {
+//                print("Unknown error occurred")
+//            }
+//        }
+//        return info
+//    }
+//            GDMFPinnedSSL.shared.pin(url: url) { data, response, error in
+//                // Ensure there is no error
+//                guard error == nil else {
+//                    print("Error: \(error!.localizedDescription)")
+//                    return nil
+//                }
+//
+//                // Ensure there is data returned
+//                guard let data = data else {
+//                    print("No data received")
+//                    return nil
+//                }
+//                // Process the JSON data
+//                do {
+//                    // Assuming `AssetInfo` is the struct model that conforms to Decodable
+//                    let assetInfo = try JSONDecoder().decode(GDMFAssetInfo.self, from: data)
+//                    // Now you have your model and can use it as needed
+//                    return assetInfo
+//                } catch {
+//                    print("Failed to decode JSON: \(error.localizedDescription)")
+//                    return nil
+//                }
+//            }
+//        } else {
+//            print("invalid URL")
+//            return nil
+//        }
+//    }
+
     func getBackupMajorUpgradeAppPath() -> String {
         switch VersionManager.getMajorRequiredNudgeOSVersion() {
             case 12:

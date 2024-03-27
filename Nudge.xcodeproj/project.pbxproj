@@ -19,6 +19,9 @@
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		6316F0E72832CA0700E1354D /* Schema in Resources */ = {isa = PBXBuildFile; fileRef = 6316F0E62832CA0700E1354D /* Schema */; };
 		6347351D2B45DC2400C3401D /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347351C2B45DC2400C3401D /* CloseButton.swift */; };
+		634CE1092BB47480002C26C4 /* gdmf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CE1082BB47480002C26C4 /* gdmf.swift */; };
+		634CE10A2BB47480002C26C4 /* gdmf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CE1082BB47480002C26C4 /* gdmf.swift */; };
+		634CE10B2BB47480002C26C4 /* gdmf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CE1082BB47480002C26C4 /* gdmf.swift */; };
 		636B9C0226CACCAB0007BE3B /* DeferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B9C0126CACCAB0007BE3B /* DeferView.swift */; };
 		636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */; };
 		636C4B7625D4306A0004A791 /* UILogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636C4B7525D4306A0004A791 /* UILogic.swift */; };
@@ -91,6 +94,7 @@
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		6316F0E62832CA0700E1354D /* Schema */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Schema; sourceTree = "<group>"; };
 		6347351C2B45DC2400C3401D /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		634CE1082BB47480002C26C4 /* gdmf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gdmf.swift; sourceTree = "<group>"; };
 		636B9C0126CACCAB0007BE3B /* DeferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferView.swift; sourceTree = "<group>"; };
 		636C4B4925D1BECE0004A791 /* DefaultPreferencesNudge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPreferencesNudge.swift; sourceTree = "<group>"; };
 		636C4B7525D4306A0004A791 /* UILogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILogic.swift; sourceTree = "<group>"; };
@@ -177,6 +181,14 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		634CE1032BB47433002C26C4 /* 3rd Party Assets */ = {
+			isa = PBXGroup;
+			children = (
+				634CE1082BB47480002C26C4 /* gdmf.swift */,
+			);
+			path = "3rd Party Assets";
+			sourceTree = "<group>";
+		};
 		639B6B3925DF1FEB00E38EC1 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
@@ -257,6 +269,7 @@
 		63D7D0E125C9E9A400236281 /* Nudge */ = {
 			isa = PBXGroup;
 			children = (
+				634CE1032BB47433002C26C4 /* 3rd Party Assets */,
 				73CC1D7729B81EE500FBF8E2 /* com.github.macadmins.Nudge.SMAppService.plist */,
 				639B6B5425DF374600E38EC1 /* UI */,
 				639B6B3925DF1FEB00E38EC1 /* Preferences */,
@@ -467,6 +480,7 @@
 				63C39C1B2A38D33C0049EF62 /* Extensions.swift in Sources */,
 				0B0CCEDA25CE1C7C00A93D43 /* OSVersion.swift in Sources */,
 				639E198A25CD9E21008F618B /* Utils.swift in Sources */,
+				634CE1092BB47480002C26C4 /* gdmf.swift in Sources */,
 				636C4B7625D4306A0004A791 /* UILogic.swift in Sources */,
 				41AD2B0026DE65B1004C52B1 /* QuitButtons.swift in Sources */,
 				636C4B4A25D1BECE0004A791 /* DefaultPreferencesNudge.swift in Sources */,
@@ -497,6 +511,7 @@
 			files = (
 				0BC9972C25CE2DFC0019FC8F /* OSVersionTests.swift in Sources */,
 				63D7D0F625C9E9A500236281 /* NudgeTests.swift in Sources */,
+				634CE10A2BB47480002C26C4 /* gdmf.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63D7D10125C9E9A500236281 /* NudgeUITests.swift in Sources */,
+				634CE10B2BB47480002C26C4 /* gdmf.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
