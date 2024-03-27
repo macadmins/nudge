@@ -238,7 +238,7 @@ struct CameraManager {
         var address = CMIOObjectPropertyAddress(
             mSelector: CMIOObjectPropertySelector(kCMIOObjectPropertyName),
             mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
-            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
+            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMain))
 
         var nameCFString: CFString?
         let propsize = UInt32(MemoryLayout<UnsafeMutablePointer<CFString?>>.size)
@@ -260,7 +260,7 @@ struct CameraUtilities {
         var opa = CMIOObjectPropertyAddress(
             mSelector: CMIOObjectPropertySelector(kCMIOHardwarePropertyDevices),
             mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
-            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
+            mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMain))
 
         var dataSize: UInt32 = 0
         var dataUsed: UInt32 = 0
@@ -480,7 +480,7 @@ struct DateManager {
 struct DeviceManager {
     // print(DeviceManager().getBoardID())
     func getBoardID() -> String? {
-        var service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        let service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
 
         defer {
             IOObjectRelease(service)
@@ -570,7 +570,7 @@ struct DeviceManager {
     }
 
     private func getPropertyFromPlatformExpert(key: String) -> String? {
-        let platformExpert = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        let platformExpert = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
         defer { IOObjectRelease(platformExpert) }
 
         guard platformExpert > 0,
@@ -1156,7 +1156,7 @@ var cameras: [CameraManager] {
     var opa = CMIOObjectPropertyAddress(
         mSelector: CMIOObjectPropertySelector(kCMIOHardwarePropertyDevices),
         mScope: CMIOObjectPropertyScope(kCMIOObjectPropertyScopeGlobal),
-        mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMaster))
+        mElement: CMIOObjectPropertyElement(kCMIOObjectPropertyElementMain))
 
     var dataSize: UInt32 = 0
     var dataUsed: UInt32 = 0
