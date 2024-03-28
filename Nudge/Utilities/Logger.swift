@@ -44,6 +44,7 @@ let loggingLog = LogManager.createLogger(category: "logging")
 let prefsProfileLog = LogManager.createLogger(category: "preferences-profile")
 let prefsJSONLog = LogManager.createLogger(category: "preferences-json")
 let uiLog = LogManager.createLogger(category: "user-interface")
+let softwareupdateDeviceLog = LogManager.createLogger(category: "softwareupdate-device")
 let softwareupdateListLog = LogManager.createLogger(category: "softwareupdate-list")
 let softwareupdateDownloadLog = LogManager.createLogger(category: "softwareupdate-download")
 
