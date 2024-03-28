@@ -478,8 +478,7 @@ struct DateManager {
 }
 
 struct DeviceManager {
-    // print(DeviceManager().getBoardID())
-    func getBoardID() -> String? {
+    func getIORegInfo(serviceTarget: String) -> String? {
         let service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
 
         defer {
@@ -487,12 +486,12 @@ struct DeviceManager {
         }
 
         guard service != 0 else {
-            print("Failed to get IOPlatformExpertDevice service")
+            LogManager.error("Failed to fetch IOPlatformExpertDevice service.", logger: utilsLog)
             return nil
         }
 
-        guard let property = IORegistryEntryCreateCFProperty(service, "board-id" as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() else {
-            print("Failed to get board-id property")
+        guard let property = IORegistryEntryCreateCFProperty(service, serviceTarget as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() else {
+            LogManager.error("Failed to fetch \(serviceTarget) property.", logger: utilsLog)
             return nil
         }
 
@@ -505,10 +504,10 @@ struct DeviceManager {
         // Check if the property is of type CFData
         if CFGetTypeID(property) == CFDataGetTypeID(), let data = property as? Data {
             // Attempt to convert the data to a string
-            let boardID = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0"))
-            return boardID
+            let serviceTargetProperty = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0"))
+            return serviceTargetProperty
         } else {
-            print("Failed to check board-id property")
+            LogManager.error("Failed to check \(serviceTarget) property.", logger: utilsLog)
             return nil
         }
     }
@@ -544,13 +543,13 @@ struct DeviceManager {
 
         switch cpuArch {
             case Int(CPU_TYPE_X86) /* Intel */:
-                LogManager.debug("CPU Type is Intel", logger: utilsLog)
+                LogManager.debug("CPU Type: Intel", logger: utilsLog)
                 return "Intel"
             case Int(CPU_TYPE_ARM) /* Apple Silicon */:
-                LogManager.debug("CPU Type is Apple Silicon", logger: utilsLog)
+                LogManager.debug("CPU Type: Apple Silicon", logger: utilsLog)
                 return "Apple Silicon"
             default:
-                LogManager.debug("Unknown CPU Type", logger: utilsLog)
+                LogManager.debug("CPU Type: Unknown", logger: utilsLog)
                 return "unknown"
         }
     }
@@ -765,6 +764,7 @@ struct NetworkFileManager {
                         // print(assetInfo)
                         DispatchQueue.main.async {
                             nudgePrimaryState.gdmfAssets = assetInfo
+                            // perhaps process this as a lookup for all OS versions a board ID can contain
                         }
                     } catch {
                         print("Failed to decode JSON: \(error.localizedDescription)")

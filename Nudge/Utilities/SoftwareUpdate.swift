@@ -9,6 +9,18 @@ import Foundation
 import os
 
 class SoftwareUpdate {
+    func getSoftwareUpdateDeviceID() -> String {
+        let (output, error, exitCode) = runProcess(launchPath: "/usr/libexec/remotectl", arguments: ["get-property", "localbridge", "HWModel"])
+
+        if exitCode != 0 {
+            LogManager.error("Error assessing DeviceID: \(error)", logger: softwareupdateDeviceLog)
+            return error
+        } else {
+            LogManager.info("SoftwareUpdateDeviceID: \(output)", logger: softwareupdateDeviceLog)
+            return output
+        }
+    }
+
     func list() -> String {
         let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--list", "--all"])
 

@@ -26,6 +26,8 @@ struct Globals {
     static let configProfile = ConfigurationManager().getConfigurationAsProfile()
     static let nudgeDefaults = UserDefaults.standard
     static let nudgeJSONPreferences = NetworkFileManager().getNudgeJSONPreferences()
+    // Device Properties
+    var hardwareID: String = ""
 }
 
 struct Intervals {
