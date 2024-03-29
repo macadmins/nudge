@@ -174,6 +174,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
+        if let macOSAssets = Globals.gdmfAssets?.publicAssetSets.macOS {
+            // Find the first macOS asset that matches the product version
+            var tempRequiredMinOSVersion = PrefsWrapper.requiredMinimumOSVersion
+            tempRequiredMinOSVersion = "14.4.1" // Hack so I can test this since 14.99.99 doesn't exist in GDMF
+            if let matchingAsset = macOSAssets.first(where: { $0.productVersion == tempRequiredMinOSVersion }) {
+                // Check if the specified device is in the supported devices of the matching asset
+                print("GDMF Matched OS Version: \(matchingAsset.productVersion)")
+                print("GDMF Assets: \(matchingAsset.supportedDevices)")
+                print("Assessed Model ID: \(Globals.hardwareModelID)")
+                print("DeviceGDMFSupported: \(matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() }))")
+            } else {
+                // If no matching product version found or the device is not supported, return false
+                print("DeviceGDMFSupported: False")
+            }
+        } else {
+            print("No macOS assets available.")
+        }
         handleSMAppService()
         checkForBadProfilePath()
         handleCommandLineArguments()
