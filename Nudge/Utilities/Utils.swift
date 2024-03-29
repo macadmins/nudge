@@ -579,8 +579,11 @@ struct DeviceManager {
         // Check if the property is of type CFData
         if CFGetTypeID(property) == CFDataGetTypeID(), let data = property as? Data {
             // Attempt to convert the data to a string
-            let serviceTargetProperty = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0"))
-            return serviceTargetProperty
+            if let serviceTargetProperty = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0")) {
+                LogManager.debug("\(serviceTarget): \(String(describing: serviceTargetProperty))", logger: utilsLog)
+                return serviceTargetProperty
+            }
+            return nil
         } else {
             LogManager.error("Failed to check \(serviceTarget) property.", logger: utilsLog)
             return nil
