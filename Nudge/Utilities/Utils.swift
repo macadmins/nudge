@@ -542,7 +542,7 @@ struct DeviceManager {
             }
         }
         LogManager.debug("Hardware Model ID: \(hardwareModelID)", logger: utilsLog)
-        return hardwareModelID
+        return hardwareModelID.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     func getHardwareUUID() -> String {
