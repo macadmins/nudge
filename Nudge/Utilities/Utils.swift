@@ -478,48 +478,6 @@ struct DateManager {
 }
 
 struct DeviceManager {
-    func getIORegInfo(serviceTarget: String) -> String? {
-        let service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-
-        defer {
-            IOObjectRelease(service)
-        }
-
-        guard service != 0 else {
-            LogManager.error("Failed to fetch IOPlatformExpertDevice service.", logger: utilsLog)
-            return nil
-        }
-
-        guard let property = IORegistryEntryCreateCFProperty(service, serviceTarget as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() else {
-            LogManager.error("Failed to fetch \(serviceTarget) property.", logger: utilsLog)
-            return nil
-        }
-
-//        print(CFGetTypeID(property))
-//        print(CFStringGetTypeID())
-//        if let propertyDescription = CFCopyTypeIDDescription(CFGetTypeID(property)) {
-//            print("Property type is:", propertyDescription)
-//        }
-
-        // Check if the property is of type CFData
-        if CFGetTypeID(property) == CFDataGetTypeID(), let data = property as? Data {
-            // Attempt to convert the data to a string
-            let serviceTargetProperty = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0"))
-            return serviceTargetProperty
-        } else {
-            LogManager.error("Failed to check \(serviceTarget) property.", logger: utilsLog)
-            return nil
-        }
-    }
-
-    func getSysctlValue(for key: String) -> String? {
-        var size: size_t = 0
-        sysctlbyname(key, nil, &size, nil, 0)
-        var value = [CChar](repeating: 0, count: size)
-        sysctlbyname(key, &value, &size, nil, 0)
-        return String(cString: value)
-    }
-
     func getCPUTypeInt() -> Int {
         // https://stackoverflow.com/a/63539782
         var cputype = cpu_type_t()
@@ -528,8 +486,16 @@ struct DeviceManager {
         return result == -1 ? -1 : Int(cputype)
     }
 
-    func getHardwareModel() -> String {
-        getSysctlValue(for: "hw.model") ?? ""
+    func getBridgeModelID() -> String {
+        let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/libexec/remotectl", arguments: ["get-property", "localbridge", "HWModel"])
+
+        if exitCode != 0 {
+            LogManager.error("Error assessing DeviceID: \(error)", logger: softwareupdateDeviceLog)
+            return ""
+        } else {
+            LogManager.info("SoftwareUpdateDeviceID: \(output)", logger: softwareupdateDeviceLog)
+            return output
+        }
     }
 
     func getCPUTypeString() -> String {
@@ -554,12 +520,71 @@ struct DeviceManager {
         }
     }
 
+    func getHardwareModel() -> String {
+        getSysctlValue(for: "hw.model") ?? ""
+    }
+
+    func getHardwareModelID() -> String {
+        var hardwareModelID = ""
+        if DeviceManager().getCPUTypeString() == "Apple Silicon" {
+            // There is no local bridge
+            hardwareModelID = getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
+        } else {
+            // Attempt localbridge for T2, if it fails, it's likely a T1 or lower
+            let bridgeID = getBridgeModelID()
+            let boardID = getIORegInfo(serviceTarget: "board-id")
+            if bridgeID.isEmpty {
+                // Fallback to boardID for T1
+                hardwareModelID = boardID ?? "Unknown"
+            } else {
+                // T2 uses bridge ID for it's update brain via gdmf
+                hardwareModelID = bridgeID
+            }
+        }
+        LogManager.debug("Hardware Model ID: \(hardwareModelID)", logger: utilsLog)
+        return hardwareModelID
+    }
+
     func getHardwareUUID() -> String {
         guard !CommandLineUtilities().demoModeEnabled(),
               !CommandLineUtilities().unitTestingEnabled() else {
             return "DC3F0981-D881-408F-BED7-8D6F1DEE8176"
         }
         return getPropertyFromPlatformExpert(key: String(kIOPlatformUUIDKey)) ?? ""
+    }
+
+    func getIORegInfo(serviceTarget: String) -> String? {
+        let service: io_service_t = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+
+        defer {
+            IOObjectRelease(service)
+        }
+
+        guard service != 0 else {
+            LogManager.error("Failed to fetch IOPlatformExpertDevice service.", logger: utilsLog)
+            return nil
+        }
+
+        guard let property = IORegistryEntryCreateCFProperty(service, serviceTarget as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() else {
+            LogManager.error("Failed to fetch \(serviceTarget) property.", logger: utilsLog)
+            return nil
+        }
+
+        //        print(CFGetTypeID(property))
+        //        print(CFStringGetTypeID())
+        //        if let propertyDescription = CFCopyTypeIDDescription(CFGetTypeID(property)) {
+        //            print("Property type is:", propertyDescription)
+        //        }
+
+        // Check if the property is of type CFData
+        if CFGetTypeID(property) == CFDataGetTypeID(), let data = property as? Data {
+            // Attempt to convert the data to a string
+            let serviceTargetProperty = String(data: data, encoding: .utf8)?.trimmingCharacters(in: CharacterSet(charactersIn: "\0"))
+            return serviceTargetProperty
+        } else {
+            LogManager.error("Failed to check \(serviceTarget) property.", logger: utilsLog)
+            return nil
+        }
     }
 
     func getPatchOSVersion() -> Int {
@@ -585,6 +610,14 @@ struct DeviceManager {
             return "C00000000000"
         }
         return getPropertyFromPlatformExpert(key: String(kIOPlatformSerialNumberKey)) ?? ""
+    }
+
+    func getSysctlValue(for key: String) -> String? {
+        var size: size_t = 0
+        sysctlbyname(key, nil, &size, nil, 0)
+        var value = [CChar](repeating: 0, count: size)
+        sysctlbyname(key, &value, &size, nil, 0)
+        return String(cString: value)
     }
 
     func getSystemConsoleUsername() -> String {
@@ -751,90 +784,42 @@ struct NetworkFileManager {
         }
     }
 
-    func getGDMFAssets() {
+    func getGDMFAssets() ->  GDMFAssetInfo? {
         // Define the URL you want to pin to
         if let url = URL(string: "https://gdmf.apple.com/v2/pmv") {
             // Call the pin method
-            GDMFPinnedSSL.shared.pin(url: url) { data, response, error in
-                if let error = error {
-                    print("Error: \(error.localizedDescription)")
-                } else if let data = data {
-                    do {
-                        let assetInfo = try GDMFAssetInfo(data: data)
-                        // print(assetInfo)
-                        DispatchQueue.main.async {
-                            nudgePrimaryState.gdmfAssets = assetInfo
-                            // perhaps process this as a lookup for all OS versions a board ID can contain
-                        }
-                    } catch {
-                        print("Failed to decode JSON: \(error.localizedDescription)")
-                    }
-                } else {
-                    print("Unknown error")
+            // Async Method
+            //            GDMFPinnedSSL.shared.pinAsync(url: url) { data, response, error in
+            //                if let error = error {
+            //                    print("Error: \(error.localizedDescription)")
+            //                } else if let data = data {
+            //                    do {
+            //                        let assetInfo = try GDMFAssetInfo(data: data)
+            //                        return assetInfo
+            //                    } catch {
+            //                        print("Failed to decode JSON: \(error.localizedDescription)")
+            //                    }
+            //                } else {
+            //                    print("Unknown error")
+            //                }
+            //            }
+            // Sync Method
+            let gdmfData = GDMFPinnedSSL.shared.pinSync(url: url)
+            if (gdmfData.error == nil) {
+                do {
+                    let assetInfo = try GDMFAssetInfo(data: gdmfData.data!)
+                    return assetInfo
+                } catch {
+                    LogManager.error("Failed to decode gdmf JSON: \(error.localizedDescription)", logger: utilsLog)
                 }
+            } else {
+                LogManager.error("Failed to fetch gdmf JSON: \(gdmfData.error!.localizedDescription)", logger: utilsLog)
             }
         } else {
-            print("Invalid URL")
+            LogManager.error("Failed to decode gdmf JSON URL string", logger: utilsLog)
         }
+        return nil
     }
-
-//    func getGDMFAssets2() -> GDMFAssetInfo? {
-//        if let url = URL(string: "https://gdmf.apple.com/v2/pmv") {
-//            // Call the pin method
-//            GDMFPinnedSSL.shared.pin1(url: url) { result in
-//                switch result {
-//                    case .success(let assetInfo):
-//                        print(assetInfo)
-//                    case .failure(let error):
-//                        print("Error: \(error.localizedDescription)")
-//                }
-//            }
-//        }
-//        return nil
-//    }
-//
-//    func getGDMFAssetsSync() -> GDMFAssetInfo? {
-//        var info: GDMFAssetInfo?
-//        GDMFPinnedSSL.shared.fetchAssetInfoSynchronously(urlString: "https://gdmf.apple.com/v2/pmv") { assetInfo, error in
-//            if let error = error {
-//                print("Error: \(error.localizedDescription)")
-//            } else if let assetInfo = assetInfo {
-//                print("Asset Info: \(assetInfo)")
-//                info = assetInfo
-//            } else {
-//                print("Unknown error occurred")
-//            }
-//        }
-//        return info
-//    }
-//            GDMFPinnedSSL.shared.pin(url: url) { data, response, error in
-//                // Ensure there is no error
-//                guard error == nil else {
-//                    print("Error: \(error!.localizedDescription)")
-//                    return nil
-//                }
-//
-//                // Ensure there is data returned
-//                guard let data = data else {
-//                    print("No data received")
-//                    return nil
-//                }
-//                // Process the JSON data
-//                do {
-//                    // Assuming `AssetInfo` is the struct model that conforms to Decodable
-//                    let assetInfo = try JSONDecoder().decode(GDMFAssetInfo.self, from: data)
-//                    // Now you have your model and can use it as needed
-//                    return assetInfo
-//                } catch {
-//                    print("Failed to decode JSON: \(error.localizedDescription)")
-//                    return nil
-//                }
-//            }
-//        } else {
-//            print("invalid URL")
-//            return nil
-//        }
-//    }
 
     func getBackupMajorUpgradeAppPath() -> String {
         switch VersionManager.getMajorRequiredNudgeOSVersion() {
@@ -872,6 +857,34 @@ struct NetworkFileManager {
 
         LogManager.error("Could not find or decode JSON configuration", logger: prefsJSONLog)
         return nil
+    }
+}
+
+struct SubProcessUtilities {
+    func runProcess(launchPath: String, arguments: [String]) -> (output: String, error: String, exitCode: Int32) {
+        let task = Process()
+        task.launchPath = launchPath
+        task.arguments = arguments
+
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+        task.standardOutput = outputPipe
+        task.standardError = errorPipe
+
+        do {
+            try task.run()
+        } catch {
+            return ("", "Error running process", -1)
+        }
+
+        task.waitUntilExit()
+
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(decoding: outputData, as: UTF8.self)
+        let error = String(decoding: errorData, as: UTF8.self)
+
+        return (output, error, task.terminationStatus)
     }
 }
 

@@ -98,93 +98,47 @@ class GDMFPinnedSSL: NSObject {
         SecCertificateCreateWithData(nil, Data(base64Encoded: "MIID+DCCAuCgAwIBAgIII2l0BK3LgxQwDQYJKoZIhvcNAQELBQAwYjELMAkGA1UEBhMCVVMxEzARBgNVBAoTCkFwcGxlIEluYy4xJjAkBgNVBAsTHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRYwFAYDVQQDEw1BcHBsZSBSb290IENBMB4XDTE0MDMwODAxNTMwNFoXDTI5MDMwODAxNTMwNFowbTEnMCUGA1UEAwweQXBwbGUgU2VydmVyIEF1dGhlbnRpY2F0aW9uIENBMSAwHgYDVQQLDBdDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC5Jhawy4ercRWSjt+qPuGA11O6pGDMfIVy9zB8CU9XDUr/4V7JS1ATAmSxvTk10dcEUcEY+iL6rt+YGNa/Tk1DEPoliJ/TQIV25SKBtlRFc5qL45xIGoZ6w1Hi2pX4pH3bMN5sDsTF9WyY56b6VyAdGXN6Ds1jD7cniC7hmmiCuEBsYxYkZivnsuJUfeeIOaIbgT4C0znYl3dKMgzWCgqzBJvxcm9jqBUebDfoD9tTkNYpXLxqV5tGeAo+JOqaP6HYP/XbbqhsgrXdmTjsklaUpsVzJtGuCLLGUueOdkuJuFQPbuDZQtsqZYdGFLuWuFe7UeaEE/cNobaJrHzRIXSrAgMBAAGjgaYwgaMwHQYDVR0OBBYEFCzFbVLdMe+M7AiB7d/cykMARQHQMA8GA1UdEwEB/wQFMAMBAf8wHwYDVR0jBBgwFoAUK9BpR5R2Cf70a40uQKb3R01/CF4wLgYDVR0fBCcwJTAjoCGgH4YdaHR0cDovL2NybC5hcHBsZS5jb20vcm9vdC5jcmwwDgYDVR0PAQH/BAQDAgEGMBAGCiqGSIb3Y2QGAgwEAgUAMA0GCSqGSIb3DQEBCwUAA4IBAQAj8QZ+UEGBol7TcKRJka/YzGeMoSV9xJqTOS/YafsbQVtE19lryzslCRry9OPHnOiwW/Df3SIlERWTuUle2gxmel7Xb/Bj1GWMxHpUfVZPZZr92sSyyLC4oct94EeoQBW4FhntW2GO36rQzdI6wH46nyJO39/0ThrNk//Q8EVVZDM+1OXaaKATinYwJ9S/+B529vnDAO+xg+pTbVw1xw0HAbr4Ybn+xZprQ2GBA+u6X3Cd6G+UJEvczpKoLqI1PONJ4BZ3otxruY0YQrk2lkMyxst2mTU22FbGmF3Db6V+lcLVegoCIGZ4kvJnpCMN6Am9zCExEKC9vrXdTN1GA5mZ")! as CFData)!
     ]
 
-    func pin(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    func pinAsynch(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         let request = URLRequest(url: url)
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         let task = session.dataTask(with: request, completionHandler: completion)
         task.resume()
     }
 
-//    func pin2(url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
-//        let request = URLRequest(url: url)
-//        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-//        let task = session.dataTask(with: request) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//            } else if let data = data {
-//                completion(.success(data))
-//            } else {
-//                completion(.failure(URLError(.badServerResponse)))
-//            }
-//        }
-//        task.resume()
-//    }
+    func pinSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?) {
+        let semaphore = DispatchSemaphore(value: 0)
+        let request = URLRequest(url: url)
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        var attempts = 0
 
-//    func pin3(url: URL, completion: @escaping (Result<GDMFAssetInfo, Error>) -> Void) {
-//        let request = URLRequest(url: url)
-//        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-//        let task = session.dataTask(with: request) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//
-//            guard let data = data else {
-//                completion(.failure(URLError(.cannotParseResponse)))
-//                return
-//            }
-//
-//            do {
-//                let assetInfo = try JSONDecoder().decode(GDMFAssetInfo.self, from: data)
-//                completion(.success(assetInfo))
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }
-//        task.resume()
-//    }
+        var responseData: Data?
+        var response: URLResponse?
+        var responseError: Error?
 
-//    func fetchAssetInfoSynchronously(urlString: String, completion: @escaping (GDMFAssetInfo?, Error?) -> Void) {
-//        guard let url = URL(string: urlString) else {
-//            completion(nil, URLError(.badURL))
-//            return
-//        }
-//
-//        DispatchQueue.global(qos: .userInitiated).async {
-//            let semaphore = DispatchSemaphore(value: 0)
-//            var assetInfo: GDMFAssetInfo?
-//            var requestError: Error?
-//
-//            let request = URLRequest(url: url)
-//            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//                defer { semaphore.signal() }
-//
-//                if let error = error {
-//                    requestError = error
-//                    return
-//                }
-//
-//                guard let data = data else {
-//                    requestError = URLError(.badServerResponse)
-//                    return
-//                }
-//
-//                do {
-//                    // print(String(data: data, encoding: .utf8))
-//                    assetInfo = try JSONDecoder().decode(GDMFAssetInfo.self, from: data)
-//                } catch {
-//                    requestError = error
-//                }
-//            }
-//
-//            task.resume()
-//            semaphore.wait() // This will block the background thread until the semaphore is signaled
-//
-//            DispatchQueue.main.async {
-//                completion(assetInfo, requestError)
-//            }
-//        }
-//    }
+        // Retry loop
+        while attempts < maxRetries {
+            attempts += 1
+            let task = session.dataTask(with: request) { data, resp, error in
+                responseData = data
+                response = resp
+                responseError = error
+                semaphore.signal()
+            }
+            task.resume()
+
+            semaphore.wait()
+
+            // Break the loop if the task succeeded or return an error other than a timeout
+            if responseError == nil || (responseError! as NSError).code != NSURLErrorTimedOut {
+                break
+            } else if attempts < maxRetries {
+                // Reset the error to try again
+                responseError = nil
+            }
+        }
+
+        return (responseData, response, responseError)
+    }
 }
 
 extension GDMFPinnedSSL: URLSessionDelegate {
