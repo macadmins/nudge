@@ -142,9 +142,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleKeyboardEvents()
         handleApplicationLaunchesIfNeeded()
         checkFullScreenStateOnFirstLaunch()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            print(nudgePrimaryState.gdmfAssets as Any)
-        }
     }
 
     func applicationDidResignActive(_ notification: Notification) {
@@ -177,8 +174,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        NetworkFileManager().getGDMFAssets()
-        self.getSoftwareUpdateDeviceID()
         handleSMAppService()
         checkForBadProfilePath()
         handleCommandLineArguments()
@@ -551,24 +546,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             runUpdateAsynchronously()
         } else {
             SoftwareUpdate().download()
-        }
-    }
-
-    func getSoftwareUpdateDeviceID() {
-        if DeviceManager().getCPUTypeString() == "Apple Silicon" {
-            // There is no local bridge
-            globals.hardwareID = DeviceManager().getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
-        } else {
-            // Attempt localbridge for T2, if it fails, it's likely a T1 or lower
-            let bridgeID = SoftwareUpdate().getSoftwareUpdateDeviceID()
-            let boardID = DeviceManager().getIORegInfo(serviceTarget: "board-id")
-            if bridgeID.isEmpty {
-                // Fallback to boardID for T1
-                globals.hardwareID = boardID ?? "Unknown"
-            } else {
-                // T2 uses bridge ID for it's update brain via gdmf
-                globals.hardwareID = bridgeID
-            }
         }
     }
 }

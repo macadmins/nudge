@@ -9,20 +9,8 @@ import Foundation
 import os
 
 class SoftwareUpdate {
-    func getSoftwareUpdateDeviceID() -> String {
-        let (output, error, exitCode) = runProcess(launchPath: "/usr/libexec/remotectl", arguments: ["get-property", "localbridge", "HWModel"])
-
-        if exitCode != 0 {
-            LogManager.error("Error assessing DeviceID: \(error)", logger: softwareupdateDeviceLog)
-            return error
-        } else {
-            LogManager.info("SoftwareUpdateDeviceID: \(output)", logger: softwareupdateDeviceLog)
-            return output
-        }
-    }
-
     func list() -> String {
-        let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--list", "--all"])
+        let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--list", "--all"])
 
         if exitCode != 0 {
             LogManager.error("Error listing software updates: \(error)", logger: softwareupdateListLog)
@@ -46,7 +34,7 @@ class SoftwareUpdate {
 
             if OptionalFeatureVariables.attemptToFetchMajorUpgrade, !majorUpgradeAppPathExists, !majorUpgradeBackupAppPathExists {
                 LogManager.notice("Device requires major upgrade - attempting download", logger: softwareupdateListLog)
-                let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion])
+                let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion])
 
                 if exitCode != 0 {
                     LogManager.error("Error downloading software update: \(error)", logger: softwareupdateDownloadLog)
@@ -72,7 +60,7 @@ class SoftwareUpdate {
             }
 
             LogManager.notice("Software update found \(updateLabel) available for download - attempting download", logger: softwareupdateListLog)
-            let (output, error, exitCode) = runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--download", updateLabel])
+            let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--download", updateLabel])
 
             if exitCode != 0 {
                 LogManager.error("Error downloading software updates: \(error)", logger: softwareupdateDownloadLog)
@@ -97,31 +85,5 @@ class SoftwareUpdate {
         }
 
         return updateLabel ?? ""
-    }
-
-    private func runProcess(launchPath: String, arguments: [String]) -> (output: String, error: String, exitCode: Int32) {
-        let task = Process()
-        task.launchPath = launchPath
-        task.arguments = arguments
-
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
-
-        do {
-            try task.run()
-        } catch {
-            return ("", "Error running process", -1)
-        }
-
-        task.waitUntilExit()
-
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(decoding: outputData, as: UTF8.self)
-        let error = String(decoding: errorData, as: UTF8.self)
-
-        return (output, error, task.terminationStatus)
     }
 }
