@@ -156,7 +156,7 @@ struct MacIPSW: Codable {
 extension MacOSDataFeed {
     init(data: Data) throws {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .flexibleISO8601  // Use custom ISO 8601 date format because of weird strings returning in v1 of sofa api
+        decoder.dateDecodingStrategy = .iso8601  // Use ISO 8601 date format
         self = try decoder.decode(MacOSDataFeed.self, from: data)
     }
 
@@ -187,31 +187,6 @@ extension MacOSDataFeed {
             models: models,
             installationApps: installationApps
         )
-    }
-}
-
-extension JSONDecoder.DateDecodingStrategy {
-    static var flexibleISO8601: JSONDecoder.DateDecodingStrategy {
-        return .custom { decoder -> Date in
-            let container = try decoder.singleValueContainer()
-            let dateString = try container.decode(String.self)
-
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-            // List of date formats to try
-            let dateFormats = ["yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"]
-            for format in dateFormats {
-                dateFormatter.dateFormat = format
-                if let date = dateFormatter.date(from: dateString) {
-                    return date
-                }
-            }
-
-            // Return POSIX epoch start date if no valid date is found
-            return Date(timeIntervalSince1970: 0)
-        }
     }
 }
 
