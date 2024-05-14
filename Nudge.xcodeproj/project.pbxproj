@@ -18,6 +18,7 @@
 		5836861425DACFE90004514C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861325DACFE90004514C /* Logger.swift */; };
 		5836861C25DAD01C0004514C /* SoftwareUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5836861B25DAD01C0004514C /* SoftwareUpdate.swift */; };
 		6316F0E72832CA0700E1354D /* Schema in Resources */ = {isa = PBXBuildFile; fileRef = 6316F0E62832CA0700E1354D /* Schema */; };
+		631A6D762BF2654000DC1EF3 /* sofa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631A6D752BF2654000DC1EF3 /* sofa.swift */; };
 		6347351D2B45DC2400C3401D /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347351C2B45DC2400C3401D /* CloseButton.swift */; };
 		634CE1092BB47480002C26C4 /* gdmf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CE1082BB47480002C26C4 /* gdmf.swift */; };
 		634CE10A2BB47480002C26C4 /* gdmf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634CE1082BB47480002C26C4 /* gdmf.swift */; };
@@ -93,6 +94,7 @@
 		5836861325DACFE90004514C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5836861B25DAD01C0004514C /* SoftwareUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftwareUpdate.swift; sourceTree = "<group>"; };
 		6316F0E62832CA0700E1354D /* Schema */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Schema; sourceTree = "<group>"; };
+		631A6D752BF2654000DC1EF3 /* sofa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sofa.swift; sourceTree = "<group>"; };
 		6347351C2B45DC2400C3401D /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		634CE1082BB47480002C26C4 /* gdmf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gdmf.swift; sourceTree = "<group>"; };
 		636B9C0126CACCAB0007BE3B /* DeferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeferView.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				634CE1082BB47480002C26C4 /* gdmf.swift */,
+				631A6D752BF2654000DC1EF3 /* sofa.swift */,
 			);
 			path = "3rd Party Assets";
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				639B6B6E25DF3C3F00E38EC1 /* SimpleMode.swift in Sources */,
 				639E198225CD885D008F618B /* PreferencesStructure.swift in Sources */,
 				639B6B3B25DF200C00E38EC1 /* Preferences.swift in Sources */,
+				631A6D762BF2654000DC1EF3 /* sofa.swift in Sources */,
 				63D7D0E325C9E9A400236281 /* Main.swift in Sources */,
 				639B6B6025DF37F000E38EC1 /* ScreenShotZoom.swift in Sources */,
 				41AD2B0226DE6947004C52B1 /* AdditionalInfoButton.swift in Sources */,

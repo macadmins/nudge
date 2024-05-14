@@ -787,7 +787,7 @@ struct NetworkFileManager {
         }
     }
 
-    func getGDMFAssets() ->  GDMFAssetInfo? {
+    func getGDMFAssets() -> GDMFAssetInfo? {
         // Define the URL you want to pin to
         if let url = URL(string: "https://gdmf.apple.com/v2/pmv") {
             // Call the pin method
@@ -820,6 +820,26 @@ struct NetworkFileManager {
             }
         } else {
             LogManager.error("Failed to decode gdmf JSON URL string", logger: utilsLog)
+        }
+        return nil
+    }
+
+    func getSOFAAssets() -> MacOSDataFeed? {
+        if let url = URL(string: "https://sofa.macadmins.io/v1/macos_data_feed.json") {
+            let sofaData = SOFA().URLSync(url: url)
+            if (sofaData.error == nil) {
+                do {
+                    let assetInfo = try MacOSDataFeed(data: sofaData.data!)
+                    return assetInfo
+                } catch {
+                    LogManager.error("Failed to decode sofa JSON: \(error.localizedDescription)", logger: utilsLog)
+                    LogManager.error("Failed to decode sofa JSON: \(error)", logger: utilsLog)
+                }
+            } else {
+                LogManager.error("Failed to fetch sofa JSON: \(sofaData.error!.localizedDescription)", logger: utilsLog)
+            }
+        } else {
+            LogManager.error("Failed to decode sofa JSON URL string", logger: utilsLog)
         }
         return nil
     }

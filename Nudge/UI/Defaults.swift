@@ -28,6 +28,7 @@ struct Globals {
     static let nudgeJSONPreferences = NetworkFileManager().getNudgeJSONPreferences()
     // Device Properties
     static let gdmfAssets = NetworkFileManager().getGDMFAssets()
+    static let sofaAssets = NetworkFileManager().getSOFAAssets()
     static let hardwareModelID = DeviceManager().getHardwareModelID()
 }
 
