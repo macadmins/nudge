@@ -58,6 +58,7 @@ struct SecurityRelease: Codable {
     let updateName, productVersion: String
     let releaseDate: Date
     let securityInfo: String
+    let supportedDevices: [String]
     let cves: [String: Bool]
     let activelyExploitedCVEs: [String]
     let uniqueCVEsCount, daysSincePreviousRelease: Int
@@ -67,6 +68,7 @@ struct SecurityRelease: Codable {
         case productVersion = "ProductVersion"
         case releaseDate = "ReleaseDate"
         case securityInfo = "SecurityInfo"
+        case supportedDevices = "SupportedDevices"
         case cves = "CVEs"
         case activelyExploitedCVEs = "ActivelyExploitedCVEs"
         case uniqueCVEsCount = "UniqueCVEsCount"
