@@ -174,38 +174,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        if let macOSGDMFAssets = Globals.gdmfAssets?.publicAssetSets.macOS {
-            // Find the first macOS asset that matches the product version
-            var tempRequiredMinOSVersion = PrefsWrapper.requiredMinimumOSVersion
-            tempRequiredMinOSVersion = "14.5" // Hack so I can test this since 14.99.99 doesn't exist in GDMF
-            if let matchingAsset = macOSGDMFAssets.first(where: { $0.productVersion == tempRequiredMinOSVersion }) {
-                // Check if the specified device is in the supported devices of the matching asset
-                print("GDMF Matched OS Version: \(matchingAsset.productVersion)")
-                print("GDMF Assets: \(matchingAsset.supportedDevices)")
-                print("Assessed Model ID: \(Globals.hardwareModelID)")
-                print("DeviceGDMFSupported: \(matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() }))")
-            } else {
-                // If no matching product version found or the device is not supported, return false
-                print("DeviceGDMFSupported: False")
-            }
-        } else {
-            print("No macOS GDMF assets available.")
-        }
-
         if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
             // Find the first macOS asset that matches the product version
-            var tempRequiredMinOSVersion = PrefsWrapper.requiredMinimumOSVersion
-            tempRequiredMinOSVersion = "14.5" // Hack so I can test this since 14.99.99 doesn't exist in GDMF
             var foundMatch = false
             // osVersions.map { $0.latest.productVersion }
             for osVersion in macOSSOFAAssets {
-                if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == tempRequiredMinOSVersion }) {
+                if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == PrefsWrapper.requiredMinimumOSVersion }) {
                     foundMatch = true
                     // Check if the specified device is in the supported devices of the matching asset
-                    print("SOFA Matched OS Version: \(matchingAsset.productVersion)")
-                    print("SOFA Assets: \(matchingAsset.supportedDevices)")
-                    print("Assessed Model ID: \(Globals.hardwareModelID)")
-                    print("DeviceSOFASupported: \(matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() }))")
+//                    print("SOFA Matched OS Version: \(matchingAsset.productVersion)")
+//                    print("SOFA Assets: \(matchingAsset.supportedDevices)")
+//                    print("Assessed Model ID: \(Globals.hardwareModelID)")
+                    // nudgePrimaryState.deviceSupportedByOSVersion = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                    nudgePrimaryState.deviceSupportedByOSVersion = false
                 }
             }
             if !foundMatch {

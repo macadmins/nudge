@@ -21,7 +21,7 @@
         {
             "aboutUpdateURL": "https://apple.com",
             "requiredInstallationDate": "2025-01-01T00:00:00Z",
-            "requiredMinimumOSVersion": "14.99.99"
+            "requiredMinimumOSVersion": "14.5"
         }
     ],
     "userExperience": {
@@ -45,10 +45,15 @@
                 "customDeferralDropdownText": "customDeferralDropdownText",
                 "informationButtonText": "informationButtonText",
                 "mainContentHeader": "mainContentHeader",
+                "mainContentHeaderUnsupported": "mainContentHeaderUnsupported",
                 "mainContentNote": "mainContentNote",
+                "mainContentNoteUnsupported": "mainContentNoteUnsupported",
                 "mainContentSubHeader": "mainContentSubHeader",
+                "mainContentSubHeaderUnsupported": "mainContentSubHeaderUnsupported",
                 "mainContentText": "mainContentText",
+                "mainContentTextUnsupported": "mainContentTextUnsupported",
                 "mainHeader": "mainHeader",
+                "mainHeaderUnsupported": "mainHeaderUnsupported",
                 "oneDayDeferralButtonText": "oneDayDeferralButtonText",
                 "oneHourDeferralButtonText": "oneHourDeferralButtonText",
                 "primaryQuitButtonText": "primaryQuitButtonText",
