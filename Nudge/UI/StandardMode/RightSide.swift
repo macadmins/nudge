@@ -37,9 +37,8 @@ struct StandardModeRightSide: View {
         VStack(alignment: .center) {
             HStack {
                 VStack(alignment: .leading, spacing: 5) {
-                    let mainHeaderText = appState.deviceSupportedByOSVersion == true ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))
                     HStack {
-                        Text(mainHeaderText)
+                        Text(appState.deviceSupportedByOSVersion == true ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.largeTitle)
                             .minimumScaleFactor(0.5)
                             .frame(maxHeight: 25)
@@ -47,7 +46,7 @@ struct StandardModeRightSide: View {
                     }
 
                     HStack {
-                        Text(UserInterfaceVariables.subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(appState.deviceSupportedByOSVersion == true ? UserInterfaceVariables.subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.subHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.body)
                             .fontWeight(.bold)
                             .lineLimit(1)
@@ -65,13 +64,13 @@ struct StandardModeRightSide: View {
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 1) {
                     HStack {
-                        Text(UserInterfaceVariables.mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(appState.deviceSupportedByOSVersion == true ? UserInterfaceVariables.mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.callout)
                             .fontWeight(.bold)
                         Spacer()
                     }
                     HStack {
-                        Text(UserInterfaceVariables.mainContentSubHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(appState.deviceSupportedByOSVersion == true ? UserInterfaceVariables.mainContentSubHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentSubHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.callout)
                         Spacer()
                     }
@@ -89,7 +88,7 @@ struct StandardModeRightSide: View {
             Divider()
             
             HStack {
-                Text(UserInterfaceVariables.mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                Text(appState.deviceSupportedByOSVersion == true ? UserInterfaceVariables.mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentNoteUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
@@ -99,7 +98,7 @@ struct StandardModeRightSide: View {
             ScrollView(.vertical) {
                 VStack {
                     HStack {
-                        Text(UserInterfaceVariables.mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(appState.deviceSupportedByOSVersion == true ? UserInterfaceVariables.mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentTextUnsupported.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.callout)
                             .multilineTextAlignment(.leading)
                         Spacer()

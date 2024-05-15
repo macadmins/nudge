@@ -59,6 +59,7 @@
                 "primaryQuitButtonText": "primaryQuitButtonText",
                 "secondaryQuitButtonText": "secondaryQuitButtonText",
                 "subHeader": "subHeader",
+                "subHeaderUnsupported": "subHeaderUnsupported",
                 "screenShotAltText": "Click to zoom into screenshot"
             }
         ]
