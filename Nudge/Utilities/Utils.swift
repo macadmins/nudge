@@ -825,6 +825,9 @@ struct NetworkFileManager {
     }
 
     func getSOFAAssets() -> MacOSDataFeed? {
+        if !OptionalFeatureVariables.utilizeSOFAFeed {
+            return nil
+        }
         if let url = URL(string: "https://sofa.macadmins.io/v1/macos_data_feed.json") {
             let sofaData = SOFA().URLSync(url: url)
             if (sofaData.error == nil) {

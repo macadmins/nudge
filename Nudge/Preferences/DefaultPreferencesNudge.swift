@@ -142,6 +142,12 @@ struct OptionalFeatureVariables {
         optionalFeaturesJSON?.terminateApplicationsOnLaunch ??
         false
     }
+
+    static var utilizeSOFAFeed: Bool {
+        optionalFeaturesProfile?["utilizeSOFAFeedh"] as? Bool ??
+        optionalFeaturesJSON?.utilizeSOFAFeed ??
+        false
+    }
 }
 
 // OS Version Requirements
