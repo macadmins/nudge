@@ -203,9 +203,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     foundMatch = true
                     // Check if the specified device is in the supported devices of the matching asset
                     print("SOFA Matched OS Version: \(matchingAsset.productVersion)")
-                    // print("SOFA Assets: \(matchingAsset.supportedDevices)")
+                    print("SOFA Assets: \(matchingAsset.supportedDevices)")
                     print("Assessed Model ID: \(Globals.hardwareModelID)")
-                    // print("DeviceSOFASupported: \(matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() }))")
+                    print("DeviceSOFASupported: \(matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() }))")
                 }
             }
             if !foundMatch {
