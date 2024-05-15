@@ -373,9 +373,21 @@ struct UserInterfaceVariables {
         "Your device will restart during this update"
     }
 
+    static var mainContentHeaderUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentHeaderUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentHeaderUnsupported ??
+        "Your device will restart during this update"
+    }
+
     static var mainContentNote: String {
         userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentNote ??
+        "Important Notes"
+    }
+
+    static var mainContentNoteUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentNoteUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentNoteUnsupported ??
         "Important Notes"
     }
 
@@ -385,9 +397,21 @@ struct UserInterfaceVariables {
         "Updates can take around 30 minutes to complete"
     }
 
+    static var mainContentSubHeaderUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentSubHeaderUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentSubHeaderUnsupported ??
+        "Updates can take around 30 minutes to complete"
+    }
+
     static var mainContentText: String {
         userInterfaceUpdateElementsProfile?["mainContentText"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentText ??
+        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+    }
+
+    static var mainContentTextUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentTextUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentTextUnsupported ??
         "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
     }
 
@@ -420,6 +444,13 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsJSON?.subHeader ??
         "A friendly reminder from your local IT team"
     }
+
+    static var subHeaderUnsupported: String {
+        userInterfaceUpdateElementsProfile?["subHeaderUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.subHeaderUnsupported ??
+        "A friendly reminder from your local IT team"
+    }
+
 
     static var customDeferralDropdownText: String {
         userInterfaceUpdateElementsProfile?["customDeferralDropdownText"] as? String ??

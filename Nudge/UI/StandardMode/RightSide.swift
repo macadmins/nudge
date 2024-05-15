@@ -37,14 +37,15 @@ struct StandardModeRightSide: View {
         VStack(alignment: .center) {
             HStack {
                 VStack(alignment: .leading, spacing: 5) {
+                    let mainHeaderText = appState.deviceSupportedByOSVersion == true ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))
                     HStack {
-                        Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(mainHeaderText)
                             .font(.largeTitle)
                             .minimumScaleFactor(0.5)
                             .frame(maxHeight: 25)
                             .lineLimit(1)
                     }
-                    
+
                     HStack {
                         Text(UserInterfaceVariables.subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                             .font(.body)

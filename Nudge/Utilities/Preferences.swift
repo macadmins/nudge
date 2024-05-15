@@ -239,6 +239,16 @@ func getMainHeader() -> String {
     getUserInterfaceUpdateElementsJSON()?.mainHeader ?? "Your device requires a security update"
 }
 
+func getMainHeaderUnsupported() -> String {
+    if CommandLineUtilities().demoModeEnabled() {
+        return "Your device is no longer capable of security updates (Demo Mode)"
+    } else if CommandLineUtilities().unitTestingEnabled() {
+        return "Your device is no longer capable of security updates (Unit Testing Mode)"
+    }
+    return UserInterfaceVariables.userInterfaceUpdateElementsProfile?["mainHeaderUnsupported"] as? String ??
+    getUserInterfaceUpdateElementsJSON()?.mainHeaderUnsupported ?? "Your device is no longer capable of security updates"
+}
+
 func simpleMode() -> Bool {
     return CommandLineUtilities().simpleModeEnabled() ||
     UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ??

@@ -70,6 +70,7 @@ class AppState: ObservableObject {
     @Published var daysRemaining = DateManager().getNumberOfDaysBetween()
     @Published var deferralCountPastThreshold = false
     @Published var deferRunUntil = Globals.nudgeDefaults.object(forKey: "deferRunUntil") as? Date
+    @Published var deviceSupportedByOSVersion = true
     @Published var hasClickedSecondaryQuitButton = false
     @Published var hasLoggedDeferralCountPastThreshold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
