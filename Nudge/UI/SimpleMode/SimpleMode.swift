@@ -30,7 +30,7 @@ struct SimpleMode: View {
             CompanyLogo()
             Spacer()
             
-            Text(getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            Text(appState.deviceSupportedByOSVersion == true ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .font(.title)
             
             remainingTimeView
