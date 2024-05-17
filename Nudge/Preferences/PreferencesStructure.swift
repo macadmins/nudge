@@ -375,13 +375,13 @@ extension UserInterface {
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
     var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText: String?
-    var mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader: String?
-    var mainContentHeaderUnsupported, mainContentNoteUnsupported, mainContentSubHeaderUnsupported, mainContentTextUnsupported, mainHeaderUnsupported: String?
+    var mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported: String?
+    var mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported: String?
     var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentNote, mainContentSubHeader, mainContentText, mainHeader, mainContentHeaderUnsupported, mainContentNoteUnsupported, mainContentSubHeaderUnsupported, mainContentTextUnsupported, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText
+        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText
     }
 }
 
