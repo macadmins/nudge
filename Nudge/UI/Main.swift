@@ -175,6 +175,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
         // TODO: Implement SOFA Caching with key refreshSOFAFeedTime
+        // TODO: Reset sofa after x amount of time
         // TODO: Implement "latest-minor" or something for implementing all of the minor releases.
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
