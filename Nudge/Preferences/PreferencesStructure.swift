@@ -51,7 +51,7 @@ extension NudgePreferences {
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
-    var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToFetchMajorUpgrade: Bool?
+    var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
     var disableSoftwareUpdateWorkflow, enforceMinorUpdates, terminateApplicationsOnLaunch, utilizeSOFAFeed: Bool?
 }
@@ -84,6 +84,7 @@ extension OptionalFeatures {
         aggressiveUserFullScreenExperience: Bool? = nil,
         asynchronousSoftwareUpdate: Bool? = nil,
         attemptToBlockApplicationLaunches: Bool? = nil,
+        attemptToCheckForSupportedDevice: Bool? = nil,
         attemptToFetchMajorUpgrade: Bool? = nil,
         blockedApplicationBundleIDs: [String]? = nil,
         disableSoftwareUpdateWorkflow: Bool? = nil,
@@ -101,6 +102,7 @@ extension OptionalFeatures {
             aggressiveUserFullScreenExperience: aggressiveUserFullScreenExperience ?? self.aggressiveUserFullScreenExperience,
             asynchronousSoftwareUpdate: asynchronousSoftwareUpdate ?? self.asynchronousSoftwareUpdate,
             attemptToBlockApplicationLaunches: attemptToBlockApplicationLaunches ?? self.attemptToBlockApplicationLaunches,
+            attemptToCheckForSupportedDevice: attemptToCheckForSupportedDevice ?? self.attemptToCheckForSupportedDevice,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
             blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,

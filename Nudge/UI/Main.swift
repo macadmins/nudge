@@ -174,27 +174,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
-            // Find the first macOS asset that matches the product version
-            var foundMatch = false
-            // osVersions.map { $0.latest.productVersion }
-            for osVersion in macOSSOFAAssets {
-                if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == PrefsWrapper.requiredMinimumOSVersion }) {
-                    foundMatch = true
-                    // Check if the specified device is in the supported devices of the matching asset
-//                    print("SOFA Matched OS Version: \(matchingAsset.productVersion)")
-//                    print("SOFA Assets: \(matchingAsset.supportedDevices)")
-//                    print("Assessed Model ID: \(Globals.hardwareModelID)")
-                    // nudgePrimaryState.deviceSupportedByOSVersion = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
-                    nudgePrimaryState.deviceSupportedByOSVersion = false
+        if OptionalFeatureVariables.utilizeSOFAFeed {
+            if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
+                // Find the first macOS asset that matches the product version
+                var foundMatch = false
+                // osVersions.map { $0.latest.productVersion }
+                for osVersion in macOSSOFAAssets {
+                    if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == PrefsWrapper.requiredMinimumOSVersion }) {
+                        foundMatch = true
+                        // Check if the specified device is in the supported devices of the matching asset
+                        //                    print("SOFA Matched OS Version: \(matchingAsset.productVersion)")
+                        //                    print("SOFA Assets: \(matchingAsset.supportedDevices)")
+                        //                    print("Assessed Model ID: \(Globals.hardwareModelID)")
+                        if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
+                            nudgePrimaryState.deviceSupportedByOSVersion = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                            nudgePrimaryState.deviceSupportedByOSVersion = false
+                        }
+                    }
                 }
+                if !foundMatch {
+                    // If no matching product version found or the device is not supported, return false
+                    print("DeviceSOFASupported: False")
+                }
+            } else {
+                print("No macOS SOFA assets available.")
             }
-            if !foundMatch {
-                // If no matching product version found or the device is not supported, return false
-                print("DeviceSOFASupported: False")
-            }
-        } else {
-            print("No macOS SOFA assets available.")
         }
         handleSMAppService()
         checkForBadProfilePath()

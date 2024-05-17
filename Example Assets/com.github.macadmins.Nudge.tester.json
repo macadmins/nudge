@@ -10,6 +10,7 @@
         "acceptableCameraUsage": true,
         "acceptableScreenSharingUsage": true,
         "attemptToBlockApplicationLaunches": true,
+        "attemptToCheckForSupportedDevice": true,
         "blockedApplicationBundleIDs": [
             "com.microsoft.VSCode",
             "us.zoom.xos"

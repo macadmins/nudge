@@ -113,6 +113,12 @@ struct OptionalFeatureVariables {
         false
     }
 
+    static var attemptToCheckForSupportedDevice: Bool {
+        optionalFeaturesProfile?["attemptToCheckForSupportedDevice"] as? Bool ??
+        optionalFeaturesJSON?.attemptToCheckForSupportedDevice ??
+        false
+    }
+
     static var attemptToFetchMajorUpgrade: Bool {
         optionalFeaturesProfile?["attemptToFetchMajorUpgrade"] as? Bool ??
         optionalFeaturesJSON?.attemptToFetchMajorUpgrade ??
