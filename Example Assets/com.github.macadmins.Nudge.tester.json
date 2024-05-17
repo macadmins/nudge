@@ -22,7 +22,7 @@
         {
             "aboutUpdateURL": "https://apple.com",
             "requiredInstallationDate": "2025-01-01T00:00:00Z",
-            "requiredMinimumOSVersion": "14.5",
+            "requiredMinimumOSVersion": "latest",
             "unsupportedURL": "https://google.com",
         }
     ],

@@ -177,7 +177,11 @@ struct OSVersionRequirementVariables {
     }
     
     static var requiredMinimumOSVersion: String {
-        try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
+        if PrefsWrapper.requiredMinimumOSVersion == "latest" {
+            PrefsWrapper.requiredMinimumOSVersion
+        } else {
+            try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
+        }
     }
 
     static var unsupportedURL: String {

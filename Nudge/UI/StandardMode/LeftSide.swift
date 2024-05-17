@@ -36,7 +36,7 @@ struct StandardModeLeftSide: View {
     
     private var informationStack: some View {
         VStack(alignment: .center, spacing: interLineSpacing) {
-            InfoRow(label: "Required OS Version:", value: String(OSVersionRequirementVariables.requiredMinimumOSVersion), boldText: true)
+            InfoRow(label: "Required OS Version:", value: String(appState.requiredMinimumOSVersion), boldText: true)
             InfoRow(label: "Current OS Version:", value: GlobalVariables.currentOSVersion)
             remainingTimeRow
             if UserInterfaceVariables.showDeferralCount {

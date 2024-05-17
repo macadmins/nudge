@@ -78,6 +78,7 @@ class AppState: ObservableObject {
     @Published var hoursRemaining = DateManager().getNumberOfHoursRemaining()
     @Published var lastRefreshTime = DateManager().getFormattedDate()
     @Published var requireDualQuitButtons = false
+    @Published var requiredMinimumOSVersion = OSVersionRequirementVariables.requiredMinimumOSVersion
     @Published var shouldExit = false
     @Published var timerCycle = 0
     @Published var userDeferrals = Globals.nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0

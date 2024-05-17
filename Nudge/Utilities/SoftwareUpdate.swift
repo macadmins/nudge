@@ -34,7 +34,7 @@ class SoftwareUpdate {
 
             if OptionalFeatureVariables.attemptToFetchMajorUpgrade, !majorUpgradeAppPathExists, !majorUpgradeBackupAppPathExists {
                 LogManager.notice("Device requires major upgrade - attempting download", logger: softwareupdateListLog)
-                let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", OSVersionRequirementVariables.requiredMinimumOSVersion])
+                let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/sbin/softwareupdate", arguments: ["--fetch-full-installer", "--full-installer-version", nudgePrimaryState.requiredMinimumOSVersion])
 
                 if exitCode != 0 {
                     LogManager.error("Error downloading software update: \(error)", logger: softwareupdateDownloadLog)
@@ -54,8 +54,8 @@ class SoftwareUpdate {
             let softwareupdateList = self.list()
             let updateLabel = extractUpdateLabel(from: softwareupdateList)
 
-            if !softwareupdateList.contains(OSVersionRequirementVariables.requiredMinimumOSVersion) || updateLabel.isEmpty {
-                LogManager.notice("Software update did not find \(OSVersionRequirementVariables.requiredMinimumOSVersion) available for download - skipping download attempt", logger: softwareupdateListLog)
+            if !softwareupdateList.contains(nudgePrimaryState.requiredMinimumOSVersion) || updateLabel.isEmpty {
+                LogManager.notice("Software update did not find \(nudgePrimaryState.requiredMinimumOSVersion) available for download - skipping download attempt", logger: softwareupdateListLog)
                 return
             }
 
@@ -77,7 +77,7 @@ class SoftwareUpdate {
         for line in lines {
             if line.contains("Label:") {
                 let labelPart = line.split(separator: ":").map { $0.trimmingCharacters(in: .whitespaces) }
-                if labelPart.count > 1 && labelPart[1].contains(OSVersionRequirementVariables.requiredMinimumOSVersion) {
+                if labelPart.count > 1 && labelPart[1].contains(nudgePrimaryState.requiredMinimumOSVersion) {
                     updateLabel = labelPart[1]
                     break
                 }
