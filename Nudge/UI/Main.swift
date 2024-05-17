@@ -178,13 +178,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 var foundMatch = false
                 for osVersion in macOSSOFAAssets {
-                    if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == PrefsWrapper.requiredMinimumOSVersion }) {
+                    var test = PrefsWrapper.requiredMinimumOSVersion
+                    test = "14.4"
+                    if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == test }) {
                         // Check if the specified device is in the supported devices of the matching asset
                         LogManager.notice("SOFA Matched OS Version: \(matchingAsset.productVersion)", logger: sofaLog)
                         LogManager.notice("SOFA Assets: \(matchingAsset.supportedDevices)", logger: sofaLog)
                         if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
                             LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
                             let deviceMatchFound = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                            print("CVEs: \(matchingAsset.cves)")
+                            print("Actively Exploited CVEs: \(matchingAsset.activelyExploitedCVEs.count > 0)")
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
                             nudgePrimaryState.deviceSupportedByOSVersion = false
