@@ -174,12 +174,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        // TODO: Implement SOFA Caching
+        // TODO: Implement SOFA Caching with key refreshSOFAFeedTime
         // TODO: Implement requiredInstallationDate values SLAs for Actively Exploited vs Not based on ReleaseDate sofa key
+        // TODO: activelyExploitedInstallationSLA, standardInstallationSLA
         // TODO: Implement Actively Exploited sidebar info on standardMode
         // TODO: Implement "latest" for sofa vs hardcoded requiredInstallationVersion
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
+        // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
         if OptionalFeatureVariables.utilizeSOFAFeed {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 var foundMatch = false
