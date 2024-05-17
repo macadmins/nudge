@@ -404,25 +404,25 @@ struct UserInterfaceVariables {
     static var mainContentHeader: String {
         userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentHeader ??
-        "Your device will restart during this update"
+        "**Your device will restart during this update**"
     }
 
     static var mainContentHeaderUnsupported: String {
         userInterfaceUpdateElementsProfile?["mainContentHeaderUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentHeaderUnsupported ??
-        "Your device will restart during this update"
+        "**Your device is no longer capable of receving critical security updates**"
     }
 
     static var mainContentNote: String {
         userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentNote ??
-        "Important Notes"
+        "**Important Notes**"
     }
 
     static var mainContentNoteUnsupported: String {
         userInterfaceUpdateElementsProfile?["mainContentNoteUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentNoteUnsupported ??
-        "Important Notes"
+        "**Important Notes**"
     }
 
     static var mainContentSubHeader: String {
@@ -434,7 +434,7 @@ struct UserInterfaceVariables {
     static var mainContentSubHeaderUnsupported: String {
         userInterfaceUpdateElementsProfile?["mainContentSubHeaderUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentSubHeaderUnsupported ??
-        "Updates can take around 30 minutes to complete"
+        "Please work with your local IT team to obtain a replacement device"
     }
 
     static var mainContentText: String {
@@ -446,7 +446,7 @@ struct UserInterfaceVariables {
     static var mainContentTextUnsupported: String {
         userInterfaceUpdateElementsProfile?["mainContentTextUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentTextUnsupported ??
-        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not obtain a replacement device, you will lose access to some items necessary for your day-to-day tasks.\n\nFor more information about this, please click on the **Replace Your Device** button."
     }
 
     static var primaryQuitButtonText: String {
@@ -476,13 +476,13 @@ struct UserInterfaceVariables {
     static var subHeader: String {
         userInterfaceUpdateElementsProfile?["subHeader"] as? String ??
         userInterfaceUpdateElementsJSON?.subHeader ??
-        "A friendly reminder from your local IT team"
+        "**A friendly reminder from your local IT team**"
     }
 
     static var subHeaderUnsupported: String {
         userInterfaceUpdateElementsProfile?["subHeaderUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.subHeaderUnsupported ??
-        "A friendly reminder from your local IT team"
+        "**A friendly reminder from your local IT team**"
     }
 
 
