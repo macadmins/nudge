@@ -175,7 +175,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
         // TODO: Implement SOFA Caching with key refreshSOFAFeedTime
-        // TODO: Implement Actively Exploited sidebar info on standardMode
         // TODO: Implement "latest-minor" or something for implementing all of the minor releases.
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
@@ -187,9 +186,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     if PrefsWrapper.requiredMinimumOSVersion == "latest" {
                         // Check if the specified device is in the supported devices of the matching asset
                         nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
-                        let activelyExploited = osVersion.latest.activelyExploitedCVEs.count > 0
-                        LogManager.notice("SOFA Actively Exploited CVEs: \(activelyExploited)", logger: sofaLog)
-                        let slaExtension = activelyExploited ? OSVersionRequirementVariables.activelyExploitedInstallationSLA * 86400 : OSVersionRequirementVariables.standardInstallationSLA * 86400
+                        nudgePrimaryState.activelyExploitedCVEs = osVersion.latest.activelyExploitedCVEs.count > 0
+                        LogManager.notice("SOFA Actively Exploited CVEs: \(nudgePrimaryState.activelyExploitedCVEs)", logger: sofaLog)
+                        let slaExtension = nudgePrimaryState.activelyExploitedCVEs ? OSVersionRequirementVariables.activelyExploitedInstallationSLA * 86400 : OSVersionRequirementVariables.standardInstallationSLA * 86400
                         requiredInstallationDate = osVersion.latest.releaseDate?.addingTimeInterval(TimeInterval(slaExtension)) ?? DateManager().getCurrentDate().addingTimeInterval(1209600)
                         LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
                         LogManager.notice("SOFA Matched OS Version: \(osVersion.latest.productVersion)", logger: sofaLog)
