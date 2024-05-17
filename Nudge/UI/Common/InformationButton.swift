@@ -24,7 +24,7 @@ struct InformationButton: View {
 
             return AnyView(
                 Button(action: UIUtilities().openMoreInfo) {
-                    Text(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    Text(.init(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                         .foregroundColor(dynamicTextColor)
                 }
                     .buttonStyle(.plain)
@@ -36,7 +36,7 @@ struct InformationButton: View {
 
             return AnyView(
                 Button(action: UIUtilities().openMoreInfoUnsupported) {
-                    Text(UserInterfaceVariables.informationButtonTextUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    Text(.init(UserInterfaceVariables.informationButtonTextUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                         .foregroundColor(dynamicTextColor)
                 }
                 .buttonStyle(.plain)

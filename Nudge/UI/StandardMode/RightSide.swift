@@ -38,7 +38,7 @@ struct StandardModeRightSide: View {
             HStack {
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Text(appState.deviceSupportedByOSVersion ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(.init(appState.deviceSupportedByOSVersion ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                             .font(.largeTitle)
                             .minimumScaleFactor(0.5)
                             .frame(maxHeight: 25)
@@ -46,9 +46,8 @@ struct StandardModeRightSide: View {
                     }
 
                     HStack {
-                        Text(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.subHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(.init(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.subHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.subHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                             .font(.body)
-                            .fontWeight(.bold)
                             .lineLimit(1)
                     }
                 }
@@ -64,9 +63,8 @@ struct StandardModeRightSide: View {
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 1) {
                     HStack {
-                        Text(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(.init(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.mainContentHeader.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentHeaderUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                             .font(.callout)
-                            .fontWeight(.bold)
                         Spacer()
                     }
                     HStack {
@@ -81,7 +79,7 @@ struct StandardModeRightSide: View {
                     Button(action: {
                         UIUtilities().updateDevice()
                     }) {
-                        Text(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(.init(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                     }
                     .keyboardShortcut(.defaultAction)
                 }
@@ -90,9 +88,8 @@ struct StandardModeRightSide: View {
             Divider()
             
             HStack {
-                Text(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentNoteUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                Text(.init(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.mainContentNote.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentNoteUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                     .font(.callout)
-                    .fontWeight(.bold)
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                 Spacer()
             }
@@ -100,7 +97,7 @@ struct StandardModeRightSide: View {
             ScrollView(.vertical) {
                 VStack {
                     HStack {
-                        Text(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentTextUnsupported.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        Text(.init(appState.deviceSupportedByOSVersion ? UserInterfaceVariables.mainContentText.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : UserInterfaceVariables.mainContentTextUnsupported.replacingOccurrences(of: "\\n", with: "\n").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                             .font(.callout)
                             .multilineTextAlignment(.leading)
                         Spacer()

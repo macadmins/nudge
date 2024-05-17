@@ -202,7 +202,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
-                            // nudgePrimaryState.deviceSupportedByOSVersion = false
+                            nudgePrimaryState.deviceSupportedByOSVersion = false
                         }
                         foundMatch = true
                     } else {
