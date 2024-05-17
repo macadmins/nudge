@@ -179,6 +179,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // TODO: activelyExploitedInstallationSLA, standardInstallationSLA
         // TODO: Implement Actively Exploited sidebar info on standardMode
         // TODO: Implement "latest" for sofa vs hardcoded requiredInstallationVersion
+        // TODO: Implement "latest-minor" or something for implementing all of the minor releases.
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
         // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
@@ -186,11 +187,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 var foundMatch = false
                 for osVersion in macOSSOFAAssets {
-                    var test = PrefsWrapper.requiredMinimumOSVersion
-                    test = "14.4"
-                    test = "latest"
-                    if test == "latest" {
+                    if PrefsWrapper.requiredMinimumOSVersion == "latest" {
                         // Check if the specified device is in the supported devices of the matching asset
+                        nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
                         LogManager.notice("SOFA Matched OS Version: \(osVersion.latest.productVersion)", logger: sofaLog)
                         LogManager.notice("SOFA Assets: \(osVersion.latest.supportedDevices)", logger: sofaLog)
                         if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
@@ -200,11 +199,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             print("Actively Exploited CVEs: \(osVersion.latest.activelyExploitedCVEs.count > 0)")
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
-                            nudgePrimaryState.deviceSupportedByOSVersion = false
+                            // nudgePrimaryState.deviceSupportedByOSVersion = false
                         }
                         foundMatch = true
                     } else {
-                        if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == test }) {
+                        if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == nudgePrimaryState.requiredMinimumOSVersion }) {
                             // Check if the specified device is in the supported devices of the matching asset
                             LogManager.notice("SOFA Matched OS Version: \(matchingAsset.productVersion)", logger: sofaLog)
                             LogManager.notice("SOFA Assets: \(matchingAsset.supportedDevices)", logger: sofaLog)
@@ -215,15 +214,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                 print("Actively Exploited CVEs: \(matchingAsset.activelyExploitedCVEs.count > 0)")
                                 LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                                 nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
-                                nudgePrimaryState.deviceSupportedByOSVersion = false
+                                // nudgePrimaryState.deviceSupportedByOSVersion = false
                             }
                             foundMatch = true
                         }
                     }
+                    if foundMatch {
+                        break
+                    }
                 }
                 if !foundMatch {
                     // If no matching product version found or the device is not supported, return false
-                    LogManager.notice("Could not find requiredMinimumOSVersion in SOFA feed", logger: sofaLog)
+                    LogManager.notice("Could not find requiredMinimumOSVersion \(nudgePrimaryState.requiredMinimumOSVersion) in SOFA feed", logger: sofaLog)
                 }
             } else {
                 LogManager.notice("Could not fetch SOFA feed", logger: sofaLog)

@@ -685,7 +685,7 @@ struct ImageManager {
 struct LoggerUtilities {
     func logRequiredMinimumOSVersion() {
         if !requiredMinimumOSVersionNil() {
-            Globals.nudgeDefaults.set(OSVersionRequirementVariables.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
+            Globals.nudgeDefaults.set(nudgePrimaryState.requiredMinimumOSVersion, forKey: "requiredMinimumOSVersion")
         }
     }
 
@@ -1134,7 +1134,7 @@ struct UIUtilities {
 struct VersionManager {
     static func fullyUpdated() -> Bool {
         let currentOSVersion = GlobalVariables.currentOSVersion
-        let requiredMinimumOSVersion = OSVersionRequirementVariables.requiredMinimumOSVersion
+        let requiredMinimumOSVersion = nudgePrimaryState.requiredMinimumOSVersion
         let fullyUpdated = versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredMinimumOSVersion)
         if fullyUpdated {
             LogManager.notice("Current operating system (\(currentOSVersion)) is greater than or equal to required operating system (\(requiredMinimumOSVersion))", logger: utilsLog)
@@ -1150,7 +1150,7 @@ struct VersionManager {
     }
 
     static func getMajorRequiredNudgeOSVersion() -> Int {
-        guard let majorVersion = Int(OSVersionRequirementVariables.requiredMinimumOSVersion.split(separator: ".").first ?? "") else {
+        guard let majorVersion = Int(nudgePrimaryState.requiredMinimumOSVersion.split(separator: ".").first ?? "") else {
             LogManager.error("Invalid format for requiredMinimumOSVersion", logger: utilsLog)
             return 0
         }
@@ -1173,7 +1173,7 @@ struct VersionManager {
     }
 
     static func newNudgeEvent() -> Bool {
-        versionGreaterThan(currentVersion: OSVersionRequirementVariables.requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+        versionGreaterThan(currentVersion: nudgePrimaryState.requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
     }
 
     // Adapted from https://stackoverflow.com/a/25453654
