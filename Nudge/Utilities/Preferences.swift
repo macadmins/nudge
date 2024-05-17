@@ -122,6 +122,27 @@ private func getOSVersionRequirements(from requirements: [OSVersionRequirement]?
     return fullMatch ?? partialMatch ?? defaultMatch ?? nil
 }
 
+func getUnsupportedURL(OSVerReq: OSVersionRequirement?) -> String? {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
+        return "https://apple.com"
+    }
+
+    if let update = OSVerReq?.unsupportedURL {
+        return update
+    }
+
+    let desiredLanguage = getDesiredLanguage()
+    if let updates = OSVerReq?.unsupportedURLs {
+        for subUpdate in updates {
+            if subUpdate.language == desiredLanguage {
+                return subUpdate.unsupportedURL ?? ""
+            }
+        }
+    }
+
+    return nil
+}
+
 // userExperience
 // Even if profile/JSON is installed, return nil if in demo-mode
 func getUserExperienceJSON() -> UserExperience? {

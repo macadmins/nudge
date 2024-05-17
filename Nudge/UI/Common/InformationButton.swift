@@ -19,17 +19,31 @@ struct InformationButton: View {
     }
     
     private var informationButton: some View {
-        guard OSVersionRequirementVariables.aboutUpdateURL != "" else { return AnyView(EmptyView()) }
-        
-        return AnyView(
-            Button(action: UIUtilities().openMoreInfo) {
-                Text(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                    .foregroundColor(dynamicTextColor)
-            }
+        if appState.deviceSupportedByOSVersion {
+            guard OSVersionRequirementVariables.aboutUpdateURL != "" else { return AnyView(EmptyView()) }
+
+            return AnyView(
+                Button(action: UIUtilities().openMoreInfo) {
+                    Text(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        .foregroundColor(dynamicTextColor)
+                }
+                    .buttonStyle(.plain)
+                    .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                    .onHoverEffect()
+            )
+        } else {
+            guard OSVersionRequirementVariables.unsupportedURL != "" else { return AnyView(EmptyView()) }
+
+            return AnyView(
+                Button(action: UIUtilities().openMoreInfoUnsupported) {
+                    Text(UserInterfaceVariables.informationButtonTextUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        .foregroundColor(dynamicTextColor)
+                }
                 .buttonStyle(.plain)
-                .help("Click for more information about the security update".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .help("Click for more information about replacing your device".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .onHoverEffect()
-        )
+            )
+        }
     }
     
     private var dynamicTextColor: Color {
