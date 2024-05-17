@@ -30,7 +30,7 @@ struct SimpleMode: View {
             CompanyLogo()
             Spacer()
             
-            Text(appState.deviceSupportedByOSVersion == true ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+            Text(appState.deviceSupportedByOSVersion ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .font(.title)
             
             remainingTimeView
@@ -40,7 +40,9 @@ struct SimpleMode: View {
             }
 
             Spacer()
-            updateButton
+            if appState.deviceSupportedByOSVersion {
+                updateButton
+            }
             Spacer()
         }
     }

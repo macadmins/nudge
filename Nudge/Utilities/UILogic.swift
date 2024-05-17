@@ -245,7 +245,9 @@ private func shouldActivateNudgeBasedOnAggressiveExperience(_ runningApplication
         }
         AppStateManager().activateNudge()
         if !CommandLineUtilities().unitTestingEnabled() {
-            UIUtilities().updateDevice(userClicked: false)
+            if nudgePrimaryState.deviceSupportedByOSVersion {
+                UIUtilities().updateDevice(userClicked: false)
+            }
         }
         return true
     } else {
