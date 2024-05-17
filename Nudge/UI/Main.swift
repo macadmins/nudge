@@ -188,20 +188,37 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 for osVersion in macOSSOFAAssets {
                     var test = PrefsWrapper.requiredMinimumOSVersion
                     test = "14.4"
-                    if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == test }) {
+                    test = "latest"
+                    if test == "latest" {
                         // Check if the specified device is in the supported devices of the matching asset
-                        LogManager.notice("SOFA Matched OS Version: \(matchingAsset.productVersion)", logger: sofaLog)
-                        LogManager.notice("SOFA Assets: \(matchingAsset.supportedDevices)", logger: sofaLog)
+                        LogManager.notice("SOFA Matched OS Version: \(osVersion.latest.productVersion)", logger: sofaLog)
+                        LogManager.notice("SOFA Assets: \(osVersion.latest.supportedDevices)", logger: sofaLog)
                         if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
                             LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
-                            let deviceMatchFound = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
-                            print("CVEs: \(matchingAsset.cves)")
-                            print("Actively Exploited CVEs: \(matchingAsset.activelyExploitedCVEs.count > 0)")
+                            let deviceMatchFound = osVersion.latest.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                            print("CVEs: \(osVersion.latest.cves)")
+                            print("Actively Exploited CVEs: \(osVersion.latest.activelyExploitedCVEs.count > 0)")
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
                             nudgePrimaryState.deviceSupportedByOSVersion = false
                         }
                         foundMatch = true
+                    } else {
+                        if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == test }) {
+                            // Check if the specified device is in the supported devices of the matching asset
+                            LogManager.notice("SOFA Matched OS Version: \(matchingAsset.productVersion)", logger: sofaLog)
+                            LogManager.notice("SOFA Assets: \(matchingAsset.supportedDevices)", logger: sofaLog)
+                            if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
+                                LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
+                                let deviceMatchFound = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                                print("CVEs: \(matchingAsset.cves)")
+                                print("Actively Exploited CVEs: \(matchingAsset.activelyExploitedCVEs.count > 0)")
+                                LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
+                                nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
+                                nudgePrimaryState.deviceSupportedByOSVersion = false
+                            }
+                            foundMatch = true
+                        }
                     }
                 }
                 if !foundMatch {

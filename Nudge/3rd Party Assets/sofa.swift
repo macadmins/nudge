@@ -44,6 +44,10 @@ struct LatestOS: Codable {
     let releaseDate: Date?
     let expirationDate: Date
     let supportedDevices: [String]
+    let securityInfo: String
+    let cves: [String: Bool]
+    let activelyExploitedCVEs: [String]
+    let uniqueCVEsCount: Int
 
     enum CodingKeys: String, CodingKey {
         case productVersion = "ProductVersion"
@@ -51,6 +55,10 @@ struct LatestOS: Codable {
         case releaseDate = "ReleaseDate"
         case expirationDate = "ExpirationDate"
         case supportedDevices = "SupportedDevices"
+        case securityInfo = "SecurityInfo"
+        case cves = "CVEs"
+        case activelyExploitedCVEs = "ActivelyExploitedCVEs"
+        case uniqueCVEsCount = "UniqueCVEsCount"
     }
 }
 
