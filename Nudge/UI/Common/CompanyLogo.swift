@@ -19,6 +19,7 @@ struct CompanyLogo: View {
         Group {
             if shouldShowCompanyLogo() {
                 companyImage
+                    .overlay(companyImageOverlay, alignment: .topTrailing)
             } else if UIUtilities().showEasterEgg() {
                 easterEggView
             } else {
@@ -47,6 +48,16 @@ struct CompanyLogo: View {
                     EmptyView()
             }
         }
+    }
+
+    private var companyImageOverlay: some View {
+        guard !appState.deviceSupportedByOSVersion else { return AnyView(EmptyView()) }
+        return AnyView(
+            Image(systemName: "exclamationmark.triangle")
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(Color.red)
+                .font(.title)
+        )
     }
 
     private var defaultImage: some View {
