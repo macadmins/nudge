@@ -175,10 +175,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
         // TODO: Implement SOFA Caching with key refreshSOFAFeedTime
-        // TODO: Implement requiredInstallationDate values SLAs for Actively Exploited vs Not based on ReleaseDate sofa key
-        // TODO: activelyExploitedInstallationSLA, standardInstallationSLA
         // TODO: Implement Actively Exploited sidebar info on standardMode
-        // TODO: Implement "latest" for sofa vs hardcoded requiredInstallationVersion
         // TODO: Implement "latest-minor" or something for implementing all of the minor releases.
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
@@ -190,13 +187,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     if PrefsWrapper.requiredMinimumOSVersion == "latest" {
                         // Check if the specified device is in the supported devices of the matching asset
                         nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
+                        let activelyExploited = osVersion.latest.activelyExploitedCVEs.count > 0
+                        LogManager.notice("SOFA Actively Exploited CVEs: \(activelyExploited)", logger: sofaLog)
+                        let slaExtension = activelyExploited ? OSVersionRequirementVariables.activelyExploitedInstallationSLA * 86400 : OSVersionRequirementVariables.standardInstallationSLA * 86400
+                        requiredInstallationDate = osVersion.latest.releaseDate?.addingTimeInterval(TimeInterval(slaExtension)) ?? DateManager().getCurrentDate().addingTimeInterval(1209600)
+                        LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
                         LogManager.notice("SOFA Matched OS Version: \(osVersion.latest.productVersion)", logger: sofaLog)
                         LogManager.notice("SOFA Assets: \(osVersion.latest.supportedDevices)", logger: sofaLog)
+                        LogManager.notice("SOFA CVEs: \(osVersion.latest.cves)", logger: sofaLog)
+
                         if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
                             LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
                             let deviceMatchFound = osVersion.latest.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
-                            print("CVEs: \(osVersion.latest.cves)")
-                            print("Actively Exploited CVEs: \(osVersion.latest.activelyExploitedCVEs.count > 0)")
+
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
                             // nudgePrimaryState.deviceSupportedByOSVersion = false

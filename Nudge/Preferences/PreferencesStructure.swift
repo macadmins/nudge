@@ -117,9 +117,13 @@ extension OptionalFeatures {
 struct OSVersionRequirement: Codable {
     var aboutUpdateURL: String?
     var aboutUpdateURLs: [AboutUpdateURL]?
-    var actionButtonPath, majorUpgradeAppPath: String?
+    var actionButtonPath: String?
+    var activelyExploitedInstallationSLA: Int?
+    var majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
-    var requiredMinimumOSVersion, targetedOSVersionsRule: String?
+    var requiredMinimumOSVersion: String?
+    var standardInstallationSLA: Int?
+    var targetedOSVersionsRule: String?
     var unsupportedURL: String?
     var unsupportedURLs: [UnsupportedURL]?
 }
@@ -129,8 +133,10 @@ extension OSVersionRequirement {
     init(fromDictionary: [String: AnyObject]) {
         self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.actionButtonPath = fromDictionary["actionButtonPath"] as? String
+        self.activelyExploitedInstallationSLA = fromDictionary["activelyExploitedInstallationSLA"] as? Int
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
+        self.standardInstallationSLA = fromDictionary["standardInstallationSLA"] as? Int
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
         self.unsupportedURL = fromDictionary["unsupportedURL"] as? String
 
@@ -186,9 +192,11 @@ extension OSVersionRequirement {
         aboutUpdateURL: String? = nil,
         aboutUpdateURLs: [AboutUpdateURL]? = nil,
         actionButtonPath: String? = nil,
+        activelyExploitedInstallationSLA: Int? = nil,
         majorUpgradeAppPath: String? = nil,
         requiredInstallationDate: Date? = nil,
         requiredMinimumOSVersion: String? = nil,
+        standardInstallationSLA: Int? = nil,
         targetedOSVersionsRule: String? = nil,
         unsupportedURL: String? = nil,
         unsupportedURLs: [UnsupportedURL]? = nil
@@ -197,9 +205,11 @@ extension OSVersionRequirement {
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
+            activelyExploitedInstallationSLA: activelyExploitedInstallationSLA ?? self.activelyExploitedInstallationSLA,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
+            standardInstallationSLA: standardInstallationSLA ?? self.standardInstallationSLA,
             targetedOSVersionsRule: targetedOSVersionsRule ?? self.targetedOSVersionsRule,
             unsupportedURL: unsupportedURL ?? self.unsupportedURL,
             unsupportedURLs: unsupportedURLs ?? self.unsupportedURLs

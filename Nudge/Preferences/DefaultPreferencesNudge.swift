@@ -169,7 +169,13 @@ struct OSVersionRequirementVariables {
         getAboutUpdateURL(OSVerReq: osVersionRequirementsJSON) ??
         ""
     }
-    
+
+    static var activelyExploitedInstallationSLA: Int {
+        osVersionRequirementsProfile?.activelyExploitedInstallationSLA ??
+        osVersionRequirementsJSON?.activelyExploitedInstallationSLA ??
+        14
+    }
+
     static var majorUpgradeAppPath: String {
         osVersionRequirementsProfile?.majorUpgradeAppPath ??
         osVersionRequirementsJSON?.majorUpgradeAppPath ??
@@ -182,6 +188,12 @@ struct OSVersionRequirementVariables {
         } else {
             try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
         }
+    }
+
+    static var standardInstallationSLA: Int {
+        osVersionRequirementsProfile?.standardInstallationSLA ??
+        osVersionRequirementsJSON?.standardInstallationSLA ??
+        28
     }
 
     static var unsupportedURL: String {
