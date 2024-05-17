@@ -1059,6 +1059,14 @@ struct UIUtilities {
         NSWorkspace.shared.open(url)
     }
 
+    func openMoreInfoUnsupported() {
+        guard let url = URL(string: OSVersionRequirementVariables.unsupportedURL) else {
+            return
+        }
+        LogManager.notice("User clicked moreInfo button in unsupported state", logger: uiLog)
+        NSWorkspace.shared.open(url)
+    }
+
     private func postUpdateDeviceActions(userClicked: Bool) {
         if userClicked {
             LogManager.notice("User clicked updateDevice", logger: uiLog)

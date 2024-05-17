@@ -120,6 +120,8 @@ struct OSVersionRequirement: Codable {
     var actionButtonPath, majorUpgradeAppPath: String?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion, targetedOSVersionsRule: String?
+    var unsupportedURL: String?
+    var unsupportedURLs: [UnsupportedURL]?
 }
 
 // MARK: OSVersionRequirement convenience initializers and mutators
@@ -130,8 +132,9 @@ extension OSVersionRequirement {
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
+        self.unsupportedURL = fromDictionary["unsupportedURL"] as? String
 
-        // Handling AboutUpdateURLs
+        // Handling AboutUpdateURLs and UnsupportedURLs
         if let aboutURLs = fromDictionary["aboutUpdateURLs"] as? [[String: String]] {
             self.aboutUpdateURLs = aboutURLs.compactMap { dict in
                 guard let language = dict["_language"], let url = dict["aboutUpdateURL"] else { return nil }
@@ -139,6 +142,15 @@ extension OSVersionRequirement {
             }
         } else {
             self.aboutUpdateURLs = []
+        }
+
+        if let unsupportedURLs = fromDictionary["unsupportedURLs"] as? [[String: String]] {
+            self.unsupportedURLs = unsupportedURLs.compactMap { dict in
+                guard let language = dict["_language"], let url = dict["unsupportedURL"] else { return nil }
+                return UnsupportedURL(language: language, unsupportedURL: url)
+            }
+        } else {
+            self.unsupportedURLs = []
         }
 
         // Handling requiredInstallationDate
@@ -177,7 +189,9 @@ extension OSVersionRequirement {
         majorUpgradeAppPath: String? = nil,
         requiredInstallationDate: Date? = nil,
         requiredMinimumOSVersion: String? = nil,
-        targetedOSVersionsRule: String? = nil
+        targetedOSVersionsRule: String? = nil,
+        unsupportedURL: String? = nil,
+        unsupportedURLs: [UnsupportedURL]? = nil
     ) -> OSVersionRequirement {
         return OSVersionRequirement(
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
@@ -186,7 +200,9 @@ extension OSVersionRequirement {
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
-            targetedOSVersionsRule: targetedOSVersionsRule ?? self.targetedOSVersionsRule
+            targetedOSVersionsRule: targetedOSVersionsRule ?? self.targetedOSVersionsRule,
+            unsupportedURL: unsupportedURL ?? self.unsupportedURL,
+            unsupportedURLs: unsupportedURLs ?? self.unsupportedURLs
         )
     }
 }
@@ -227,6 +243,46 @@ extension AboutUpdateURL {
         return AboutUpdateURL(
             language: language ?? self.language,
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL
+        )
+    }
+}
+
+// MARK: - UnsupportedURL
+struct UnsupportedURL: Codable {
+    var language: String?
+    var unsupportedURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case language = "_language"
+        case unsupportedURL
+    }
+}
+
+// MARK: UnsupportedURL convenience initializers and mutators
+extension UnsupportedURL {
+    init(data: Data) throws {
+        self = try JSONDecoder().decode(UnsupportedURL.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON string."])
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        let data = try Data(contentsOf: url)
+        try self.init(data: data)
+    }
+
+    func with(
+        language: String? = nil,
+        unsupportedURL: String? = nil
+    ) -> UnsupportedURL {
+        return UnsupportedURL(
+            language: language ?? self.language,
+            unsupportedURL: unsupportedURL ?? self.unsupportedURL
         )
     }
 }
@@ -376,14 +432,14 @@ extension UserInterface {
 
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
-    var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText: String?
+    var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, informationButtonTextUnsupported: String?
     var mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported: String?
     var mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported: String?
     var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText
+        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, informationButtonTextUnsupported, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText
     }
 }
 
@@ -411,6 +467,7 @@ extension UpdateElement {
         customDeferralButtonText: String? = nil,
         customDeferralDropdownText: String? = nil,
         informationButtonText: String? = nil,
+        informationButtonTextUnsupported: String? = nil,
         mainContentHeader: String? = nil,
         mainContentHeaderUnsupported: String? = nil,
         mainContentNote: String? = nil,
@@ -435,6 +492,7 @@ extension UpdateElement {
             customDeferralButtonText: customDeferralButtonText ?? self.customDeferralButtonText,
             customDeferralDropdownText: customDeferralDropdownText ?? self.customDeferralDropdownText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
+            informationButtonTextUnsupported: informationButtonTextUnsupported ?? self.informationButtonTextUnsupported,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentHeaderUnsupported: mainContentHeaderUnsupported ?? self.mainContentHeaderUnsupported,
             mainContentNote: mainContentNote ?? self.mainContentNote,

@@ -22,7 +22,8 @@
         {
             "aboutUpdateURL": "https://apple.com",
             "requiredInstallationDate": "2025-01-01T00:00:00Z",
-            "requiredMinimumOSVersion": "14.5"
+            "requiredMinimumOSVersion": "14.5",
+            "unsupportedURL": "https://google.com",
         }
     ],
     "userExperience": {
@@ -45,6 +46,7 @@
                 "customDeferralButtonText": "customDeferralButtonText",
                 "customDeferralDropdownText": "customDeferralDropdownText",
                 "informationButtonText": "informationButtonText",
+                "informationButtonTextUnsupported": "informationButtonTextUnsupported",
                 "mainContentHeader": "mainContentHeader",
                 "mainContentHeaderUnsupported": "mainContentHeaderUnsupported",
                 "mainContentNote": "mainContentNote",

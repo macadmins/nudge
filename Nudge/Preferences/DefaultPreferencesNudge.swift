@@ -179,6 +179,12 @@ struct OSVersionRequirementVariables {
     static var requiredMinimumOSVersion: String {
         try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description
     }
+
+    static var unsupportedURL: String {
+        getUnsupportedURL(OSVerReq: osVersionRequirementsProfile) ??
+        getUnsupportedURL(OSVerReq: osVersionRequirementsJSON) ??
+        ""
+    }
 }
 
 
@@ -371,6 +377,12 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ??
         userInterfaceUpdateElementsJSON?.informationButtonText ??
         "More Info"
+    }
+
+    static var informationButtonTextUnsupported: String {
+        userInterfaceUpdateElementsProfile?["informationButtonTextUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.informationButtonTextUnsupported ??
+        "Replace Your Device"
     }
 
     static var mainContentHeader: String {
