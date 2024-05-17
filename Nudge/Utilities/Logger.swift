@@ -47,6 +47,7 @@ let uiLog = LogManager.createLogger(category: "user-interface")
 let softwareupdateDeviceLog = LogManager.createLogger(category: "softwareupdate-device")
 let softwareupdateListLog = LogManager.createLogger(category: "softwareupdate-list")
 let softwareupdateDownloadLog = LogManager.createLogger(category: "softwareupdate-download")
+let sofaLog = LogManager.createLogger(category: "sofa")
 
 // Log State
 class LogState {

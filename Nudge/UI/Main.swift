@@ -176,28 +176,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // print("applicationWillFinishLaunching")
         if OptionalFeatureVariables.utilizeSOFAFeed {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
-                // Find the first macOS asset that matches the product version
                 var foundMatch = false
-                // osVersions.map { $0.latest.productVersion }
                 for osVersion in macOSSOFAAssets {
                     if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == PrefsWrapper.requiredMinimumOSVersion }) {
-                        foundMatch = true
                         // Check if the specified device is in the supported devices of the matching asset
-                        //                    print("SOFA Matched OS Version: \(matchingAsset.productVersion)")
-                        //                    print("SOFA Assets: \(matchingAsset.supportedDevices)")
-                        //                    print("Assessed Model ID: \(Globals.hardwareModelID)")
+                        LogManager.notice("SOFA Matched OS Version: \(matchingAsset.productVersion)", logger: sofaLog)
+                        LogManager.notice("SOFA Assets: \(matchingAsset.supportedDevices)", logger: sofaLog)
                         if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
-                            nudgePrimaryState.deviceSupportedByOSVersion = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                            LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
+                            let deviceMatchFound = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                            LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
+                            nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
                             nudgePrimaryState.deviceSupportedByOSVersion = false
                         }
+                        foundMatch = true
                     }
                 }
                 if !foundMatch {
                     // If no matching product version found or the device is not supported, return false
-                    print("DeviceSOFASupported: False")
+                    LogManager.notice("Could not find requiredMinimumOSVersion in SOFA feed", logger: sofaLog)
                 }
             } else {
-                print("No macOS SOFA assets available.")
+                LogManager.notice("Could not fetch SOFA feed", logger: sofaLog)
             }
         }
         handleSMAppService()
