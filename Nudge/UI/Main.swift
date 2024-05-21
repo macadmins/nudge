@@ -178,6 +178,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
         // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
+        // TODO: add support for custom sofa feed url
         if OptionalFeatureVariables.utilizeSOFAFeed {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 var foundMatch = false
@@ -185,6 +186,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     if PrefsWrapper.requiredMinimumOSVersion == "latest" {
                         // Check if the specified device is in the supported devices of the matching asset
                         nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
+                        // nudgePrimaryState.requiredMinimumOSVersion = "14.6" // TODO: remove when testing is done
                         nudgePrimaryState.activelyExploitedCVEs = osVersion.latest.activelyExploitedCVEs.count > 0
                         LogManager.notice("SOFA Actively Exploited CVEs: \(nudgePrimaryState.activelyExploitedCVEs)", logger: sofaLog)
                         let slaExtension = nudgePrimaryState.activelyExploitedCVEs ? OSVersionRequirementVariables.activelyExploitedInstallationSLA * 86400 : OSVersionRequirementVariables.standardInstallationSLA * 86400
@@ -200,7 +202,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
-                            nudgePrimaryState.deviceSupportedByOSVersion = false
+                            // nudgePrimaryState.deviceSupportedByOSVersion = false // TODO: remove when testing is done
                         }
                         foundMatch = true
                     } else {
