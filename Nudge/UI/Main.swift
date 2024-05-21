@@ -179,6 +179,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // TODO: Add localization for "unsupported devices" text fields
         // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
         // TODO: add support for custom sofa feed url
+        // TODO: check the sofa json etag even after the timelimit age to reduce more bandwidth
         if OptionalFeatureVariables.utilizeSOFAFeed {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 var foundMatch = false
