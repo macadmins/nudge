@@ -53,7 +53,9 @@ struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
     var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
-    var disableSoftwareUpdateWorkflow, enforceMinorUpdates, terminateApplicationsOnLaunch, utilizeSOFAFeed: Bool?
+    var disableSoftwareUpdateWorkflow, enforceMinorUpdates: Bool?
+    var refreshSOFAFeedTime: Int?
+    var terminateApplicationsOnLaunch, utilizeSOFAFeed: Bool?
 }
 
 // MARK: OptionalFeatures convenience initializers and mutators
@@ -89,6 +91,7 @@ extension OptionalFeatures {
         blockedApplicationBundleIDs: [String]? = nil,
         disableSoftwareUpdateWorkflow: Bool? = nil,
         enforceMinorUpdates: Bool? = nil,
+        refreshSOFAFeedTime: Int? = nil,
         terminateApplicationsOnLaunch: Bool? = nil,
         utilizeSOFAFeed: Bool? = nil
     ) -> OptionalFeatures {
@@ -107,6 +110,7 @@ extension OptionalFeatures {
             blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
+            refreshSOFAFeedTime: refreshSOFAFeedTime ?? self.refreshSOFAFeedTime,
             terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch,
             utilizeSOFAFeed: utilizeSOFAFeed ?? self.utilizeSOFAFeed
         )

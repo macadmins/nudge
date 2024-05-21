@@ -143,6 +143,12 @@ struct OptionalFeatureVariables {
         false
     }
 
+    static var refreshSOFAFeedTime: Int {
+        optionalFeaturesProfile?["refreshSOFAFeedTime"] as? Int ??
+        optionalFeaturesJSON?.refreshSOFAFeedTime ??
+        86400
+    }
+
     static var terminateApplicationsOnLaunch: Bool {
         optionalFeaturesProfile?["terminateApplicationsOnLaunch"] as? Bool ??
         optionalFeaturesJSON?.terminateApplicationsOnLaunch ??
