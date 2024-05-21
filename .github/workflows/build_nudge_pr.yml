@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14-large
+    runs-on: macos-14
     if: contains(github.event.pull_request.labels.*.name, 'safe to test')
 
     steps:
