@@ -4,16 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2024-05-08
+## [2.0.0] - 2024-05-21
 Requires macOS 12.0 and higher. Further releases and feature requests may make this macOS 13 and higher depending on code complexity.
 
 ### Changed
-Upcoming
+- You can now pass the string `latest` in the `requiredMinimumOSVersion` key
+ - This requires utilizing the SOFA feed features to properly work
+ - Nudge will then utilize two date integers to automatically calculate the `requiredInstallationDate`
+  - `activelyExploitedInstallationSLA` under the `osVersionRequirement` key will default to 14 days
+  - `standardInstallationSLA` under the `osVersionRequirement` key will default to 28 days
+  - These dates are calculated against the `ReleaseDate` key in the SOFA feed
 
 ### Fixed
 Upcoming
+
 ### Added
-Upcoming
+- An admin can now allow users to move the Nudge window with `userExperience` key `allowMovableWindow`
+- Basic SwiftUI support for Markdown text options
+ - Utilizing Apple's markdown features, you can now utilize, bold, italic, underline, subscript and url links directly into any of the text fields
+- [SOFA](https://github.com/macadmins/sofa) feed support
+ - Set the `utilizeSOFAFeed` key `true` under `optionalFeatures` to enable this feature 
+ - Nudge will by default check the feed every 24 hours.
+ - In order to change this, please configure the `refreshSOFAFeedTime` key under `optionalFeatures` in seconds
+- "Unsupported" device UI in standard mode that utilizes the SOFA feed
+ - Set the `attemptToCheckForSupportedDevice` key `true` under `optionalFeatures` to enable this feature 
+ - There are now keys to set all of text fields
+ - `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported`
+ - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.
+ - An icon will appear as an overlay on top of the company image to further emphasize the device is no longer supported
 
 ## [1.1.16] - 2024-03-13
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
