@@ -286,10 +286,19 @@ struct CameraUtilities {
 struct CommandLineUtilities {
     let arguments = Set(CommandLine.arguments)
 
-    func bundleModeEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-bundle-mode")
+    func bundleModeJSONEnabled() -> Bool {
+        let argumentPassed = arguments.contains("-bundle-mode-json")
         if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
-            LogManager.debug("-bundle-mode argument passed", logger: uiLog)
+            LogManager.debug("-bundle-mode-json argument passed", logger: uiLog)
+            nudgeLogState.hasLoggedBundleMode = true
+        }
+        return argumentPassed
+    }
+
+    func bundleModeProfileEnabled() -> Bool {
+        let argumentPassed = arguments.contains("-bundle-mode-profile")
+        if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
+            LogManager.debug("-bundle-mode-profile argument passed", logger: uiLog)
             nudgeLogState.hasLoggedBundleMode = true
         }
         return argumentPassed
@@ -904,8 +913,13 @@ struct NetworkFileManager {
             return nil
         }
 
-        if CommandLineUtilities().bundleModeEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
+        if CommandLineUtilities().bundleModeJSONEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "json") {
             LogManager.debug("JSON url: \(bundleUrl)", logger: utilsLog)
+            return decodeNudgePreferences(from: bundleUrl)
+        }
+
+        if CommandLineUtilities().bundleModeProfileEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "plist") {
+            LogManager.debug("Profile url: \(bundleUrl)", logger: utilsLog)
             return decodeNudgePreferences(from: bundleUrl)
         }
 

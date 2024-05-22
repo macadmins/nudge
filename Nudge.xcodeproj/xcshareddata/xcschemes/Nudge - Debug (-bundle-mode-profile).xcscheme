@@ -72,7 +72,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-bundle-mode"
+            argument = "-bundle-mode-profile"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
