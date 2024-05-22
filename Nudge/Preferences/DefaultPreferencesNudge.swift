@@ -189,7 +189,7 @@ struct OSVersionRequirementVariables {
     }
     
     static var requiredMinimumOSVersion: String {
-        if PrefsWrapper.requiredMinimumOSVersion == "latest" {
+        if ["latest", "latest-supported", "latest-major"].contains(PrefsWrapper.requiredMinimumOSVersion) {
             PrefsWrapper.requiredMinimumOSVersion
         } else {
             try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description

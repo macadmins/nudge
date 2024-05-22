@@ -21,7 +21,7 @@
     "osVersionRequirements": [
         {
             "aboutUpdateURL": "https://apple.com",
-            "requiredMinimumOSVersion": "latest",
+            "requiredMinimumOSVersion": "latest-supported",
             "unsupportedURL": "https://google.com",
         }
     ],
