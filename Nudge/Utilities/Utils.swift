@@ -396,10 +396,33 @@ struct ConfigurationManager {
 
     func getConfigurationAsProfile() -> Data {
         var nudgeProfileConfig = [String: Any]()
-        nudgeProfileConfig["optionalFeatures"] = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures")
-        nudgeProfileConfig["osVersionRequirements"] = Globals.nudgeDefaults.array(forKey: "osVersionRequirements")
-        nudgeProfileConfig["userExperience"] = Globals.nudgeDefaults.dictionary(forKey: "userExperience")
-        nudgeProfileConfig["userInterface"] = Globals.nudgeDefaults.dictionary(forKey: "userInterface")
+        if CommandLineUtilities().bundleModeJSONEnabled() {
+            return Data()
+        }
+        if CommandLineUtilities().bundleModeProfileEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "plist") {
+            LogManager.debug("Profile url: \(bundleUrl)", logger: utilsLog)
+            guard let data = try? Data(contentsOf: bundleUrl) else {
+                LogManager.error("Failed to load profile data from URL.", logger: uiLog)
+                return Data()
+            }
+            do {
+                let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+                if let dictionary = plist as? [String: AnyObject] {
+                    nudgeProfileConfig = dictionary
+                } else {
+                    LogManager.error("Plist is not a dictionary.", logger: uiLog)
+                    return Data()
+                }
+            } catch {
+                LogManager.error("Error reading plist: \(error)", logger: uiLog)
+                return Data()
+            }
+        } else {
+            nudgeProfileConfig["optionalFeatures"] = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures")
+            nudgeProfileConfig["osVersionRequirements"] = Globals.nudgeDefaults.array(forKey: "osVersionRequirements")
+            nudgeProfileConfig["userExperience"] = Globals.nudgeDefaults.dictionary(forKey: "userExperience")
+            nudgeProfileConfig["userInterface"] = Globals.nudgeDefaults.dictionary(forKey: "userInterface")
+        }
 
         guard !nudgeProfileConfig.isEmpty,
               let plistData = try? PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0),
@@ -783,7 +806,7 @@ struct NetworkFileManager {
     private func decodeNudgePreferences(from url: URL) -> NudgePreferences? {
         guard let data = try? Data(contentsOf: url) else {
             if Globals.configProfile.isEmpty {
-                LogManager.error("Failed to load data from URL: \(url)", logger: prefsJSONLog)
+                LogManager.error("Failed to load data from URL: \(url)", logger: prefsProfileLog)
             }
             return nil
         }
@@ -919,8 +942,8 @@ struct NetworkFileManager {
         }
 
         if CommandLineUtilities().bundleModeProfileEnabled(), let bundleUrl = Globals.bundle.url(forResource: "com.github.macadmins.Nudge.tester", withExtension: "plist") {
-            LogManager.debug("Profile url: \(bundleUrl)", logger: utilsLog)
-            return decodeNudgePreferences(from: bundleUrl)
+            LogManager.debug("Using embedded plist url: \(bundleUrl)", logger: utilsLog)
+            return nil
         }
 
         if let jsonUrl = URL(string: url) {
@@ -1198,7 +1221,7 @@ struct VersionManager {
 
     static func getMajorRequiredNudgeOSVersion() -> Int {
         guard let majorVersion = Int(nudgePrimaryState.requiredMinimumOSVersion.split(separator: ".").first ?? "") else {
-            LogManager.error("Invalid format for requiredMinimumOSVersion", logger: utilsLog)
+            LogManager.error("Invalid format for requiredMinimumOSVersion - value is \(nudgePrimaryState.requiredMinimumOSVersion)", logger: utilsLog)
             return 0
         }
         logOSVersion(majorVersion, for: "Major required OS version")

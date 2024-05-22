@@ -33,19 +33,37 @@ func getOptionalFeaturesJSON() -> OptionalFeatures? {
 }
 
 func getOptionalFeaturesProfile() -> [String: Any]? {
-    guard !CommandLineUtilities().demoModeEnabled(),
-          !CommandLineUtilities().unitTestingEnabled(),
-          let optionalFeatures = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures") else {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         logEmptyKey("optionalFeatures", forJSON: false)
         return nil
     }
-    return optionalFeatures
+
+    // Check if the Data is empty
+    if Globals.configProfile.isEmpty {
+        logEmptyKey("optionalFeatures", forJSON: false)
+        return nil
+    }
+
+    do {
+        // Attempt to decode the plist Data into a dictionary
+        if let dictionary = try PropertyListSerialization.propertyList(from: Globals.configProfile, options: [], format: nil) as? [String: Any],
+           let optionalFeatures = dictionary["optionalFeatures"] as? [String: Any] {
+            return optionalFeatures
+        } else {
+            logEmptyKey("optionalFeatures", forJSON: false)
+            return nil
+        }
+    } catch {
+        print("Failed to decode plist: \(error)")
+        return nil
+    }
 }
 
 private func logEmptyKey(_ key: String, forJSON: Bool) {
     if !nudgeLogState.afterFirstLaunch {
         let log = forJSON ? prefsJSONLog : prefsProfileLog
-        LogManager.info("\(key) key is empty", logger: log)
+        let type = forJSON ? "json" : "profile"
+        LogManager.info("\(key) key is empty - \(type)", logger: log)
     }
 }
 
@@ -83,13 +101,31 @@ func getOSVersionRequirementsJSON() -> OSVersionRequirement? {
 }
 
 func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
-    guard let osRequirementsArray = Globals.nudgeDefaults.array(forKey: "osVersionRequirements") as? [[String: AnyObject]] else {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         logEmptyKey("osVersionRequirements", forJSON: false)
         return nil
     }
 
-    let requirements = osRequirementsArray.map { OSVersionRequirement(fromDictionary: $0) }
-    return getOSVersionRequirements(from: requirements)
+    // Check if the Data is empty
+    if Globals.configProfile.isEmpty {
+        logEmptyKey("osVersionRequirements", forJSON: false)
+        return nil
+    }
+
+    do {
+        // Attempt to decode the plist Data into a dictionary
+        if let dictionary = try PropertyListSerialization.propertyList(from: Globals.configProfile, options: [], format: nil) as? [String: Any],
+           let osVersionRequirements = dictionary["osVersionRequirements"] as? [[String: AnyObject]] {
+            let requirements = osVersionRequirements.map { OSVersionRequirement(fromDictionary: $0) }
+            return getOSVersionRequirements(from: requirements)
+        } else {
+            logEmptyKey("osVersionRequirements", forJSON: false)
+            return nil
+        }
+    } catch {
+        print("Failed to decode plist: \(error)")
+        return nil
+    }
 }
 
 private func getOSVersionRequirements(from requirements: [OSVersionRequirement]?) -> OSVersionRequirement? {
@@ -156,13 +192,30 @@ func getUserExperienceJSON() -> UserExperience? {
 }
 
 func getUserExperienceProfile() -> [String: Any]? {
-    guard !CommandLineUtilities().demoModeEnabled(),
-          !CommandLineUtilities().unitTestingEnabled(),
-          let userExperience = Globals.nudgeDefaults.dictionary(forKey: "userExperience") else {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         logEmptyKey("userExperience", forJSON: false)
         return nil
     }
-    return userExperience
+
+    // Check if the Data is empty
+    if Globals.configProfile.isEmpty {
+        logEmptyKey("userExperience", forJSON: false)
+        return nil
+    }
+
+    do {
+        // Attempt to decode the plist Data into a dictionary
+        if let dictionary = try PropertyListSerialization.propertyList(from: Globals.configProfile, options: [], format: nil) as? [String: Any],
+           let userExperience = dictionary["userExperience"] as? [String: Any] {
+            return userExperience
+        } else {
+            logEmptyKey("userExperience", forJSON: false)
+            return nil
+        }
+    } catch {
+        print("Failed to decode plist: \(error)")
+        return nil
+    }
 }
 
 // userInterface
@@ -187,13 +240,30 @@ func getUserInterfaceJSON() -> UserInterface? {
 }
 
 func getUserInterfaceProfile() -> [String: Any]? {
-    guard !CommandLineUtilities().demoModeEnabled(),
-          !CommandLineUtilities().unitTestingEnabled(),
-          let userInterface = Globals.nudgeDefaults.dictionary(forKey: "userInterface") else {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         logEmptyKey("userInterface", forJSON: false)
         return nil
     }
-    return userInterface
+
+    // Check if the Data is empty
+    if Globals.configProfile.isEmpty {
+        logEmptyKey("userInterface", forJSON: false)
+        return nil
+    }
+
+    do {
+        // Attempt to decode the plist Data into a dictionary
+        if let dictionary = try PropertyListSerialization.propertyList(from: Globals.configProfile, options: [], format: nil) as? [String: Any],
+           let userInterface = dictionary["userInterface"] as? [String: Any] {
+            return userInterface
+        } else {
+            logEmptyKey("userInterface", forJSON: false)
+            return nil
+        }
+    } catch {
+        print("Failed to decode plist: \(error)")
+        return nil
+    }
 }
 
 // Loop through JSON userInterface -> updateElements preferences and then compare language
@@ -206,16 +276,38 @@ func getUserInterfaceUpdateElementsJSON() -> UpdateElement? {
 }
 
 func getUserInterfaceUpdateElementsProfile() -> [String: AnyObject]? {
-    // Mutate the profile into our required construct
-    guard let updateElementsArray = UserInterfaceVariables.userInterfaceProfile?["updateElements"] as? [[String: AnyObject]] else {
+    if CommandLineUtilities().demoModeEnabled() || CommandLineUtilities().unitTestingEnabled() {
         logEmptyKey("updateElements", forJSON: false)
         return nil
     }
-    return getMatchingUpdateElements(
-        updateElements: updateElementsArray,
-        languageKey: "_language",
-        logKey: "Profile"
-    )
+
+    // Check if the Data is empty
+    if Globals.configProfile.isEmpty {
+        logEmptyKey("updateElements", forJSON: false)
+        return nil
+    }
+
+    do {
+        // Attempt to decode the plist Data into a dictionary
+        if let dictionary = try PropertyListSerialization.propertyList(from: Globals.configProfile, options: [], format: nil) as? [String: Any],
+           let userInterface = dictionary["userInterface"] as? [String: Any] {
+            guard let updateElementsArray = userInterface["updateElements"] as? [[String: AnyObject]] else {
+                logEmptyKey("updateElements", forJSON: false)
+                return nil
+            }
+            return getMatchingUpdateElements(
+                updateElements: updateElementsArray,
+                languageKey: "_language",
+                logKey: "Profile"
+            )
+        } else {
+            logEmptyKey("updateElements", forJSON: false)
+            return nil
+        }
+    } catch {
+        print("Failed to decode plist: \(error)")
+        return nil
+    }
 }
 
 private func getMatchingUpdateElements<T>(updateElements: [T]?, languageKey: String, logKey: String) -> T? {
