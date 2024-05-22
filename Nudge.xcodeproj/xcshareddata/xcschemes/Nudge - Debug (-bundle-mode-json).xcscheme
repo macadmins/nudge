@@ -72,7 +72,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-demo-mode-json"
+            argument = "-bundle-mode-json"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

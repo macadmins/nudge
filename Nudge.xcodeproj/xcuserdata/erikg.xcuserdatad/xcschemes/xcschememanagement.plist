@@ -4,10 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Nudge - Debug (-bundle-mode).xcscheme_^#shared#^_</key>
+		<key>Nudge - Debug (-bundle-mode-json).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
+		</dict>
+		<key>Nudge - Debug (-bundle-mode-profile).xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
 		</dict>
 		<key>Nudge - Debug (-demo-mode).xcscheme_^#shared#^_</key>
 		<dict>
@@ -22,12 +27,12 @@
 		<key>Nudge - Debug (-demo-mode, -force-screenshot-icon).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>6</integer>
 		</dict>
 		<key>Nudge - Debug (-demo-mode, -simple-mode).xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>7</integer>
 		</dict>
 		<key>Nudge - Debug (-simple-mode).xcscheme_^#shared#^_</key>
 		<dict>
@@ -42,7 +47,7 @@
 		<key>Nudge - Release.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>8</integer>
 		</dict>
 		<key>Nudge Release.xcscheme_^#shared#^_</key>
 		<dict>
