@@ -184,7 +184,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 var foundMatch = false
                 for osVersion in macOSSOFAAssets {
-                    if PrefsWrapper.requiredMinimumOSVersion == "latest" {
+                    if ["latest", "latest-supported", "latest-major"].contains(PrefsWrapper.requiredMinimumOSVersion) {
+                        if PrefsWrapper.requiredMinimumOSVersion == "latest-supported" {
+                            if VersionManager.getMajorOSVersion() != Int(osVersion.osVersion.split(separator: " ").last!) {
+                                continue
+                            }
+                        }
                         // Check if the specified device is in the supported devices of the matching asset
                         nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
                         // nudgePrimaryState.requiredMinimumOSVersion = "14.6" // TODO: remove when testing is done
