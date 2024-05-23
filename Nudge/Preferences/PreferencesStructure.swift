@@ -397,7 +397,7 @@ struct UserInterface: Codable {
     var actionButtonPath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
-    var showDeferralCount, simpleMode, singleQuitButton: Bool?
+    var showActivelyExploitedCVEs, showDeferralCount, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
 }
 
@@ -428,6 +428,7 @@ extension UserInterface {
         iconLightPath: String? = nil,
         screenShotDarkPath: String? = nil,
         screenShotLightPath: String? = nil,
+        showActivelyExploitedCVEs: Bool? = nil,
         showDeferralCount: Bool? = nil,
         simpleMode: Bool? = nil,
         singleQuitButton: Bool? = nil,
@@ -442,6 +443,7 @@ extension UserInterface {
             iconLightPath: iconLightPath ?? self.iconLightPath,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
+            showActivelyExploitedCVEs: showActivelyExploitedCVEs ?? self.showActivelyExploitedCVEs,
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.singleQuitButton,
