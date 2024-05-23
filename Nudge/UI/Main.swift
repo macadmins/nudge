@@ -174,7 +174,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Pre-Launch Logic
     func applicationWillFinishLaunching(_ notification: Notification) {
         // print("applicationWillFinishLaunching")
-        // TODO: Implement "latest-minor" or something for implementing all of the minor releases.
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
         // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
@@ -205,7 +204,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         }
                     } else {
                         if osVersion.securityReleases.first(where: { $0.productVersion == nudgePrimaryState.requiredMinimumOSVersion }) != nil {
-                            selectedOS = osVersion.securityReleases.first
+                            selectedOS = osVersion.securityReleases.first(where: { $0.productVersion == nudgePrimaryState.requiredMinimumOSVersion })
                         } else {
                             continue
                         }
