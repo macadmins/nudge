@@ -53,7 +53,7 @@ struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
     var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
-    var disableSoftwareUpdateWorkflow, enforceMinorUpdates: Bool?
+    var disableNudgeForStandardInstalls, disableSoftwareUpdateWorkflow, enforceMinorUpdates: Bool?
     var refreshSOFAFeedTime: Int?
     var terminateApplicationsOnLaunch, utilizeSOFAFeed: Bool?
 }
@@ -89,6 +89,7 @@ extension OptionalFeatures {
         attemptToCheckForSupportedDevice: Bool? = nil,
         attemptToFetchMajorUpgrade: Bool? = nil,
         blockedApplicationBundleIDs: [String]? = nil,
+        disableNudgeForStandardInstalls: Bool? = nil,
         disableSoftwareUpdateWorkflow: Bool? = nil,
         enforceMinorUpdates: Bool? = nil,
         refreshSOFAFeedTime: Int? = nil,
@@ -108,6 +109,7 @@ extension OptionalFeatures {
             attemptToCheckForSupportedDevice: attemptToCheckForSupportedDevice ?? self.attemptToCheckForSupportedDevice,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
             blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
+            disableNudgeForStandardInstalls: disableNudgeForStandardInstalls ?? self.disableNudgeForStandardInstalls,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
             refreshSOFAFeedTime: refreshSOFAFeedTime ?? self.refreshSOFAFeedTime,
@@ -122,8 +124,9 @@ struct OSVersionRequirement: Codable {
     var aboutUpdateURL: String?
     var aboutUpdateURLs: [AboutUpdateURL]?
     var actionButtonPath: String?
-    var activelyExploitedInstallationSLA: Int?
+    var activelyExploitedCVEsInstallationSLA: Int?
     var majorUpgradeAppPath: String?
+    var nonActivelyExploitedCVEsSLA: Int?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
     var standardInstallationSLA: Int?
@@ -137,8 +140,9 @@ extension OSVersionRequirement {
     init(fromDictionary: [String: AnyObject]) {
         self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.actionButtonPath = fromDictionary["actionButtonPath"] as? String
-        self.activelyExploitedInstallationSLA = fromDictionary["activelyExploitedInstallationSLA"] as? Int
+        self.activelyExploitedCVEsInstallationSLA = fromDictionary["activelyExploitedCVEsInstallationSLA"] as? Int
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
+        self.nonActivelyExploitedCVEsSLA = fromDictionary["nonActivelyExploitedCVEsSLA"] as? Int
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
         self.standardInstallationSLA = fromDictionary["standardInstallationSLA"] as? Int
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
@@ -196,8 +200,9 @@ extension OSVersionRequirement {
         aboutUpdateURL: String? = nil,
         aboutUpdateURLs: [AboutUpdateURL]? = nil,
         actionButtonPath: String? = nil,
-        activelyExploitedInstallationSLA: Int? = nil,
+        activelyExploitedCVEsInstallationSLA: Int? = nil,
         majorUpgradeAppPath: String? = nil,
+        nonActivelyExploitedCVEsSLA: Int? = nil,
         requiredInstallationDate: Date? = nil,
         requiredMinimumOSVersion: String? = nil,
         standardInstallationSLA: Int? = nil,
@@ -209,8 +214,9 @@ extension OSVersionRequirement {
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
-            activelyExploitedInstallationSLA: activelyExploitedInstallationSLA ?? self.activelyExploitedInstallationSLA,
+            activelyExploitedCVEsInstallationSLA: activelyExploitedCVEsInstallationSLA ?? self.activelyExploitedCVEsInstallationSLA,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
+            nonActivelyExploitedCVEsSLA: nonActivelyExploitedCVEsSLA ?? self.nonActivelyExploitedCVEsSLA,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
             standardInstallationSLA: standardInstallationSLA ?? self.standardInstallationSLA,

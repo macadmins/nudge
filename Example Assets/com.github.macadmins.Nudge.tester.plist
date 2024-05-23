@@ -19,8 +19,6 @@
 		<true/>
 		<key>attemptToBlockApplicationLaunches</key>
 		<true/>
-		<key>attemptToCheckForSupportedDevice</key>
-		<true/>
 		<key>blockedApplicationBundleIDs</key>
 		<array>
 			<string>com.microsoft.VSCode</string>
