@@ -37,7 +37,7 @@ struct StandardModeLeftSide: View {
     private var informationStack: some View {
         VStack(alignment: .center, spacing: interLineSpacing) {
             InfoRow(label: "Required OS Version:", value: String(appState.requiredMinimumOSVersion), boldText: true)
-            if OptionalFeatureVariables.utilizeSOFAFeed {
+            if OptionalFeatureVariables.utilizeSOFAFeed && UserInterfaceVariables.showActivelyExploitedCVEs {
                 InfoRow(label: "Actively Exploited CVEs:", value: String(appState.activelyExploitedCVEs).capitalized, boldText: appState.activelyExploitedCVEs)
             }
             InfoRow(label: "Current OS Version:", value: GlobalVariables.currentOSVersion)

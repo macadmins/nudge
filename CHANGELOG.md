@@ -25,6 +25,8 @@ Upcoming
 
 ### Added
 - Remote URLs can now be used on `iconDarkPath`, `iconLightPath`, `screenShotDarkPath` and `screenShotLightPath`
+- Actively Exploited CVEs in the left sidebar
+  - To disable this item, please configure the `showActivelyExploitedCVEs` key under `userInterface` to false
 - An admin can now allow users to move the Nudge window with `userExperience` key `allowMovableWindow`
 - Basic SwiftUI support for Markdown text options
   - Utilizing Apple's markdown features, you can now utilize, bold, italic, underline, subscript and url links directly into any of the text fields

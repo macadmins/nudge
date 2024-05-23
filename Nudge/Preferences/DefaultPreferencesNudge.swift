@@ -479,6 +479,12 @@ struct UserInterfaceVariables {
         "I understand"
     }
 
+    static var showActivelyExploitedCVEs: Bool {
+        userInterfaceProfile?["showActivelyExploitedCVEs"] as? Bool ??
+        userInterfaceJSON?.showActivelyExploitedCVEs ??
+        true
+    }
+
     static var showDeferralCount: Bool {
         userInterfaceProfile?["showDeferralCount"] as? Bool ??
         userInterfaceJSON?.showDeferralCount ??
