@@ -39,6 +39,17 @@ struct SofaOSVersion: Codable {
     }
 }
 
+protocol OSInformation {
+    var productVersion: String { get }
+    var build: String { get }
+    var releaseDate: Date? { get }
+    var securityInfo: String { get }
+    var supportedDevices: [String] { get }
+    var cves: [String: Bool] { get }
+    var activelyExploitedCVEs: [String] { get }
+    var uniqueCVEsCount: Int { get }
+}
+
 struct LatestOS: Codable {
     let productVersion, build: String
     let releaseDate: Date?
@@ -62,9 +73,13 @@ struct LatestOS: Codable {
     }
 }
 
+extension LatestOS: OSInformation {
+    // All required properties are already implemented
+}
+
 struct SecurityRelease: Codable {
     let updateName, productVersion: String
-    let releaseDate: Date
+    let releaseDate: Date?
     let securityInfo: String
     let supportedDevices: [String]
     let cves: [String: Bool]
@@ -82,6 +97,12 @@ struct SecurityRelease: Codable {
         case uniqueCVEsCount = "UniqueCVEsCount"
         case daysSincePreviousRelease = "DaysSincePreviousRelease"
     }
+}
+
+extension SecurityRelease: OSInformation {
+    var build: String {
+        ""
+    } // fake out build for now
 }
 
 struct SupportedModel: Codable {

@@ -116,7 +116,7 @@ struct OptionalFeatureVariables {
     static var attemptToCheckForSupportedDevice: Bool {
         optionalFeaturesProfile?["attemptToCheckForSupportedDevice"] as? Bool ??
         optionalFeaturesJSON?.attemptToCheckForSupportedDevice ??
-        false
+        true
     }
 
     static var attemptToFetchMajorUpgrade: Bool {
@@ -131,16 +131,22 @@ struct OptionalFeatureVariables {
         [String]()
     }
 
-    static var enforceMinorUpdates: Bool {
-        optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ??
-        optionalFeaturesJSON?.enforceMinorUpdates ??
-        true
-    }
-
     static var disableSoftwareUpdateWorkflow: Bool {
         optionalFeaturesProfile?["disableSoftwareUpdateWorkflow"] as? Bool ??
         optionalFeaturesJSON?.disableSoftwareUpdateWorkflow ??
         false
+    }
+
+    static var disableNudgeForStandardInstalls: Bool {
+        optionalFeaturesProfile?["disableNudgeForStandardInstalls"] as? Bool ??
+        optionalFeaturesJSON?.disableNudgeForStandardInstalls ??
+        false
+    }
+
+    static var enforceMinorUpdates: Bool {
+        optionalFeaturesProfile?["enforceMinorUpdates"] as? Bool ??
+        optionalFeaturesJSON?.enforceMinorUpdates ??
+        true
     }
 
     static var refreshSOFAFeedTime: Int {
@@ -176,9 +182,9 @@ struct OSVersionRequirementVariables {
         ""
     }
 
-    static var activelyExploitedInstallationSLA: Int {
-        osVersionRequirementsProfile?.activelyExploitedInstallationSLA ??
-        osVersionRequirementsJSON?.activelyExploitedInstallationSLA ??
+    static var activelyExploitedCVEsInstallationSLA: Int {
+        osVersionRequirementsProfile?.activelyExploitedCVEsInstallationSLA ??
+        osVersionRequirementsJSON?.activelyExploitedCVEsInstallationSLA ??
         14
     }
 
@@ -187,9 +193,15 @@ struct OSVersionRequirementVariables {
         osVersionRequirementsJSON?.majorUpgradeAppPath ??
         ""
     }
-    
+
+    static var nonActivelyExploitedCVEsSLA: Int {
+        osVersionRequirementsProfile?.nonActivelyExploitedCVEsSLA ??
+        osVersionRequirementsJSON?.nonActivelyExploitedCVEsSLA ??
+        21
+    }
+
     static var requiredMinimumOSVersion: String {
-        if ["latest", "latest-supported", "latest-major"].contains(PrefsWrapper.requiredMinimumOSVersion) {
+        if ["latest", "latest-supported", "latest-minor"].contains(PrefsWrapper.requiredMinimumOSVersion) {
             PrefsWrapper.requiredMinimumOSVersion
         } else {
             try! OSVersion(PrefsWrapper.requiredMinimumOSVersion).description

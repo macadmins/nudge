@@ -8,17 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Requires macOS 12.0 and higher. Further releases and feature requests may make this macOS 13 and higher depending on code complexity.
 
 ### Changed
-- You can now pass the string `latest` in the `requiredMinimumOSVersion` key
+- You can now pass the strings `latest`, `latest-supported` and `latest-minor` in the `requiredMinimumOSVersion` key
+  - `latest`: always force latest release and if the machine can't this version, show the new "unsupported device" user interface
+  - `latest-supported`: always get the latest version sofa shows that is supported by this device
+  - `latest-minor`: stay in the current major release and get the latest minor updates available
   - This requires utilizing the SOFA feed features to properly work
   - Nudge will then utilize two date integers to automatically calculate the `requiredInstallationDate`
-    - `activelyExploitedInstallationSLA` under the `osVersionRequirement` key will default to 14 days
+    - `activelyExploitedCVEsInstallationSLA` under the `osVersionRequirement` key will default to 14 days
+    - `nonActivelyExploitedCVEsSLA` under the `osVersionRequirement` key will default to 21 days
     - `standardInstallationSLA` under the `osVersionRequirement` key will default to 28 days
     - These dates are calculated against the `ReleaseDate` key in the SOFA feed
+    - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
 
 ### Fixed
 Upcoming
 
 ### Added
+- Remote URLs can now be used on `iconDarkPath`, `iconLightPath`, `screenShotDarkPath` and `screenShotLightPath`
 - An admin can now allow users to move the Nudge window with `userExperience` key `allowMovableWindow`
 - Basic SwiftUI support for Markdown text options
   - Utilizing Apple's markdown features, you can now utilize, bold, italic, underline, subscript and url links directly into any of the text fields
@@ -26,8 +32,8 @@ Upcoming
   - Set the `utilizeSOFAFeed` key `true` under `optionalFeatures` to enable this feature 
   - Nudge will by default check the feed every 24 hours.
   - In order to change this, please configure the `refreshSOFAFeedTime` key under `optionalFeatures` in seconds
-- "Unsupported" device UI in standard mode that utilizes the SOFA feed
-  - Set the `attemptToCheckForSupportedDevice` key `true` under `optionalFeatures` to enable this feature 
+- "Unsupported device" UI in standard mode that utilizes the SOFA feed
+  - Set the `attemptToCheckForSupportedDevice` key `false` under `optionalFeatures` to disable this feature 
   - There are now keys to set all of text fields
   - `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported`
   - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.

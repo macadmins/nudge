@@ -181,63 +181,80 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // TODO: add support for custom sofa feed url
         // TODO: check the sofa json etag even after the timelimit age to reduce more bandwidth
         if OptionalFeatureVariables.utilizeSOFAFeed {
+            var selectedOS: OSInformation?
+            var foundMatch = false
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
-                var foundMatch = false
                 for osVersion in macOSSOFAAssets {
-                    if ["latest", "latest-supported", "latest-major"].contains(PrefsWrapper.requiredMinimumOSVersion) {
-                        if PrefsWrapper.requiredMinimumOSVersion == "latest-supported" {
-                            if VersionManager.getMajorOSVersion() != Int(osVersion.osVersion.split(separator: " ").last!) {
+                    if PrefsWrapper.requiredMinimumOSVersion == "latest" {
+                        selectedOS = osVersion.latest
+                    } else if PrefsWrapper.requiredMinimumOSVersion == "latest-minor" {
+                        if VersionManager.getMajorOSVersion() == Int(osVersion.osVersion.split(separator: " ").last!) {
+                            selectedOS = osVersion.latest
+                        } else {
+                            continue
+                        }
+                    } else if PrefsWrapper.requiredMinimumOSVersion == "latest-supported" {
+                        if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
+                            selectedOS = osVersion.securityReleases.first
+                            if !selectedOS!.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() }) {
                                 continue
                             }
+                        } else {
+                            LogManager.notice("Attempting to use latest-supported without supported device UI features. Please set attemptToCheckForSupportedDevice to true", logger: sofaLog)
+                            break
                         }
-                        // Check if the specified device is in the supported devices of the matching asset
-                        nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
-                        // nudgePrimaryState.requiredMinimumOSVersion = "14.6" // TODO: remove when testing is done
-                        nudgePrimaryState.activelyExploitedCVEs = osVersion.latest.activelyExploitedCVEs.count > 0
-                        LogManager.notice("SOFA Actively Exploited CVEs: \(nudgePrimaryState.activelyExploitedCVEs)", logger: sofaLog)
-                        let slaExtension = nudgePrimaryState.activelyExploitedCVEs ? OSVersionRequirementVariables.activelyExploitedInstallationSLA * 86400 : OSVersionRequirementVariables.standardInstallationSLA * 86400
-                        requiredInstallationDate = osVersion.latest.releaseDate?.addingTimeInterval(TimeInterval(slaExtension)) ?? DateManager().getCurrentDate().addingTimeInterval(1209600)
-                        LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
-                        LogManager.notice("SOFA Matched OS Version: \(osVersion.latest.productVersion)", logger: sofaLog)
-                        LogManager.notice("SOFA Assets: \(osVersion.latest.supportedDevices)", logger: sofaLog)
-                        LogManager.notice("SOFA CVEs: \(osVersion.latest.cves)", logger: sofaLog)
-
-                        if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
-                            LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
-                            let deviceMatchFound = osVersion.latest.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
-
-                            LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                            nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
-                            // nudgePrimaryState.deviceSupportedByOSVersion = false // TODO: remove when testing is done
-                        }
-                        foundMatch = true
                     } else {
-                        if let matchingAsset = osVersion.securityReleases.first(where: { $0.productVersion == nudgePrimaryState.requiredMinimumOSVersion }) {
-                            // Check if the specified device is in the supported devices of the matching asset
-                            LogManager.notice("SOFA Matched OS Version: \(matchingAsset.productVersion)", logger: sofaLog)
-                            LogManager.notice("SOFA Assets: \(matchingAsset.supportedDevices)", logger: sofaLog)
-                            if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
-                                LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
-                                let deviceMatchFound = matchingAsset.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
-                                print("CVEs: \(matchingAsset.cves)")
-                                print("Actively Exploited CVEs: \(matchingAsset.activelyExploitedCVEs.count > 0)")
-                                LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                                nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
-                                // nudgePrimaryState.deviceSupportedByOSVersion = false
-                            }
-                            foundMatch = true
+                        if osVersion.securityReleases.first(where: { $0.productVersion == nudgePrimaryState.requiredMinimumOSVersion }) != nil {
+                            selectedOS = osVersion.securityReleases.first
+                        } else {
+                            continue
                         }
                     }
-                    if foundMatch {
-                        break
+                    let activelyExploitedCVEs = selectedOS!.activelyExploitedCVEs.count > 0
+                    let presentCVEs = selectedOS!.cves.count > 0
+                    let slaExtension: TimeInterval
+                    switch (activelyExploitedCVEs, presentCVEs) {
+                        case (false, true):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsSLA * 86400)
+                        case (true, true):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsInstallationSLA * 86400)
+                        case (false, false):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400)
+                        default:
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400)
                     }
+
+                    if OptionalFeatureVariables.disableNudgeForStandardInstalls && !presentCVEs {
+                        LogManager.notice("No known CVEs for \(selectedOS!.productVersion) and disableNudgeForStandardInstalls is set to true", logger: sofaLog)
+                        AppStateManager().exitNudge()
+                    }
+                    LogManager.notice("SOFA Actively Exploited CVEs: \(activelyExploitedCVEs)", logger: sofaLog)
+
+                    // Start setting UI fields
+                    nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
+                    nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
+                    requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400))
+
+                    LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
+                    LogManager.notice("SOFA Matched OS Version: \(selectedOS!.productVersion)", logger: sofaLog)
+                    LogManager.notice("SOFA Assets: \(selectedOS!.supportedDevices)", logger: sofaLog)
+                    LogManager.notice("SOFA CVEs: \(selectedOS!.cves)", logger: sofaLog)
+
+                    if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
+                        LogManager.notice("Assessed Model ID: \(Globals.hardwareModelID)", logger: sofaLog)
+                        let deviceMatchFound = selectedOS!.supportedDevices.contains(where: { $0.uppercased() == Globals.hardwareModelID.uppercased() })
+                        LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
+                        nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
+                    }
+                    foundMatch = true
+                    break
                 }
                 if !foundMatch {
                     // If no matching product version found or the device is not supported, return false
                     LogManager.notice("Could not find requiredMinimumOSVersion \(nudgePrimaryState.requiredMinimumOSVersion) in SOFA feed", logger: sofaLog)
                 }
             } else {
-                LogManager.notice("Could not fetch SOFA feed", logger: sofaLog)
+                LogManager.error("Could not fetch SOFA feed", logger: sofaLog)
             }
         }
         handleSMAppService()
