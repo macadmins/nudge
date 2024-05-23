@@ -14,6 +14,7 @@
             "com.microsoft.VSCode",
             "us.zoom.xos"
         ],
+        "disableNudgeForStandardInstalls": true,
         "terminateApplicationsOnLaunch": false,
         "utilizeSOFAFeed": true
     },
