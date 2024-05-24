@@ -47,7 +47,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - If you are utilizing a custom sofa feed, please configure the `customSOFAFeedURL` key under `optionalFeatures`
 - "Unsupported device" UI in standard mode that utilizes the SOFA feed
   - Set the `attemptToCheckForSupportedDevice` key `false` under `optionalFeatures` to disable this feature 
-  - There are now keys to set all of text fields
+  - There are new keys to set all of text fields
   - `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported`
   - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.
   - An icon will appear as an overlay on top of the company image to further emphasize the device is no longer supported
