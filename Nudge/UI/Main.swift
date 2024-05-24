@@ -175,7 +175,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
         // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
-        // TODO: check the sofa json etag even after the timelimit age to reduce more bandwidth
         if OptionalFeatureVariables.utilizeSOFAFeed {
             var selectedOS: OSInformation?
             var foundMatch = false
