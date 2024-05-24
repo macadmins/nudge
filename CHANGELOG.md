@@ -18,6 +18,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
     - `nonActivelyExploitedCVEsSLA` under the `osVersionRequirement` key will default to 21 days
     - `standardInstallationSLA` under the `osVersionRequirement` key will default to 28 days
     - These dates are calculated against the `ReleaseDate` key in the SOFA feed
+      - To artificially change the `ReleaseDate` thereby giving your users a default grace period for all SOFA OS updates, please configure the `sofaPeriodLaunchDelay` key under `userExperience`
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
 
 ### Fixed

@@ -228,6 +228,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     // Start setting UI fields
                     nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
+                    releaseDate = selectedOS!.releaseDate ?? Date()
                     requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400))
 
                     LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
@@ -261,8 +262,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkForBadProfilePath()
         handleCommandLineArguments()
         applyGracePeriodLogic()
-        applyRandomDelayIfNecessary()
         sofaPreLaunchLogic()
+        applySOFAPeriodLogic()
+        applyRandomDelayIfNecessary()
         updateNudgeState()
         handleSoftwareUpdateRequirements()
     }
@@ -334,6 +336,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
             sleep(UInt32(delaySeconds))
+        }
+    }
+
+    private func applySOFAPeriodLogic() {
+        _ = AppStateManager().sofaPeriodLogic()
+        if nudgePrimaryState.shouldExit {
+            exit(0)
         }
     }
 

@@ -178,6 +178,7 @@ struct OptionalFeatureVariables {
 var majorUpgradeAppPathExists = FileManager.default.fileExists(atPath: OSVersionRequirementVariables.majorUpgradeAppPath)
 var majorUpgradeBackupAppPathExists = FileManager.default.fileExists(atPath: NetworkFileManager().getBackupMajorUpgradeAppPath())
 var requiredInstallationDate = DateManager().getFormattedDate(date: PrefsWrapper.requiredInstallationDate)
+var releaseDate = Date()
 struct OSVersionRequirementVariables {
     static var osVersionRequirementsProfile: OSVersionRequirement? = getOSVersionRequirementsProfile()
     static var osVersionRequirementsJSON: OSVersionRequirement? = getOSVersionRequirementsJSON()
@@ -361,6 +362,12 @@ struct UserExperienceVariables {
         userExperienceProfile?["randomDelay"] as? Bool ??
         userExperienceJSON?.randomDelay ??
         false
+    }
+
+    static var sofaPeriodLaunchDelay: Int {
+        userExperienceProfile?["sofaPeriodLaunchDelay"] as? Int ??
+        userExperienceJSON?.sofaPeriodLaunchDelay ??
+        0
     }
 }
 
