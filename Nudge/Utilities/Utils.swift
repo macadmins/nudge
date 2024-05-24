@@ -110,7 +110,7 @@ struct AppStateManager {
 
     func getCreationDateForPath(_ path: String, testFileDate: Date?) -> Date? {
         let attributes = try? FileManager.default.attributesOfItem(atPath: path)
-        if attributes?[.size] as? Int == 0  {
+        if attributes?[.size] as? Int == 0  && testFileDate == nil {
             return DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
         }
         let creationDate = attributes?[.creationDate] as? Date
@@ -119,7 +119,7 @@ struct AppStateManager {
 
     func getModifiedDateForPath(_ path: String, testFileDate: Date?) -> Date? {
         let attributes = try? FileManager.default.attributesOfItem(atPath: path)
-        if attributes?[.size] as? Int == 0  {
+        if attributes?[.size] as? Int == 0  && testFileDate == nil {
             return DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
         }
         let creationDate = attributes?[.modificationDate] as? Date
