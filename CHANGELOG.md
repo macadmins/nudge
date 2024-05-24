@@ -37,6 +37,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Actively Exploited CVEs in the left sidebar
   - To disable this item, please configure the `showActivelyExploitedCVEs` key under `userInterface` to false
 - An admin can now allow users to move the Nudge window with `userExperience` key `allowMovableWindow`
+- To ease testing, you can now pass `-disable-randomDelay` as an argument to ignore the `randomDelay` key if it is set by a JSON or mobileconfig
 - Basic SwiftUI support for Markdown text options
   - Utilizing Apple's markdown features, you can now utilize, bold, italic, underline, subscript and url links directly into any of the text fields
 - [SOFA](https://github.com/macadmins/sofa) feed support
