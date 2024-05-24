@@ -10,7 +10,7 @@ import os
 
 // Logger Manager
 struct LogManager {
-    static private let bundleID = Bundle.main.bundleIdentifier ?? "com.github.macadmins.Nudge"
+    static private let bundleID = Globals.bundleID
 
     static func createLogger(category: String) -> Logger {
         return Logger(subsystem: bundleID, category: category)

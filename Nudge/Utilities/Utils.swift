@@ -862,7 +862,7 @@ struct NetworkFileManager {
         }
         let fileManager = FileManager.default
         let appSupportDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let appDirectory = appSupportDirectory.appendingPathComponent(Bundle.main.bundleIdentifier ?? "com.github.macadmins.Nudge")
+        let appDirectory = appSupportDirectory.appendingPathComponent(Globals.bundleID)
         let sofaFile = "sofa-macos_data_feed.json"
         let sofaPath = appDirectory.appendingPathComponent(sofaFile)
         if fileManager.fileExists(atPath: sofaPath.path) {
