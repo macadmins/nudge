@@ -34,6 +34,7 @@ Upcoming
   - Set the `utilizeSOFAFeed` key `true` under `optionalFeatures` to enable this feature 
   - Nudge will by default check the feed every 24 hours.
   - In order to change this, please configure the `refreshSOFAFeedTime` key under `optionalFeatures` in seconds
+  - If you are utilizing a custom sofa feed, please configure the `customSOFAFeedURL` key under `optionalFeatures`
 - "Unsupported device" UI in standard mode that utilizes the SOFA feed
   - Set the `attemptToCheckForSupportedDevice` key `false` under `optionalFeatures` to disable this feature 
   - There are now keys to set all of text fields

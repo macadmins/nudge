@@ -890,7 +890,7 @@ struct NetworkFileManager {
             }
         }
 
-        if let url = URL(string: "https://sofa.macadmins.io/v1/macos_data_feed.json") {
+        if let url = URL(string: OptionalFeatureVariables.customSOFAFeedURL) {
             let sofaData = SOFA().URLSync(url: url)
             if (sofaData.error == nil) {
                 do {
