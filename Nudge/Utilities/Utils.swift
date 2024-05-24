@@ -110,6 +110,9 @@ struct AppStateManager {
 
     func getCreationDateForPath(_ path: String, testFileDate: Date?) -> Date? {
         let attributes = try? FileManager.default.attributesOfItem(atPath: path)
+        if attributes?[.size] as? Int == 0  {
+            return DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
+        }
         let creationDate = attributes?[.creationDate] as? Date
         return testFileDate ?? creationDate
     }
@@ -865,7 +868,8 @@ struct NetworkFileManager {
         let appDirectory = appSupportDirectory.appendingPathComponent(Globals.bundleID)
         let sofaFile = "sofa-macos_data_feed.json"
         let sofaPath = appDirectory.appendingPathComponent(sofaFile)
-        if fileManager.fileExists(atPath: sofaPath.path) {
+        let sofaJSONExists = fileManager.fileExists(atPath: sofaPath.path)
+        if sofaJSONExists {
             let sofaPathCreationDate = AppStateManager().getCreationDateForPath(sofaPath.path, testFileDate: nil)
             // Use Cache as it is within time inverval
             if TimeInterval(OptionalFeatureVariables.refreshSOFAFeedTime) >= Date().timeIntervalSince(sofaPathCreationDate!) {
@@ -877,7 +881,10 @@ struct NetworkFileManager {
                 } catch {
                     LogManager.error("Failed to decode local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                     LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
+                    return nil
                 }
+            } else {
+                LogManager.info("Previously cached SOFA json has expired", logger: sofaLog)
             }
         } else {
             // Ensure the Application Support directory exists
@@ -893,15 +900,29 @@ struct NetworkFileManager {
         if let url = URL(string: OptionalFeatureVariables.customSOFAFeedURL) {
             let sofaData = SOFA().URLSync(url: url)
             if (sofaData.error == nil) {
-                do {
-                    if fileManager.fileExists(atPath: appDirectory.path) {
-                        try sofaData.data!.write(to: sofaPath)
+                if sofaData.responseCode == 304 && sofaJSONExists {
+                    LogManager.info("Utilizing previously cached SOFA json due to Etag not changing", logger: sofaLog)
+                    do {
+                        let sofaData = try Data(contentsOf: sofaPath)
+                        let assetInfo = try MacOSDataFeed(data: sofaData)
+                        return assetInfo
+                    } catch {
+                        LogManager.error("Failed to decode local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
+                        LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
+                        return nil
                     }
-                    let assetInfo = try MacOSDataFeed(data: sofaData.data!)
-                    return assetInfo
-                } catch {
-                    LogManager.error("Failed to decode sofa JSON: \(error.localizedDescription)", logger: sofaLog)
-                    LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
+                } else {
+                    do {
+                        if fileManager.fileExists(atPath: appDirectory.path) {
+                            try sofaData.data!.write(to: sofaPath)
+                        }
+                        let assetInfo = try MacOSDataFeed(data: sofaData.data!)
+                        return assetInfo
+                    } catch {
+                        LogManager.error("Failed to decode sofa JSON: \(error.localizedDescription)", logger: sofaLog)
+                        LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
+                        return nil
+                    }
                 }
             } else {
                 LogManager.error("Failed to fetch sofa JSON: \(sofaData.error!.localizedDescription)", logger: sofaLog)

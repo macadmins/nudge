@@ -222,39 +222,54 @@ extension MacOSDataFeed {
 }
 
 class SOFA: NSObject, URLSessionDelegate {
-    func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?) {
+    func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?) {
         let semaphore = DispatchSemaphore(value: 0)
+        let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
         var request = URLRequest(url: url)
-        request.setValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        request.addValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
+        request.setValue(lastEtag, forHTTPHeaderField: "If-None-Match")
         var attempts = 0
 
         var responseData: Data?
         var response: URLResponse?
         var responseError: Error?
+        var responseCode: Int?
 
         // Retry loop
         while attempts < maxRetries {
             attempts += 1
             let task = session.dataTask(with: request) { data, resp, error in
+                guard let httpResponse = resp as? HTTPURLResponse else {
+                    print("Error receiving response: \(error?.localizedDescription ?? "No error information")")
+                    semaphore.signal()
+                    return
+                }
+
+                responseCode = httpResponse.statusCode
+                if responseCode == 200 {
+                    if let etag = httpResponse.allHeaderFields["Etag"] as? String {
+                        Globals.nudgeDefaults.set(etag, forKey: "LastEtag")
+                    }
+                }
+
                 responseData = data
                 response = resp
                 responseError = error
                 semaphore.signal()
             }
             task.resume()
-
             semaphore.wait()
 
-            // Break the loop if the task succeeded or return an error other than a timeout
-            if responseError == nil || (responseError! as NSError).code != NSURLErrorTimedOut {
-                break
-            } else if attempts < maxRetries {
-                // Reset the error to try again
-                responseError = nil
+            // Check if we should retry the request
+            if let error = responseError as NSError? {
+                if error.code == NSURLErrorTimedOut && attempts < maxRetries {
+                    continue // Retry only if it's a timeout error
+                }
+                break // Break for all other errors or no errors
             }
         }
 
-        return (responseData, response, responseError)
+        return (responseData, response, responseError, responseCode)
     }
 }
