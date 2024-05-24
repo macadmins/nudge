@@ -224,7 +224,8 @@ extension MacOSDataFeed {
 class SOFA: NSObject, URLSessionDelegate {
     func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?) {
         let semaphore = DispatchSemaphore(value: 0)
-        let request = URLRequest(url: url)
+        var request = URLRequest(url: url)
+        request.setValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         var attempts = 0
 
