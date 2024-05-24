@@ -53,6 +53,7 @@ struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
     var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
+    var customSOFAFeedURL: String?
     var disableNudgeForStandardInstalls, disableSoftwareUpdateWorkflow, enforceMinorUpdates: Bool?
     var refreshSOFAFeedTime: Int?
     var terminateApplicationsOnLaunch, utilizeSOFAFeed: Bool?
@@ -89,6 +90,7 @@ extension OptionalFeatures {
         attemptToCheckForSupportedDevice: Bool? = nil,
         attemptToFetchMajorUpgrade: Bool? = nil,
         blockedApplicationBundleIDs: [String]? = nil,
+        customSOFAFeedURL: String? = nil,
         disableNudgeForStandardInstalls: Bool? = nil,
         disableSoftwareUpdateWorkflow: Bool? = nil,
         enforceMinorUpdates: Bool? = nil,
@@ -109,6 +111,7 @@ extension OptionalFeatures {
             attemptToCheckForSupportedDevice: attemptToCheckForSupportedDevice ?? self.attemptToCheckForSupportedDevice,
             attemptToFetchMajorUpgrade: attemptToFetchMajorUpgrade ?? self.attemptToFetchMajorUpgrade,
             blockedApplicationBundleIDs: blockedApplicationBundleIDs ?? self.blockedApplicationBundleIDs,
+            customSOFAFeedURL: customSOFAFeedURL ?? self.customSOFAFeedURL,
             disableNudgeForStandardInstalls: disableNudgeForStandardInstalls ?? self.disableNudgeForStandardInstalls,
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
