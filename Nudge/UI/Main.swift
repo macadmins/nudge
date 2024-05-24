@@ -332,7 +332,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func applyRandomDelayIfNecessary() {
-        if UserExperienceVariables.randomDelay {
+        if UserExperienceVariables.randomDelay && !CommandLine.arguments.contains("-disable-randomDelay") {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
             sleep(UInt32(delaySeconds))
