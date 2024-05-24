@@ -171,9 +171,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // print("applicationWillBecomeActive")
     }
 
-    // Pre-Launch Logic
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        // print("applicationWillFinishLaunching")
+    func sofaPreLaunchLogic() {
         // TODO: Add more logging to "unsupported devices" UI.
         // TODO: Add localization for "unsupported devices" text fields
         // TODO: Get someone to update JAMF JSON schema for all the new keys and wiki
@@ -255,11 +253,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 LogManager.error("Could not fetch SOFA feed", logger: sofaLog)
             }
         }
+    }
+
+    // Pre-Launch Logic
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        // print("applicationWillFinishLaunching")
         handleSMAppService()
         checkForBadProfilePath()
         handleCommandLineArguments()
         applyGracePeriodLogic()
         applyRandomDelayIfNecessary()
+        sofaPreLaunchLogic()
         updateNudgeState()
         handleSoftwareUpdateRequirements()
     }
