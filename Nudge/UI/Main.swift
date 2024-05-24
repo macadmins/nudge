@@ -321,7 +321,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func terminateApplicationSender(_ notification: Notification) {
         LogManager.info("Application launched - checking if application should be terminated", logger: utilsLog)
-        terminateApplications()
+        terminateApplications(afterInitialLaunch: true)
     }
 
     private func applyGracePeriodLogic() {
@@ -611,10 +611,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         LogManager.info("Successfully terminated application: \(application.bundleIdentifier ?? "")", logger: utilsLog)
     }
 
-    private func terminateApplications() {
+    private func terminateApplications(afterInitialLaunch: Bool = false) {
         guard DateManager().pastRequiredInstallationDate() else {
             return
         }
+        var hasTerminatedAnApplication = false
         let runningApplications = NSWorkspace.shared.runningApplications
         for runningApplication in runningApplications {
             let appBundleID = runningApplication.bundleIdentifier ?? ""
@@ -625,7 +626,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 LogManager.info("Found \(appBundleID), terminating application", logger: utilsLog)
                 scheduleLocal(applicationIdentifier: appBundleID)
                 terminateApplication(runningApplication)
+                hasTerminatedAnApplication = true
             }
+        }
+        if hasTerminatedAnApplication && afterInitialLaunch {
+            AppStateManager().activateNudge()
         }
     }
 
