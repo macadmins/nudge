@@ -226,7 +226,9 @@ class SOFA: NSObject, URLSessionDelegate {
         let semaphore = DispatchSemaphore(value: 0)
         let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
         var request = URLRequest(url: url)
-        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .useProtocolCachePolicy
+        let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
         request.addValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
         request.setValue(lastEtag, forHTTPHeaderField: "If-None-Match")
         var attempts = 0
@@ -235,6 +237,7 @@ class SOFA: NSObject, URLSessionDelegate {
         var response: URLResponse?
         var responseError: Error?
         var responseCode: Int?
+        var successfulQuery = false
 
         // Retry loop
         while attempts < maxRetries {
@@ -251,6 +254,9 @@ class SOFA: NSObject, URLSessionDelegate {
                     if let etag = httpResponse.allHeaderFields["Etag"] as? String {
                         Globals.nudgeDefaults.set(etag, forKey: "LastEtag")
                     }
+                    successfulQuery = true
+                } else if responseCode == 304 {
+                    successfulQuery = true
                 }
 
                 responseData = data
@@ -260,6 +266,10 @@ class SOFA: NSObject, URLSessionDelegate {
             }
             task.resume()
             semaphore.wait()
+
+            if successfulQuery {
+                break
+            }
 
             // Check if we should retry the request
             if let error = responseError as NSError? {
