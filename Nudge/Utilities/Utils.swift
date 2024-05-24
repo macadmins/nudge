@@ -117,6 +117,15 @@ struct AppStateManager {
         return testFileDate ?? creationDate
     }
 
+    func getModifiedDateForPath(_ path: String, testFileDate: Date?) -> Date? {
+        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
+        if attributes?[.size] as? Int == 0  {
+            return DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
+        }
+        let creationDate = attributes?[.modificationDate] as? Date
+        return testFileDate ?? creationDate
+    }
+
     // Adapted from https://github.com/ProfileCreator/ProfileCreator/blob/master/ProfileCreator/ProfileCreator/Extensions/ExtensionBundle.swift
     func getSigningInfo() -> String? {
         var osStatus = noErr
@@ -870,7 +879,7 @@ struct NetworkFileManager {
         let sofaPath = appDirectory.appendingPathComponent(sofaFile)
         let sofaJSONExists = fileManager.fileExists(atPath: sofaPath.path)
         if sofaJSONExists {
-            let sofaPathCreationDate = AppStateManager().getCreationDateForPath(sofaPath.path, testFileDate: nil)
+            let sofaPathCreationDate = AppStateManager().getModifiedDateForPath(sofaPath.path, testFileDate: nil)
             // Use Cache as it is within time inverval
             if TimeInterval(OptionalFeatureVariables.refreshSOFAFeedTime) >= Date().timeIntervalSince(sofaPathCreationDate!) {
                 LogManager.info("Utilizing previously cached SOFA json", logger: sofaLog)
