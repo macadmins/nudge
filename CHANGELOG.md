@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Requires macOS 12.0 and higher. Further releases and feature requests may make this macOS 13 and higher depending on code complexity.
 
 ### Changed
+- Now built on Swift 5.10, Xcode 15.4 and macOS 14
+- New Xcode Scheme `-bundle-mode-profile` to test profile logic
+  - `-bundle-mode` has been renamed to `-bundle-mode-json`
 - You can now pass the strings `latest`, `latest-supported` and `latest-minor` in the `requiredMinimumOSVersion` key
   - `latest`: always force latest release and if the machine can't this version, show the new "unsupported device" user interface
   - `latest-supported`: always get the latest version sofa shows that is supported by this device
@@ -22,10 +25,15 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
 
 ### Fixed
-Upcoming
+- `screenshotDisplay` view had a bug that may result in the screenshot being partially cut off or zoomable
+- More descriptive logs when loading json/mdm profile keys
+- Refactor portions of the `softwareupdate` logic to reduce potential errors
+- Fixed errors when moving to Swift 5.10
 
 ### Added
 - Remote URLs can now be used on `iconDarkPath`, `iconLightPath`, `screenShotDarkPath` and `screenShotLightPath`
+  - Please note that these files will be downloaded each time Nudge is ran and there is currently not a way to cache these objects.
+  - If these files fail to download, a default company logo will be shown.
 - Actively Exploited CVEs in the left sidebar
   - To disable this item, please configure the `showActivelyExploitedCVEs` key under `userInterface` to false
 - An admin can now allow users to move the Nudge window with `userExperience` key `allowMovableWindow`
