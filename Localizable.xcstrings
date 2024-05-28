@@ -2,7 +2,104 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
     },
     "**A friendly reminder from your local IT team**" : {
       "comment" : "subHeader / subHeaderUnsupported",
@@ -224,10 +321,106 @@
       "comment" : "mainContentHeaderUnsupported",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Din enhed er ikke længere i stand til at modtage kritiske sikkerhedsopdateringer**"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ihr Gerät ist nicht mehr in der Lage, wichtige Sicherheitsupdates zu empfangen**"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "**Your device is no longer capable of receving critical security updates**"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Su dispositivo ya no es capaz de recibir actualizaciones de seguridad críticas**"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Votre appareil n'est plus capable de recevoir des mises à jour de sécurité critiques**"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**आपका डिवाइस अब महत्वपूर्ण सुरक्षा अपडेट प्राप्त करने में सक्षम नहीं है**"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Il tuo dispositivo non è più in grado di ricevere aggiornamenti di sicurezza critici**"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**お使いのデバイスは重要なセキュリティ アップデートを受信できなくなりました**"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**귀하의 장치는 더 이상 중요한 보안 업데이트를 받을 수 없습니다**"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Enheten din er ikke lenger i stand til å motta kritiske sikkerhetsoppdateringer**"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Uw apparaat kan geen kritieke beveiligingsupdates meer ontvangen**"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Twoje urządzenie nie może już otrzymywać krytycznych aktualizacji zabezpieczeń**"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Seu dispositivo não é mais capaz de receber atualizações críticas de segurança**"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ваше устройство больше не может получать критические обновления безопасности.**"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Din enhet kan inte längre ta emot viktiga säkerhetsuppdateringar**"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ваш пристрій більше не може отримувати критичні оновлення безпеки**"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**您的设备不再能够接收关键安全更新**"
           }
         }
       }
@@ -344,10 +537,106 @@
       "comment" : "mainContentTextUnsupported",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En fuldt opdateret enhed er påkrævet for at sikre, at IT kan beskytte din enhed nøjagtigt.\n\nHvis du ikke anskaffer dig en erstatningsenhed, mister du adgangen til nogle elementer, der er nødvendige til dine daglige opgaver.\n\nFor mere information om dette, klik venligst på knappen **Erstat din enhed**."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um sicherzustellen, dass die IT Ihr Gerät ordnungsgemäß schützen kann, ist ein vollständig aktuelles Gerät erforderlich.\n\nWenn Sie kein Ersatzgerät erhalten, verlieren Sie den Zugriff auf einige Dinge, die Sie für Ihre täglichen Aufgaben benötigen.\n\nFür weitere Informationen hierzu klicken Sie bitte auf die Schaltfläche **Gerät ersetzen**."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not obtain a replacement device, you will lose access to some items necessary for your day-to-day tasks.\n\nFor more information about this, please click on the **Replace Your Device** button."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere un dispositivo completamente actualizado para garantizar que TI pueda proteger con precisión su dispositivo.\n\nSi no obtiene un dispositivo de reemplazo, perderá el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara obtener más información sobre esto, haga clic en el botón **Reemplazar su dispositivo**."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un appareil entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil avec précision.\n\nSi vous n'obtenez pas d'appareil de remplacement, vous perdrez l'accès à certains éléments nécessaires à vos tâches quotidiennes.\n\nPour plus d'informations à ce sujet, veuillez cliquer sur le bouton **Remplacer votre appareil**."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह सुनिश्चित करने के लिए कि आईटी आपके डिवाइस की सटीक सुरक्षा कर सके, एक पूरी तरह से अद्यतित डिवाइस की आवश्यकता है।\n\nयदि आपको प्रतिस्थापन उपकरण नहीं मिलता है, तो आप अपने दैनिक कार्यों के लिए आवश्यक कुछ वस्तुओं तक पहुंच खो देंगे।\n\nइसके बारे में अधिक जानकारी के लिए कृपया **अपना डिवाइस बदलें** बटन पर क्लिक करें।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "È necessario un dispositivo completamente aggiornato per garantire che l'IT possa proteggere accuratamente il tuo dispositivo.\n\nSe non ottieni un dispositivo sostitutivo, perderai l'accesso ad alcuni elementi necessari per le tue attività quotidiane.\n\nPer ulteriori informazioni a riguardo, fare clic sul pulsante **Sostituisci il dispositivo**."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IT 部門がデバイスを正確に保護するには、完全に最新のデバイスが必要です。\n\n交換用デバイスを入手しない場合、日常業務に必要な一部のアイテムにアクセスできなくなります。\n\n詳細については、[**デバイスを交換する**] ボタンをクリックしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IT가 귀하의 장치를 정확하게 보호하려면 완전히 최신 장치가 필요합니다.\n\n교체 장치를 구입하지 않으면 일상적인 작업에 필요한 일부 항목에 액세스할 수 없게 됩니다.\n\n이에 대한 자세한 내용을 보려면 **장치 교체** 버튼을 클릭하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En fullstendig oppdatert enhet er nødvendig for å sikre at IT-enheten kan beskytte enheten din nøyaktig.\n\nHvis du ikke skaffer deg en erstatningsenhet, vil du miste tilgangen til enkelte elementer som er nødvendige for dine daglige oppgaver.\n\nFor mer informasjon om dette, klikk på knappen **Erstatt enheten din**."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een volledig up-to-date apparaat is vereist om ervoor te zorgen dat IT uw apparaat nauwkeurig kan beschermen.\n\nAls u geen vervangend apparaat krijgt, verliest u de toegang tot bepaalde items die nodig zijn voor uw dagelijkse taken.\n\nVoor meer informatie hierover klikt u op de knop **Vervang uw apparaat**."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aby dział IT mógł dokładnie chronić Twoje urządzenie, wymagane jest w pełni aktualne urządzenie.\n\nJeśli nie uzyskasz urządzenia zastępczego, utracisz dostęp do niektórych rzeczy niezbędnych do codziennych zadań.\n\nAby uzyskać więcej informacji na ten temat, kliknij przycisk **Wymień urządzenie**."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um dispositivo totalmente atualizado para garantir que a TI possa proteger seu dispositivo com precisão.\n\nSe você não adquirir um dispositivo substituto, perderá o acesso a alguns itens necessários para suas tarefas diárias.\n\nPara obter mais informações sobre isso, clique no botão **Substitua seu dispositivo**."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Требуется полностью обновленное устройство, чтобы ИТ-специалисты могли точно защитить ваше устройство.\n\nЕсли вы не получите устройство на замену, вы потеряете доступ к некоторым элементам, необходимым для выполнения повседневных задач.\n\nДля получения дополнительной информации об этом нажмите кнопку **Заменить устройство**."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En helt uppdaterad enhet krävs för att säkerställa att IT kan skydda din enhet korrekt.\n\nOm du inte skaffar en ersättningsenhet kommer du att förlora tillgången till vissa artiklar som behövs för dina dagliga uppgifter.\n\nFör mer information om detta, klicka på knappen **Byt ut din enhet**."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Потрібен повністю оновлений пристрій, щоб ІТ-спеціалісти могли точно захистити ваш пристрій.\n\nЯкщо ви не отримаєте пристрій на заміну, ви втратите доступ до деяких предметів, необхідних для виконання повсякденних завдань.\n\nЩоб дізнатися більше про це, натисніть кнопку **Замінити свій пристрій**."
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要完全更新的设备才能确保 IT 能够准确保护您的设备。\n\n如果您没有获得替换设备，您将无法访问日常任务所需的某些物品。\n\n有关详细信息，请单击\"**更换您的设备**\"按钮。"
           }
         }
       }
@@ -358,14 +647,14 @@
       "localizations" : {
         "da" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "En fuldt opdateret Mac er påkrævet for at IT afdelingen kan beskytte dine data.\n\nHvis du ikke opdaterer din Mac, kan du risikere at miste adgang til muligheder, som er nødvendige i dagligdagen.\n\nFor at påbegynde opdateringen skal du klikke på \"Opdater Mac\"-knappen og følge instruktionerne på skærmen."
+            "state" : "translated",
+            "value" : "En fuldt opdateret Mac er påkrævet for at IT afdelingen kan beskytte dine data.\n\nHvis du ikke opdaterer din Mac, kan du risikere at miste adgang til muligheder, som er nødvendige i dagligdagen.\n\nFor at påbegynde opdateringen skal du klikke på **Opdater Mac**-knappen og følge instruktionerne på skærmen."
           }
         },
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Gerät effektiv schützen kann.\n\nWenn du dein Gerät nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche Gerät Aktualisieren und befolge die angegebenen Schritte."
+            "state" : "translated",
+            "value" : "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Gerät effektiv schützen kann.\n\nWenn du dein Gerät nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Gerät Aktualisieren** und befolge die angegebenen Schritte."
           }
         },
         "en" : {
@@ -376,14 +665,14 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados."
+            "state" : "translated",
+            "value" : "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón **Actualizar dispositivo** y siga los pasos proporcionados."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Un système entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour l'appareil et suivez les étapes fournies."
+            "state" : "translated",
+            "value" : "Un système entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton **Mettre à jour l'appareil** et suivez les étapes fournies."
           }
         },
         "hi" : {
@@ -394,8 +683,8 @@
         },
         "it" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "È necessario un dispositivo completamente aggiornato per garantire che l'IT possa proteggere accuratamente il tuo dispositivo.\n\nSe non aggiorni il dispositivo, potresti perdere l'accesso ad alcuni elementi necessari per le tue attività quotidiane.\n\nPer iniziare l'aggiornamento, fai semplicemente clic sul pulsante Aggiorna dispositivo e segui i passaggi forniti."
+            "state" : "translated",
+            "value" : "È necessario un dispositivo completamente aggiornato per garantire che l'IT possa proteggere accuratamente il tuo dispositivo.\n\nSe non aggiorni il dispositivo, potresti perdere l'accesso ad alcuni elementi necessari per le tue attività quotidiane.\n\nPer iniziare l'aggiornamento, fai semplicemente clic sul pulsante **Aggiorna dispositivo** e segui i passaggi forniti."
           }
         },
         "ja" : {
@@ -406,32 +695,32 @@
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "IT 팀이 귀하의 기기를 정밀하게 보호하기 위하여 최신 업데이트가 기기에 항시 탑재될 것을 요청드립니다.\n\n귀하께서 기기를 업데이트 하지 않는다면, 일상의 업무에 필요한 아이템들의 접근 권한이 상실될 수 있습니다.\n\n기기를 업데이트 하시려면, 기기 업데이트 버튼을 클릭하시고 제공되는 안내를 따르시면 됩니다."
+            "state" : "translated",
+            "value" : "IT 팀이 귀하의 기기를 정밀하게 보호하기 위하여 최신 업데이트가 기기에 항시 탑재될 것을 요청드립니다.\n\n귀하께서 기기를 업데이트 하지 않는다면, 일상의 업무에 필요한 아이템들의 접근 권한이 상실될 수 있습니다.\n\n기기를 업데이트 하시려면, **기기 업데이트** 버튼을 클릭하시고 제공되는 안내를 따르시면 됩니다."
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Datamaskinen må være oppdatert med de siste sikkerhetsoppdateringene for å være beskyttet.\n\nHvis du ikke oppdaterer datamaskinen, kan det hende at du ikke får tilgang til de nødvendige ressursene.\n\nFor å starte oppdateringen, klikk på Oppdater nå og følg instruksene."
+            "state" : "translated",
+            "value" : "Datamaskinen må være oppdatert med de siste sikkerhetsoppdateringene for å være beskyttet.\n\nHvis du ikke oppdaterer datamaskinen, kan det hende at du ikke får tilgang til de nødvendige ressursene.\n\nFor å starte oppdateringen, klikk på **Oppdater nå** og følg instruksene."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Een volledig up-to-date Mac is vereist om ervoor te zorgen dat uw Mac goed beschermd blijft.\n\nAls u uw Mac niet bijwerkt kunnen er restricties op de Mac komen.\n\nOm met de update te beginnen, klikt u op de knop Update Mac en volgt u de stappen."
+            "state" : "translated",
+            "value" : "Een volledig up-to-date Mac is vereist om ervoor te zorgen dat uw Mac goed beschermd blijft.\n\nAls u uw Mac niet bijwerkt kunnen er restricties op de Mac komen.\n\nOm met de update te beginnen, klikt u op de knop **Update Mac** en volgt u de stappen."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Wymagane jest uaktualnienie urządzenia, aby mieć pewność, że dział IT może w pełni chronić Twoje urządzenie.\n\nJeśli nie zaktualizujesz urządzenia, możesz utracić dostęp do niektórych elementów niezbędnych do wykonywania codziennych zadań.\n\nAby rozpocząć aktualizację, po prostu kliknij przycisk Uaktualnij system i postępuj zgodnie z podanymi krokami."
+            "state" : "translated",
+            "value" : "Wymagane jest uaktualnienie urządzenia, aby mieć pewność, że dział IT może w pełni chronić Twoje urządzenie.\n\nJeśli nie zaktualizujesz urządzenia, możesz utracić dostęp do niektórych elementów niezbędnych do wykonywania codziennych zadań.\n\nAby rozpocząć aktualizację, po prostu kliknij przycisk **Aktualizuj urządzenie** i postępuj zgodnie z podanymi krokami."
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Um dispositivo totalmente atualizado é necessário para garantir que IT possa proteger seu dispositivo com precisão.\n\nSe não atualizar seu dispositivo, é possível que você perca acesso a itens necessários para performar suas tarefas do dia-a-dia.\n\nPara começar a atualização, apenas clique no botão Atualizar Dispositivo e siga as instruções apresentadas."
+            "state" : "translated",
+            "value" : "Um dispositivo totalmente atualizado é necessário para garantir que IT possa proteger seu dispositivo com precisão.\n\nSe não atualizar seu dispositivo, é possível que você perca acesso a itens necessários para performar suas tarefas do dia-a-dia.\n\nPara começar a atualização, apenas clique no botão **Atualizar Dispositivo** e siga as instruções apresentadas."
           }
         },
         "ru" : {
@@ -442,20 +731,20 @@
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Ett system med de senaste uppdateringarna krävs för att IT ska kunna säkerställa att din dator är skyddad.\n\nOm du inte uppdaterar systemet kommer du kanske inte kunna komma åt nödvändinga resurser.\n\nFör att påbörja uppdateringen, klicka på Uppdatera och följ stegen."
+            "state" : "translated",
+            "value" : "Ett system med de senaste uppdateringarna krävs för att IT ska kunna säkerställa att din dator är skyddad.\n\nOm du inte uppdaterar systemet kommer du kanske inte kunna komma åt nödvändinga resurser.\n\nFör att påbörja uppdateringen, klicka på **Uppdatera** och följ stegen."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Потрібен повністю оновлений пристрій щоб бути впевненим що IT зможе його надійно захистити.\n\nЯкщо ви не оновите пристрій, ви можете втратити доступ до деяких речей, необхідних для виконання повсякденних завдань.\n\nЩоб почати оновлення, просто клацніть кнопку Оновити пристрій та виконайте запропоновані кроки."
+            "state" : "translated",
+            "value" : "Потрібен повністю оновлений пристрій щоб бути впевненим що IT зможе його надійно захистити.\n\nЯкщо ви не оновите пристрій, ви можете втратити доступ до деяких речей, необхідних для виконання повсякденних завдань.\n\nЩоб почати оновлення, просто клацніть кнопку **Оновити пристрій** та виконайте запропоновані кроки."
           }
         },
         "zh" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "更新至最新的软件以确保 IT 可以精准的保护设备安全。\n\n如未及时完成更新，您将会无法访问日常工作所需的网页或程序。\n \n立刻更新，请点击【更新设备】并根据提供的步骤完成更新。"
+            "state" : "translated",
+            "value" : "更新至最新的软件以确保 IT 可以精准的保护设备安全。\n\n如未及时完成更新，您将会无法访问日常工作所需的网页或程序。\n \n立刻更新，请点击\"**更新设备**\"并根据提供的步骤完成更新。"
           }
         }
       }
@@ -2624,10 +2913,106 @@
       "comment" : "mainContentSubHeaderUnsupported",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arbejd med dit lokale it-team for at få en erstatningsenhed"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte arbeiten Sie mit Ihrem lokalen IT-Team zusammen, um ein Ersatzgerät zu erhalten"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please work with your local IT team to obtain a replacement device"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabaje con su equipo de TI local para obtener un dispositivo de reemplazo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez travailler avec votre équipe informatique locale pour obtenir un appareil de remplacement."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्रतिस्थापन उपकरण प्राप्त करने के लिए कृपया अपनी स्थानीय आईटी टीम के साथ काम करें"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collabora con il team IT locale per ottenere un dispositivo sostitutivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地元の IT チームと協力して交換用デバイスを入手してください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "교체 장치를 얻으려면 현지 IT 팀과 협력하십시오."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samarbeid med ditt lokale IT-team for å få en erstatningsenhet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werk samen met uw lokale IT-team om een vervangend apparaat te verkrijgen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skontaktuj się z lokalnym zespołem IT, aby uzyskać urządzenie zastępcze"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabalhe com sua equipe de TI local para obter um dispositivo de substituição"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Свяжитесь с местной ИТ-отделом, чтобы получить устройство на замену."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vänligen samarbeta med ditt lokala IT-team för att skaffa en ersättningsenhet"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніться до місцевої ІТ-служби, щоб отримати пристрій на заміну"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请与您当地的 IT 团队合作获取更换设备"
           }
         }
       }
@@ -2636,10 +3021,106 @@
       "comment" : "informationButtonTextUnsupported",
       "extractionState" : "manual",
       "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udskift din enhed"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersetzen Sie Ihr Gerät"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Replace Your Device"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reemplace su dispositivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplacez votre appareil"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपना उपकरण बदलें"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sostituisci il tuo dispositivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デバイスを交換してください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "장치 교체"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bytt ut enheten din"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vervang uw apparaat"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wymień swoje urządzenie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Substitua seu dispositivo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Замените ваше устройство"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Byt ut din enhet"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Замініть свій пристрій"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更换您的设备"
           }
         }
       }
