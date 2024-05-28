@@ -36,11 +36,15 @@ public struct OSVersion {
     public init(_ string: String) throws {
         let parts = string.split(separator: ".", omittingEmptySubsequences: false)
         guard parts.count == 2 || parts.count == 3 else {
-            throw ParseError.badFormat(reason: "Input \(string) must have 2 or 3 parts, got \(parts.count).")
+            let error = "Input \(string) must have 2 or 3 parts, got \(parts.count)."
+            LogManager.error(error, logger: utilsLog)
+            throw ParseError.badFormat(reason: error)
         }
 
         guard let major = Int(parts[0]), let minor = Int(parts[1]) else {
-            throw ParseError.badFormat(reason: "Invalid format for major or minor version in \(string).")
+            let error = "Invalid format for major or minor version in \(string)."
+            LogManager.error(error, logger: utilsLog)
+            throw ParseError.badFormat(reason: error)
         }
         let patch = parts.count >= 3 ? Int(parts[2]) ?? 0 : 0
 
