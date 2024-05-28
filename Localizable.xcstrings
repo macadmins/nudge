@@ -4,222 +4,464 @@
     "" : {
 
     },
-    "A friendly reminder from your local IT team" : {
+    "**A friendly reminder from your local IT team**" : {
+      "comment" : "subHeader / subHeaderUnsupported",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En venligt ment påmindelse fra din lokale IT afdeling"
+            "value" : "**En venligt ment påmindelse fra din lokale IT afdeling**"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eine freundliche Erinnerung deines IT-Teams"
+            "value" : "**Eine freundliche Erinnerung deines IT-Teams**"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A friendly reminder from your local IT team"
+            "value" : "**A friendly reminder from your local IT team**"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un recordatorio amistoso de tu equipo IT local"
+            "value" : "**Un recordatorio amistoso de tu equipo IT local**"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un rappel amical de votre équipe informatique"
+            "value" : "**Un rappel amical de votre équipe informatique**"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "आपके स्थानीय IT से मित्रवत अनुस्मारक"
+            "value" : "**आपके स्थानीय IT से मित्रवत अनुस्मारक**"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un cortese promemoria dal tuo team IT locale"
+            "value" : "**Un cortese promemoria dal tuo team IT locale**"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ローカルITチームからのリマインドです"
+            "value" : "**ローカルITチームからのリマインドです**"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "로컬 IT 팀에서 알려드립니다"
+            "value" : "**로컬 IT 팀에서 알려드립니다**"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En påminnelse fra IT"
+            "value" : "**En påminnelse fra IT**"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Een herinnering van uw IT-team"
+            "value" : "**Een herinnering van uw IT-team**"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Przypomnienie IT"
+            "value" : "**Przypomnienie IT**"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um lembrete rápido da sua equipe de TI local"
+            "value" : "**Um lembrete rápido da sua equipe de TI local**"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Напоминание от команды IT"
+            "value" : "**Напоминание от команды IT**"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En påminnelse från IT"
+            "value" : "**En påminnelse från IT**"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Дружнє нагадування від вашої IT-команди"
+            "value" : "**Дружнє нагадування від вашої IT-команди**"
           }
         },
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "IT团队的友好提醒"
+            "value" : "**IT团队的友好提醒**"
           }
         }
       }
     },
-    "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps." : {
+    "**Important Notes**" : {
+      "comment" : "mainContentNote / mainContentNoteUnsupported",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En fuldt opdateret Mac er påkrævet for at IT afdelingen kan beskytte dine data.\n\nHvis du ikke opdaterer din Mac, kan du risikere at miste adgang til muligheder, som er nødvendige i dagligdagen.\n\nFor at påbegynde opdateringen skal du klikke på \"Opdater Mac\"-knappen og følge instruktionerne på skærmen."
+            "value" : "**Vigtig information**"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "**Wichtige Hinweise**"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Important Notes**"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Notas importantes**"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Informations importantes**"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**आवश्यक जानकारी**"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Note importanti**"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**重要**"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**중요 사항**"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Viktig informasjon**"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Belangrijke informatie**"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ważne informacje**"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Notas Importantes**"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Важные примечания**"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Viktig information**"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Important Notes**"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**重要信息**"
+          }
+        }
+      }
+    },
+    "**Your device is no longer capable of receving critical security updates**" : {
+      "comment" : "mainContentHeaderUnsupported",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Your device is no longer capable of receving critical security updates**"
+          }
+        }
+      }
+    },
+    "**Your device will restart during this update**" : {
+      "comment" : "mainContentHeader",
+      "extractionState" : "manual",
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Din Mac vil genstarte under opdateringen**"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Dein Gerät wird während dieses Updates neu gestartet**"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Your device will restart during this update**"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Su dispositivo se reiniciará durante esta actualización**"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Votre appareil redémarrera pendant cette mise à jour**"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**आपका उपकरण इस अपडेट के समय पुनः शुरु होगा**"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Il dispositivo si riavvierà durante l'aggiornamento**"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**デバイスは更新中に再起動します**"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**업데이트 도중에 귀하의 기기는 재시작 될 것입니다**"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Du vil bli spurt om å starte på nytt underveis i oppdateringen**"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**De Mac zal herstarten tijdens het updaten**"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Podczas tej aktualizacji Mac uruchomi się ponownie**"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Seu dispositivo irá reiniciar durante essa atualização**"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ваше устройство перезагрузится во время обновления**"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Din dator kommer att startas om under uppdateringen**"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Ваш пристрій буде перезавантажено під час цього оновлення**"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**在更新过程中，你的Mac将会重新启动。**"
+          }
+        }
+      }
+    },
+    "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not obtain a replacement device, you will lose access to some items necessary for your day-to-day tasks.\n\nFor more information about this, please click on the **Replace Your Device** button." : {
+      "comment" : "mainContentTextUnsupported",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not obtain a replacement device, you will lose access to some items necessary for your day-to-day tasks.\n\nFor more information about this, please click on the **Replace Your Device** button."
+          }
+        }
+      }
+    },
+    "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the **Update Device** button and follow the provided steps." : {
+      "comment" : "mainContentText",
+      "extractionState" : "manual",
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "En fuldt opdateret Mac er påkrævet for at IT afdelingen kan beskytte dine data.\n\nHvis du ikke opdaterer din Mac, kan du risikere at miste adgang til muligheder, som er nødvendige i dagligdagen.\n\nFor at påbegynde opdateringen skal du klikke på \"Opdater Mac\"-knappen og følge instruktionerne på skærmen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Gerät effektiv schützen kann.\n\nWenn du dein Gerät nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche Gerät Aktualisieren und befolge die angegebenen Schritte."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+            "value" : "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the **Update Device** button and follow the provided steps."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Se requiere un dispositivo completamente actualizado para garantizar que IT pueda proteger su dispositivo con precisión.\n\nSi no actualiza su dispositivo, es posible que pierda el acceso a algunos elementos necesarios para sus tareas diarias.\n\nPara comenzar la actualización, simplemente haga clic en el botón Actualizar dispositivo y siga los pasos proporcionados."
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Un système entièrement à jour est nécessaire pour garantir que le service informatique puisse protéger votre appareil efficacement.\n\n Si vous ne mettez pas à jour votre appareil, vous risquez de perdre l'accès à certains outils nécessaires à vos tâches quotidiennes.\n\nPour commencer la mise à jour, cliquez simplement sur le bouton Mettre à jour l'appareil et suivez les étapes fournies."
           }
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "पुरी तरह अपडेटेड उपकरण आवश्यक है IT  द्वारा आपके उपकरण को सुरक्षित रखने के लिए \n\n यदि उपकरण को अपडेट नही किया तो आप अपने कुछ मूल्यवान नित्य उपयोगी वस्तुएँ खो सकते हैं जो दैन दिन उपयोग के लिए आवश्यक होते है \n\n अपडेट करने के लिए केवल अपडेट बटन दबाये  और निर्देशों का पालन करें।"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "È necessario un dispositivo completamente aggiornato per garantire che l'IT possa proteggere accuratamente il tuo dispositivo.\n\nSe non aggiorni il dispositivo, potresti perdere l'accesso ad alcuni elementi necessari per le tue attività quotidiane.\n\nPer iniziare l'aggiornamento, fai semplicemente clic sul pulsante Aggiorna dispositivo e segui i passaggi forniti."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "ITが正確にあなたのデバイスを保護するためには、デバイスを完全に最新にすることが必要です。\n\nデバイスを更新しない場合、日々のタスクに必要なアイテムへのアクセスができなくなる可能性があります。\n\n更新を開始するにはデバイスの更新ボタンをクリックし、指示されたステップに従ってください。"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "IT 팀이 귀하의 기기를 정밀하게 보호하기 위하여 최신 업데이트가 기기에 항시 탑재될 것을 요청드립니다.\n\n귀하께서 기기를 업데이트 하지 않는다면, 일상의 업무에 필요한 아이템들의 접근 권한이 상실될 수 있습니다.\n\n기기를 업데이트 하시려면, 기기 업데이트 버튼을 클릭하시고 제공되는 안내를 따르시면 됩니다."
           }
         },
         "nb" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Datamaskinen må være oppdatert med de siste sikkerhetsoppdateringene for å være beskyttet.\n\nHvis du ikke oppdaterer datamaskinen, kan det hende at du ikke får tilgang til de nødvendige ressursene.\n\nFor å starte oppdateringen, klikk på Oppdater nå og følg instruksene."
           }
         },
         "nl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Een volledig up-to-date Mac is vereist om ervoor te zorgen dat uw Mac goed beschermd blijft.\n\nAls u uw Mac niet bijwerkt kunnen er restricties op de Mac komen.\n\nOm met de update te beginnen, klikt u op de knop Update Mac en volgt u de stappen."
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Wymagane jest uaktualnienie urządzenia, aby mieć pewność, że dział IT może w pełni chronić Twoje urządzenie.\n\nJeśli nie zaktualizujesz urządzenia, możesz utracić dostęp do niektórych elementów niezbędnych do wykonywania codziennych zadań.\n\nAby rozpocząć aktualizację, po prostu kliknij przycisk Uaktualnij system i postępuj zgodnie z podanymi krokami."
           }
         },
         "pt" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Um dispositivo totalmente atualizado é necessário para garantir que IT possa proteger seu dispositivo com precisão.\n\nSe não atualizar seu dispositivo, é possível que você perca acesso a itens necessários para performar suas tarefas do dia-a-dia.\n\nPara começar a atualização, apenas clique no botão Atualizar Dispositivo e siga as instruções apresentadas."
           }
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Обновления нужны, чтобы IT-команда могла защитить Mac и данные.\n\nЕсли вы не обновите устройство, есть риск потерять доступ к важным для работы сервисам.\n\nЧтобы начать обновление, просто нажмите кнопку установки."
           }
         },
         "sv" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Ett system med de senaste uppdateringarna krävs för att IT ska kunna säkerställa att din dator är skyddad.\n\nOm du inte uppdaterar systemet kommer du kanske inte kunna komma åt nödvändinga resurser.\n\nFör att påbörja uppdateringen, klicka på Uppdatera och följ stegen."
           }
         },
         "uk" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Потрібен повністю оновлений пристрій щоб бути впевненим що IT зможе його надійно захистити.\n\nЯкщо ви не оновите пристрій, ви можете втратити доступ до деяких речей, необхідних для виконання повсякденних завдань.\n\nЩоб почати оновлення, просто клацніть кнопку Оновити пристрій та виконайте запропоновані кроки."
           }
         },
         "zh" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "更新至最新的软件以确保 IT 可以精准的保护设备安全。\n\n如未及时完成更新，您将会无法访问日常工作所需的网页或程序。\n \n立刻更新，请点击【更新设备】并根据提供的步骤完成更新。"
           }
         }
       }
     },
     "Additional Device Information" : {
-      "comment" : "// Additional Device Information",
+      "comment" : "Additional Device Information",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -327,7 +569,7 @@
       }
     },
     "Application terminated" : {
-      "comment" : "User Notification",
+      "comment" : "Application terminated",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -435,7 +677,7 @@
       }
     },
     "Architecture:" : {
-      "comment" : "Architecture",
+      "comment" : "Architecture:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -543,6 +785,7 @@
       }
     },
     "Click for additional device information" : {
+      "comment" : "Click for additional device information",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -650,6 +893,7 @@
       }
     },
     "Click for more information about the security update" : {
+      "comment" : "Click for more information about the security update",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -757,7 +1001,7 @@
       }
     },
     "Click to close" : {
-      "comment" : "Help buttons",
+      "comment" : "Click to close",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -865,6 +1109,7 @@
       }
     },
     "Click to zoom into screenshot" : {
+      "comment" : "screenShotAltText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -972,7 +1217,7 @@
       }
     },
     "Current OS Version:" : {
-      "comment" : "Current OS Version",
+      "comment" : "Current OS Version:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1080,6 +1325,7 @@
       }
     },
     "Custom" : {
+      "comment" : "customDeferralButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1187,7 +1433,7 @@
       }
     },
     "Days Remaining To Update:" : {
-      "comment" : "Days Remaining To Update",
+      "comment" : "Days Remaining To Update:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1295,6 +1541,7 @@
       }
     },
     "Defer" : {
+      "comment" : "customDeferralDropdownText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1402,7 +1649,7 @@
       }
     },
     "Deferred Count:" : {
-      "comment" : "Deferred Count",
+      "comment" : "Deferred Count:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1510,7 +1757,7 @@
       }
     },
     "Hours Remaining To Update:" : {
-      "comment" : "Hours Remaining To Update",
+      "comment" : "Hours Remaining To Update:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1618,6 +1865,7 @@
       }
     },
     "I understand" : {
+      "comment" : "secondaryQuitButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1724,115 +1972,8 @@
         }
       }
     },
-    "Important Notes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vigtig information"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wichtige Hinweise"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Important Notes"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notas importantes"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Informations importantes"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आवश्यक जानकारी"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Note importanti"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重要"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "중요 사항"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viktig informasjon"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belangrijke informatie"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ważne informacje"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notas Importantes"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Важные примечания"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viktig information"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Important Notes"
-          }
-        },
-        "zh" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重要信息"
-          }
-        }
-      }
-    },
     "Language:" : {
-      "comment" : "Language",
+      "comment" : "Language:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -1940,6 +2081,7 @@
       }
     },
     "Later" : {
+      "comment" : "primaryQuitButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2047,7 +2189,7 @@
       }
     },
     "More Info" : {
-      "comment" : "More Info",
+      "comment" : "informationButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2155,6 +2297,7 @@
       }
     },
     "One Day" : {
+      "comment" : "oneDayDeferralButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2262,6 +2405,7 @@
       }
     },
     "One Hour" : {
+      "comment" : "oneHourDeferralButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2369,6 +2513,7 @@
       }
     },
     "Please update your device to use this application" : {
+      "comment" : "Please update your device to use this application",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2475,8 +2620,32 @@
         }
       }
     },
+    "Please work with your local IT team to obtain a replacement device" : {
+      "comment" : "mainContentSubHeaderUnsupported",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please work with your local IT team to obtain a replacement device"
+          }
+        }
+      }
+    },
+    "Replace Your Device" : {
+      "comment" : "informationButtonTextUnsupported",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace Your Device"
+          }
+        }
+      }
+    },
     "Required OS Version:" : {
-      "comment" : "Required OS Version",
+      "comment" : "Required OS Version:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2584,7 +2753,7 @@
       }
     },
     "Serial Number:" : {
-      "comment" : "Serial Number",
+      "comment" : "Serial Number:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2692,7 +2861,7 @@
       }
     },
     "Update Device" : {
-      "comment" : "// Right side of Nudge",
+      "comment" : "actionButtonText",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2800,6 +2969,7 @@
       }
     },
     "Updates can take around 30 minutes to complete" : {
+      "comment" : "mainContentSubHeader",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -2907,7 +3077,7 @@
       }
     },
     "Username:" : {
-      "comment" : "Username",
+      "comment" : "Username:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -3015,7 +3185,7 @@
       }
     },
     "Version:" : {
-      "comment" : "Nudge Version",
+      "comment" : "Version:",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -3123,6 +3293,7 @@
       }
     },
     "Your device requires a security update" : {
+      "comment" : "mainHeader",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -3230,6 +3401,7 @@
       }
     },
     "Your device requires a security update (Demo Mode)" : {
+      "comment" : "mainHeader (Demo Mode)",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -3332,113 +3504,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的设备需要安全更新（演示模式)"
-          }
-        }
-      }
-    },
-    "Your device will restart during this update" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Din Mac vil genstarte under opdateringen"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dein Gerät wird während dieses Updates neu gestartet"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your device will restart during this update"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Su dispositivo se reiniciará durante esta actualización"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Votre appareil redémarrera pendant cette mise à jour"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "आपका उपकरण इस अपडेट के समय पुनः शुरु होगा"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il dispositivo si riavvierà durante l'aggiornamento"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "デバイスは更新中に再起動します"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "업데이트 도중에 귀하의 기기는 재시작 될 것입니다"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Du vil bli spurt om å starte på nytt underveis i oppdateringen"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De Mac zal herstarten tijdens het updaten"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Podczas tej aktualizacji Mac uruchomi się ponownie"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seu dispositivo irá reiniciar durante essa atualização"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваше устройство перезагрузится во время обновления"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Din dator kommer att startas om under uppdateringen"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваш пристрій буде перезавантажено під час цього оновлення"
-          }
-        },
-        "zh" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在更新过程中，你的Mac将会重新启动。"
           }
         }
       }

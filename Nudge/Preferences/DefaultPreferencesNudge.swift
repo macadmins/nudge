@@ -471,7 +471,7 @@ struct UserInterfaceVariables {
     static var mainContentText: String {
         userInterfaceUpdateElementsProfile?["mainContentText"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentText ??
-        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the Update Device button and follow the provided steps."
+        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the **Update Device** button and follow the provided steps."
     }
 
     static var mainContentTextUnsupported: String {
