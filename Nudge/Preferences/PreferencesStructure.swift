@@ -400,7 +400,7 @@ extension UserExperience {
 
 // MARK: - UserInterface
 struct UserInterface: Codable {
-    var actionButtonPath, fallbackLanguage: String?
+    var actionButtonPath, applicationTerminatedNotificationImagePath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
     var showActivelyExploitedCVEs, showDeferralCount, simpleMode, singleQuitButton: Bool?
@@ -427,6 +427,7 @@ extension UserInterface {
 
     func with(
         actionButtonPath: String? = nil,
+        applicationTerminatedNotificationImagePath: String? = nil,
         fallbackLanguage: String? = nil,
         forceFallbackLanguage: Bool? = nil,
         forceScreenShotIcon: Bool? = nil,
@@ -442,6 +443,7 @@ extension UserInterface {
     ) -> UserInterface {
         return UserInterface(
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
+            applicationTerminatedNotificationImagePath: applicationTerminatedNotificationImagePath ?? self.applicationTerminatedNotificationImagePath,
             fallbackLanguage: fallbackLanguage ?? self.fallbackLanguage,
             forceFallbackLanguage: forceFallbackLanguage ?? self.forceFallbackLanguage,
             forceScreenShotIcon: forceScreenShotIcon ?? self.forceScreenShotIcon,
@@ -460,14 +462,14 @@ extension UserInterface {
 
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
-    var language, actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, informationButtonTextUnsupported: String?
-    var mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported: String?
-    var mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported: String?
+    var language, actionButtonText, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText: String?
+    var informationButtonText, informationButtonTextUnsupported, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported: String?
+    var mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported: String?
     var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, informationButtonTextUnsupported, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText
+        case actionButtonText, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, informationButtonTextUnsupported, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, secondaryQuitButtonText, subHeader, subHeaderUnsupported, screenShotAltText
     }
 }
 
@@ -492,6 +494,8 @@ extension UpdateElement {
     func with(
         language: String? = nil,
         actionButtonText: String? = nil,
+        applicationTerminatedTitleText: String? = nil,
+        applicationTerminatedBodyText: String? = nil,
         customDeferralButtonText: String? = nil,
         customDeferralDropdownText: String? = nil,
         informationButtonText: String? = nil,
@@ -517,6 +521,8 @@ extension UpdateElement {
         return UpdateElement(
             language: language ?? self.language,
             actionButtonText: actionButtonText ?? self.actionButtonText,
+            applicationTerminatedTitleText: applicationTerminatedTitleText ?? self.applicationTerminatedTitleText,
+            applicationTerminatedBodyText: applicationTerminatedBodyText ?? self.applicationTerminatedBodyText,
             customDeferralButtonText: customDeferralButtonText ?? self.customDeferralButtonText,
             customDeferralDropdownText: customDeferralDropdownText ?? self.customDeferralDropdownText,
             informationButtonText: informationButtonText ?? self.informationButtonText,

@@ -369,11 +369,69 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func createNotificationContent(for applicationIdentifier: String) -> UNMutableNotificationContent {
         let content = UNMutableNotificationContent()
-        content.title = "Application terminated".localized(desiredLanguage: getDesiredLanguage())
+        content.title = UserInterfaceVariables.applicationTerminatedTitleText.localized(desiredLanguage: getDesiredLanguage())
         content.subtitle = "(\(applicationIdentifier))"
-        content.body = "Please update your device to use this application".localized(desiredLanguage: getDesiredLanguage())
+        content.title = UserInterfaceVariables.applicationTerminatedBodyText.localized(desiredLanguage: getDesiredLanguage())
         content.categoryIdentifier = "alert"
         content.sound = UNNotificationSound.default
+        content.attachments = []
+        let applicationTerminatedNotificationImagePath = UserInterfaceVariables.applicationTerminatedNotificationImagePath
+        let tempImagePath = "/var/tmp/nudge-applicationTerminatedNotification.png"
+        if FileManager.default.fileExists(atPath: applicationTerminatedNotificationImagePath) {
+            if nudgePrimaryState.hasRenderedApplicationTerminatedNotificationImagePath {
+                do {
+                    let fileURL = URL(fileURLWithPath: tempImagePath)
+                    let attachment = try UNNotificationAttachment(identifier: "AttachedContent", url: fileURL, options: .none)
+                    content.attachments = [attachment]
+                } catch let error {
+                    LogManager.error("\(error)", logger: uiLog)
+                }
+            } else {
+                do {
+                    // In order for the attachment to look properly, it has to be resized to a square
+                    guard let sourceImage = NSImage(contentsOfFile: applicationTerminatedNotificationImagePath) else {
+                        throw NSError(domain: "Failed to load image from path: \(applicationTerminatedNotificationImagePath)", code: 0, userInfo: nil)
+                    }
+                    // Find the maximum dimension and create a square based on it
+                    let maxDimension = max(sourceImage.size.width, sourceImage.size.height)
+                    let newSize = CGSize(width: maxDimension, height: maxDimension)
+
+                    // Create a new image with a square size, filling with transparent background
+                    let targetImage = NSImage(size: newSize)
+                    targetImage.lockFocus()
+                    let context = NSGraphicsContext.current!
+                    context.imageInterpolation = .high
+                    NSColor.clear.set()
+                    NSBezierPath(rect: NSRect(origin: .zero, size: newSize)).fill()
+
+                    // Calculate the origin point to center the source image
+                    let x = (maxDimension - sourceImage.size.width) / 2
+                    let y = (maxDimension - sourceImage.size.height) / 2
+                    let targetRect = NSRect(x: x, y: y, width: sourceImage.size.width, height: sourceImage.size.height)
+
+                    sourceImage.draw(in: targetRect, from: NSRect(origin: .zero, size: sourceImage.size), operation: .sourceOver, fraction: 1.0)
+                    targetImage.unlockFocus()
+
+                    guard let tiffData = targetImage.tiffRepresentation,
+                          let bitmapImage = NSBitmapImageRep(data: tiffData),
+                          let pngData = bitmapImage.representation(using: .png, properties: [:]) else {
+                        throw NSError(domain: "Failed to create or convert image", code: 0, userInfo: nil)
+                    }
+
+                    try pngData.write(to: URL(fileURLWithPath: tempImagePath))
+
+                    // Load temporary file
+                    let fileURL = URL(fileURLWithPath: tempImagePath)
+                    let attachment = try UNNotificationAttachment(identifier: "AttachedContent", url: fileURL, options: .none)
+                    content.attachments = [attachment]
+                    nudgePrimaryState.hasRenderedApplicationTerminatedNotificationImagePath = true
+                } catch let error {
+                    LogManager.error("\(error)", logger: uiLog)
+                }
+            }
+        } else {
+            print("applicationTerminatedNotificationImagePath does not exist on disk, skipping notification image.")
+        }
         return content
     }
 

@@ -76,6 +76,7 @@ class AppState: ObservableObject {
     @Published var hasLoggedDeferralCountPastThreshold = false
     @Published var hasLoggedDeferralCountPastThresholdDualQuitButtons = false
     @Published var hasLoggedRequireDualQuitButtons = false
+    @Published var hasRenderedApplicationTerminatedNotificationImagePath = false
     @Published var hoursRemaining = DateManager().getNumberOfHoursRemaining()
     @Published var lastRefreshTime = DateManager().getFormattedDate()
     @Published var requireDualQuitButtons = false
