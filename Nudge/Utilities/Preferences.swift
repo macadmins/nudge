@@ -10,6 +10,33 @@ import Foundation
 // Generics
 func getDesiredLanguage(locale: Locale? = nil) -> String {
     if UserInterfaceVariables.forceFallbackLanguage {
+        if Globals.configProfile.isEmpty {
+            let userInterfaceUpdateElementsJSON: UserInterface? = getUserInterfaceJSON()
+            if let elements = userInterfaceUpdateElementsJSON?.updateElements {
+                for element in elements {
+                    if element.language == UIConstants.languageCode {
+                        return UIConstants.languageCode
+                    }
+                }
+            }
+        } else {
+            do {
+                // Attempt to decode the plist Data into a dictionary
+                if let dictionary = try PropertyListSerialization.propertyList(from: Globals.configProfile, options: [], format: nil) as? [String: Any],
+                   let userInterface = dictionary["userInterface"] as? [String: Any] {
+                    guard let elements = userInterface["updateElements"] as? [[String: AnyObject]] else {
+                        return UIConstants.languageCode
+                    }
+                    for element in elements {
+                        if element["_language"] as? String == UIConstants.languageCode {
+                            return UIConstants.languageCode
+                        }
+                    }
+                }
+            } catch {
+                print("Failed to decode plist: \(error)")
+            }
+        }
         return UserInterfaceVariables.fallbackLanguage
     }
 
