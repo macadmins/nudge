@@ -11,17 +11,17 @@
         "acceptableScreenSharingUsage": true,
         "attemptToBlockApplicationLaunches": true,
         "blockedApplicationBundleIDs": [
-            "com.microsoft.VSCode",
-            "us.zoom.xos"
+            "com.apple.Safari"
         ],
         "disableNudgeForStandardInstalls": true,
-        "terminateApplicationsOnLaunch": false,
-        "utilizeSOFAFeed": true
+        "terminateApplicationsOnLaunch": true,
+        "utilizeSOFAFeed": false
     },
     "osVersionRequirements": [
         {
             "aboutUpdateURL": "https://apple.com",
-            "requiredMinimumOSVersion": "latest",
+            "requiredMinimumOSVersion": "14.6",
+            "requiredInstallationDate": "2024-01-01T00:00:00Z",
             "unsupportedURL": "https://google.com",
         }
     ],
@@ -37,6 +37,7 @@
         "iconLightPath": "https://github.com/macadmins/nudge/blob/main/assets/NudgeIcon.png?raw=true",
         "screenShotDarkPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true",
         "screenShotLightPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true",
+        "applicationTerminatedNotificationImagePath": "/Library/Application Support/Nudge/logoLight.png",
         "simpleMode": false,
         "updateElements": [
             {

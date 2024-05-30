@@ -377,7 +377,13 @@ struct UserInterfaceVariables {
     static var userInterfaceJSON: UserInterface? = getUserInterfaceJSON()
     static var userInterfaceUpdateElementsProfile: [String:AnyObject]? = getUserInterfaceUpdateElementsProfile()
     static var userInterfaceUpdateElementsJSON: UpdateElement? = getUserInterfaceUpdateElementsJSON()
-    
+
+    static var applicationTerminatedNotificationImagePath: String {
+        userInterfaceProfile?["applicationTerminatedNotificationImagePath"] as? String ??
+        userInterfaceJSON?.applicationTerminatedNotificationImagePath ??
+        ""
+    }
+
     static var fallbackLanguage: String {
         userInterfaceProfile?["fallbackLanguage"] as? String ??
         userInterfaceJSON?.fallbackLanguage ??
@@ -418,6 +424,18 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ??
         userInterfaceUpdateElementsJSON?.actionButtonText ??
         "Update Device"
+    }
+
+    static var applicationTerminatedTitleText: String {
+        userInterfaceUpdateElementsProfile?["applicationTerminatedTitleText"] as? String ??
+        userInterfaceUpdateElementsJSON?.applicationTerminatedTitleText ??
+        "Application terminated"
+    }
+
+    static var applicationTerminatedBodyText: String {
+        userInterfaceUpdateElementsProfile?["applicationTerminatedBodyText"] as? String ??
+        userInterfaceUpdateElementsJSON?.applicationTerminatedBodyText ??
+        "Please update your device to use this application"
     }
 
     static var informationButtonText: String {

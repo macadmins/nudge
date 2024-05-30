@@ -31,6 +31,11 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Fixed errors when moving to Swift 5.10
 
 ### Added
+- A local image path can now be specified for the notification event when Nudge terminates and application
+  - Please configure the `applicationTerminatedNotificationImagePath` key under `userInterface`
+  - Due to limitations within Apple's API, a local path is only supported at this time
+- An admin can now alter the text when Nudge terminates and application
+  - Please configure the `applicationTerminatedTitleText` and `applicationTerminatedBodyText` keys under the `updateElements` key in `UserInterface` 
 - Remote URLs can now be used on `iconDarkPath`, `iconLightPath`, `screenShotDarkPath` and `screenShotLightPath`
   - Please note that these files will be downloaded each time Nudge is ran and there is currently not a way to cache these objects.
   - If these files fail to download, a default company logo will be shown.
@@ -47,8 +52,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - If you are utilizing a custom sofa feed, please configure the `customSOFAFeedURL` key under `optionalFeatures`
 - "Unsupported device" UI in standard mode that utilizes the SOFA feed
   - Set the `attemptToCheckForSupportedDevice` key `false` under `optionalFeatures` to disable this feature 
-  - There are new keys to set all of text fields
-  - `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported`
+  - There are new keys to set all of text fields: `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported` under the `updateElements` key in `UserInterface` 
   - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.
   - An icon will appear as an overlay on top of the company image to further emphasize the device is no longer supported
 
