@@ -110,6 +110,7 @@ struct ContentView: View {
         }
         appState.daysRemaining = DateManager().getNumberOfDaysBetween()
         appState.hoursRemaining = DateManager().getNumberOfHoursRemaining()
+        appState.secondsRemaining = DateManager().getNumberOfSecondsRemaining()
     }
 }
 

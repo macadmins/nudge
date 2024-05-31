@@ -394,13 +394,13 @@ struct CommandLineUtilities {
 }
 
 struct ConfigurationManager {
-    private func determineTimerCycle(basedOn hoursRemaining: Int) -> Int {
-        switch hoursRemaining {
+    private func determineTimerCycle(basedOn secondsRemaining: Int) -> Int {
+        switch secondsRemaining {
             case ...0:
                 return UserExperienceVariables.elapsedRefreshCycle
-            case ...UserExperienceVariables.imminentWindowTime:
+            case ...(UserExperienceVariables.imminentWindowTime * 3600):
                 return UserExperienceVariables.imminentRefreshCycle
-            case ...UserExperienceVariables.approachingWindowTime:
+            case ...(UserExperienceVariables.approachingWindowTime * 3600):
                 return UserExperienceVariables.approachingRefreshCycle
             default:
                 return UserExperienceVariables.initialRefreshCycle
@@ -461,8 +461,8 @@ struct ConfigurationManager {
     }
 
     func getTimerController() -> Int {
-        let hoursRemaining = DateManager().getNumberOfHoursRemaining()
-        let timerCycle = determineTimerCycle(basedOn: hoursRemaining)
+        let secondsRemaining = DateManager().getNumberOfSecondsRemaining()
+        let timerCycle = determineTimerCycle(basedOn: secondsRemaining)
 
         if timerCycle != nudgePrimaryState.timerCycle {
             LogManager.info("timerCycle: \(timerCycle)", logger: uiLog)
@@ -523,6 +523,12 @@ struct DateManager {
         guard !CommandLineUtilities().demoModeEnabled() else { return 24 }
         let interval = CommandLineUtilities().unitTestingEnabled() ? PrefsWrapper.requiredInstallationDate : requiredInstallationDate
         return Int(interval.timeIntervalSince(currentDate) / 3600)
+    }
+
+    func getNumberOfSecondsRemaining(currentDate: Date = DateManager().getCurrentDate()) -> Int {
+        guard !CommandLineUtilities().demoModeEnabled() else { return 24 * 3600 }
+        let interval = CommandLineUtilities().unitTestingEnabled() ? PrefsWrapper.requiredInstallationDate : requiredInstallationDate
+        return Int(interval.timeIntervalSince(currentDate))
     }
 
     func pastRequiredInstallationDate() -> Bool {
