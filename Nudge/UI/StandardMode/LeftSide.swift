@@ -37,6 +37,9 @@ struct StandardModeLeftSide: View {
     private var informationStack: some View {
         VStack(alignment: .center, spacing: interLineSpacing) {
             InfoRow(label: "Required OS Version:", value: String(appState.requiredMinimumOSVersion), boldText: true)
+            if UserInterfaceVariables.showRequiredInstallationDate {
+                InfoRow(label: "Required Date:", value: DateManager().coerceDateToString(date: requiredInstallationDate, formatterString: UserInterfaceVariables.requiredInstallationDisplayFormat))
+            }
             if OptionalFeatureVariables.utilizeSOFAFeed && UserInterfaceVariables.showActivelyExploitedCVEs {
                 InfoRow(label: "Actively Exploited CVEs:", value: String(appState.activelyExploitedCVEs).capitalized, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
             }
@@ -82,12 +85,15 @@ struct InfoRow: View {
                 Text(value)
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                     .fontWeight(.bold)
+                    .minimumScaleFactor(0.01)
             } else {
                 Text(value)
                     .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     .fontWeight(boldText ? .bold : .regular)
+                    .minimumScaleFactor(0.01)
             }
         }
+        .lineLimit(1)
     }
 }
 

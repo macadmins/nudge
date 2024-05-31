@@ -402,8 +402,8 @@ extension UserExperience {
 struct UserInterface: Codable {
     var actionButtonPath, applicationTerminatedNotificationImagePath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
-    var iconDarkPath, iconLightPath, screenShotDarkPath, screenShotLightPath: String?
-    var showActivelyExploitedCVEs, showDeferralCount, simpleMode, singleQuitButton: Bool?
+    var iconDarkPath, iconLightPath, requiredInstallationDisplayFormat, screenShotDarkPath, screenShotLightPath: String?
+    var showActivelyExploitedCVEs, showDeferralCount, showRequiredInstallationDate, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
 }
 
@@ -433,10 +433,12 @@ extension UserInterface {
         forceScreenShotIcon: Bool? = nil,
         iconDarkPath: String? = nil,
         iconLightPath: String? = nil,
+        requiredInstallationDisplayFormat: String? = nil,
         screenShotDarkPath: String? = nil,
         screenShotLightPath: String? = nil,
         showActivelyExploitedCVEs: Bool? = nil,
         showDeferralCount: Bool? = nil,
+        showRequiredInstallationDate: Bool? = nil,
         simpleMode: Bool? = nil,
         singleQuitButton: Bool? = nil,
         updateElements: [UpdateElement]? = nil
@@ -449,10 +451,12 @@ extension UserInterface {
             forceScreenShotIcon: forceScreenShotIcon ?? self.forceScreenShotIcon,
             iconDarkPath: iconDarkPath ?? self.iconDarkPath,
             iconLightPath: iconLightPath ?? self.iconLightPath,
+            requiredInstallationDisplayFormat: requiredInstallationDisplayFormat ?? self.requiredInstallationDisplayFormat,
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
             showActivelyExploitedCVEs: showActivelyExploitedCVEs ?? self.showActivelyExploitedCVEs,
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
+            showRequiredInstallationDate: showRequiredInstallationDate ?? self.showRequiredInstallationDate,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.singleQuitButton,
             updateElements: updateElements ?? self.updateElements

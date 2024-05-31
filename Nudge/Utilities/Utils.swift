@@ -488,6 +488,12 @@ struct DateManager {
         return formatter
     }()
 
+    func coerceDateToString(date: Date, formatterString: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = formatterString
+        return formatter.string(from: date)
+    }
+
     func coerceStringToDate(dateString: String) -> Date {
         dateFormatterISO8601.date(from: dateString) ?? getCurrentDate()
     }
