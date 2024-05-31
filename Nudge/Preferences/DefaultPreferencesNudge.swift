@@ -364,9 +364,9 @@ struct UserExperienceVariables {
         false
     }
 
-    static var sofaPeriodLaunchDelay: Int {
-        userExperienceProfile?["sofaPeriodLaunchDelay"] as? Int ??
-        userExperienceJSON?.sofaPeriodLaunchDelay ??
+    static var nudgeEventLaunchDelay: Int {
+        userExperienceProfile?["nudgeEventLaunchDelay"] as? Int ??
+        userExperienceJSON?.nudgeEventLaunchDelay ??
         0
     }
 }

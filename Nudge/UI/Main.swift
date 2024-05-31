@@ -264,7 +264,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleCommandLineArguments()
         applyGracePeriodLogic()
         sofaPreLaunchLogic()
-        applySOFAPeriodLogic()
+        applydelayNudgeEventLogic()
         applyRandomDelayIfNecessary()
         updateNudgeState()
         handleSoftwareUpdateRequirements()
@@ -340,8 +340,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func applySOFAPeriodLogic() {
-        _ = AppStateManager().sofaPeriodLogic()
+    private func applydelayNudgeEventLogic() {
+        _ = AppStateManager().delayNudgeEventLogic()
         if nudgePrimaryState.shouldExit {
             exit(0)
         }

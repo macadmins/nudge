@@ -176,18 +176,15 @@ struct AppStateManager {
         return calculateNewRequiredInstallationDateIfNeeded(currentDate: currentDate, gracePeriodPathCreationDate: gracePeriodPathCreationDate)
     }
 
-    func sofaPeriodLogic(currentDate: Date = DateManager().getCurrentDate(), testFileDate: Date? = nil) -> Date {
-        if OptionalFeatureVariables.utilizeSOFAFeed {
-            if releaseDate.addingTimeInterval(TimeInterval(UserExperienceVariables.sofaPeriodLaunchDelay * 86400)) > currentDate {
-                LogManager.info("Device within sofaPeriodLaunchDelay, exiting Nudge", logger: uiLog)
-                nudgePrimaryState.shouldExit = true
-                return currentDate
-            } else {
-                LogManager.info("Device outside sofaPeriodLaunchDelay", logger: uiLog)
-                return PrefsWrapper.requiredInstallationDate
-            }
+    func delayNudgeEventLogic(currentDate: Date = DateManager().getCurrentDate(), testFileDate: Date? = nil) -> Date {
+        if releaseDate.addingTimeInterval(TimeInterval(UserExperienceVariables.nudgeEventLaunchDelay * 86400)) > currentDate {
+            LogManager.info("Device within nudgeEventLaunchDelay, exiting Nudge", logger: uiLog)
+            nudgePrimaryState.shouldExit = true
+            return currentDate
+        } else {
+            LogManager.info("Device outside nudgeEventLaunchDelay", logger: uiLog)
+            return PrefsWrapper.requiredInstallationDate
         }
-        return PrefsWrapper.requiredInstallationDate
     }
 
     private func isDeferralAllowed(threshold: Int, logMessage: String) -> Bool {

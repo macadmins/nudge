@@ -324,7 +324,7 @@ struct UserExperience: Codable {
     var noTimers: Bool?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
-    var sofaPeriodLaunchDelay: Int?
+    var nudgeEventLaunchDelay: Int?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -368,7 +368,7 @@ extension UserExperience {
         noTimers: Bool? = nil,
         nudgeRefreshCycle: Int? = nil,
         randomDelay: Bool? = nil,
-        sofaPeriodLaunchDelay: Int? = nil
+        nudgeEventLaunchDelay: Int? = nil
     ) -> UserExperience {
         return UserExperience(
             allowGracePeriods: allowGracePeriods ?? self.allowGracePeriods,
@@ -393,7 +393,7 @@ extension UserExperience {
             noTimers: noTimers ?? self.noTimers,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
             randomDelay: randomDelay ?? self.randomDelay,
-            sofaPeriodLaunchDelay: sofaPeriodLaunchDelay ?? self.sofaPeriodLaunchDelay
+            nudgeEventLaunchDelay: nudgeEventLaunchDelay ?? self.nudgeEventLaunchDelay
         )
     }
 }
