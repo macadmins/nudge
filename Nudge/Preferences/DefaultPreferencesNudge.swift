@@ -504,6 +504,12 @@ struct UserInterfaceVariables {
         "Later"
     }
 
+    static var requiredInstallationDisplayFormat: String {
+        userInterfaceProfile?["requiredInstallationDisplayFormat"] as? String ??
+        userInterfaceJSON?.requiredInstallationDisplayFormat ??
+        "MM/dd/yyyy"
+    }
+
     static var secondaryQuitButtonText: String {
         userInterfaceUpdateElementsProfile?["secondaryQuitButtonText"] as? String ??
         userInterfaceUpdateElementsJSON?.secondaryQuitButtonText ??
@@ -520,6 +526,12 @@ struct UserInterfaceVariables {
         userInterfaceProfile?["showDeferralCount"] as? Bool ??
         userInterfaceJSON?.showDeferralCount ??
         true
+    }
+
+    static var showRequiredInstallationDate: Bool {
+        userInterfaceProfile?["showRequiredInstallationDate"] as? Bool ??
+        userInterfaceJSON?.showRequiredInstallationDate ??
+        false
     }
 
     static var singleQuitButton: Bool {

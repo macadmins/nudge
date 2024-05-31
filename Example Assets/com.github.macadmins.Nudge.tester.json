@@ -21,7 +21,7 @@
         {
             "aboutUpdateURL": "https://apple.com",
             "requiredMinimumOSVersion": "14.6",
-            "requiredInstallationDate": "2024-01-01T00:00:00Z",
+            "requiredInstallationDate": "2025-01-01T00:00:00Z",
             "unsupportedURL": "https://google.com",
         }
     ],
@@ -38,6 +38,7 @@
         "screenShotDarkPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true",
         "screenShotLightPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true",
         "applicationTerminatedNotificationImagePath": "/Library/Application Support/Nudge/logoLight.png",
+        "showRequiredInstallationDate": true,
         "simpleMode": false,
         "updateElements": [
             {
@@ -56,7 +57,7 @@
                 "mainContentText": "mainContentText",
                 "mainContentTextUnsupported1": "mainContentTextUnsupported",
                 "mainHeader": "mainHeader",
-                "mainHeaderUnsupported1": "mainHeaderUnsupported",
+                "mainHeaderUnsupported": "mainHeaderUnsupported",
                 "oneDayDeferralButtonText": "oneDayDeferralButtonText",
                 "oneHourDeferralButtonText": "oneHourDeferralButtonText",
                 "primaryQuitButtonText": "primaryQuitButtonText",

@@ -59,6 +59,10 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - There are new keys to set all of text fields: `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported` under the `updateElements` key in `UserInterface` 
   - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.
   - An icon will appear as an overlay on top of the company image to further emphasize the device is no longer supported
+- An admin can now show the `requiredInstallationDate` as a item on the left side of nudge.
+  - To enable this, please configure the `showRequiredInstallationDate` key under `userInterface` to true
+  - You can also expirement with the format of this date through the key `requiredInstallationDisplayFormat` under `userInterface`
+  - Be aware that the format you desire may not look good on the UI.
 
 ## [1.1.16] - 2024-03-13
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
