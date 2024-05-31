@@ -28,6 +28,8 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - `screenshotDisplay` view had a bug that may result in the screenshot being partially cut off or zoomable
 - `fallbackLanguage` would return the wrong language even when specified in the configuration
   - Fixes [582](https://github.com/macadmins/nudge/issues/582)
+- The timer controller logic was utilizing hours remaining vs seconds, which resulted in the `elapsedRefreshCycle` being used at the final hour of the nudge event vs the `imminentRefreshCycle`. This has been corrected to calculate the seconds remaining.
+  - Fixes [568](https://github.com/macadmins/nudge/issues/568)
 - More descriptive logs when loading json/mdm profile keys
 - Refactor portions of the `softwareupdate` logic to reduce potential errors
 - Fixed errors when moving to Swift 5.10
