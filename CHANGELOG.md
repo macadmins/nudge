@@ -21,7 +21,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
     - `nonActivelyExploitedCVEsSLA` under the `osVersionRequirement` key will default to 21 days
     - `standardInstallationSLA` under the `osVersionRequirement` key will default to 28 days
     - These dates are calculated against the `ReleaseDate` key in the SOFA feed
-      - To artificially change the `ReleaseDate` thereby giving your users a default grace period for all SOFA OS updates, please configure the `sofaPeriodLaunchDelay` key under `userExperience`
+      - To artificially delay the SOFA nudge events, see the details below for `nudgeEventLaunchDelay`
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
 
 ### Fixed
@@ -35,6 +35,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Fixed errors when moving to Swift 5.10
 
 ### Added
+- To artificially change the `requredInstallationDate` thereby giving your users a default grace period for all Nudge events updates, please configure the `nudgeEventLaunchDelay` key under `userExperience`
 - A local image path can now be specified for the notification event when Nudge terminates and application
   - Please configure the `applicationTerminatedNotificationImagePath` key under `userInterface`
   - Due to limitations within Apple's API, a local path is only supported at this time
