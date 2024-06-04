@@ -177,6 +177,9 @@ struct AppStateManager {
     }
 
     func delayNudgeEventLogic(currentDate: Date = DateManager().getCurrentDate(), testFileDate: Date? = nil) -> Date {
+        if UserExperienceVariables.nudgeEventLaunchDelay == 0 {
+            return PrefsWrapper.requiredInstallationDate
+        }
         if releaseDate.addingTimeInterval(TimeInterval(UserExperienceVariables.nudgeEventLaunchDelay * 86400)) > currentDate {
             LogManager.info("Device within nudgeEventLaunchDelay, exiting Nudge", logger: uiLog)
             nudgePrimaryState.shouldExit = true
