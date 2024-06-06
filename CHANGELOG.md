@@ -20,7 +20,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
     - `activelyExploitedCVEsInstallationSLA` under the `osVersionRequirement` key will default to 14 days
     - `nonActivelyExploitedCVEsSLA` under the `osVersionRequirement` key will default to 21 days
     - `standardInstallationSLA` under the `osVersionRequirement` key will default to 28 days
-    - These dates are calculated against the `ReleaseDate` key in the SOFA feed
+    - These dates are calculated against the `ReleaseDate` key in the SOFA feed, which is UTC formatted. Local timezones will **not be supported** with the automatic sofa feed unless you use a custom feed and change this value yourself, following ISO-8601 date formats
       - To artificially delay the SOFA nudge events, see the details below for `nudgeEventLaunchDelay`
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
 - You can now disable the `Days Remaining To Update:` item on the left side of the UI.
@@ -54,7 +54,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - Utilizing Apple's markdown features, you can now utilize, bold, italic, underline, subscript and url links directly into any of the text fields
 - [SOFA](https://github.com/macadmins/sofa) feed support
   - Set the `utilizeSOFAFeed` key `true` under `optionalFeatures` to enable this feature 
-  - Nudge will by default check the feed every 24 hours.
+  - Nudge will by default check the feed every 24 hours and save a cache file under `~/Library/Application Support/com.github.macadmins.Nudge/sofa-macos_data_feed.json`
   - In order to change this, please configure the `refreshSOFAFeedTime` key under `optionalFeatures` in seconds
   - If you are utilizing a custom sofa feed, please configure the `customSOFAFeedURL` key under `optionalFeatures`
 - "Unsupported device" UI in standard mode that utilizes the SOFA feed
