@@ -23,6 +23,8 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
     - These dates are calculated against the `ReleaseDate` key in the SOFA feed
       - To artificially delay the SOFA nudge events, see the details below for `nudgeEventLaunchDelay`
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
+- You can now disable the `Days Remaining To Update:` item on the left side of the UI.
+  - Configure the `showDaysRemainingToUpdate` key under `userInterface` to false
 
 ### Fixed
 - `screenshotDisplay` view had a bug that may result in the screenshot being partially cut off or zoomable
@@ -61,7 +63,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.
   - An icon will appear as an overlay on top of the company image to further emphasize the device is no longer supported
 - An admin can now show the `requiredInstallationDate` as a item on the left side of nudge.
-  - To enable this, please configure the `showRequiredInstallationDate` key under `userInterface` to true
+  - To enable this, please configure the `showRequiredDate` key under `userInterface` to true
   - You can also expirement with the format of this date through the key `requiredInstallationDisplayFormat` under `userInterface`
   - Be aware that the format you desire may not look good on the UI.
 

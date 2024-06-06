@@ -403,7 +403,7 @@ struct UserInterface: Codable {
     var actionButtonPath, applicationTerminatedNotificationImagePath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, requiredInstallationDisplayFormat, screenShotDarkPath, screenShotLightPath: String?
-    var showActivelyExploitedCVEs, showDeferralCount, showRequiredInstallationDate, simpleMode, singleQuitButton: Bool?
+    var showActivelyExploitedCVEs, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
 }
 
@@ -438,7 +438,8 @@ extension UserInterface {
         screenShotLightPath: String? = nil,
         showActivelyExploitedCVEs: Bool? = nil,
         showDeferralCount: Bool? = nil,
-        showRequiredInstallationDate: Bool? = nil,
+        showDaysRemainingToUpdate: Bool? = nil,
+        showRequiredDate: Bool? = nil,
         simpleMode: Bool? = nil,
         singleQuitButton: Bool? = nil,
         updateElements: [UpdateElement]? = nil
@@ -456,7 +457,8 @@ extension UserInterface {
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
             showActivelyExploitedCVEs: showActivelyExploitedCVEs ?? self.showActivelyExploitedCVEs,
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
-            showRequiredInstallationDate: showRequiredInstallationDate ?? self.showRequiredInstallationDate,
+            showDaysRemainingToUpdate: showDaysRemainingToUpdate ?? self.showDaysRemainingToUpdate,
+            showRequiredDate: showRequiredDate ?? self.showRequiredDate,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.singleQuitButton,
             updateElements: updateElements ?? self.updateElements

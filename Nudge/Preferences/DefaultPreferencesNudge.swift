@@ -528,9 +528,15 @@ struct UserInterfaceVariables {
         true
     }
 
-    static var showRequiredInstallationDate: Bool {
-        userInterfaceProfile?["showRequiredInstallationDate"] as? Bool ??
-        userInterfaceJSON?.showRequiredInstallationDate ??
+    static var showDaysRemainingToUpdate: Bool {
+        userInterfaceProfile?["showDaysRemainingToUpdate"] as? Bool ??
+        userInterfaceJSON?.showDaysRemainingToUpdate ??
+        true
+    }
+
+    static var showRequiredDate: Bool {
+        userInterfaceProfile?["showRequiredDate"] as? Bool ??
+        userInterfaceJSON?.showRequiredDate ??
         false
     }
 

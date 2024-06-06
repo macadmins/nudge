@@ -37,14 +37,16 @@ struct StandardModeLeftSide: View {
     private var informationStack: some View {
         VStack(alignment: .center, spacing: interLineSpacing) {
             InfoRow(label: "Required OS Version:", value: String(appState.requiredMinimumOSVersion), boldText: true)
-            if UserInterfaceVariables.showRequiredInstallationDate {
+            if UserInterfaceVariables.showRequiredDate {
                 InfoRow(label: "Required Date:", value: DateManager().coerceDateToString(date: requiredInstallationDate, formatterString: UserInterfaceVariables.requiredInstallationDisplayFormat))
             }
             if OptionalFeatureVariables.utilizeSOFAFeed && UserInterfaceVariables.showActivelyExploitedCVEs {
                 InfoRow(label: "Actively Exploited CVEs:", value: String(appState.activelyExploitedCVEs).capitalized, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
             }
             InfoRow(label: "Current OS Version:", value: GlobalVariables.currentOSVersion)
-            remainingTimeRow
+            if UserInterfaceVariables.showDaysRemainingToUpdate {
+                remainingTimeRow
+            }
             if UserInterfaceVariables.showDeferralCount {
                 InfoRow(label: "Deferred Count:", value: String(appState.userDeferrals))
             }
@@ -54,7 +56,7 @@ struct StandardModeLeftSide: View {
     
     private var remainingTimeRow: some View {
         Group {
-            if shouldShowDaysRemaining {
+            if shouldshowDaysRemainingToUpdate {
                 InfoRow(label: "Days Remaining To Update:", value: String(appState.daysRemaining), isHighlighted: 0 > appState.daysRemaining ? true : false)
             } else {
                 InfoRow(label: "Hours Remaining To Update:", value: String(appState.hoursRemaining), isHighlighted: true)
@@ -62,7 +64,7 @@ struct StandardModeLeftSide: View {
         }
     }
     
-    private var shouldShowDaysRemaining: Bool {
+    private var shouldshowDaysRemainingToUpdate: Bool {
         ((appState.daysRemaining > 0 || 0 > appState.hoursRemaining) && !CommandLineUtilities().demoModeEnabled()) || CommandLineUtilities().demoModeEnabled()
     }
 }
