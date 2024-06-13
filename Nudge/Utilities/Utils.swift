@@ -976,6 +976,8 @@ struct NetworkFileManager {
                 return "/Applications/Install macOS Ventura.app"
             case 14:
                 return "/Applications/Install macOS Sonoma.app"
+            case 15:
+                return "/Applications/Install macOS Sequoia.app"
             default:
                 return "/System/Library/CoreServices/Software Update.app"
         }
