@@ -20,7 +20,7 @@
     "osVersionRequirements": [
         {
             "aboutUpdateURL": "https://apple.com",
-            "requiredMinimumOSVersion": "14.6",
+            "requiredMinimumOSVersion": "15.99",
             "requiredInstallationDate": "2025-01-01T00:00:00Z",
             "unsupportedURL": "https://google.com",
         }
