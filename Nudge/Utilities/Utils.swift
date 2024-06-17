@@ -20,9 +20,12 @@ import SystemConfiguration
 struct AppStateManager {
     func activateNudge() {
         if OptionalFeatureVariables.honorFocusModes {
+            LogManager.info("honorFocusModes is configured - but this feature is not being actively developed at this time", logger: utilsLog)
+            return
             LogManager.info("honorFocusModes is configured - checking focus status", logger: utilsLog)
 
             // Request the current focus status
+            // TODO: This will break Nudge unless you have NSFocusStatusUsageDescription in the Info.plist
             INFocusStatusCenter.default.requestAuthorization { status in
                 if status == .authorized {
                     if INFocusStatusCenter.default.focusStatus.isFocused == true {
