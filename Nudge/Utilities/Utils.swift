@@ -524,12 +524,6 @@ struct DateManager {
         return formatter
     }()
 
-    private let dateFormatterCurrent: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-        return formatter
-    }()
-
     func coerceDateToString(date: Date, formatterString: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = formatterString
@@ -541,6 +535,20 @@ struct DateManager {
             dateFormatterISO8601.date(from: dateString) ?? getCurrentDate()
         } else {
             dateFormatterLocalTime.date(from: dateString) ?? getCurrentDate()
+        }
+    }
+
+    func convertToUserCalendar(date: Date) -> Date {
+        let userCalendar = Calendar.current
+
+        // Get date components in the user's calendar
+        let components = userCalendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+
+        // Create a new Date object in the user's calendar
+        if let userCalendarDate = userCalendar.date(from: components) {
+            return userCalendarDate
+        } else {
+            return date
         }
     }
 
@@ -556,10 +564,10 @@ struct DateManager {
     func getFormattedDate(date: Date? = nil) -> Date {
         let initialDate = dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: date ?? Date())) ?? Date()
         switch Calendar.current.identifier {
-            case .gregorian, .buddhist, .iso8601, .japanese:
+            case .gregorian:
                 return initialDate
             default:
-                return dateFormatterCurrent.date(from: dateFormatterISO8601.string(from: initialDate)) ?? Date()
+                return convertToUserCalendar(date: initialDate)
         }
     }
 
