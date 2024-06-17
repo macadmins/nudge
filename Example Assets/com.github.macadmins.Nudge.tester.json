@@ -14,6 +14,7 @@
             "com.apple.Safari"
         ],
         "disableNudgeForStandardInstalls": true,
+        "honorFocusModes": true,
         "terminateApplicationsOnLaunch": true,
         "utilizeSOFAFeed": false
     },

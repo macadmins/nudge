@@ -155,6 +155,12 @@ struct OptionalFeatureVariables {
         true
     }
 
+    static var honorFocusModes: Bool {
+        optionalFeaturesProfile?["honorFocusModes"] as? Bool ??
+        optionalFeaturesJSON?.honorFocusModes ??
+        false
+    }
+
     static var refreshSOFAFeedTime: Int {
         optionalFeaturesProfile?["refreshSOFAFeedTime"] as? Int ??
         optionalFeaturesJSON?.refreshSOFAFeedTime ??
