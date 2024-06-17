@@ -518,6 +518,12 @@ struct DateManager {
         return formatter
     }()
 
+    let dateFormatterLocalTime: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return formatter
+    }()
+
     private let dateFormatterCurrent: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
@@ -531,7 +537,11 @@ struct DateManager {
     }
 
     func coerceStringToDate(dateString: String) -> Date {
-        dateFormatterISO8601.date(from: dateString) ?? getCurrentDate()
+        if dateString.contains("Z") {
+            dateFormatterISO8601.date(from: dateString) ?? getCurrentDate()
+        } else {
+            dateFormatterLocalTime.date(from: dateString) ?? getCurrentDate()
+        }
     }
 
     func getCurrentDate() -> Date {
