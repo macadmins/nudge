@@ -18,8 +18,23 @@ struct NudgePreferences: Codable {
 extension NudgePreferences {
     init(data: Data) throws {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601  // Use ISO 8601 date format
-        self = try decoder.decode(NudgePreferences.self, from: data)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        // First attempt with ISO 8601 date format
+        do {
+            decoder.dateDecodingStrategy = .iso8601
+            self = try decoder.decode(NudgePreferences.self, from: data)
+            return
+        } catch {
+        }
+
+        // Second attempt with custom date format
+        do {
+            decoder.dateDecodingStrategy = .formatted(dateFormatter)
+            self = try decoder.decode(NudgePreferences.self, from: data)
+            return
+        } catch {
+        }
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -185,8 +200,23 @@ extension OSVersionRequirement {
 
     init(data: Data) throws {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601  // Use ISO 8601 date format
-        self = try decoder.decode(OSVersionRequirement.self, from: data)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        // First attempt with ISO 8601 date format
+        do {
+            decoder.dateDecodingStrategy = .iso8601
+            self = try decoder.decode(OSVersionRequirement.self, from: data)
+            return
+        } catch {
+        }
+
+        // Second attempt with custom date format
+        do {
+            decoder.dateDecodingStrategy = .formatted(dateFormatter)
+            self = try decoder.decode(OSVersionRequirement.self, from: data)
+            return
+        } catch {
+        }
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
