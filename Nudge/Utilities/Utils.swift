@@ -8,6 +8,7 @@
 import AppKit
 import CoreMediaIO
 import Foundation
+import Intents
 import IOKit
 #if canImport(ServiceManagement)
 import ServiceManagement
@@ -15,8 +16,24 @@ import ServiceManagement
 import SwiftUI
 import SystemConfiguration
 
+
 struct AppStateManager {
     func activateNudge() {
+        if OptionalFeatureVariables.honorFocusModes {
+            LogManager.info("honorFocusModes is configured - checking focus status", logger: utilsLog)
+
+            // Request the current focus status
+            INFocusStatusCenter.default.requestAuthorization { status in
+                if status == .authorized {
+                    if INFocusStatusCenter.default.focusStatus.isFocused == true {
+                        LogManager.info("Device has focus modes set - bypassing activation event", logger: utilsLog)
+                        return
+                    }
+                } else {
+                    LogManager.info("Focus status authorization not granted", logger: utilsLog)
+                }
+            }
+        }
         LogManager.info("Activating Nudge", logger: utilsLog)
         nudgePrimaryState.lastRefreshTime = DateManager().getCurrentDate()
         guard let mainWindow = NSApp.windows.first else { return }
