@@ -16,25 +16,13 @@ import ServiceManagement
 import SwiftUI
 import SystemConfiguration
 
-
 struct AppStateManager {
     func activateNudge() {
         if OptionalFeatureVariables.honorFocusModes {
-            LogManager.info("honorFocusModes is configured - but this feature is not being actively developed at this time", logger: utilsLog)
-            return
-            LogManager.info("honorFocusModes is configured - checking focus status", logger: utilsLog)
-
-            // Request the current focus status
-            // TODO: This will break Nudge unless you have NSFocusStatusUsageDescription in the Info.plist
-            INFocusStatusCenter.default.requestAuthorization { status in
-                if status == .authorized {
-                    if INFocusStatusCenter.default.focusStatus.isFocused == true {
-                        LogManager.info("Device has focus modes set - bypassing activation event", logger: utilsLog)
-                        return
-                    }
-                } else {
-                    LogManager.info("Focus status authorization not granted", logger: utilsLog)
-                }
+            LogManager.info("honorFocusModes is configured - checking focus status. Warning: This feature may be unstable.", logger: utilsLog)
+            if isFocusModeEnabled() {
+                LogManager.info("Device has focus modes set - bypassing activation event", logger: utilsLog)
+                return
             }
         }
         LogManager.info("Activating Nudge", logger: utilsLog)
@@ -220,6 +208,34 @@ struct AppStateManager {
             LogManager.info("\(logMessage): \(isAllowed)", logger: uiLog)
         }
         return isAllowed
+    }
+
+    func isFocusModeEnabled() -> Bool {
+        let appID = "com.apple.controlcenter" as CFString
+        let key = "NSStatusItem Visible FocusModes" as CFString
+        let userName = kCFPreferencesCurrentUser
+        let hostName = kCFPreferencesAnyHost
+
+        if let value = CFPreferencesCopyAppValue(key, appID) as? Bool {
+            return value
+        } else {
+            print("Key '\(key)' not found in preferences")
+            return false
+        }
+
+        //
+        //            // Request the current focus status
+        //            // TODO: This will break Nudge unless you have NSFocusStatusUsageDescription in the Info.plist
+        //            INFocusStatusCenter.default.requestAuthorization { status in
+        //                if status == .authorized {
+        //                    if INFocusStatusCenter.default.focusStatus.isFocused == true {
+        //                        LogManager.info("Device has focus modes set - bypassing activation event", logger: utilsLog)
+        //                        return
+        //                    }
+        //                } else {
+        //                    LogManager.info("Focus status authorization not granted", logger: utilsLog)
+        //                }
+        //            }
     }
 
     private func logOnce(_ message: String, state: inout Bool) {
