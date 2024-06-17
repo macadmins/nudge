@@ -11,6 +11,10 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Now built on Swift 5.10, Xcode 15.4 and macOS 14
 - New Xcode Scheme `-bundle-mode-profile` to test profile logic
   - `-bundle-mode` has been renamed to `-bundle-mode-json`
+- You can now pass two formats of **strings** to `requiredInstallationDate`
+  - `2025-01-01T00:00:00Z` for UTC
+  - `2025-01-01T00:00:00` for local time
+  - If you are using a MDM profile and passing the original `Date` key, you must change to utilizing `String` as Apple requires ISO8601 formatted dates
 - You can now pass the strings `latest`, `latest-supported` and `latest-minor` in the `requiredMinimumOSVersion` key
   - `latest`: always force latest release and if the machine can't this version, show the new "unsupported device" user interface
   - `latest-supported`: always get the latest version sofa shows that is supported by this device
