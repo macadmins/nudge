@@ -69,7 +69,7 @@ struct OptionalFeatures: Codable {
     var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
     var customSOFAFeedURL: String?
-    var disableNudgeForStandardInstalls, disableSoftwareUpdateWorkflow, enforceMinorUpdates, honorFocusModes: Bool?
+    var disableNudgeForStandardInstalls, disableSoftwareUpdateWorkflow, enforceMinorUpdates, honorFocusModes, honorCycleTimersOnExit: Bool?
     var refreshSOFAFeedTime: Int?
     var terminateApplicationsOnLaunch, utilizeSOFAFeed: Bool?
 }
@@ -110,6 +110,7 @@ extension OptionalFeatures {
         disableSoftwareUpdateWorkflow: Bool? = nil,
         enforceMinorUpdates: Bool? = nil,
         honorFocusModes: Bool? = nil,
+        honorCycleTimersOnExit: Bool? = nil,
         refreshSOFAFeedTime: Int? = nil,
         terminateApplicationsOnLaunch: Bool? = nil,
         utilizeSOFAFeed: Bool? = nil
@@ -132,6 +133,7 @@ extension OptionalFeatures {
             disableSoftwareUpdateWorkflow: disableSoftwareUpdateWorkflow ?? self.disableSoftwareUpdateWorkflow,
             enforceMinorUpdates: enforceMinorUpdates ?? self.enforceMinorUpdates,
             honorFocusModes: honorFocusModes ?? self.honorFocusModes,
+            honorCycleTimersOnExit: honorCycleTimersOnExit ?? self.honorCycleTimersOnExit,
             refreshSOFAFeedTime: refreshSOFAFeedTime ?? self.refreshSOFAFeedTime,
             terminateApplicationsOnLaunch: terminateApplicationsOnLaunch ?? self.terminateApplicationsOnLaunch,
             utilizeSOFAFeed: utilizeSOFAFeed ?? self.utilizeSOFAFeed

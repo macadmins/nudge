@@ -161,6 +161,12 @@ struct OptionalFeatureVariables {
         false
     }
 
+    static var honorCycleTimersOnExit: Bool {
+        optionalFeaturesProfile?["honorCycleTimersOnExit"] as? Bool ??
+        optionalFeaturesJSON?.honorCycleTimersOnExit ??
+        false
+    }
+
     static var refreshSOFAFeedTime: Int {
         optionalFeaturesProfile?["refreshSOFAFeedTime"] as? Int ??
         optionalFeaturesJSON?.refreshSOFAFeedTime ??
