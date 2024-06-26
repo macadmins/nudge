@@ -265,7 +265,7 @@ Almost all of these changes were sent by others. Thank you for continuing to sup
 - `attemptToBlockApplicationLaunches`
   - When enabled, Nudge will attempt to block application launches after the required installation date. This key must be used in conjunction with `blockedApplicationBundleIDs`.
 - `blockedApplicationBundleIDs`
-  - The application Bundle ID which Nudge disallows from lauching after the required installation date. You can specify one or more Bundle ID.
+  - The application Bundle ID which Nudge disallows from launching after the required installation date. You can specify one or more Bundle ID.
 - `terminateApplicationsOnLaunch`
   - When enabled, Nudge will terminate the applications listed in blockedApplicationBundleIDs upon initial launch.
 

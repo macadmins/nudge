@@ -171,7 +171,7 @@
                             ]
                         },
                         "blockedApplicationBundleIDs": {
-                            "description": "The application Bundle ID which Nudge disallows from lauching after the required installation date. (You can specify one or more Bundle ID.)",
+                            "description": "The application Bundle ID which Nudge disallows from launching after the required installation date. (You can specify one or more Bundle ID.)",
                             "anyOf": [
                                 {
                                     "title": "Not Configured",
