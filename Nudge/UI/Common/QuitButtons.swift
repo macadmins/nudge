@@ -59,13 +59,13 @@ struct QuitButtons: View {
     private var deferralOptions: some View {
         Group {
             if UserExperienceVariables.allowLaterDeferralButton {
-                deferralButton(title: UserInterfaceVariables.primaryQuitButtonText, action: standardDeferralAction)
+                deferralButton(title: UserInterfaceVariables.primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: standardDeferralAction)
             }
             if AppStateManager().allow1HourDeferral() {
-                deferralButton(title: UserInterfaceVariables.oneHourDeferralButtonText, action: { deferAction(by: Intervals.hourTimeInterval) })
+                deferralButton(title: UserInterfaceVariables.oneHourDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: { deferAction(by: Intervals.hourTimeInterval) })
             }
             if AppStateManager().allow24HourDeferral() {
-                deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText, action: { deferAction(by: Intervals.dayTimeInterval) })
+                deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: { deferAction(by: Intervals.dayTimeInterval) })
             }
             if AppStateManager().allowCustomDeferral() {
                 customDeferralButton
@@ -115,9 +115,7 @@ struct QuitButtons: View {
     }
     
     private var standardQuitButton: some View {
-        Button(action: UIUtilities().userInitiatedExit) {
-            Text(UserInterfaceVariables.primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-        }
+        deferralButton(title: UserInterfaceVariables.primaryQuitButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: standardDeferralAction)
     }
     
     private func updateDeferralUI() {
