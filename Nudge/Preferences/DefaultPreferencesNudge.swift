@@ -176,7 +176,7 @@ struct OptionalFeatureVariables {
     static var utilizeSOFAFeed: Bool {
         optionalFeaturesProfile?["utilizeSOFAFeed"] as? Bool ??
         optionalFeaturesJSON?.utilizeSOFAFeed ??
-        false
+        true
     }
 }
 
