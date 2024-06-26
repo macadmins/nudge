@@ -648,25 +648,17 @@ struct DeviceManager {
         getSysctlValue(for: "hw.model") ?? ""
     }
 
-    func getHardwareModelID() -> String {
-        var hardwareModelID = ""
-        if DeviceManager().getCPUTypeString() == "Apple Silicon" {
-            // There is no local bridge
-            hardwareModelID = getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
-        } else {
-            // Attempt localbridge for T2, if it fails, it's likely a T1 or lower
-            let bridgeID = getBridgeModelID()
-            let boardID = getIORegInfo(serviceTarget: "board-id")
-            if bridgeID.isEmpty {
-                // Fallback to boardID for T1
-                hardwareModelID = boardID ?? "Unknown"
-            } else {
-                // T2 uses bridge ID for it's update brain via gdmf
-                hardwareModelID = bridgeID
-            }
-        }
+    func getHardwareModelIDs() -> [String] {
+        let boardID = getIORegInfo(serviceTarget: "board-id") ?? "Unknown"
+        let bridgeID = getBridgeModelID()
+        let hardwareModelID = getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
+
+        LogManager.debug("Hardware Board ID: \(boardID)", logger: utilsLog)
+        LogManager.debug("Hardware Bridge ID: \(bridgeID)", logger: utilsLog)
         LogManager.debug("Hardware Model ID: \(hardwareModelID)", logger: utilsLog)
-        return hardwareModelID.trimmingCharacters(in: .whitespacesAndNewlines)
+
+
+        return [boardID.trimmingCharacters(in: .whitespacesAndNewlines), bridgeID.trimmingCharacters(in: .whitespacesAndNewlines), hardwareModelID.trimmingCharacters(in: .whitespacesAndNewlines)]
     }
 
     func getHardwareUUID() -> String {
