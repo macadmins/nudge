@@ -71,6 +71,9 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - To enable this, please configure the `showRequiredDate` key under `userInterface` to true
   - You can also expirement with the format of this date through the key `requiredInstallationDisplayFormat` under `userInterface`
   - Be aware that the format you desire may not look good on the UI.
+- Nudge can now honor the current cycle timers when user's press the `Quit` button.
+  - Set the `honorCycleTimersOnExit` key to `true` under `optionalFeatures` to enable this feature
+  - [Issue 548](https://github.com/macadmins/nudge/issues/548)
 
 ## [1.1.16] - 2024-03-13
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.

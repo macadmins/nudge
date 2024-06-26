@@ -106,7 +106,11 @@ struct QuitButtons: View {
 
     private func standardDeferralAction() {
         appState.nudgeEventDate = DateManager().getCurrentDate()
-        UIUtilities().setDeferralTime(deferralTime: appState.nudgeEventDate)
+        if OptionalFeatureVariables.honorCycleTimersOnExit {
+            UIUtilities().setDeferralTime(deferralTime: appState.nudgeEventDate.addingTimeInterval(TimeInterval(nudgePrimaryState.timerCycle)))
+        } else {
+            UIUtilities().setDeferralTime(deferralTime: appState.nudgeEventDate)
+        }
         updateDeferralUI()
     }
     
