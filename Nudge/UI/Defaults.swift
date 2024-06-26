@@ -29,7 +29,7 @@ struct Globals {
     // Device Properties
     static let gdmfAssets = NetworkFileManager().getGDMFAssets()
     static let sofaAssets = NetworkFileManager().getSOFAAssets()
-    static let hardwareModelID = DeviceManager().getHardwareModelID()
+    static let hardwareModelIDs = DeviceManager().getHardwareModelIDs()
 }
 
 struct Intervals {

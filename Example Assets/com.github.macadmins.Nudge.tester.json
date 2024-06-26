@@ -15,8 +15,7 @@
         ],
         "disableNudgeForStandardInstalls": true,
         "honorFocusModes": true,
-        "terminateApplicationsOnLaunch": true,
-        "utilizeSOFAFeed": false
+        "terminateApplicationsOnLaunch": true
     },
     "osVersionRequirements": [
         {
