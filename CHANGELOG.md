@@ -19,7 +19,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - `latest`: always force latest release and if the machine can't this version, show the new "unsupported device" user interface
   - `latest-supported`: always get the latest version sofa shows that is supported by this device
   - `latest-minor`: stay in the current major release and get the latest minor updates available
-  - This requires utilizing the SOFA feed features to properly work
+  - This requires utilizing the SOFA feed features to properly work, which is opt-out by default
   - Nudge will then utilize two date integers to automatically calculate the `requiredInstallationDate`
     - `activelyExploitedCVEsInstallationSLA` under the `osVersionRequirement` key will default to 14 days
     - `nonActivelyExploitedCVEsSLA` under the `osVersionRequirement` key will default to 21 days
@@ -58,7 +58,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Basic SwiftUI support for Markdown text options
   - Utilizing Apple's markdown features, you can now utilize, bold, italic, underline, subscript and url links directly into any of the text fields
 - [SOFA](https://github.com/macadmins/sofa) feed support
-  - Set the `utilizeSOFAFeed` key `true` under `optionalFeatures` to enable this feature 
+  - Set the `utilizeSOFAFeed` key `false` under `optionalFeatures` to disable this feature 
   - Nudge will by default check the feed every 24 hours and save a cache file under `~/Library/Application Support/com.github.macadmins.Nudge/sofa-macos_data_feed.json`
   - In order to change this, please configure the `refreshSOFAFeedTime` key under `optionalFeatures` in seconds
   - If you are utilizing a custom sofa feed, please configure the `customSOFAFeedURL` key under `optionalFeatures`
