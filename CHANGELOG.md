@@ -74,6 +74,8 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Nudge can now honor the current cycle timers when user's press the `Quit` button.
   - Set the `honorCycleTimersOnExit` key to `true` under `optionalFeatures` to enable this feature
   - [Issue 548](https://github.com/macadmins/nudge/issues/548)
+- When the device is running macOS 12.3 or higher, Nudge uses the delta logic for macOS Upgrades
+  - [Issue 417](https://github.com/macadmins/nudge/issues/417)
 
 ## [1.1.16] - 2024-03-13
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
