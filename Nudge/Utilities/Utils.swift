@@ -652,13 +652,14 @@ struct DeviceManager {
         let boardID = getIORegInfo(serviceTarget: "board-id") ?? "Unknown"
         let bridgeID = getBridgeModelID()
         let hardwareModelID = getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
+        let gestaltModelStringID = getKeyResultFromGestalt("HWModelStr")
 
         LogManager.debug("Hardware Board ID: \(boardID)", logger: utilsLog)
         LogManager.debug("Hardware Bridge ID: \(bridgeID)", logger: utilsLog)
         LogManager.debug("Hardware Model ID: \(hardwareModelID)", logger: utilsLog)
+        LogManager.debug("Gestalt Hardware Model ID: \(gestaltModelStringID)", logger: utilsLog)
 
-
-        return [boardID.trimmingCharacters(in: .whitespacesAndNewlines), bridgeID.trimmingCharacters(in: .whitespacesAndNewlines), hardwareModelID.trimmingCharacters(in: .whitespacesAndNewlines)]
+        return [boardID.trimmingCharacters(in: .whitespacesAndNewlines), bridgeID.trimmingCharacters(in: .whitespacesAndNewlines), hardwareModelID.trimmingCharacters(in: .whitespacesAndNewlines), gestaltModelStringID.trimmingCharacters(in: .whitespacesAndNewlines)]
     }
 
     func getHardwareUUID() -> String {
@@ -704,6 +705,29 @@ struct DeviceManager {
             LogManager.error("Failed to check \(serviceTarget) property.", logger: utilsLog)
             return nil
         }
+    }
+
+    func getKeyResultFromGestalt(_ keyname: String) -> String {
+        let handle = dlopen("/usr/lib/libMobileGestalt.dylib", RTLD_NOW)
+        guard handle != nil else {
+            return "Unknown"
+        }
+        defer {
+            dlclose(handle)
+        }
+        
+        let symbol = dlsym(handle, "MGGetStringAnswer")
+        guard symbol != nil else {
+            return "Unknown"
+        }
+        
+        let function = unsafeBitCast(symbol, to: (@convention(c) (String) -> String?).self)
+        
+        guard let result = function(keyname) else {
+            return "Unknown"
+        }
+        
+        return result
     }
 
     func getPatchOSVersion() -> Int {
