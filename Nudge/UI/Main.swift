@@ -500,9 +500,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func handleAttemptToFetchMajorUpgrade() {
         if GlobalVariables.fetchMajorUpgradeSuccessful == false && !majorUpgradeAppPathExists && !majorUpgradeBackupAppPathExists {
-            LogManager.error("Unable to fetch major upgrade and application missing, exiting Nudge", logger: uiLog)
-            nudgePrimaryState.shouldExit = true
-            exit(1)
+            if VersionManager.versionGreaterThan(currentVersion: GlobalVariables.currentOSVersion, newVersion: "12.3") {
+                LogManager.info("Unable to fetch major upgrade and application missing, but macOS 12.3 and higher support delta major upgrades. Using new logic.", logger: uiLog)
+            } else {
+                LogManager.error("Unable to fetch major upgrade and application missing, exiting Nudge", logger: uiLog)
+                nudgePrimaryState.shouldExit = true
+                exit(1)
+            }
         }
     }
 
