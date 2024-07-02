@@ -86,6 +86,20 @@
                                 }
                             ]
                         },
+                        "acceptableUpdatePreparingUsage": {
+                            "description": "When enabled, Nudge will not activate or re-activate when an update is being downloaded, prepared or staged. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": false,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
                         "acceptableScreenSharingUsage": {
                             "description": "When enabled, Nudge will not activate or re-activate when screen sharing is active.",
                             "anyOf": [
@@ -156,6 +170,20 @@
                                 }
                             ]
                         },
+                        "attemptToCheckForSupportedDevice": {
+                            "description": "When disabled, Nudge will no longer compare the current device against the SOFA feed for the required update. If the device cannot install this update, Nudge will not present the Unsupported UI (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "boolean",
+                                    "default": true
+                                }
+                            ]
+                        },
                         "attemptToFetchMajorUpgrade": {
                             "description": "When a major upgrade is required, Nudge will attempt to download it through the softwareupdate binary. (Note: This key is only used with Nudge v1.1 and will not be honored in v1.0.)",
                             "anyOf": [
@@ -192,6 +220,24 @@
                                 }
                             ]
                         },
+                        "customSOFAFeedURL": {
+                            "description": "A url path to use a custom SOFA feed. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "string",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "https://sofa.macadmins.io/v1/macos_data_feed.json"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
                         "disableSoftwareUpdateWorkflow": {
                             "description": "When disableSoftwareUpdateWorkflow is true, Nudge will not attempt to run the softwareupdate process. Defaults to false.",
                             "anyOf": [
@@ -220,8 +266,69 @@
                                 }
                             ]
                         },
+                        "honorFocusModes": {
+                            "description": "When enabled, Nudge will not activate or re-activate when a user is in DoNotDisturb/Focus status. This feature is expiremental and may not work in all user settings. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            ]
+                        },
+                        "honorCycleTimersOnExit": {
+                            "description": "When enabled, Nudge will honor the current cycle timers when user's press the `Quit` button. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            ]
+                        },
+                        "refreshSOFAFeedTime": {
+                            "description": "The maximum age the cached SOFA feed file can be on disk. When this file age expires, Nudge will re-assess the SOFA feed for updates. Please be mindful of changing this value as there is an associated cost for maintaining the SOFA service. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": 86400,
+                                    "type": "integer",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "86400"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
                         "terminateApplicationsOnLaunch": {
                             "description": "When enabled, Nudge will terminate the applications listed in blockedApplicationBundleIDs upon initial launch.",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            ]
+                        },
+                        "utilizeSOFAFeed": {
+                            "description": "When enabled, Nudge will utilize the SOFA feed url for update data. (Note: This key is only used with Nudge v2.0 and higher)",
                             "anyOf": [
                                 {
                                     "type": "null",
