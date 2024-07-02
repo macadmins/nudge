@@ -76,6 +76,10 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - [Issue 548](https://github.com/macadmins/nudge/issues/548)
 - When the device is running macOS 12.3 or higher, Nudge uses the delta logic for macOS Upgrades
   - [Issue 417](https://github.com/macadmins/nudge/issues/417)
+- Nudge can now bypass activations and re-activations when a macOS update is `Downloading`, `Preparing` or `Staged` for installation.
+  - To enable this, please configure the `acceptableUpdatePreparingUsage` key under `optionalFeatures` to true
+  - Be aware that the current logic used for this **cannot differentiate** when an update has completed preparing and is in the `Staged` phase, waiting for a user to reboot. This is due to an Apple process staying in memory. This will result in a reduction in Nudge re-activations
+  - Issue [555](https://github.com/macadmins/nudge/issues/555)
 
 ## [1.1.16] - 2024-03-13
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.

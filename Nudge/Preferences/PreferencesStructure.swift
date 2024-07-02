@@ -66,7 +66,7 @@ extension NudgePreferences {
 // MARK: - OptionalFeatures
 struct OptionalFeatures: Codable {
     var acceptableApplicationBundleIDs, acceptableAssertionApplicationNames: [String]?
-    var acceptableAssertionUsage, acceptableCameraUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
+    var acceptableAssertionUsage, acceptableCameraUsage, acceptableUpdatePreparingUsage, acceptableScreenSharingUsage, aggressiveUserExperience, aggressiveUserFullScreenExperience, asynchronousSoftwareUpdate, attemptToBlockApplicationLaunches, attemptToCheckForSupportedDevice, attemptToFetchMajorUpgrade: Bool?
     var blockedApplicationBundleIDs: [String]?
     var customSOFAFeedURL: String?
     var disableNudgeForStandardInstalls, disableSoftwareUpdateWorkflow, enforceMinorUpdates, honorFocusModes, honorCycleTimersOnExit: Bool?
@@ -97,6 +97,7 @@ extension OptionalFeatures {
         acceptableAssertionApplicationNames: [String]? = nil,
         acceptableAssertionUsage: Bool? = nil,
         acceptableCameraUsage: Bool? = nil,
+        acceptableUpdatePreparingUsage: Bool? = nil,
         acceptableScreenSharingUsage: Bool? = nil,
         aggressiveUserExperience: Bool? = nil,
         aggressiveUserFullScreenExperience: Bool? = nil,
@@ -120,6 +121,7 @@ extension OptionalFeatures {
             acceptableAssertionApplicationNames: acceptableAssertionApplicationNames ?? self.acceptableAssertionApplicationNames,
             acceptableAssertionUsage: acceptableAssertionUsage ?? self.acceptableAssertionUsage,
             acceptableCameraUsage: acceptableCameraUsage ?? self.acceptableCameraUsage,
+            acceptableUpdatePreparingUsage: acceptableUpdatePreparingUsage ?? self.acceptableUpdatePreparingUsage,
             acceptableScreenSharingUsage: acceptableScreenSharingUsage ?? self.acceptableScreenSharingUsage,
             aggressiveUserExperience: aggressiveUserExperience ?? self.aggressiveUserExperience,
             aggressiveUserFullScreenExperience: aggressiveUserFullScreenExperience ?? self.aggressiveUserFullScreenExperience,
