@@ -14,8 +14,15 @@ struct QuitButtons: View {
     var body: some View {
         HStack {
             if shouldShowSecondaryQuitButton {
-                secondaryQuitButton
-                    .frame(maxWidth:215, maxHeight: 30)
+                if UserExperienceVariables.allowLaterDeferralButton {
+                    secondaryQuitButton
+                        .frame(maxWidth:215, maxHeight: 30)
+                } else {
+                    if appState.secondsRemaining > 3600 {
+                        secondaryQuitButton
+                            .frame(maxWidth:215, maxHeight: 30)
+                    }
+                }
                 Spacer()
             }
             if shouldShowPrimaryQuitButton {
@@ -76,7 +83,13 @@ struct QuitButtons: View {
     private var primaryQuitButton: some View {
         Group {
             if UserExperienceVariables.allowUserQuitDeferrals {
-                deferralMenu
+                if UserExperienceVariables.allowLaterDeferralButton {
+                    deferralMenu
+                } else {
+                    if appState.secondsRemaining > 3600 {
+                        deferralMenu
+                    }
+                }
             } else {
                 standardQuitButton
             }
