@@ -370,6 +370,12 @@ struct UserExperienceVariables {
         false
     }
 
+    static var nudgeEventLaunchDelay: Int {
+        userExperienceProfile?["nudgeEventLaunchDelay"] as? Int ??
+        userExperienceJSON?.nudgeEventLaunchDelay ??
+        0
+    }
+
     static var nudgeRefreshCycle: Int {
         userExperienceProfile?["nudgeRefreshCycle"] as? Int ??
         userExperienceJSON?.nudgeRefreshCycle ??
@@ -380,12 +386,6 @@ struct UserExperienceVariables {
         userExperienceProfile?["randomDelay"] as? Bool ??
         userExperienceJSON?.randomDelay ??
         false
-    }
-
-    static var nudgeEventLaunchDelay: Int {
-        userExperienceProfile?["nudgeEventLaunchDelay"] as? Int ??
-        userExperienceJSON?.nudgeEventLaunchDelay ??
-        0
     }
 }
 

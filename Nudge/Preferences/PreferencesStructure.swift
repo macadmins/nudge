@@ -358,9 +358,9 @@ struct UserExperience: Codable {
     var loadLaunchAgent: Bool?
     var maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
+    var nudgeEventLaunchDelay: Int?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
-    var nudgeEventLaunchDelay: Int?
 }
 
 // MARK: UserExperience convenience initializers and mutators
@@ -402,9 +402,9 @@ extension UserExperience {
         loadLaunchAgent: Bool? = nil,
         maxRandomDelayInSeconds: Int? = nil,
         noTimers: Bool? = nil,
+        nudgeEventLaunchDelay: Int? = nil,
         nudgeRefreshCycle: Int? = nil,
-        randomDelay: Bool? = nil,
-        nudgeEventLaunchDelay: Int? = nil
+        randomDelay: Bool? = nil
     ) -> UserExperience {
         return UserExperience(
             allowGracePeriods: allowGracePeriods ?? self.allowGracePeriods,
@@ -427,9 +427,9 @@ extension UserExperience {
             loadLaunchAgent: loadLaunchAgent ?? self.loadLaunchAgent,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
+            nudgeEventLaunchDelay: nudgeEventLaunchDelay ?? self.nudgeEventLaunchDelay,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
-            randomDelay: randomDelay ?? self.randomDelay,
-            nudgeEventLaunchDelay: nudgeEventLaunchDelay ?? self.nudgeEventLaunchDelay
+            randomDelay: randomDelay ?? self.randomDelay
         )
     }
 }
