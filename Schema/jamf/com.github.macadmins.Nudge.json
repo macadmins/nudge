@@ -1117,6 +1117,24 @@
                                 }
                             ]
                         },
+                        "applicationTerminatedNotificationImagePath": {
+                            "description": "A local image path for the notification event when Nudge terminates and application. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "string",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "/Library/Application Support/Nudge/LogoLight.png"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
                         "fallbackLanguage": {
                             "description": "The language to revert to if no localizations are available for the device's current language.",
                             "anyOf": [
@@ -1200,6 +1218,24 @@
                                 }
                             ]
                         },
+                        "requiredInstallationDisplayFormat": {
+                            "description": "When utilizing showRequiredDate, set a custom display format. Be aware that the format you desire may not look good on the UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "string",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "MM/dd/yyyy"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
                         "screenShotDarkPath": {
                             "description": "A path to a local jpg, png, icns that contains the screen shot for dark mode. This will replace the Big Sur logo on the lower right side of Nudge.",
                             "anyOf": [
@@ -1236,6 +1272,20 @@
                                 }
                             ]
                         },
+                        "showActivelyExploitedCVEs": {
+                            "description": "When disabled, Nudge will not show the Actively Exploited CVEs in the left sidebar. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": true,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
                         "showDeferralCount": {
                             "description": "Enables or disables the deferral count of the current Nudge event.",
                             "anyOf": [
@@ -1246,6 +1296,34 @@
                                 {
                                     "title": "Configured",
                                     "default": true,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
+                        "showDaysRemainingToUpdate": {
+                            "description": "When disabled, Nudge will not show the `Days Remaining To Update:` item on the left side of the UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": true,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
+                        "showRequiredDate": {
+                            "description": "When enabled, Nudge will also show the requiredInstallationDate as string formatted date. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": false,
                                     "type": "boolean"
                                 }
                             ]
@@ -1329,6 +1407,42 @@
                                                     }
                                                 ]
                                             },
+                                            "applicationTerminatedTitleText": {
+                                                "description": "Modifies the terminated application notification title. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Application terminated"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "applicationTerminatedBodyText": {
+                                                "description": "Modifies the terminated application notification body. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Please update your device to use this application"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
                                             "customDeferralButtonText": {
                                                 "description": "Modifies the customDeferralButtonText, also known as the \"Custom\" button.",
                                                 "anyOf": [
@@ -1383,6 +1497,204 @@
                                                     }
                                                 ]
                                             },
+                                            "informationButtonTextUnsupported": {
+                                                "description": "Modifies the informationButton, also known as the \"More Info\" button when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Replace Your Device"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentHeader": {
+                                                "description": "Modifies the mainContentHeader. This is the \"Your device will restart during this update\" text.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "**Your device will restart during this update**"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentHeaderUnsupported": {
+                                                "description": "Modifies the mainContentHeader. This is the \"Your device is no longer capable of receving critical security updates\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "**Your device is no longer capable of receving critical security updates**"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentNote": {
+                                                "description": "Modifies the mainContentNote. This is the \"Important Notes\" text.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "**Important Notes**"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentNoteUnsupported": {
+                                                "description": "Modifies the mainContentNote. This is the \"Important Notes\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "**Important Notes**"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentSubHeader": {
+                                                "description": "Modifies the mainContentSubHeader. This is the \"Updates can take around 30 minutes to complete\" text.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Updates can take around 30 minutes to complete"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentSubHeaderUnsupported": {
+                                                "description": "Modifies the mainContentSubHeader. This is the \"Please work with your local IT team to obtain a replacement device\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Please work with your local IT team to obtain a replacement device"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentText": {
+                                                "description": "Modifies the `mainContentText`. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device.\" text. (See the Wiki for information on adding line breaks.)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "A fully up-to-date device …"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainContentTextUnsupported": {
+                                                "description": "Modifies the `mainContentText`. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device.\" text when using the Unsupported UI. See the Wiki for information on adding line breaks. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "A fully up-to-date device …"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainHeader": {
+                                                "description": "Modifies the `mainHeader`. This is the \"Your device requires a security update\" text.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Your device requires a security update"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "mainHeaderUnsupported": {
+                                                "description": "Modifies the `mainHeader`. This is the \"Your device requires a security update\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Your device requires a security update"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
                                             "oneDayDeferralButtonText": {
                                                 "description": "Modifies the oneDayDeferralButtonText, also known as the \"One Day\" button.",
                                                 "anyOf": [
@@ -1419,96 +1731,6 @@
                                                     }
                                                 ]
                                             },
-                                            "mainContentHeader": {
-                                                "description": "Modifies the mainContentHeader. This is the \"Your device will restart during this update\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Your device will restart during this update"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentNote": {
-                                                "description": "Modifies the mainContentNote. This is the \"Important Notes\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Important Notes"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentSubHeader": {
-                                                "description": "Modifies the mainContentSubHeader. This is the \"Updates can take around 30 minutes to complete\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Updates can take around 30 minutes to complete"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainContentText": {
-                                                "description": "Modifies the `mainContentText`. This is the \"A fully up-to-date device is required to ensure that IT can your accurately protect your device.\" text. (See the Wiki for information on adding line breaks.)",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "A fully up-to-date device …"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "mainHeader": {
-                                                "description": "Modifies the `mainHeader`. This is the \"Your device requires a security update\" text.",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Your device requires a security update"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
                                             "primaryQuitButtonText": {
                                                 "description": "Modifies the `primaryQuitButton`, also known as the \"Later\" button.",
                                                 "anyOf": [
@@ -1522,6 +1744,24 @@
                                                         "options": {
                                                             "inputAttributes": {
                                                                 "placeholder": "Later"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "screenShotAltText": {
+                                                "description": "Modifies the accessible hover over on screen shots.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Click to zoom into screenshot"
                                                             }
                                                         }
                                                     }
@@ -1557,7 +1797,25 @@
                                                         "type": "string",
                                                         "options": {
                                                             "inputAttributes": {
-                                                                "placeholder": "A friendly reminder from your local IT team"
+                                                                "placeholder": "**A friendly reminder from your local IT team**"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "subHeaderUnsupported": {
+                                                "description": "Modifies the `subHeader`. This is the \"A friendly reminder from your local IT team\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "**A friendly reminder from your local IT team**"
                                                             }
                                                         }
                                                     }
