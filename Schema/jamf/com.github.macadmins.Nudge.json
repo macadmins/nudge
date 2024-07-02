@@ -700,6 +700,20 @@
                                 }
                             ]
                         },
+                        "allowMovableWindow": {
+                            "description": "Allows the user to move the Nudge window. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": false,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
                         "allowUserQuitDeferrals": {
                             "description": "Allows the user to specify when they will next be prompted by Nudge. (Set to `False` to maintain v1.0.0 behavior.) When using this feature, Nudge will no longer adhere to your LaunchAgent logic as the user is specifying their own execution time for the next Nudge event.(See: `~/Library/Preferences/com.github.macadmins.Nudge.plist`.)",
                             "anyOf": [
@@ -1007,6 +1021,25 @@
                                     "options": {
                                         "inputAttributes": {
                                             "placeholder": "false"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "nudgeEventLaunchDelay": {
+                            "description": "When a new update is posted to the SOFA feed, this can artificially delay the SOFA nudge events by x amount of days. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": 0,
+                                    "type": "integer",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "0"
                                         }
                                     }
                                 }
