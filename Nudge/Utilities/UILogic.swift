@@ -6,9 +6,16 @@
 //
 
 import AppKit
+import Darwin
 import Foundation
 import IOKit.pwr_mgt // Asertions
 import SwiftUI
+
+struct ProcessInfoStruct {
+    var pid: Int32
+    var command: String
+    var arguments: [String]
+}
 
 func initialLaunchLogic() {
     guard !CommandLineUtilities().unitTestingEnabled() else {
@@ -177,6 +184,88 @@ private func logDeferralStates() {
     LoggerUtilities().logUserDeferrals()
 }
 
+func getAllProcesses() -> [ProcessInfoStruct] {
+    var processes = [ProcessInfoStruct]()
+    
+    // Get the number of processes
+    var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL]
+    var size = 0
+    sysctl(&mib, u_int(mib.count), nil, &size, nil, 0)
+    
+    let processCount = size / MemoryLayout<kinfo_proc>.size
+    var processList = [kinfo_proc](repeating: kinfo_proc(), count: processCount)
+    
+    // Get the list of processes
+    sysctl(&mib, u_int(mib.count), &processList, &size, nil, 0)
+    
+    // Extract process info
+    for process in processList {
+        let command = withUnsafePointer(to: process.kp_proc.p_comm) {
+            $0.withMemoryRebound(to: CChar.self, capacity: Int(MAXCOMLEN)) {
+                String(cString: $0)
+            }
+        }
+        let pid = process.kp_proc.p_pid
+        let arguments = getArgumentsForPID(pid: pid)
+        processes.append(ProcessInfoStruct(pid: pid, command: command, arguments: arguments))
+    }
+    
+    return processes
+}
+
+func getArgumentsForPID(pid: Int32) -> [String] {
+    var args = [String]()
+    
+    var mib: [Int32] = [CTL_KERN, KERN_PROCARGS2, pid]
+    var size = 0
+    sysctl(&mib, u_int(mib.count), nil, &size, nil, 0)
+    
+    var buffer = [CChar](repeating: 0, count: size)
+    sysctl(&mib, u_int(mib.count), &buffer, &size, nil, 0)
+    
+    // Convert buffer to a string with proper bounds checking
+    let bufferString = String(bytesNoCopy: &buffer, length: size, encoding: .ascii, freeWhenDone: false)
+    
+    // Split the string into arguments
+    if let bufferString = bufferString {
+        args = bufferString.split(separator: "\0").map { String($0) }
+    }
+    
+    // Drop the first element which is the full path to the executable
+    if !args.isEmpty {
+        args.removeFirst()
+    }
+    
+    return args
+}
+
+func isAnyProcessRunning(commandsWithArgs: [(commandPattern: String, arguments: [String]?)]) -> Bool {
+    let processes = getAllProcesses()
+    for (commandPattern, arguments) in commandsWithArgs {
+        let matchingProcesses = processes.filter { process in
+            fnmatch(commandPattern, process.command, 0) == 0 &&
+            (arguments == nil || arguments!.allSatisfy { arg in
+                process.arguments.contains(where: { $0.contains(arg) })
+            })
+        }
+        if !matchingProcesses.isEmpty {
+            return true
+        }
+    }
+    return false
+}
+
+func isDownloadingOrPreparingSoftwareUpdate() -> Bool {
+    let commandsWithArgs: [(commandPattern: String, arguments: [String]?)] = [
+        ("softwareupdated", ["/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated"]), // When downloading a minor update, this process is running.
+        ("installcoordinationd", ["/System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd"]), // When preparing a minor update, this process is running. Unfortunately, after preparing the update, this process appears to stay running.
+        ("softwareupdate", ["/usr/bin/softwareupdate", "--fetch-full-installer"]), // When downloading a major upgrade via SoftwareUpdate prefpane, it triggers a --fetch-full-installer run. Nudge also performs this method.
+        ("osinstallersetupd" ,["/Applications/*Install macOS *.app/Contents/Frameworks/OSInstallerSetup.framework/Resources/osinstallersetupd"]), // When installing a major upgrade, this process is running.
+        // /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd||system_installd - system_installd may be interesting, but I think installd is being used for any package
+    ]
+    return isAnyProcessRunning(commandsWithArgs: commandsWithArgs)
+}
+
 func needToActivateNudge() -> Bool {
     if NSApplication.shared.isActive && nudgeLogState.afterFirstLaunch {
         LogManager.notice("Nudge is currently the frontmostApplication", logger: uiLog)
@@ -265,6 +354,7 @@ private func shouldBailOutEarly() -> Bool {
     /// 6. Acceptable Assertions are on
     /// 7. Acceptable Apps are in front
     /// 8. Refresh Timer hasn't been met
+    /// 9. macOS Updates are downloading or preparing for installation
     let frontmostApplication = NSWorkspace.shared.frontmostApplication
     let pastRequiredInstallationDate = DateManager().pastRequiredInstallationDate()
 
@@ -311,6 +401,12 @@ private func shouldBailOutEarly() -> Bool {
 
     // Check if refresh timer hasn't passed threshold
     if isRefreshTimerPassedThreshold() {
+        return true
+    }
+    
+    // Check if downloading or preparing updates
+    if OptionalFeatureVariables.acceptableUpdatePreparingUsage && isDownloadingOrPreparingSoftwareUpdate() {
+        LogManager.info("Ignoring Nudge activation - macOS is currently downloading or preparing an update", logger: uiLog)
         return true
     }
 

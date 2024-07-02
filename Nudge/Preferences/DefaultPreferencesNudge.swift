@@ -82,6 +82,12 @@ struct OptionalFeatureVariables {
         optionalFeaturesJSON?.acceptableCameraUsage ??
         false
     }
+
+    static var acceptableUpdatePreparingUsage: Bool {
+        optionalFeaturesProfile?["acceptableUpdatePreparingUsage"] as? Bool ??
+        optionalFeaturesJSON?.acceptableUpdatePreparingUsage ??
+        false
+    }
     
     static var acceptableScreenSharingUsage: Bool {
         optionalFeaturesProfile?["acceptableScreenSharingUsage"] as? Bool ??
