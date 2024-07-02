@@ -85,7 +85,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Nudge can now attempt to honor DoNotDisturb/Focus times
   - To enable this, please configure the `honorFocusModes` key in `optionalFeatures` to true
   - This is an **expiremental feature** and may not work due to significant changes that Apple has designed for detecting these events.
-- Nudge now attempts to reload the preferences if MDM profile is updated
+- Nudge now attempts to reload the preferences if the MDM profile is updated
   - Issue [370](https://github.com/macadmins/nudge/issues/370)
 
 ## [1.1.16] - 2024-03-13
