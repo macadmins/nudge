@@ -396,10 +396,40 @@ struct UserInterfaceVariables {
     static var userInterfaceUpdateElementsProfile: [String:AnyObject]? = getUserInterfaceUpdateElementsProfile()
     static var userInterfaceUpdateElementsJSON: UpdateElement? = getUserInterfaceUpdateElementsJSON()
 
+    static var actionButtonText: String {
+        userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ??
+        userInterfaceUpdateElementsJSON?.actionButtonText ??
+        "Update Device"
+    }
+    
     static var applicationTerminatedNotificationImagePath: String {
         userInterfaceProfile?["applicationTerminatedNotificationImagePath"] as? String ??
         userInterfaceJSON?.applicationTerminatedNotificationImagePath ??
         ""
+    }
+    
+    static var applicationTerminatedTitleText: String {
+        userInterfaceUpdateElementsProfile?["applicationTerminatedTitleText"] as? String ??
+        userInterfaceUpdateElementsJSON?.applicationTerminatedTitleText ??
+        "Application terminated"
+    }
+    
+    static var applicationTerminatedBodyText: String {
+        userInterfaceUpdateElementsProfile?["applicationTerminatedBodyText"] as? String ??
+        userInterfaceUpdateElementsJSON?.applicationTerminatedBodyText ??
+        "Please update your device to use this application"
+    }
+
+    static var customDeferralButtonText: String {
+        userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ??
+        userInterfaceUpdateElementsJSON?.customDeferralButtonText ??
+        "Custom"
+    }
+
+    static var customDeferralDropdownText: String {
+        userInterfaceUpdateElementsProfile?["customDeferralDropdownText"] as? String ??
+        userInterfaceUpdateElementsJSON?.customDeferralDropdownText ??
+        "Defer"
     }
 
     static var fallbackLanguage: String {
@@ -426,6 +456,96 @@ struct UserInterfaceVariables {
         ""
     }
 
+    static var informationButtonText: String {
+        userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ??
+        userInterfaceUpdateElementsJSON?.informationButtonText ??
+        "More Info"
+    }
+    
+    static var informationButtonTextUnsupported: String {
+        userInterfaceUpdateElementsProfile?["informationButtonTextUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.informationButtonTextUnsupported ??
+        "Replace Your Device"
+    }
+    
+    static var mainContentHeader: String {
+        userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentHeader ??
+        "**Your device will restart during this update**"
+    }
+    
+    static var mainContentHeaderUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentHeaderUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentHeaderUnsupported ??
+        "**Your device is no longer capable of receving critical security updates**"
+    }
+    
+    static var mainContentNote: String {
+        userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentNote ??
+        "**Important Notes**"
+    }
+    
+    static var mainContentNoteUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentNoteUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentNoteUnsupported ??
+        "**Important Notes**"
+    }
+    
+    static var mainContentSubHeader: String {
+        userInterfaceUpdateElementsProfile?["mainContentSubHeader"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentSubHeader ??
+        "Updates can take around 30 minutes to complete"
+    }
+    
+    static var mainContentSubHeaderUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentSubHeaderUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentSubHeaderUnsupported ??
+        "Please work with your local IT team to obtain a replacement device"
+    }
+    
+    static var mainContentText: String {
+        userInterfaceUpdateElementsProfile?["mainContentText"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentText ??
+        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the **Update Device** button and follow the provided steps."
+    }
+    
+    static var mainContentTextUnsupported: String {
+        userInterfaceUpdateElementsProfile?["mainContentTextUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.mainContentTextUnsupported ??
+        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not obtain a replacement device, you will lose access to some items necessary for your day-to-day tasks.\n\nFor more information about this, please click on the **Replace Your Device** button."
+    }
+
+    static var oneDayDeferralButtonText: String {
+        userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ??
+        userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ??
+        "One Day"
+    }
+    
+    static var oneHourDeferralButtonText: String {
+        userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ??
+        userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ??
+        "One Hour"
+    }
+
+    static var primaryQuitButtonText: String {
+        userInterfaceUpdateElementsProfile?["primaryQuitButtonText"] as? String ??
+        userInterfaceUpdateElementsJSON?.primaryQuitButtonText ??
+        "Later"
+    }
+    
+    static var requiredInstallationDisplayFormat: String {
+        userInterfaceProfile?["requiredInstallationDisplayFormat"] as? String ??
+        userInterfaceJSON?.requiredInstallationDisplayFormat ??
+        "MM/dd/yyyy"
+    }
+
+    static var screenShotAltText: String {
+        userInterfaceUpdateElementsProfile?["screenShotAltText"] as? String ??
+        userInterfaceUpdateElementsJSON?.screenShotAltText ??
+        "Click to zoom into screenshot"
+    }
+
     static var screenShotDarkPath: String {
         userInterfaceProfile?["screenShotDarkPath"] as? String ??
         userInterfaceJSON?.screenShotDarkPath ??
@@ -436,96 +556,6 @@ struct UserInterfaceVariables {
         userInterfaceProfile?["screenShotLightPath"] as? String ??
         userInterfaceJSON?.screenShotLightPath ??
         ""
-    }
-
-    static var actionButtonText: String {
-        userInterfaceUpdateElementsProfile?["actionButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.actionButtonText ??
-        "Update Device"
-    }
-
-    static var applicationTerminatedTitleText: String {
-        userInterfaceUpdateElementsProfile?["applicationTerminatedTitleText"] as? String ??
-        userInterfaceUpdateElementsJSON?.applicationTerminatedTitleText ??
-        "Application terminated"
-    }
-
-    static var applicationTerminatedBodyText: String {
-        userInterfaceUpdateElementsProfile?["applicationTerminatedBodyText"] as? String ??
-        userInterfaceUpdateElementsJSON?.applicationTerminatedBodyText ??
-        "Please update your device to use this application"
-    }
-
-    static var informationButtonText: String {
-        userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.informationButtonText ??
-        "More Info"
-    }
-
-    static var informationButtonTextUnsupported: String {
-        userInterfaceUpdateElementsProfile?["informationButtonTextUnsupported"] as? String ??
-        userInterfaceUpdateElementsJSON?.informationButtonTextUnsupported ??
-        "Replace Your Device"
-    }
-
-    static var mainContentHeader: String {
-        userInterfaceUpdateElementsProfile?["mainContentHeader"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentHeader ??
-        "**Your device will restart during this update**"
-    }
-
-    static var mainContentHeaderUnsupported: String {
-        userInterfaceUpdateElementsProfile?["mainContentHeaderUnsupported"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentHeaderUnsupported ??
-        "**Your device is no longer capable of receving critical security updates**"
-    }
-
-    static var mainContentNote: String {
-        userInterfaceUpdateElementsProfile?["mainContentNote"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentNote ??
-        "**Important Notes**"
-    }
-
-    static var mainContentNoteUnsupported: String {
-        userInterfaceUpdateElementsProfile?["mainContentNoteUnsupported"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentNoteUnsupported ??
-        "**Important Notes**"
-    }
-
-    static var mainContentSubHeader: String {
-        userInterfaceUpdateElementsProfile?["mainContentSubHeader"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentSubHeader ??
-        "Updates can take around 30 minutes to complete"
-    }
-
-    static var mainContentSubHeaderUnsupported: String {
-        userInterfaceUpdateElementsProfile?["mainContentSubHeaderUnsupported"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentSubHeaderUnsupported ??
-        "Please work with your local IT team to obtain a replacement device"
-    }
-
-    static var mainContentText: String {
-        userInterfaceUpdateElementsProfile?["mainContentText"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentText ??
-        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not update your device, you may lose access to some items necessary for your day-to-day tasks.\n\nTo begin the update, simply click on the **Update Device** button and follow the provided steps."
-    }
-
-    static var mainContentTextUnsupported: String {
-        userInterfaceUpdateElementsProfile?["mainContentTextUnsupported"] as? String ??
-        userInterfaceUpdateElementsJSON?.mainContentTextUnsupported ??
-        "A fully up-to-date device is required to ensure that IT can accurately protect your device.\n\nIf you do not obtain a replacement device, you will lose access to some items necessary for your day-to-day tasks.\n\nFor more information about this, please click on the **Replace Your Device** button."
-    }
-
-    static var primaryQuitButtonText: String {
-        userInterfaceUpdateElementsProfile?["primaryQuitButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.primaryQuitButtonText ??
-        "Later"
-    }
-
-    static var requiredInstallationDisplayFormat: String {
-        userInterfaceProfile?["requiredInstallationDisplayFormat"] as? String ??
-        userInterfaceJSON?.requiredInstallationDisplayFormat ??
-        "MM/dd/yyyy"
     }
 
     static var secondaryQuitButtonText: String {
@@ -574,37 +604,6 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsProfile?["subHeaderUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.subHeaderUnsupported ??
         "**A friendly reminder from your local IT team**"
-    }
-
-
-    static var customDeferralDropdownText: String {
-        userInterfaceUpdateElementsProfile?["customDeferralDropdownText"] as? String ??
-        userInterfaceUpdateElementsJSON?.customDeferralDropdownText ??
-        "Defer"
-    }
-
-    static var customDeferralButtonText: String {
-        userInterfaceUpdateElementsProfile?["customDeferralButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.customDeferralButtonText ??
-        "Custom"
-    }
-
-    static var oneDayDeferralButtonText: String {
-        userInterfaceUpdateElementsProfile?["oneDayDeferralButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ??
-        "One Day"
-    }
-
-    static var oneHourDeferralButtonText: String {
-        userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ??
-        "One Hour"
-    }
-
-    static var screenShotAltText: String {
-        userInterfaceUpdateElementsProfile?["screenShotAltText"] as? String ??
-        userInterfaceUpdateElementsJSON?.screenShotAltText ??
-        "Click to zoom into screenshot"
     }
 }
 
