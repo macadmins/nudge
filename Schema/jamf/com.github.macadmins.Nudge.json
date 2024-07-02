@@ -452,6 +452,25 @@
                                     }
                                 ]
                             },
+                            "activelyExploitedCVEsInstallationSLA": {
+                                "description": "When an update is under active exploit, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "default": 14,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "14"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
                             "majorUpgradeAppPath": {
                                 "description": "The app path for a major upgrade. (Note: Requires Nudge v1.0.1 or higher.)",
                                 "anyOf": [
@@ -465,6 +484,25 @@
                                         "options": {
                                             "inputAttributes": {
                                                 "placeholder": "/Applications/Install macOS Monterey.app"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "nonActivelyExploitedCVEsSLA": {
+                                "description": "When an update is not under active exploit but contains CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "default": 21,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "21"
                                             }
                                         }
                                     }
@@ -506,8 +544,8 @@
                                     }
                                 ]
                             },
-                            "targetedOSVersions": {
-                                "description": "The versions of macOS that require a security update. You can specify single version or multiple versions. This key is only used with Nudge v1.0 and will not be honored in v1.1.",
+                            "standardInstallationSLA": {
+                                "description": "When an update has no known CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [
                                     {
                                         "title": "Not Configured",
@@ -515,21 +553,18 @@
                                     },
                                     {
                                         "title": "Configured",
-                                        "type": "array",
-                                        "items": {
-                                            "options": {
-                                                "inputAttributes": {
-                                                    "placeholder": "11.5.1"
-                                                }
-                                            },
-                                            "type": "string",
-                                            "title": "targetedOSVersion"
+                                        "default": 28,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "28"
+                                            }
                                         }
                                     }
                                 ]
                             },
                             "targetedOSVersionsRule": {
-                                "description": "The OS string rule for targeting Nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). This key is only used with Nudge v1.1 and will not be honored in v1.0.",
+                                "description": "The OS string rule for targeting Nudge events. You can target with \"default\", the full OS version (example: \"11.5.1\"). or the major OS version (example: \"11\"). (Note: This key is only used with Nudge v1.1 and higher)",
                                 "anyOf": [
                                     {
                                         "type": "null",
@@ -541,6 +576,80 @@
                                         "options": {
                                             "inputAttributes": {
                                                 "placeholder": "default"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "unsupportedURL": {
+                                "description": "A single URL, enabling the More Info button URL path when using the unsupported UI. While this accepts a string, it must be a valid URL (http://, https://, file://). Note: If this value is passed with aboutUpdateURLs, the aboutUpdateURLs key will be ignored. (Note: This key is only used with Nudge v2.0 and higher)",
+                                "anyOf": [
+                                    {
+                                        "type": "null",
+                                        "title": "Not Configured"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "type": "string",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "https://github.com/macadmins/nudge"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "unsupportedURLs": {
+                                "description": "The unsupportedURL - per country localization.",
+                                "title": "aboutUpdateURLs",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "type": "array",
+                                        "items": {
+                                            "title": "unsupportedURL - Dictionary",
+                                            "type": "object",
+                                            "properties": {
+                                                "_language": {
+                                                    "description": "The targeted language locale for the user interface. Note: For a list of locales, please run the following command in Terminal: /usr/bin/locale -a",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "null",
+                                                            "title": "Not Configured"
+                                                        },
+                                                        {
+                                                            "title": "Configured",
+                                                            "type": "string",
+                                                            "options": {
+                                                                "inputAttributes": {
+                                                                    "placeholder": "EX: en"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "unsupportedURL": {
+                                                    "description": "A single URL, enabling the More Info button URL path when using the unsupported UI. While this accepts a string, it must be a valid URL (http://, https://, file://). Note: If this value is passed with aboutUpdateURLs, the aboutUpdateURLs key will be ignored. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "null",
+                                                            "title": "Not Configured"
+                                                        },
+                                                        {
+                                                            "title": "Configured",
+                                                            "type": "string",
+                                                            "options": {
+                                                                "inputAttributes": {
+                                                                    "placeholder": "https://github.com/macadmins/nudge"
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
                                             }
                                         }
                                     }
