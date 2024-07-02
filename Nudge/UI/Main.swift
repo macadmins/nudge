@@ -606,6 +606,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupScreenChangeObservers()
         setupScreenLockObservers()
         setupWorkspaceNotificationCenterObservers()
+        setupUserDefaultsObservers()
     }
 
     private func setupNotificationCenterObservers() {
@@ -616,6 +617,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 if UserExperienceVariables.allowMovableWindow { return }
                 print("Window object frame moved - Notification Center")
                 UIUtilities().centerNudge()
+            }
+    }
+
+    private func setupUserDefaultsObservers() {
+        Globals.nc.addObserver(
+            forName: UserDefaults.didChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                Globals.configProfile = ConfigurationManager().getConfigurationAsProfile()
             }
     }
 
