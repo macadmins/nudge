@@ -40,6 +40,8 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
 - Refactor portions of the `softwareupdate` logic to reduce potential errors
 - Fixed errors when moving to Swift 5.10
 - Fixed wrong `requiredInstallationDate` calculations when using [Non-Gregorian calendars](https://github.com/macadmins/nudge/issues/509)
+- Fixed UI logic when requiredInstallationDate is under an hour and `allowLaterDeferralButton` is set to false
+  - Issue [475](https://github.com/macadmins/nudge/issues/475)
 
 ### Added
 - To artificially change the `requredInstallationDate` thereby giving your users a default grace period for all Nudge events updates, please configure the `nudgeEventLaunchDelay` key under `userExperience`
