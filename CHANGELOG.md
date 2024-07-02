@@ -82,6 +82,9 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - To enable this, please configure the `acceptableUpdatePreparingUsage` key under `optionalFeatures` to true
   - Be aware that the current logic used for this **cannot differentiate** when an update has completed preparing and is in the `Staged` phase, waiting for a user to reboot. This is due to an Apple process staying in memory. This will result in a reduction in Nudge re-activations
   - Issue [555](https://github.com/macadmins/nudge/issues/555) and [571](https://github.com/macadmins/nudge/issues/571)
+- Nudge can now attempt to honor DoNotDisturb/Focus times
+  - To enable this, please configure the `honorFocusModes` key in `optionalFeatures` to true
+  - This is an **expiremental feature** and may not work due to significant changes that Apple has designed for detecting these events.
 
 ## [1.1.16] - 2024-03-13
 This will be the **final Nudge release** for macOS 11 and potentially other versions of macOS.
