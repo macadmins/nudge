@@ -1407,6 +1407,24 @@
                                                     }
                                                 ]
                                             },
+                                            "actionButtonTextUnsupported": {
+                                                "description": "Modifies the primaryQuitButton, also known as the \"Update Device\" button when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Replace Your Device"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
                                             "applicationTerminatedTitleText": {
                                                 "description": "Modifies the terminated application notification title. (Note: This key is only used with Nudge v2.0 and higher)",
                                                 "anyOf": [
@@ -1492,24 +1510,6 @@
                                                         "options": {
                                                             "inputAttributes": {
                                                                 "placeholder": "More Info"
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            "informationButtonTextUnsupported": {
-                                                "description": "Modifies the informationButton, also known as the \"More Info\" button when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
-                                                "anyOf": [
-                                                    {
-                                                        "type": "null",
-                                                        "title": "Not Configured"
-                                                    },
-                                                    {
-                                                        "title": "Configured",
-                                                        "type": "string",
-                                                        "options": {
-                                                            "inputAttributes": {
-                                                                "placeholder": "Replace Your Device"
                                                             }
                                                         }
                                                     }

@@ -78,8 +78,8 @@
 				<string>customDeferralDropdownText</string>
 				<key>informationButtonText</key>
 				<string>informationButtonText</string>
-				<key>informationButtonTextUnsupported1</key>
-				<string>informationButtonTextUnsupported</string>
+				<key>actionButtonTextUnsupported</key>
+				<string>actionButtonTextUnsupported</string>
 				<key>mainContentHeader</key>
 				<string>mainContentHeader</string>
 				<key>mainContentHeaderUnsupported1</key>

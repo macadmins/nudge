@@ -21,8 +21,7 @@
         {
             "aboutUpdateURL": "https://apple.com",
             "requiredMinimumOSVersion": "latest",
-            "unsupportedURL": "https://google.com",
-            "nonActivelyExploitedCVEsSLA": 60
+            "unsupportedURL": "https://google.com"
         }
     ],
     "userExperience": {
@@ -44,12 +43,12 @@
             {
                 "_language": "en",
                 "actionButtonText": "actionButtonText",
+                "actionButtonTextUnsupported": "actionButtonTextUnsupported",
                 "customDeferralButtonText": "customDeferralButtonText",
                 "customDeferralDropdownText": "customDeferralDropdownText",
                 "informationButtonText": "informationButtonText",
-                "informationButtonTextUnsupported1": "informationButtonTextUnsupported",
                 "mainContentHeader": "mainContentHeader",
-                "mainContentHeaderUnsupported1": "mainContentHeaderUnsupported",
+                "mainContentHeaderUnsupported": "mainContentHeaderUnsupported",
                 "mainContentNote": "mainContentNote",
                 "mainContentNoteUnsupported1": "mainContentNoteUnsupported",
                 "mainContentSubHeader": "mainContentSubHeader",

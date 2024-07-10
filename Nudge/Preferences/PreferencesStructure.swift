@@ -504,14 +504,14 @@ extension UserInterface {
 
 // MARK: - UpdateElement
 struct UpdateElement: Codable {
-    var language, actionButtonText, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText: String?
-    var informationButtonText, informationButtonTextUnsupported, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported: String?
+    var language, actionButtonText, actionButtonTextUnsupported, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText: String?
+    var informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported: String?
     var mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported: String?
     var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, informationButtonTextUnsupported, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported
+        case actionButtonText, actionButtonTextUnsupported, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported
     }
 }
 
@@ -536,12 +536,12 @@ extension UpdateElement {
     func with(
         language: String? = nil,
         actionButtonText: String? = nil,
+        actionButtonTextUnsupported: String? = nil,
         applicationTerminatedTitleText: String? = nil,
         applicationTerminatedBodyText: String? = nil,
         customDeferralButtonText: String? = nil,
         customDeferralDropdownText: String? = nil,
         informationButtonText: String? = nil,
-        informationButtonTextUnsupported: String? = nil,
         mainContentHeader: String? = nil,
         mainContentHeaderUnsupported: String? = nil,
         mainContentNote: String? = nil,
@@ -563,12 +563,12 @@ extension UpdateElement {
         return UpdateElement(
             language: language ?? self.language,
             actionButtonText: actionButtonText ?? self.actionButtonText,
+            actionButtonTextUnsupported: actionButtonTextUnsupported ?? self.actionButtonTextUnsupported,
             applicationTerminatedTitleText: applicationTerminatedTitleText ?? self.applicationTerminatedTitleText,
             applicationTerminatedBodyText: applicationTerminatedBodyText ?? self.applicationTerminatedBodyText,
             customDeferralButtonText: customDeferralButtonText ?? self.customDeferralButtonText,
             customDeferralDropdownText: customDeferralDropdownText ?? self.customDeferralDropdownText,
             informationButtonText: informationButtonText ?? self.informationButtonText,
-            informationButtonTextUnsupported: informationButtonTextUnsupported ?? self.informationButtonTextUnsupported,
             mainContentHeader: mainContentHeader ?? self.mainContentHeader,
             mainContentHeaderUnsupported: mainContentHeaderUnsupported ?? self.mainContentHeaderUnsupported,
             mainContentNote: mainContentNote ?? self.mainContentNote,

@@ -82,6 +82,8 @@ struct StandardModeRightSide: View {
                         Text(.init(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                     }
                     .keyboardShortcut(.defaultAction)
+                } else {
+                    InformationButtonAsAction()
                 }
             }
             

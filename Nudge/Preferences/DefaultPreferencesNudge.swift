@@ -401,6 +401,12 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsJSON?.actionButtonText ??
         "Update Device"
     }
+
+    static var actionButtonTextUnsupported: String {
+        userInterfaceUpdateElementsProfile?["actionButtonTextUnsupported"] as? String ??
+        userInterfaceUpdateElementsJSON?.actionButtonTextUnsupported ??
+        "Replace Your Device"
+    }
     
     static var applicationTerminatedNotificationImagePath: String {
         userInterfaceProfile?["applicationTerminatedNotificationImagePath"] as? String ??
@@ -460,12 +466,6 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsProfile?["informationButtonText"] as? String ??
         userInterfaceUpdateElementsJSON?.informationButtonText ??
         "More Info"
-    }
-    
-    static var informationButtonTextUnsupported: String {
-        userInterfaceUpdateElementsProfile?["informationButtonTextUnsupported"] as? String ??
-        userInterfaceUpdateElementsJSON?.informationButtonTextUnsupported ??
-        "Replace Your Device"
     }
     
     static var mainContentHeader: String {

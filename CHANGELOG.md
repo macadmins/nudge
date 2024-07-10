@@ -66,7 +66,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - If you are utilizing a custom sofa feed, please configure the `customSOFAFeedURL` key under `optionalFeatures`
 - "Unsupported device" UI in standard mode that utilizes the SOFA feed
   - Set the `attemptToCheckForSupportedDevice` key `false` under `optionalFeatures` to disable this feature 
-  - There are new keys to set all of text fields: `informationButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported` under the `updateElements` key in `UserInterface` 
+  - There are new keys to set all of text fields: `actionButtonTextUnsupported`, `mainContentHeaderUnsupported`, `mainContentNoteUnsupported`, `mainContentSubHeaderUnsupported`, `mainContentTextUnsupported`, `subHeaderUnsupported` under the `updateElements` key in `UserInterface` 
   - `unsupportedURL` and `unsupportedURLs` can change the information button itself, but it will remain in the `osVersionRequirement` key with `unsupportedURLs` and `unsupportedURLs`.
   - An icon will appear as an overlay on top of the company image to further emphasize the device is no longer supported
 - An admin can now show the `requiredInstallationDate` as a item on the left side of nudge.

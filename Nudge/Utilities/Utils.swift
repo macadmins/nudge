@@ -1302,9 +1302,9 @@ struct UIUtilities {
         NSWorkspace.shared.open(url)
     }
 
-    private func postUpdateDeviceActions(userClicked: Bool) {
+    func postUpdateDeviceActions(userClicked: Bool, unSupportedUI: Bool) {
         if userClicked {
-            LogManager.notice("User clicked updateDevice", logger: uiLog)
+            LogManager.notice(unSupportedUI ? "User clicked updateDevice" : "User clicked updateDevice via Unsupported UI", logger: uiLog)
             // Remove forced blur and reset window level
             if !nudgePrimaryState.backgroundBlur.isEmpty {
                 nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
@@ -1315,7 +1315,7 @@ struct UIUtilities {
                 NSApp.windows.first?.level = .normal
             }
         } else {
-            LogManager.notice("Synthetically clicked updateDevice due to allowedDeferral count", logger: uiLog)
+            LogManager.notice(unSupportedUI ? "Synthetically clicked updateDevice due to allowedDeferral count" : "Synthetically clicked updateDevice via Unsupported UI due to allowedDeferral count", logger: uiLog)
         }
     }
 
@@ -1356,7 +1356,7 @@ struct UIUtilities {
             }
         }
 
-        postUpdateDeviceActions(userClicked: userClicked)
+        postUpdateDeviceActions(userClicked: userClicked, unSupportedUI: false)
     }
 
     func userInitiatedExit() {
