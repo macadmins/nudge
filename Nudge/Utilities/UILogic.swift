@@ -260,7 +260,8 @@ func isDownloadingOrPreparingSoftwareUpdate() -> Bool {
         ("softwareupdated", ["/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated"]), // When downloading a minor update, this process is running.
         ("installcoordinationd", ["/System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd"]), // When preparing a minor update, this process is running. Unfortunately, after preparing the update, this process appears to stay running.
         ("softwareupdate", ["/usr/bin/softwareupdate", "--fetch-full-installer"]), // When downloading a major upgrade via SoftwareUpdate prefpane, it triggers a --fetch-full-installer run. Nudge also performs this method.
-        ("osinstallersetupd" ,["/Applications/*Install macOS *.app/Contents/Frameworks/OSInstallerSetup.framework/Resources/osinstallersetupd"]), // When installing a major upgrade, this process is running.
+        ("osinstallersetupd", ["/Applications/*Install macOS *.app/Contents/Frameworks/OSInstallerSetup.framework/Resources/osinstallersetupd"]), // When installing a major upgrade, this process is running.
+        ("installerauthage", ["/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent", "/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent"]), // Possibly on macOS 15, this is running when preparing an update.
         // /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd||system_installd - system_installd may be interesting, but I think installd is being used for any package
     ]
     return isAnyProcessRunning(commandsWithArgs: commandsWithArgs)
