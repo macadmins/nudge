@@ -41,7 +41,15 @@ struct SimpleMode: View {
 
             Spacer()
             if appState.deviceSupportedByOSVersion {
-                updateButton
+                Button(action: {
+                    UIUtilities().updateDevice()
+                }) {
+                    Text(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                        .frame(minWidth: 120)
+                }
+                .keyboardShortcut(.defaultAction)
+            } else {
+                InformationButtonAsAction()
             }
             Spacer()
         }
@@ -76,16 +84,6 @@ struct SimpleMode: View {
                 .foregroundColor(infoTextColor)
                 .font(.title2)
         }
-    }
-    
-    private var updateButton: some View {
-        Button(action: {
-            UIUtilities().updateDevice()
-        }) {
-            Text(UserInterfaceVariables.actionButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-                .frame(minWidth: 120)
-        }
-        .keyboardShortcut(.defaultAction)
     }
     
     private var bottomButtons: some View {
