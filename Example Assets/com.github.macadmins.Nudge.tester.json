@@ -6,7 +6,8 @@
             "Google Chrome",
             "Safari"
         ],
-        "acceptableAssertionUsage": true,
+        "acceptableAssertionUsage": false,
+        "acceptableUpdatePreparingUsage": true,
         "acceptableCameraUsage": true,
         "acceptableScreenSharingUsage": true,
         "attemptToBlockApplicationLaunches": true,
@@ -20,7 +21,8 @@
     "osVersionRequirements": [
         {
             "aboutUpdateURL": "https://apple.com",
-            "requiredMinimumOSVersion": "latest",
+            "requiredMinimumOSVersion": "15.99",
+            "requiredInstallationDate": "2025-01-01T00:00:00",
             "unsupportedURL": "https://google.com"
         }
     ],
