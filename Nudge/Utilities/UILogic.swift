@@ -200,12 +200,17 @@ func getAllProcesses() -> [ProcessInfoStruct] {
     
     // Extract process info
     for process in processList {
-        let command = withUnsafePointer(to: process.kp_proc.p_comm) {
+        let pid = process.kp_proc.p_pid
+        
+        // Get full command path
+        var pathBuffer = [CChar](repeating: 0, count: Int(PATH_MAX))
+        let result = proc_pidpath(pid, &pathBuffer, UInt32(PATH_MAX))
+        let command = result > 0 ? String(cString: pathBuffer) : withUnsafePointer(to: process.kp_proc.p_comm) {
             $0.withMemoryRebound(to: CChar.self, capacity: Int(MAXCOMLEN)) {
                 String(cString: $0)
             }
         }
-        let pid = process.kp_proc.p_pid
+        
         let arguments = getArgumentsForPID(pid: pid)
         processes.append(ProcessInfoStruct(pid: pid, command: command, arguments: arguments))
     }
@@ -239,11 +244,12 @@ func getArgumentsForPID(pid: Int32) -> [String] {
     return args
 }
 
-func isAnyProcessRunning(commandsWithArgs: [(commandPattern: String, arguments: [String]?)]) -> Bool {
+func isAnyProcessRunning(commandsWithArgs: [(processRelativeName: String, arguments: [String]?)]) -> Bool {
     let processes = getAllProcesses()
-    for (commandPattern, arguments) in commandsWithArgs {
+    for (processRelativeName, arguments) in commandsWithArgs {
         let matchingProcesses = processes.filter { process in
-            fnmatch(commandPattern, process.command, 0) == 0 &&
+            // Check if the command pattern is a substring of the full command path
+            process.command.lowercased().contains(processRelativeName.lowercased()) &&
             (arguments == nil || arguments!.allSatisfy { arg in
                 process.arguments.contains(where: { $0.contains(arg) })
             })
@@ -256,12 +262,13 @@ func isAnyProcessRunning(commandsWithArgs: [(commandPattern: String, arguments: 
 }
 
 func isDownloadingOrPreparingSoftwareUpdate() -> Bool {
-    let commandsWithArgs: [(commandPattern: String, arguments: [String]?)] = [
+    let commandsWithArgs: [(processRelativeName: String, arguments: [String]?)] = [
         ("softwareupdated", ["/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated"]), // When downloading a minor update, this process is running.
         ("installcoordinationd", ["/System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd"]), // When preparing a minor update, this process is running. Unfortunately, after preparing the update, this process appears to stay running.
         ("softwareupdate", ["/usr/bin/softwareupdate", "--fetch-full-installer"]), // When downloading a major upgrade via SoftwareUpdate prefpane, it triggers a --fetch-full-installer run. Nudge also performs this method.
+        ("softwareupdate", ["/usr/sbin/softwareupdate", "--fetch-full-installer"]), // When downloading a major upgrade via softwareupdate cli, it triggers a --fetch-full-installer run. Nudge also performs this method.
         ("osinstallersetupd", ["/Applications/*Install macOS *.app/Contents/Frameworks/OSInstallerSetup.framework/Resources/osinstallersetupd"]), // When installing a major upgrade, this process is running.
-        ("installerauthage", ["/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent", "/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent"]), // Possibly on macOS 15, this is running when preparing an update.
+        ("installerauthagent", ["/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent", "/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent"]), // Possibly on macOS 15, this is running when preparing an update.
         // /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd||system_installd - system_installd may be interesting, but I think installd is being used for any package
     ]
     return isAnyProcessRunning(commandsWithArgs: commandsWithArgs)
