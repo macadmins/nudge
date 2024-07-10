@@ -207,9 +207,15 @@ struct OSVersionRequirementVariables {
         ""
     }
 
-    static var activelyExploitedCVEsInstallationSLA: Int {
-        osVersionRequirementsProfile?.activelyExploitedCVEsInstallationSLA ??
-        osVersionRequirementsJSON?.activelyExploitedCVEsInstallationSLA ??
+    static var activelyExploitedCVEsMajorUpgradeSLA: Int {
+        osVersionRequirementsProfile?.activelyExploitedCVEsMajorUpgradeSLA ??
+        osVersionRequirementsJSON?.activelyExploitedCVEsMajorUpgradeSLA ??
+        14
+    }
+
+    static var activelyExploitedCVEsMinorUpdateSLA: Int {
+        osVersionRequirementsProfile?.activelyExploitedCVEsMinorUpdateSLA ??
+        osVersionRequirementsJSON?.activelyExploitedCVEsMinorUpdateSLA ??
         14
     }
 
@@ -219,9 +225,15 @@ struct OSVersionRequirementVariables {
         ""
     }
 
-    static var nonActivelyExploitedCVEsSLA: Int {
-        osVersionRequirementsProfile?.nonActivelyExploitedCVEsSLA ??
-        osVersionRequirementsJSON?.nonActivelyExploitedCVEsSLA ??
+    static var nonActivelyExploitedCVEsMajorUpgradeSLA: Int {
+        osVersionRequirementsProfile?.nonActivelyExploitedCVEsMajorUpgradeSLA ??
+        osVersionRequirementsJSON?.nonActivelyExploitedCVEsMajorUpgradeSLA ??
+        21
+    }
+
+    static var nonActivelyExploitedCVEsMinorUpdateSLA: Int {
+        osVersionRequirementsProfile?.nonActivelyExploitedCVEsMinorUpdateSLA ??
+        osVersionRequirementsJSON?.nonActivelyExploitedCVEsMinorUpdateSLA ??
         21
     }
 
@@ -233,9 +245,15 @@ struct OSVersionRequirementVariables {
         }
     }
 
-    static var standardInstallationSLA: Int {
-        osVersionRequirementsProfile?.standardInstallationSLA ??
-        osVersionRequirementsJSON?.standardInstallationSLA ??
+    static var standardMajorUpgradeSLA: Int {
+        osVersionRequirementsProfile?.standardMajorUpgradeSLA ??
+        osVersionRequirementsJSON?.standardMajorUpgradeSLA ??
+        28
+    }
+
+    static var standardMinorUpdateSLA: Int {
+        osVersionRequirementsProfile?.standardMinorUpdateSLA ??
+        osVersionRequirementsJSON?.standardMinorUpdateSLA ??
         28
     }
 

@@ -21,9 +21,12 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - `latest-minor`: stay in the current major release and get the latest minor updates available
   - This requires utilizing the SOFA feed features to properly work, which is opt-out by default
   - Nudge will then utilize two date integers to automatically calculate the `requiredInstallationDate`
-    - `activelyExploitedCVEsInstallationSLA` under the `osVersionRequirement` key will default to 14 days
-    - `nonActivelyExploitedCVEsSLA` under the `osVersionRequirement` key will default to 21 days
-    - `standardInstallationSLA` under the `osVersionRequirement` key will default to 28 days
+    - `activelyExploitedCVEsMajorUpgradeSLA` under the `osVersionRequirement` key will default to 14 days
+    - `activelyExploitedCVEsMinorUpdateSLA` under the `osVersionRequirement` key will default to 14 days
+    - `nonActivelyExploitedCVEsMajorUpgradeSLA` under the `osVersionRequirement` key will default to 21 days
+    - `nonActivelyExploitedCVEsMinorUpdateSLA` under the `osVersionRequirement` key will default to 21 days
+    - `standardMajorUpgradeSLA` under the `osVersionRequirement` key will default to 28 days
+    - `standardMinorUpdateSLA` under the `osVersionRequirement` key will default to 28 days
     - These dates are calculated against the `ReleaseDate` key in the SOFA feed, which is UTC formatted. Local timezones will **not be supported** with the automatic sofa feed unless you use a custom feed and change this value yourself, following ISO-8601 date formats
       - To artificially delay the SOFA nudge events, see the details below for `nudgeEventLaunchDelay`
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true

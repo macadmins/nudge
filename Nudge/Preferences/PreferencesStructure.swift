@@ -148,12 +148,15 @@ struct OSVersionRequirement: Codable {
     var aboutUpdateURL: String?
     var aboutUpdateURLs: [AboutUpdateURL]?
     var actionButtonPath: String?
-    var activelyExploitedCVEsInstallationSLA: Int?
+    var activelyExploitedCVEsMajorUpgradeSLA: Int?
+    var activelyExploitedCVEsMinorUpdateSLA: Int?
     var majorUpgradeAppPath: String?
-    var nonActivelyExploitedCVEsSLA: Int?
+    var nonActivelyExploitedCVEsMajorUpgradeSLA: Int?
+    var nonActivelyExploitedCVEsMinorUpdateSLA: Int?
     var requiredInstallationDate: Date?
     var requiredMinimumOSVersion: String?
-    var standardInstallationSLA: Int?
+    var standardMajorUpgradeSLA: Int?
+    var standardMinorUpdateSLA: Int?
     var targetedOSVersionsRule: String?
     var unsupportedURL: String?
     var unsupportedURLs: [UnsupportedURL]?
@@ -164,11 +167,14 @@ extension OSVersionRequirement {
     init(fromDictionary: [String: AnyObject]) {
         self.aboutUpdateURL = fromDictionary["aboutUpdateURL"] as? String
         self.actionButtonPath = fromDictionary["actionButtonPath"] as? String
-        self.activelyExploitedCVEsInstallationSLA = fromDictionary["activelyExploitedCVEsInstallationSLA"] as? Int
+        self.activelyExploitedCVEsMajorUpgradeSLA = fromDictionary["activelyExploitedCVEsMajorUpgradeSLA"] as? Int
+        self.activelyExploitedCVEsMinorUpdateSLA = fromDictionary["activelyExploitedCVEsMinorUpdateSLA"] as? Int
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
-        self.nonActivelyExploitedCVEsSLA = fromDictionary["nonActivelyExploitedCVEsSLA"] as? Int
+        self.nonActivelyExploitedCVEsMajorUpgradeSLA = fromDictionary["nonActivelyExploitedCVEsMajorUpgradeSLA"] as? Int
+        self.nonActivelyExploitedCVEsMinorUpdateSLA = fromDictionary["nonActivelyExploitedCVEsMinorUpdateSLA"] as? Int
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
-        self.standardInstallationSLA = fromDictionary["standardInstallationSLA"] as? Int
+        self.standardMajorUpgradeSLA = fromDictionary["standardMajorUpgradeSLA"] as? Int
+        self.standardMinorUpdateSLA = fromDictionary["standardMinorUpdateSLA"] as? Int
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
         self.unsupportedURL = fromDictionary["unsupportedURL"] as? String
 
@@ -239,12 +245,15 @@ extension OSVersionRequirement {
         aboutUpdateURL: String? = nil,
         aboutUpdateURLs: [AboutUpdateURL]? = nil,
         actionButtonPath: String? = nil,
-        activelyExploitedCVEsInstallationSLA: Int? = nil,
+        activelyExploitedCVEsMajorUpgradeSLA: Int? = nil,
+        activelyExploitedCVEsMinorUpdateSLA: Int? = nil,
         majorUpgradeAppPath: String? = nil,
-        nonActivelyExploitedCVEsSLA: Int? = nil,
+        nonActivelyExploitedCVEsMajorUpgradeSLA: Int? = nil,
+        nonActivelyExploitedCVEsMinorUpdateSLA: Int? = nil,
         requiredInstallationDate: Date? = nil,
         requiredMinimumOSVersion: String? = nil,
-        standardInstallationSLA: Int? = nil,
+        standardMajorUpgradeSLA: Int? = nil,
+        standardMinorUpdateSLA: Int? = nil,
         targetedOSVersionsRule: String? = nil,
         unsupportedURL: String? = nil,
         unsupportedURLs: [UnsupportedURL]? = nil
@@ -253,12 +262,15 @@ extension OSVersionRequirement {
             aboutUpdateURL: aboutUpdateURL ?? self.aboutUpdateURL,
             aboutUpdateURLs: aboutUpdateURLs ?? self.aboutUpdateURLs,
             actionButtonPath: actionButtonPath ?? self.actionButtonPath,
-            activelyExploitedCVEsInstallationSLA: activelyExploitedCVEsInstallationSLA ?? self.activelyExploitedCVEsInstallationSLA,
+            activelyExploitedCVEsMajorUpgradeSLA: activelyExploitedCVEsMajorUpgradeSLA ?? self.activelyExploitedCVEsMajorUpgradeSLA,
+            activelyExploitedCVEsMinorUpdateSLA: activelyExploitedCVEsMinorUpdateSLA ?? self.activelyExploitedCVEsMinorUpdateSLA,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
-            nonActivelyExploitedCVEsSLA: nonActivelyExploitedCVEsSLA ?? self.nonActivelyExploitedCVEsSLA,
+            nonActivelyExploitedCVEsMajorUpgradeSLA: nonActivelyExploitedCVEsMajorUpgradeSLA ?? self.nonActivelyExploitedCVEsMajorUpgradeSLA,
+            nonActivelyExploitedCVEsMinorUpdateSLA: nonActivelyExploitedCVEsMinorUpdateSLA ?? self.nonActivelyExploitedCVEsMinorUpdateSLA,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,
             requiredMinimumOSVersion: requiredMinimumOSVersion ?? self.requiredMinimumOSVersion,
-            standardInstallationSLA: standardInstallationSLA ?? self.standardInstallationSLA,
+            standardMajorUpgradeSLA: standardMajorUpgradeSLA ?? self.standardMajorUpgradeSLA,
+            standardMinorUpdateSLA: standardMinorUpdateSLA ?? self.standardMinorUpdateSLA,
             targetedOSVersionsRule: targetedOSVersionsRule ?? self.targetedOSVersionsRule,
             unsupportedURL: unsupportedURL ?? self.unsupportedURL,
             unsupportedURLs: unsupportedURLs ?? self.unsupportedURLs

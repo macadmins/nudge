@@ -207,15 +207,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     let activelyExploitedCVEs = selectedOS!.activelyExploitedCVEs.count > 0
                     let presentCVEs = selectedOS!.cves.count > 0
                     let slaExtension: TimeInterval
-                    switch (activelyExploitedCVEs, presentCVEs) {
-                        case (false, true):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsSLA * 86400)
-                        case (true, true):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsInstallationSLA * 86400)
-                        case (false, false):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400)
-                        default:
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400)
+                    switch (activelyExploitedCVEs, presentCVEs, AppStateManager().requireMajorUpgrade()) {
+                        case (false, true, true):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA * 86400)
+                        case (false, true, false):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMinorUpdateSLA * 86400)
+                        case (true, true, true):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
+                        case (true, true, false):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
+                        case (false, false, true):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardMajorUpgradeSLA * 86400)
+                        case (false, false, false):
+                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardMinorUpdateSLA * 86400)
+                        default: // If we get here, something is wrong, use 90 days as a safety
+                            slaExtension = TimeInterval(90 * 86400)
                     }
 
                     if OptionalFeatureVariables.disableNudgeForStandardInstalls && !presentCVEs {
@@ -228,7 +234,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
-                    requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(OSVersionRequirementVariables.standardInstallationSLA * 86400))
+                    requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
 
                     LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
                     LogManager.notice("SOFA Matched OS Version: \(selectedOS!.productVersion)", logger: sofaLog)
