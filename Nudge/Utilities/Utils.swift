@@ -1004,7 +1004,7 @@ struct NetworkFileManager {
 
         if let url = URL(string: OptionalFeatureVariables.customSOFAFeedURL) {
             let sofaData = SOFA().URLSync(url: url)
-            if (sofaData.error == nil) {
+            if (sofaData.responseCode != nil) {
                 if sofaData.responseCode == 304 && sofaJSONExists {
                     LogManager.info("Utilizing previously cached SOFA json due to Etag not changing", logger: sofaLog)
                     do {
@@ -1030,7 +1030,11 @@ struct NetworkFileManager {
                     }
                 }
             } else {
-                LogManager.error("Failed to fetch sofa JSON: \(sofaData.error!.localizedDescription)", logger: sofaLog)
+                if sofaData.responseCode == nil {
+                    LogManager.error("Failed to fetch sofa JSON: Device likely has no network connectivity.", logger: sofaLog)
+                } else {
+                    LogManager.error("Failed to fetch sofa JSON: \(sofaData.error!.localizedDescription)", logger: sofaLog)
+                }
             }
         } else {
             LogManager.error("Failed to decode sofa JSON URL string", logger: sofaLog)
