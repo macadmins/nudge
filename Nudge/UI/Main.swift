@@ -241,7 +241,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() }
                         }
                         LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                        nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
+                        nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound // false
                     }
                     foundMatch = true
                     break
