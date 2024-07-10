@@ -973,7 +973,21 @@ struct NetworkFileManager {
         let appDirectory = appSupportDirectory.appendingPathComponent(Globals.bundleID)
         let sofaFile = "sofa-macos_data_feed.json"
         let sofaPath = appDirectory.appendingPathComponent(sofaFile)
-        let sofaJSONExists = fileManager.fileExists(atPath: sofaPath.path)
+        let sofaJSON0Bytes = isFileEmpty(atPath: sofaPath.path)
+        var sofaJSONExists = fileManager.fileExists(atPath: sofaPath.path)
+
+        // Force delete if bad
+        if sofaJSONExists {
+            if sofaJSON0Bytes {
+                do {
+                    try fileManager.removeItem(atPath: sofaPath.path)
+                    sofaJSONExists = false
+                } catch {
+                    print("Error deleting file: \(error.localizedDescription)")
+                }
+            }
+        }
+
         if sofaJSONExists {
             let sofaPathCreationDate = AppStateManager().getModifiedDateForPath(sofaPath.path, testFileDate: nil)
             // Use Cache as it is within time inverval
@@ -984,7 +998,7 @@ struct NetworkFileManager {
                     let assetInfo = try MacOSDataFeed(data: sofaData)
                     return assetInfo
                 } catch {
-                    LogManager.error("Failed to decode local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
+                    LogManager.error("Failed to decode previously cached local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                     LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
                     return nil
                 }
@@ -1012,7 +1026,7 @@ struct NetworkFileManager {
                         let assetInfo = try MacOSDataFeed(data: sofaData)
                         return assetInfo
                     } catch {
-                        LogManager.error("Failed to decode local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
+                        LogManager.error("Failed to decode previously cached (Etag) local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                         LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
                         return nil
                     }
@@ -1024,6 +1038,12 @@ struct NetworkFileManager {
                         let assetInfo = try MacOSDataFeed(data: sofaData.data!)
                         return assetInfo
                     } catch {
+                        do {
+                            try fileManager.removeItem(atPath: sofaPath.path)
+                            sofaJSONExists = false
+                        } catch {
+                            print("Error deleting file: \(error.localizedDescription)")
+                        }
                         LogManager.error("Failed to decode sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                         LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
                         return nil
@@ -1085,6 +1105,19 @@ struct NetworkFileManager {
 
         LogManager.error("Could not find or decode JSON configuration", logger: prefsJSONLog)
         return nil
+    }
+
+    func isFileEmpty(atPath path: String) -> Bool {
+        let fileManager = FileManager.default
+        do {
+            let attributes = try fileManager.attributesOfItem(atPath: path)
+            if let fileSize = attributes[.size] as? NSNumber {
+                return fileSize.intValue == 0
+            }
+        } catch {
+            print("Error getting file attributes: \(error.localizedDescription)")
+        }
+        return false
     }
 }
 
