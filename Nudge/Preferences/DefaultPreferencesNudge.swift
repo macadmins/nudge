@@ -9,7 +9,7 @@ import Foundation
 
 // Global Variables
 struct GlobalVariables {
-    static let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description
+    static let currentOSVersion = OSVersion(ProcessInfo().operatingSystemVersion).description // "14.4.1"
     static var fetchMajorUpgradeSuccessful = false
 }
 
