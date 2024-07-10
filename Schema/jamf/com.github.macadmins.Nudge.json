@@ -452,8 +452,27 @@
                                     }
                                 ]
                             },
-                            "activelyExploitedCVEsInstallationSLA": {
-                                "description": "When an update is under active exploit, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "activelyExploitedCVEsMajorUpgradeSLA": {
+                                "description": "When a major upgrade is under active exploit, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "default": 14,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "14"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "activelyExploitedCVEsMinorUpdateSLA": {
+                                "description": "When a minor update is under active exploit, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [
                                     {
                                         "title": "Not Configured",
@@ -489,8 +508,27 @@
                                     }
                                 ]
                             },
-                            "nonActivelyExploitedCVEsSLA": {
-                                "description": "When an update is not under active exploit but contains CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "nonActivelyExploitedCVEsMajorUpgradeSLA": {
+                                "description": "When a major upgrade is not under active exploit but contains CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "default": 21,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "21"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "nonActivelyExploitedCVEsMinorUpdateSLA": {
+                                "description": "When a minor update is not under active exploit but contains CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [
                                     {
                                         "title": "Not Configured",
@@ -544,8 +582,27 @@
                                     }
                                 ]
                             },
-                            "standardInstallationSLA": {
-                                "description": "When an update has no known CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "standardMajorUpgradeSLA": {
+                                "description": "When a major upgrade has no known CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "default": 28,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "28"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "standardMinorupdateSLA": {
+                                "description": "When a minor update has no known CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [
                                     {
                                         "title": "Not Configured",
