@@ -232,6 +232,7 @@ class SOFA: NSObject, URLSessionDelegate {
         request.addValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
         request.setValue(lastEtag, forHTTPHeaderField: "If-None-Match")
         // TODO: I'm saving the Etag and sending it, but due to forcing this into a syncronous call, it is always returning a 200 code. When using this in an asycronous method, it eventually returns the 304 response. I'm not sure how to fix this bug.
+        request.addValue("gzip, deflate, br", forHTTPHeaderField: "Accept-Encoding") // Force compression for JSON
         var attempts = 0
 
         var responseData: Data?
