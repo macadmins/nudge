@@ -370,7 +370,8 @@ struct UserExperience: Codable {
     var loadLaunchAgent: Bool?
     var maxRandomDelayInSeconds: Int?
     var noTimers: Bool?
-    var nudgeEventLaunchDelay: Int?
+    var nudgeMajorUpgradeEventLaunchDelay: Int?
+    var nudgeMinorUpdateEventLaunchDelay: Int?
     var nudgeRefreshCycle: Int?
     var randomDelay: Bool?
 }
@@ -414,7 +415,8 @@ extension UserExperience {
         loadLaunchAgent: Bool? = nil,
         maxRandomDelayInSeconds: Int? = nil,
         noTimers: Bool? = nil,
-        nudgeEventLaunchDelay: Int? = nil,
+        nudgeMajorUpgradeEventLaunchDelay: Int? = nil,
+        nudgeMinorUpdateEventLaunchDelay: Int? = nil,
         nudgeRefreshCycle: Int? = nil,
         randomDelay: Bool? = nil
     ) -> UserExperience {
@@ -439,7 +441,8 @@ extension UserExperience {
             loadLaunchAgent: loadLaunchAgent ?? self.loadLaunchAgent,
             maxRandomDelayInSeconds: maxRandomDelayInSeconds ?? self.maxRandomDelayInSeconds,
             noTimers: noTimers ?? self.noTimers,
-            nudgeEventLaunchDelay: nudgeEventLaunchDelay ?? self.nudgeEventLaunchDelay,
+            nudgeMajorUpgradeEventLaunchDelay: nudgeMajorUpgradeEventLaunchDelay ?? self.nudgeMajorUpgradeEventLaunchDelay,
+            nudgeMinorUpdateEventLaunchDelay: nudgeMinorUpdateEventLaunchDelay ?? self.nudgeMinorUpdateEventLaunchDelay,
             nudgeRefreshCycle: nudgeRefreshCycle ?? self.nudgeRefreshCycle,
             randomDelay: randomDelay ?? self.randomDelay
         )
