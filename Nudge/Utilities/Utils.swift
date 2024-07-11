@@ -185,15 +185,21 @@ struct AppStateManager {
     }
 
     func delayNudgeEventLogic(currentDate: Date = DateManager().getCurrentDate(), testFileDate: Date? = nil) -> Date {
-        if UserExperienceVariables.nudgeEventLaunchDelay == 0 {
+        let isMajorUpgradeRequired = AppStateManager().requireMajorUpgrade()
+        let launchDelay = isMajorUpgradeRequired ? UserExperienceVariables.nudgeMajorUpgradeEventLaunchDelay : UserExperienceVariables.nudgeMinorUpdateEventLaunchDelay
+        
+        if launchDelay == 0 {
             return PrefsWrapper.requiredInstallationDate
         }
-        if releaseDate.addingTimeInterval(TimeInterval(UserExperienceVariables.nudgeEventLaunchDelay * 86400)) > currentDate {
-            LogManager.info("Device within nudgeEventLaunchDelay, exiting Nudge", logger: uiLog)
+
+        if releaseDate.addingTimeInterval(TimeInterval(launchDelay * 86400)) > currentDate {
+            let eventType = isMajorUpgradeRequired ? "nudgeMajorUpgradeEventLaunchDelay" : "nudgeMinorUpdateEventLaunchDelay"
+            LogManager.info("Device within \(eventType)", logger: uiLog)
             nudgePrimaryState.shouldExit = true
             return currentDate
         } else {
-            LogManager.info("Device outside nudgeEventLaunchDelay", logger: uiLog)
+            let eventType = isMajorUpgradeRequired ? "nudgeMajorUpgradeEventLaunchDelay" : "nudgeMinorUpdateEventLaunchDelay"
+            LogManager.info("Device outside \(eventType)", logger: uiLog)
             return PrefsWrapper.requiredInstallationDate
         }
     }

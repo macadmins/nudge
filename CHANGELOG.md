@@ -28,7 +28,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
     - `standardMajorUpgradeSLA` under the `osVersionRequirement` key will default to 28 days
     - `standardMinorUpdateSLA` under the `osVersionRequirement` key will default to 28 days
     - These dates are calculated against the `ReleaseDate` key in the SOFA feed, which is UTC formatted. Local timezones will **not be supported** with the automatic sofa feed unless you use a custom feed and change this value yourself, following ISO-8601 date formats
-      - To artificially delay the SOFA nudge events, see the details below for `nudgeEventLaunchDelay`
+      - To artificially delay the SOFA nudge events, see the details below for `nudgeMajorUpgradeEventLaunchDelay` and `nudgeMinorUpdateEventLaunchDelay`
     - If you'd like to not have nudge events for releases without any known CVEs, please configure the `disableNudgeForStandardInstalls` key under `optionalFeatures` to true
 - You can now disable the `Days Remaining To Update:` item on the left side of the UI.
   - Configure the `showDaysRemainingToUpdate` key under `userInterface` to false
@@ -47,7 +47,7 @@ Requires macOS 12.0 and higher. Further releases and feature requests may make t
   - Issue [475](https://github.com/macadmins/nudge/issues/475)
 
 ### Added
-- To artificially change the `requredInstallationDate` thereby giving your users a default grace period for all Nudge events updates, please configure the `nudgeEventLaunchDelay` key under `userExperience`
+- To artificially change the `requredInstallationDate` thereby giving your users a default grace period for all Nudge events updates, please configure the `nudgeMajorUpgradeEventLaunchDelay` and `nudgeMinorUpdateEventLaunchDelay` keys under `userExperience` in amount of days.
 - A local image path can now be specified for the notification event when Nudge terminates and application
   - Please configure the `applicationTerminatedNotificationImagePath` key under `userInterface`
   - Due to limitations within Apple's API, a local path is only supported at this time

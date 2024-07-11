@@ -388,9 +388,15 @@ struct UserExperienceVariables {
         false
     }
 
-    static var nudgeEventLaunchDelay: Int {
-        userExperienceProfile?["nudgeEventLaunchDelay"] as? Int ??
-        userExperienceJSON?.nudgeEventLaunchDelay ??
+    static var nudgeMinorUpdateEventLaunchDelay: Int {
+        userExperienceProfile?["nudgeMinorUpdateEventLaunchDelay"] as? Int ??
+        userExperienceJSON?.nudgeMinorUpdateEventLaunchDelay ??
+        0
+    }
+
+    static var nudgeMajorUpgradeEventLaunchDelay: Int {
+        userExperienceProfile?["nudgeMajorUpgradeEventLaunchDelay"] as? Int ??
+        userExperienceJSON?.nudgeMajorUpgradeEventLaunchDelay ??
         0
     }
 

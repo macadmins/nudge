@@ -1083,8 +1083,27 @@
                                 }
                             ]
                         },
-                        "nudgeEventLaunchDelay": {
-                            "description": "When a new update is posted to the SOFA feed, this can artificially delay the SOFA nudge events by x amount of days. (Note: This key is only used with Nudge v2.0 and higher)",
+                        "nudgeMajorUpgradeEventLaunchDelay": {
+                            "description": "When a new major upgrade is posted to the SOFA feed, this can artificially delay the SOFA nudge events by x amount of days. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": 0,
+                                    "type": "integer",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "0"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "nudgeMinorUpdateEventLaunchDelay": {
+                            "description": "When a new minor update is posted to the SOFA feed, this can artificially delay the SOFA nudge events by x amount of days. (Note: This key is only used with Nudge v2.0 and higher)",
                             "anyOf": [
                                 {
                                     "title": "Not Configured",
