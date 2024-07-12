@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0] - 2024-07-17
-Requires macOS 12.0 and higher. Further releases and feature requests may make this macOS 13 and higher depending on code complexity.
+Requires macOS 12.0 and higher.
 
 ### Changed
 - Now built on Swift 5.10, Xcode 15.4 and macOS 14
