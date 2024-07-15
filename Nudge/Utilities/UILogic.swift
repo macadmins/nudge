@@ -12,9 +12,10 @@ import IOKit.pwr_mgt // Asertions
 import SwiftUI
 
 struct ProcessInfoStruct {
-    var pid: Int32
-    var command: String
-    var arguments: [String]
+    let pid: Int32
+    let command: String
+    let arguments: [String]
+    let username: String
 }
 
 func initialLaunchLogic() {
@@ -186,22 +187,22 @@ private func logDeferralStates() {
 
 func getAllProcesses() -> [ProcessInfoStruct] {
     var processes = [ProcessInfoStruct]()
-    
+
     // Get the number of processes
     var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL]
     var size = 0
     sysctl(&mib, u_int(mib.count), nil, &size, nil, 0)
-    
+
     let processCount = size / MemoryLayout<kinfo_proc>.size
     var processList = [kinfo_proc](repeating: kinfo_proc(), count: processCount)
-    
+
     // Get the list of processes
     sysctl(&mib, u_int(mib.count), &processList, &size, nil, 0)
-    
+
     // Extract process info
     for process in processList {
         let pid = process.kp_proc.p_pid
-        
+
         // Get full command path
         var pathBuffer = [CChar](repeating: 0, count: Int(PATH_MAX))
         let result = proc_pidpath(pid, &pathBuffer, UInt32(PATH_MAX))
@@ -210,11 +211,13 @@ func getAllProcesses() -> [ProcessInfoStruct] {
                 String(cString: $0)
             }
         }
-        
+
         let arguments = getArgumentsForPID(pid: pid)
-        processes.append(ProcessInfoStruct(pid: pid, command: command, arguments: arguments))
+        let username = getUsernameForPID(pid: pid)
+
+        processes.append(ProcessInfoStruct(pid: pid, command: command, arguments: arguments, username: username))
     }
-    
+
     return processes
 }
 
@@ -244,15 +247,36 @@ func getArgumentsForPID(pid: Int32) -> [String] {
     return args
 }
 
-func isAnyProcessRunning(commandsWithArgs: [(processRelativeName: String, arguments: [String]?)]) -> Bool {
+func getUsernameForPID(pid: Int32) -> String {
+    var uid: uid_t = 0
+    var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, pid]
+    var kp = kinfo_proc()
+    var size = MemoryLayout<kinfo_proc>.size
+
+    sysctl(&mib, u_int(mib.count), &kp, &size, nil, 0)
+
+    uid = kp.kp_eproc.e_ucred.cr_uid
+    var pwd = passwd()
+    var pwdPtr: UnsafeMutablePointer<passwd>? = nil
+    getpwuid_r(uid, &pwd, nil, 0, &pwdPtr)
+
+    if let pwdPtr = pwdPtr {
+        return String(cString: pwdPtr.pointee.pw_name)
+    } else {
+        return "unknown"
+    }
+}
+
+
+func isAnyProcessRunning(commandsWithArgs: [(commandPattern: String, arguments: [String]?, username: String?)]) -> Bool {
     let processes = getAllProcesses()
-    for (processRelativeName, arguments) in commandsWithArgs {
+    for (commandPattern, arguments, username) in commandsWithArgs {
         let matchingProcesses = processes.filter { process in
-            // Check if the command pattern is a substring of the full command path
-            process.command.lowercased().contains(processRelativeName.lowercased()) &&
+            fnmatch(commandPattern, process.command, FNM_CASEFOLD) == 0 &&
             (arguments == nil || arguments!.allSatisfy { arg in
                 process.arguments.contains(where: { $0.contains(arg) })
-            })
+            }) &&
+            (username == nil || process.username == username)
         }
         if !matchingProcesses.isEmpty {
             return true
@@ -262,14 +286,14 @@ func isAnyProcessRunning(commandsWithArgs: [(processRelativeName: String, argume
 }
 
 func isDownloadingOrPreparingSoftwareUpdate() -> Bool {
-    let commandsWithArgs: [(processRelativeName: String, arguments: [String]?)] = [
-        ("softwareupdated", ["/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated"]), // When downloading a minor update, this process is running.
-        ("installcoordinationd", ["/System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd"]), // When preparing a minor update, this process is running. Unfortunately, after preparing the update, this process appears to stay running.
-        ("softwareupdate", ["/usr/bin/softwareupdate", "--fetch-full-installer"]), // When downloading a major upgrade via SoftwareUpdate prefpane, it triggers a --fetch-full-installer run. Nudge also performs this method.
-        ("softwareupdate", ["/usr/sbin/softwareupdate", "--fetch-full-installer"]), // When downloading a major upgrade via softwareupdate cli, it triggers a --fetch-full-installer run. Nudge also performs this method.
-        ("osinstallersetupd", ["/Applications/*Install macOS *.app/Contents/Frameworks/OSInstallerSetup.framework/Resources/osinstallersetupd"]), // When installing a major upgrade, this process is running.
-        ("installerauthagent", ["/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent", "/System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent"]), // Possibly on macOS 15, this is running when preparing an update.
-        // /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd||system_installd - system_installd may be interesting, but I think installd is being used for any package
+    let commandsWithArgs: [(commandPattern: String, arguments: [String]?, username: String?)] = [
+        ("*softwareupdated", ["/System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated"], nil), // When downloading a minor update, this process is running.
+        ("*installcoordinationd", ["/System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd"], nil), // When preparing a minor update, this process is running. Unfortunately, after preparing the update, this process appears to stay running.
+        ("*softwareupdate", ["/usr/bin/softwareupdate", "--fetch-full-installer"], nil), // When downloading a major upgrade via SoftwareUpdate prefpane, it triggers a --fetch-full-installer run. Nudge also performs this method.
+        ("*softwareupdate", ["/usr/sbin/softwareupdate", "--fetch-full-installer"], nil), // When downloading a major upgrade via softwareupdate cli, it triggers a --fetch-full-installer run. Nudge also performs this method.
+        ("*osinstallersetupd", ["/Applications/*Install macOS *.app/Contents/Frameworks/OSInstallerSetup.framework/Resources/osinstallersetupd"], nil), // When installing a major upgrade, this process is running.
+        ("*com.apple.MobileSoftwareUpdate.UpdateBrainService", [], nil), // On macOS 15, this process is running when preparing an update.
+        ("*com.apple.StreamingUnzipService.privileged", nil, "_nsurlsessiond"), // When preparing an update on macOS 15, this process is running to extract the OS update for preparation.
     ]
     return isAnyProcessRunning(commandsWithArgs: commandsWithArgs)
 }
