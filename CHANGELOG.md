@@ -11,6 +11,7 @@ Requires macOS 12.0 and higher.
 - Due to implementing markdown support, many of the elements within Nudge may no longer be in **bold** if you customize them.
   - To work around this please add `**` elements to these customizations
   - For example: The `mainContentNote` value of `Important Notes` would become `**Important Notes**`
+- The SOFA feed is **opt-out**, which included the new `Unsupported UI`. If you do not want the Unsupported UI features, you will need to actively opt-out of these options.
 
 ### Changed
 - Now built on Swift 5.10, Xcode 15.4 and macOS 14
