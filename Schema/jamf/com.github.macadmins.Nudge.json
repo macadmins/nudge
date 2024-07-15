@@ -232,7 +232,7 @@
                                     "type": "string",
                                     "options": {
                                         "inputAttributes": {
-                                            "placeholder": "https://sofa.macadmins.io/v1/macos_data_feed.json"
+                                            "placeholder": "https://sofafeed.macadmins.io/macos_data_feed.json"
                                         }
                                     }
                                 }
