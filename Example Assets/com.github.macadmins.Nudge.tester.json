@@ -7,7 +7,6 @@
             "Safari"
         ],
         "acceptableAssertionUsage": false,
-        "acceptableUpdatePreparingUsage": true,
         "acceptableCameraUsage": true,
         "acceptableScreenSharingUsage": true,
         "attemptToBlockApplicationLaunches": true,
