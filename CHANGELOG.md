@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - 2024-07-17
 Requires macOS 12.0 and higher.
 
+### Breaking Changes
+- Due to implementing markdown support, many of the elements within Nudge may no longer be in **bold** if you customize them.
+  - To work around this please add `**` elements to these customizations
+  - For example: The `mainContentNote` value of `Important Notes` would become `**Important Notes**`
+
 ### Changed
 - Now built on Swift 5.10, Xcode 15.4 and macOS 14
 - New Xcode Scheme `-bundle-mode-profile` to test profile logic
