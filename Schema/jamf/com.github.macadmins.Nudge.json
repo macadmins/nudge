@@ -95,7 +95,7 @@
                                 },
                                 {
                                     "title": "Configured",
-                                    "default": false,
+                                    "default": true,
                                     "type": "boolean"
                                 }
                             ]

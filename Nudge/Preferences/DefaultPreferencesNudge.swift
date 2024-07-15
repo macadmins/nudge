@@ -86,7 +86,7 @@ struct OptionalFeatureVariables {
     static var acceptableUpdatePreparingUsage: Bool {
         optionalFeaturesProfile?["acceptableUpdatePreparingUsage"] as? Bool ??
         optionalFeaturesJSON?.acceptableUpdatePreparingUsage ??
-        false
+        true
     }
     
     static var acceptableScreenSharingUsage: Bool {
