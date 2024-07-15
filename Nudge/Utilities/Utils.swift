@@ -996,7 +996,7 @@ struct NetworkFileManager {
 
         if sofaJSONExists {
             let sofaPathCreationDate = AppStateManager().getModifiedDateForPath(sofaPath.path, testFileDate: nil)
-            // Use Cache as it is within time inverval
+            // Use Cache as it is within time interval
             if TimeInterval(OptionalFeatureVariables.refreshSOFAFeedTime) >= Date().timeIntervalSince(sofaPathCreationDate!) {
                 LogManager.info("Utilizing previously cached SOFA json", logger: sofaLog)
                 do {
@@ -1006,7 +1006,8 @@ struct NetworkFileManager {
                 } catch {
                     LogManager.error("Failed to decode previously cached local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                     LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
-                    return nil
+                    // Attempt to redownload and reprocess the file
+                    return redownloadAndReprocessSOFA(url: URL(string: OptionalFeatureVariables.customSOFAFeedURL)!)
                 }
             } else {
                 LogManager.info("Previously cached SOFA json has expired", logger: sofaLog)
@@ -1024,8 +1025,8 @@ struct NetworkFileManager {
 
         if let url = URL(string: OptionalFeatureVariables.customSOFAFeedURL) {
             let sofaData = SOFA().URLSync(url: url)
-            if (sofaData.responseCode != nil) {
-                if sofaData.responseCode == 304 && sofaJSONExists {
+            if let responseCode = sofaData.responseCode {
+                if responseCode == 304 && sofaJSONExists {
                     LogManager.info("Utilizing previously cached SOFA json due to Etag not changing", logger: sofaLog)
                     do {
                         let sofaData = try Data(contentsOf: sofaPath)
@@ -1034,7 +1035,8 @@ struct NetworkFileManager {
                     } catch {
                         LogManager.error("Failed to decode previously cached (Etag) local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                         LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
-                        return nil
+                        // Attempt to redownload and reprocess the file
+                        return redownloadAndReprocessSOFA(url: url)
                     }
                 } else {
                     do {
@@ -1052,7 +1054,8 @@ struct NetworkFileManager {
                         }
                         LogManager.error("Failed to decode sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                         LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
-                        return nil
+                        // Attempt to redownload and reprocess the file
+                        return redownloadAndReprocessSOFA(url: url)
                     }
                 }
             } else {
@@ -1124,6 +1127,35 @@ struct NetworkFileManager {
             print("Error getting file attributes: \(error.localizedDescription)")
         }
         return false
+    }
+
+    func redownloadAndReprocessSOFA(url: URL) -> MacOSDataFeed? {
+        let sofaData = SOFA().URLSync(url: url)
+        if let responseCode = sofaData.responseCode, responseCode == 200 {
+            let fileManager = FileManager.default
+            let appSupportDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+            let appDirectory = appSupportDirectory.appendingPathComponent(Globals.bundleID)
+            let sofaFile = "sofa-macos_data_feed.json"
+            let sofaPath = appDirectory.appendingPathComponent(sofaFile)
+
+            do {
+                if fileManager.fileExists(atPath: appDirectory.path) {
+                    try sofaData.data!.write(to: sofaPath)
+                }
+                let assetInfo = try MacOSDataFeed(data: sofaData.data!)
+                return assetInfo
+            } catch {
+                LogManager.error("Failed to decode sofa JSON after redownload: \(error.localizedDescription)", logger: sofaLog)
+                LogManager.error("Failed to decode sofa JSON after redownload: \(error)", logger: sofaLog)
+            }
+        } else {
+            if sofaData.responseCode == nil {
+                LogManager.error("Failed to fetch sofa JSON: Device likely has no network connectivity.", logger: sofaLog)
+            } else {
+                LogManager.error("Failed to fetch sofa JSON: \(sofaData.error!.localizedDescription)", logger: sofaLog)
+            }
+        }
+        return nil
     }
 }
 
