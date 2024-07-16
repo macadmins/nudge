@@ -10,6 +10,8 @@
         "acceptableCameraUsage": true,
         "acceptableScreenSharingUsage": true,
         "attemptToBlockApplicationLaunches": true,
+        "customSOFAFeedURL": "https://sofafeed.macadmins.io/v1/macos_data_feed.json",
+        "_customSOFAFeedURL": "https://sofa.macadmins.io/v1/macos_data_feed.json",
         "blockedApplicationBundleIDs": [
             "com.apple.Safari"
         ],
