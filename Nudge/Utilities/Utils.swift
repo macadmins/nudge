@@ -1045,6 +1045,7 @@ struct NetworkFileManager {
                                 try data.write(to: sofaPath)
                             }
                             let assetInfo = try MacOSDataFeed(data: data)
+                            Globals.nudgeDefaults.set(sofaData.eTag, forKey: "LastEtag")
                             return assetInfo
                         } else {
                             LogManager.error("Failed to fetch sofa JSON: No data received.", logger: sofaLog)
