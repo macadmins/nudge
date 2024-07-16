@@ -301,7 +301,7 @@ func isSnapshotPresent(snapshotName: String) -> Bool {
     let result = subProcessUtilities.runProcess(launchPath: "/usr/sbin/diskutil", arguments: ["apfs", "listSnapshots", "/"])
 
     if result.exitCode != 0 {
-        print("Error: \(result.error)")
+        LogManager.error("Error: \(result.error)", logger: utilsLog)
         return false
     }
 
