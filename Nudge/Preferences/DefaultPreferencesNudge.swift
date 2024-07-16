@@ -140,7 +140,7 @@ struct OptionalFeatureVariables {
     static var customSOFAFeedURL: String {
         optionalFeaturesProfile?["customSOFAFeedURL"] as? String ??
         optionalFeaturesJSON?.customSOFAFeedURL ??
-        "https://sofafeed.macadmins.io/macos_data_feed.json"
+        "https://sofafeed.macadmins.io/v1/macos_data_feed.json"
     }
 
     static var disableSoftwareUpdateWorkflow: Bool {
