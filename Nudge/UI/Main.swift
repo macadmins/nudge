@@ -439,7 +439,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
         } else {
-            print("applicationTerminatedNotificationImagePath does not exist on disk, skipping notification image.")
+            LogManager.error("applicationTerminatedNotificationImagePath does not exist on disk, skipping notification image.", logger: uiLog)
         }
         return content
     }
@@ -621,7 +621,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             object: NSApplication.shared,
             queue: .main) { _ in
                 if UserExperienceVariables.allowMovableWindow { return }
-                print("Window object frame moved - Notification Center")
+                LogManager.debug("Window object frame moved - Notification Center", logger: utilsLog)
                 UIUtilities().centerNudge()
             }
     }
@@ -732,17 +732,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 class WindowDelegate: NSObject, NSWindowDelegate {
     func windowDidMove(_ notification: Notification) {
         if UserExperienceVariables.allowMovableWindow { return }
-        print("Window attempted to move - Window Delegate")
+        LogManager.debug("Window attempted to move - Window Delegate", logger: utilsLog)
         UIUtilities().centerNudge()
     }
     func windowDidChangeScreen(_ notification: Notification) {
         if UserExperienceVariables.allowMovableWindow { return }
-        print("Window moved screens - Window Delegate")
+        LogManager.debug("Window moved screens - Window Delegate", logger: utilsLog)
         UIUtilities().centerNudge()
     }
     func windowDidChangeScreenProfile(_ notification: Notification) {
         if UserExperienceVariables.allowMovableWindow { return }
-        print("Display has changed profiles - Window Delegate")
+        LogManager.debug("Display has changed profiles - Window Delegate", logger: utilsLog)
         UIUtilities().centerNudge()
     }
 }

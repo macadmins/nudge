@@ -225,7 +225,7 @@ struct AppStateManager {
         if let value = CFPreferencesCopyAppValue(key, appID) as? Bool {
             return value
         } else {
-            print("Key '\(key)' not found in preferences")
+            LogManager.info("Key '\(key)' not found in preferences", logger: uiLog)
             return false
         }
 
@@ -988,7 +988,7 @@ struct NetworkFileManager {
                     try fileManager.removeItem(atPath: sofaPath.path)
                     sofaJSONExists = false
                 } catch {
-                    print("Error deleting file: \(error.localizedDescription)")
+                    LogManager.error("Error deleting file: \(error.localizedDescription)", logger: sofaLog)
                 }
             }
         }
@@ -1055,7 +1055,7 @@ struct NetworkFileManager {
                             try fileManager.removeItem(atPath: sofaPath.path)
                             sofaJSONExists = false
                         } catch {
-                            print("Error deleting file: \(error.localizedDescription)")
+                            LogManager.error("Error deleting file: \(error.localizedDescription)", logger: sofaLog)
                         }
                         LogManager.error("Failed to decode sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                         LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
@@ -1129,7 +1129,7 @@ struct NetworkFileManager {
                 return fileSize.intValue == 0
             }
         } catch {
-            print("Error getting file attributes: \(error.localizedDescription)")
+            LogManager.error("Error getting file attributes: \(error.localizedDescription)", logger: prefsJSONLog)
         }
         return false
     }

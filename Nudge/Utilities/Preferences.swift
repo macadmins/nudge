@@ -34,7 +34,7 @@ func getDesiredLanguage(locale: Locale? = nil) -> String {
                     }
                 }
             } catch {
-                print("Failed to decode plist: \(error)")
+                LogManager.error("Failed to decode plist: \(error)", logger: prefsProfileLog)
             }
         }
         return UserInterfaceVariables.fallbackLanguage
@@ -81,7 +81,7 @@ func getOptionalFeaturesProfile() -> [String: Any]? {
             return nil
         }
     } catch {
-        print("Failed to decode plist: \(error)")
+        LogManager.error("Failed to decode plist: \(error)", logger: prefsProfileLog)
         return nil
     }
 }
@@ -150,7 +150,7 @@ func getOSVersionRequirementsProfile() -> OSVersionRequirement? {
             return nil
         }
     } catch {
-        print("Failed to decode plist: \(error)")
+        LogManager.error("Failed to decode plist: \(error)", logger: prefsProfileLog)
         return nil
     }
 }
@@ -240,7 +240,7 @@ func getUserExperienceProfile() -> [String: Any]? {
             return nil
         }
     } catch {
-        print("Failed to decode plist: \(error)")
+        LogManager.error("Failed to decode plist: \(error)", logger: prefsProfileLog)
         return nil
     }
 }
@@ -288,7 +288,7 @@ func getUserInterfaceProfile() -> [String: Any]? {
             return nil
         }
     } catch {
-        print("Failed to decode plist: \(error)")
+        LogManager.error("Failed to decode plist: \(error)", logger: prefsProfileLog)
         return nil
     }
 }
@@ -332,7 +332,7 @@ func getUserInterfaceUpdateElementsProfile() -> [String: AnyObject]? {
             return nil
         }
     } catch {
-        print("Failed to decode plist: \(error)")
+        LogManager.error("Failed to decode plist: \(error)", logger: prefsProfileLog)
         return nil
     }
 }
