@@ -1433,8 +1433,19 @@ struct VersionManager {
     }
 
     static func getMajorRequiredNudgeOSVersion() -> Int {
-        guard let majorVersion = Int(nudgePrimaryState.requiredMinimumOSVersion.split(separator: ".").first ?? "") else {
-            LogManager.error("Invalid format for requiredMinimumOSVersion - value is \(nudgePrimaryState.requiredMinimumOSVersion)", logger: utilsLog)
+        let requiredVersion = nudgePrimaryState.requiredMinimumOSVersion
+
+        // Handle new string values directly
+        switch requiredVersion {
+        case "latest", "latest-minor", "latest-supported":
+            return 0
+        default:
+            break
+        }
+
+        // Existing logic for version numbers
+        guard let majorVersion = Int(requiredVersion.split(separator: ".").first ?? "") else {
+            LogManager.error("Invalid format for requiredMinimumOSVersion - value is \(requiredVersion)", logger: utilsLog)
             return 0
         }
         logOSVersion(majorVersion, for: "Major required OS version")
