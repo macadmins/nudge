@@ -1040,11 +1040,16 @@ struct NetworkFileManager {
                     }
                 } else {
                     do {
-                        if fileManager.fileExists(atPath: appDirectory.path) {
-                            try sofaData.data!.write(to: sofaPath)
+                        if let data = sofaData.data {
+                            if fileManager.fileExists(atPath: appDirectory.path) {
+                                try data.write(to: sofaPath)
+                            }
+                            let assetInfo = try MacOSDataFeed(data: data)
+                            return assetInfo
+                        } else {
+                            LogManager.error("Failed to fetch sofa JSON: No data received.", logger: sofaLog)
+                            return redownloadAndReprocessSOFA(url: url)
                         }
-                        let assetInfo = try MacOSDataFeed(data: sofaData.data!)
-                        return assetInfo
                     } catch {
                         do {
                             try fileManager.removeItem(atPath: sofaPath.path)
@@ -1139,11 +1144,16 @@ struct NetworkFileManager {
             let sofaPath = appDirectory.appendingPathComponent(sofaFile)
 
             do {
-                if fileManager.fileExists(atPath: appDirectory.path) {
-                    try sofaData.data!.write(to: sofaPath)
+                if let data = sofaData.data {
+                    if fileManager.fileExists(atPath: appDirectory.path) {
+                        try data.write(to: sofaPath)
+                    }
+                    let assetInfo = try MacOSDataFeed(data: data)
+                    return assetInfo
+                } else {
+                    LogManager.error("Failed to fetch sofa JSON: No data received.", logger: sofaLog)
+                    return redownloadAndReprocessSOFA(url: url)
                 }
-                let assetInfo = try MacOSDataFeed(data: sofaData.data!)
-                return assetInfo
             } catch {
                 LogManager.error("Failed to decode sofa JSON after redownload: \(error.localizedDescription)", logger: sofaLog)
                 LogManager.error("Failed to decode sofa JSON after redownload: \(error)", logger: sofaLog)
@@ -1152,7 +1162,7 @@ struct NetworkFileManager {
             if sofaData.responseCode == nil {
                 LogManager.error("Failed to fetch sofa JSON: Device likely has no network connectivity.", logger: sofaLog)
             } else {
-                LogManager.error("Failed to fetch sofa JSON: \(sofaData.error!.localizedDescription)", logger: sofaLog)
+                LogManager.error("Failed to fetch sofa JSON: \(sofaData.error?.localizedDescription ?? "Unknown error")", logger: sofaLog)
             }
         }
         return nil
