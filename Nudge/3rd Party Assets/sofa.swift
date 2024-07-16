@@ -222,39 +222,6 @@ extension MacOSDataFeed {
 }
 
 class SOFA: NSObject, URLSessionDelegate {
-    func decompressGzip(data: Data) -> Data? {
-        let tempDir = FileManager.default.temporaryDirectory
-        let compressedFileURL = tempDir.appendingPathComponent(UUID().uuidString)
-        let decompressedFileURL = tempDir.appendingPathComponent(UUID().uuidString)
-
-        do {
-            // Write compressed data to a temporary file
-            try data.write(to: compressedFileURL)
-
-            // Use gzip to decompress the file
-            let result = SubProcessUtilities().runProcess(launchPath: "/usr/bin/gzip", arguments: ["--decompress", "--to-stdout", compressedFileURL.path])
-
-            // Clean up temporary files
-            try FileManager.default.removeItem(at: compressedFileURL)
-
-            if result.exitCode != 0 {
-                LogManager.error("gzip failed with status \(result.exitCode): \(result.error)", logger: utilsLog)
-                return nil
-            }
-
-            // Convert the output string back to Data
-            guard let decompressedData = result.output.data(using: .utf8) else {
-                LogManager.error("Failed to convert decompressed output to Data", logger: utilsLog)
-                return nil
-            }
-
-            return decompressedData
-        } catch {
-            LogManager.error("Failed to decompress gzip data using command: \(error.localizedDescription)", logger: utilsLog)
-            return nil
-        }
-    }
-
     func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?, eTag: String?) {
         let semaphore = DispatchSemaphore(value: 0)
         let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
@@ -262,12 +229,13 @@ class SOFA: NSObject, URLSessionDelegate {
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .useProtocolCachePolicy
         let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
+
         request.addValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
         request.setValue(lastEtag, forHTTPHeaderField: "If-None-Match")
         // TODO: I'm saving the Etag and sending it, but due to forcing this into a syncronous call, it is always returning a 200 code. When using this in an asycronous method, it eventually returns the 304 response. I'm not sure how to fix this bug.
         request.addValue("gzip, deflate, br", forHTTPHeaderField: "Accept-Encoding") // Force compression for JSON
-        var attempts = 0
 
+        var attempts = 0
         var responseData: Data?
         var response: URLResponse?
         var responseError: Error?
@@ -278,8 +246,7 @@ class SOFA: NSObject, URLSessionDelegate {
         // Retry loop
         while attempts < maxRetries {
             attempts += 1
-            let task = session.dataTask(with: request) { [weak self] data, resp, error in
-                guard let self = self else { return } // To handle self being nil
+            let task = session.dataTask(with: request) { data, resp, error in
                 guard let httpResponse = resp as? HTTPURLResponse else {
                     LogManager.error("Error receiving response: \(error?.localizedDescription ?? "No error information")", logger: utilsLog)
                     semaphore.signal()
@@ -287,6 +254,9 @@ class SOFA: NSObject, URLSessionDelegate {
                 }
 
                 responseCode = httpResponse.statusCode
+                response = resp
+                responseError = error
+
                 if responseCode == 200 {
                     if let etag = httpResponse.allHeaderFields["Etag"] as? String {
                         eTag = etag
@@ -295,33 +265,26 @@ class SOFA: NSObject, URLSessionDelegate {
 
                     if let encoding = httpResponse.allHeaderFields["Content-Encoding"] as? String {
                         LogManager.debug("Content-Encoding: \(encoding)", logger: utilsLog)
-
-                        if encoding == "gzip", let compressedData = data {
-                            responseData = self.decompressGzip(data: compressedData)
-
-                            if responseData == nil {
-                                LogManager.error("Failed to decompress gzip data", logger: utilsLog)
-                                responseData = data // Fall back to using the original data
-                            } else {
-                                LogManager.debug("Successfully decompressed gzip data", logger: utilsLog)
-                            }
-                        } else {
-                            responseData = data
-                        }
-                    } else {
-                        responseData = data
                     }
+
+                    responseData = data
 
                 } else if responseCode == 304 {
                     successfulQuery = true
                 }
 
-                response = resp
-                responseError = error
                 semaphore.signal()
             }
+
+            let timeout = DispatchWorkItem {
+                task.cancel()
+                semaphore.signal()
+            }
+
+            DispatchQueue.global().asyncAfter(deadline: .now() + 10, execute: timeout)
             task.resume()
             semaphore.wait()
+            timeout.cancel()
 
             if successfulQuery {
                 break
