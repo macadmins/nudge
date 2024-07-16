@@ -979,12 +979,11 @@ struct NetworkFileManager {
         let appDirectory = appSupportDirectory.appendingPathComponent(Globals.bundleID)
         let sofaFile = "sofa-macos_data_feed.json"
         let sofaPath = appDirectory.appendingPathComponent(sofaFile)
-        let sofaJSON0Bytes = isFileEmpty(atPath: sofaPath.path)
         var sofaJSONExists = fileManager.fileExists(atPath: sofaPath.path)
 
         // Force delete if bad
         if sofaJSONExists {
-            if sofaJSON0Bytes {
+            if isFileEmpty(atPath: sofaPath.path) {
                 do {
                     try fileManager.removeItem(atPath: sofaPath.path)
                     sofaJSONExists = false
