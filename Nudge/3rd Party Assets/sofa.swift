@@ -222,6 +222,39 @@ extension MacOSDataFeed {
 }
 
 class SOFA: NSObject, URLSessionDelegate {
+    func decompressGzip(data: Data) -> Data? {
+        let tempDir = FileManager.default.temporaryDirectory
+        let compressedFileURL = tempDir.appendingPathComponent(UUID().uuidString)
+        let decompressedFileURL = tempDir.appendingPathComponent(UUID().uuidString)
+
+        do {
+            // Write compressed data to a temporary file
+            try data.write(to: compressedFileURL)
+
+            // Use gzip to decompress the file
+            let result = SubProcessUtilities().runProcess(launchPath: "/usr/bin/gzip", arguments: ["--decompress", "--to-stdout", compressedFileURL.path])
+
+            // Clean up temporary files
+            try FileManager.default.removeItem(at: compressedFileURL)
+
+            if result.exitCode != 0 {
+                LogManager.error("gzip failed with status \(result.exitCode): \(result.error)", logger: utilsLog)
+                return nil
+            }
+
+            // Convert the output string back to Data
+            guard let decompressedData = result.output.data(using: .utf8) else {
+                LogManager.error("Failed to convert decompressed output to Data", logger: utilsLog)
+                return nil
+            }
+
+            return decompressedData
+        } catch {
+            LogManager.error("Failed to decompress gzip data using command: \(error.localizedDescription)", logger: utilsLog)
+            return nil
+        }
+    }
+
     func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?, eTag: String?) {
         let semaphore = DispatchSemaphore(value: 0)
         let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
@@ -245,9 +278,10 @@ class SOFA: NSObject, URLSessionDelegate {
         // Retry loop
         while attempts < maxRetries {
             attempts += 1
-            let task = session.dataTask(with: request) { data, resp, error in
+            let task = session.dataTask(with: request) { [weak self] data, resp, error in
+                guard let self = self else { return } // To handle self being nil
                 guard let httpResponse = resp as? HTTPURLResponse else {
-                    print("Error receiving response: \(error?.localizedDescription ?? "No error information")")
+                    LogManager.error("Error receiving response: \(error?.localizedDescription ?? "No error information")", logger: utilsLog)
                     semaphore.signal()
                     return
                 }
@@ -258,11 +292,30 @@ class SOFA: NSObject, URLSessionDelegate {
                         eTag = etag
                     }
                     successfulQuery = true
+
+                    if let encoding = httpResponse.allHeaderFields["Content-Encoding"] as? String {
+                        LogManager.debug("Content-Encoding: \(encoding)", logger: utilsLog)
+
+                        if encoding == "gzip", let compressedData = data {
+                            responseData = self.decompressGzip(data: compressedData)
+
+                            if responseData == nil {
+                                LogManager.error("Failed to decompress gzip data", logger: utilsLog)
+                                responseData = data // Fall back to using the original data
+                            } else {
+                                LogManager.debug("Successfully decompressed gzip data", logger: utilsLog)
+                            }
+                        } else {
+                            responseData = data
+                        }
+                    } else {
+                        responseData = data
+                    }
+
                 } else if responseCode == 304 {
                     successfulQuery = true
                 }
 
-                responseData = data
                 response = resp
                 responseError = error
                 semaphore.signal()
