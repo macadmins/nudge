@@ -222,7 +222,7 @@ extension MacOSDataFeed {
 }
 
 class SOFA: NSObject, URLSessionDelegate {
-    func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?) {
+    func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?, eTag: String?) {
         let semaphore = DispatchSemaphore(value: 0)
         let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
         var request = URLRequest(url: url)
@@ -239,6 +239,7 @@ class SOFA: NSObject, URLSessionDelegate {
         var response: URLResponse?
         var responseError: Error?
         var responseCode: Int?
+        var eTag: String?
         var successfulQuery = false
 
         // Retry loop
@@ -254,7 +255,7 @@ class SOFA: NSObject, URLSessionDelegate {
                 responseCode = httpResponse.statusCode
                 if responseCode == 200 {
                     if let etag = httpResponse.allHeaderFields["Etag"] as? String {
-                        Globals.nudgeDefaults.set(etag, forKey: "LastEtag")
+                        eTag = etag
                     }
                     successfulQuery = true
                 } else if responseCode == 304 {
@@ -282,6 +283,6 @@ class SOFA: NSObject, URLSessionDelegate {
             }
         }
 
-        return (responseData, response, responseError, responseCode)
+        return (responseData, response, responseError, responseCode, eTag)
     }
 }
