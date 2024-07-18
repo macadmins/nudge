@@ -1,28 +1,13 @@
 {
     "optionalFeatures": {
-        "acceptableAssertionApplicationNames": [
-            "zoom.us",
-            "Meeting Center",
-            "Google Chrome",
-            "Safari"
-        ],
-        "acceptableAssertionUsage": false,
-        "acceptableCameraUsage": true,
-        "acceptableScreenSharingUsage": true,
-        "attemptToBlockApplicationLaunches": true,
         "customSOFAFeedURL": "https://sofafeed.macadmins.io/v1/macos_data_feed.json",
         "_customSOFAFeedURL": "https://sofa.macadmins.io/v1/macos_data_feed.json",
-        "blockedApplicationBundleIDs": [
-            "com.apple.Safari"
-        ],
-        "disableNudgeForStandardInstalls": true,
-        "honorFocusModes": true,
-        "terminateApplicationsOnLaunch": true
+        "utilizeSOFAFeed": true,
     },
     "osVersionRequirements": [
         {
             "aboutUpdateURL": "https://apple.com",
-            "requiredMinimumOSVersion": "15.99",
+            "requiredMinimumOSVersion": "14.5",
             "requiredInstallationDate": "2025-01-01T00:00:00",
             "unsupportedURL": "https://google.com"
         }
@@ -40,8 +25,6 @@
         "screenShotDarkPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true",
         "screenShotLightPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true",
         "applicationTerminatedNotificationImagePath": "/Library/Application Support/Nudge/logoLight.png",
-        "showRequiredDate": true,
-        "simpleMode": false,
         "updateElements": [
             {
                 "_language": "en",
@@ -53,7 +36,7 @@
                 "mainContentHeader": "mainContentHeader",
                 "mainContentHeaderUnsupported": "mainContentHeaderUnsupported",
                 "mainContentNote": "mainContentNote",
-                "mainContentNoteUnsupported1": "mainContentNoteUnsupported",
+                "mainContentNoteUnsupported": "mainContentNoteUnsupported",
                 "mainContentSubHeader": "mainContentSubHeader",
                 "mainContentSubHeaderUnsupported1": "mainContentSubHeaderUnsupported",
                 "mainContentText": "mainContentText",
@@ -65,7 +48,7 @@
                 "primaryQuitButtonText": "primaryQuitButtonText",
                 "secondaryQuitButtonText": "secondaryQuitButtonText",
                 "subHeader": "subHeader",
-                "subHeaderUnsupported1": "subHeaderUnsupported",
+                "subHeaderUnsupported": "subHeaderUnsupported",
                 "screenShotAltText": "Click to zoom into screenshot"
             }
         ]
