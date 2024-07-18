@@ -177,6 +177,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if OptionalFeatureVariables.utilizeSOFAFeed {
             var selectedOS: OSInformation?
             var foundMatch = false
+            Globals.sofaAssets = NetworkFileManager().getSOFAAssets()
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 for osVersion in macOSSOFAAssets {
                     if PrefsWrapper.requiredMinimumOSVersion == "latest" {
@@ -281,10 +282,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleSMAppService()
         checkForBadProfilePath()
         handleCommandLineArguments()
+        applyRandomDelayIfNecessary()
         applyGracePeriodLogic()
         sofaPreLaunchLogic()
         applydelayNudgeEventLogic()
-        applyRandomDelayIfNecessary()
         updateNudgeState()
         handleSoftwareUpdateRequirements()
     }
@@ -355,7 +356,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if UserExperienceVariables.randomDelay && !CommandLine.arguments.contains("-disable-randomDelay") {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
-            sleep(UInt32(delaySeconds))
+
+            let delayDate = Date().addingTimeInterval(TimeInterval(delaySeconds))
+            while Date() < delayDate {
+                RunLoop.current.run(mode: .default, before: delayDate)
+            }
+
+            LogManager.notice("Finished delay", logger: uiLog)
         }
     }
 
