@@ -231,7 +231,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     LogManager.notice("SOFA Actively Exploited CVEs: \(activelyExploitedCVEs)", logger: sofaLog)
 
                     // Start setting UI fields
-                    nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
+                    nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
