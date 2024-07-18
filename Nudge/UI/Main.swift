@@ -243,12 +243,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     LogManager.notice("SOFA CVEs: \(selectedOS!.cves)", logger: sofaLog)
 
                     if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
-                        LogManager.notice("Assessed Model IDs: \(Globals.hardwareModelIDs)", logger: sofaLog)
-                        let deviceMatchFound = selectedOS!.supportedDevices.contains { supportedDevice in
-                            Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() }
+                        if selectedOS!.supportedDevices.isEmpty {
+                            LogManager.warning("Sofa Assets list is empty, disregarding unsupported UI.", logger: sofaLog)
+                            nudgePrimaryState.deviceSupportedByOSVersion = true
+                        } else {
+                            LogManager.notice("Assessed Model IDs: \(Globals.hardwareModelIDs)", logger: sofaLog)
+                            let deviceMatchFound = selectedOS!.supportedDevices.contains(where: {
+                                supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }
+                            )
+                            LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
+                            nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound // false
                         }
-                        LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                        nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound // false
                     }
                     foundMatch = true
                     break
