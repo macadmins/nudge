@@ -234,9 +234,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.requiredMinimumOSVersion = osVersion.latest.productVersion
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
-                    requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
-
-                    LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
+                    if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
+                        requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                        LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
+                    }
                     LogManager.notice("SOFA Matched OS Version: \(selectedOS!.productVersion)", logger: sofaLog)
                     LogManager.notice("SOFA Assets: \(selectedOS!.supportedDevices)", logger: sofaLog)
                     LogManager.notice("SOFA CVEs: \(selectedOS!.cves)", logger: sofaLog)
