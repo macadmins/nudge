@@ -261,6 +261,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 if !foundMatch {
                     // If no matching product version found or the device is not supported, return false
                     LogManager.notice("Could not find requiredMinimumOSVersion \(nudgePrimaryState.requiredMinimumOSVersion) in SOFA feed", logger: sofaLog)
+                    if PrefsWrapper.requiredMinimumOSVersion == "latest-minor" {
+                        LogManager.notice("Device is likely running a newer version of macOS than in the production SOFA feed, exiting", logger: sofaLog)
+                        nudgePrimaryState.shouldExit = true
+                        exit(1)
+                    }
                 }
             } else {
                 LogManager.error("Could not fetch SOFA feed", logger: sofaLog)
