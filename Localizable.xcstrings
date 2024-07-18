@@ -317,7 +317,7 @@
         }
       }
     },
-    "**Your device is no longer capable of receving critical security updates**" : {
+    "**Your device is no longer capable of receiving critical security updates**" : {
       "comment" : "mainContentHeaderUnsupported",
       "extractionState" : "manual",
       "localizations" : {
@@ -336,7 +336,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Your device is no longer capable of receving critical security updates**"
+            "value" : "**Your device is no longer capable of receiving critical security updates**"
           }
         },
         "es" : {

@@ -501,7 +501,7 @@ struct UserInterfaceVariables {
     static var mainContentHeaderUnsupported: String {
         userInterfaceUpdateElementsProfile?["mainContentHeaderUnsupported"] as? String ??
         userInterfaceUpdateElementsJSON?.mainContentHeaderUnsupported ??
-        "**Your device is no longer capable of receving critical security updates**"
+        "**Your device is no longer capable of receiving critical security updates**"
     }
     
     static var mainContentNote: String {

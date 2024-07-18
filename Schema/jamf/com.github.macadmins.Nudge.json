@@ -1610,7 +1610,7 @@
                                                 ]
                                             },
                                             "mainContentHeaderUnsupported": {
-                                                "description": "Modifies the mainContentHeader. This is the \"Your device is no longer capable of receving critical security updates\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
+                                                "description": "Modifies the mainContentHeader. This is the \"Your device is no longer capable of receiving critical security updates\" text when using the Unsupported UI. (Note: This key is only used with Nudge v2.0 and higher)",
                                                 "anyOf": [
                                                     {
                                                         "type": "null",
@@ -1621,7 +1621,7 @@
                                                         "type": "string",
                                                         "options": {
                                                             "inputAttributes": {
-                                                                "placeholder": "**Your device is no longer capable of receving critical security updates**"
+                                                                "placeholder": "**Your device is no longer capable of receiving critical security updates**"
                                                             }
                                                         }
                                                     }
