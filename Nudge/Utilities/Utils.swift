@@ -352,79 +352,46 @@ struct CameraUtilities {
     }
 }
 
-struct CommandLineUtilities {
-    let arguments = Set(CommandLine.arguments)
+import Foundation
 
+struct CommandLineUtilities {
+    let arguments: [String] = CommandLine.arguments
+
+    // Existing argument checks
     func bundleModeJSONEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-bundle-mode-json")
-        if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
-            LogManager.debug("-bundle-mode-json argument passed", logger: uiLog)
-            nudgeLogState.hasLoggedBundleMode = true
-        }
-        return argumentPassed
+        return checkAndLogArgument("-bundle-mode-json", logStateKey: &nudgeLogState.hasLoggedBundleMode)
     }
 
     func bundleModeProfileEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-bundle-mode-profile")
-        if argumentPassed && !nudgeLogState.hasLoggedBundleMode {
-            LogManager.debug("-bundle-mode-profile argument passed", logger: uiLog)
-            nudgeLogState.hasLoggedBundleMode = true
-        }
-        return argumentPassed
+        return checkAndLogArgument("-bundle-mode-profile", logStateKey: &nudgeLogState.hasLoggedBundleMode)
     }
 
     func debugUIModeEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-debug-ui-mode")
-        if argumentPassed && !nudgeLogState.afterFirstRun {
-            LogManager.debug("-debug-ui-mode argument passed", logger: uiLog)
-        }
-        return argumentPassed
+        return checkAndLogArgument("-debug-ui-mode", logStateKey: &nudgeLogState.afterFirstRun)
     }
 
     func demoModeEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-demo-mode")
-        if argumentPassed && !nudgeLogState.hasLoggedDemoMode {
-            nudgeLogState.hasLoggedDemoMode = true
-            LogManager.debug("-demo-mode argument passed", logger: uiLog)
-        }
-        return argumentPassed
+        return checkAndLogArgument("-demo-mode", logStateKey: &nudgeLogState.hasLoggedDemoMode)
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-force-screenshot-icon")
-        if argumentPassed && !nudgeLogState.hasLoggedScreenshotIconMode {
-            nudgeLogState.hasLoggedScreenshotIconMode = true
-            LogManager.debug("-force-screenshot-icon argument passed", logger: uiLog)
-        }
-        return argumentPassed
+        return checkAndLogArgument("-force-screenshot-icon", logStateKey: &nudgeLogState.hasLoggedScreenshotIconMode)
     }
 
     func registerSMAppArgumentPassed() -> Bool {
-        arguments.contains("--register")
+        return arguments.contains("--register")
     }
 
     func simpleModeEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-simple-mode")
-        if argumentPassed && !nudgeLogState.hasLoggedSimpleMode {
-            nudgeLogState.hasLoggedSimpleMode = true
-            LogManager.debug("-simple-mode argument passed", logger: uiLog)
-        }
-        return argumentPassed
+        return checkAndLogArgument("-simple-mode", logStateKey: &nudgeLogState.hasLoggedSimpleMode)
     }
 
     func unitTestingEnabled() -> Bool {
-        let argumentPassed = arguments.contains("-unit-testing")
-        if !nudgeLogState.hasLoggedUnitTestingMode {
-            if argumentPassed {
-                nudgeLogState.hasLoggedUnitTestingMode = true
-                LogManager.debug("-unit-testing argument passed", logger: uiLog)
-            }
-        }
-        return argumentPassed
+        return checkAndLogArgument("-unit-testing", logStateKey: &nudgeLogState.hasLoggedUnitTestingMode)
     }
 
     func unregisterSMAppArgumentPassed() -> Bool {
-        arguments.contains("--unregister")
+        return arguments.contains("--unregister")
     }
 
     func versionArgumentPassed() -> Bool {
@@ -434,7 +401,33 @@ struct CommandLineUtilities {
         }
         return argumentPassed
     }
+
+    func simulateHardwareID() -> String? {
+        return valueForArgument("-simulate-hardware-id")
+    }
+
+    func simulateOSVersion() -> String? {
+        return valueForArgument("-simulate-os-version")
+    }
+
+    private func checkAndLogArgument(_ argument: String, logStateKey: inout Bool) -> Bool {
+        let argumentPassed = arguments.contains(argument)
+        if argumentPassed && !logStateKey {
+            LogManager.debug("\(argument) argument passed", logger: uiLog)
+            logStateKey = true
+        }
+        return argumentPassed
+    }
+
+    // Helper function to get value for argument
+    private func valueForArgument(_ argument: String) -> String? {
+        if let index = arguments.firstIndex(of: argument), arguments.indices.contains(index + 1) {
+            return arguments[index + 1]
+        }
+        return nil
+    }
 }
+
 
 struct ConfigurationManager {
     private func determineTimerCycle(basedOn secondsRemaining: Int) -> Int {
@@ -665,6 +658,10 @@ struct DeviceManager {
         LogManager.debug("Hardware Bridge ID: \(bridgeID)", logger: utilsLog)
         LogManager.debug("Hardware Model ID: \(hardwareModelID)", logger: utilsLog)
         LogManager.debug("Gestalt Hardware Model ID: \(gestaltModelStringID)", logger: utilsLog)
+
+        if (CommandLineUtilities().simulateHardwareID() != nil) {
+            return [CommandLineUtilities().simulateHardwareID()!, CommandLineUtilities().simulateHardwareID()!, CommandLineUtilities().simulateHardwareID()!, CommandLineUtilities().simulateHardwareID()!]
+        }
 
         return [boardID.trimmingCharacters(in: .whitespacesAndNewlines), bridgeID.trimmingCharacters(in: .whitespacesAndNewlines), hardwareModelID.trimmingCharacters(in: .whitespacesAndNewlines), gestaltModelStringID.trimmingCharacters(in: .whitespacesAndNewlines)]
     }
@@ -1428,7 +1425,10 @@ struct VersionManager {
     }
 
     static func getMajorOSVersion() -> Int {
-        let majorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
+        var majorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
+        if (CommandLineUtilities().simulateOSVersion() != nil) {
+            majorOSVersion = Int(CommandLineUtilities().simulateOSVersion()!.split(separator: ".").first.map(String.init)!)!
+        }
         logOSVersion(majorOSVersion, for: "OS Version")
         return majorOSVersion
     }
@@ -1454,7 +1454,13 @@ struct VersionManager {
     }
 
     static func getMinorOSVersion() -> Int {
-        let minorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
+        var minorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
+//        if (CommandLineUtilities().simulateOSVersion() != nil) {
+//            let components = CommandLineUtilities().simulateOSVersion()!.split(separator: ".")
+//            if components.count > 1 {
+//                minorOSVersion = components.dropFirst().joined(separator: ".") // THIS WONT BE AN INT
+//            }
+//        }
         logOSVersion(minorOSVersion, for: "Minor OS Version")
         return minorOSVersion
     }
