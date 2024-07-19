@@ -102,6 +102,7 @@ struct AppStateManager {
             if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
                 requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
                 LogManager.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate)", logger: uiLog)
+                nudgePrimaryState.hasUpdatedDueToDracePeriodInstallDelay = true
                 return requiredInstallationDate
             }
         }
