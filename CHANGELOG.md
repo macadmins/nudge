@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2024-07-19
+Requires macOS 12.0 and higher.
+
+### Fixed
+- Some incorrect logic was applied to the `requiredInstallatonDate` when using the new `gracePeriodInstallDelay`
+  - https://github.com/macadmins/nudge/commit/61997a6137f1fd345a1314285cecc083f8674a15
+
+### Added
+- To ease "Unsupported UI" testing, you can now pass `-simulate-os-version` as an argument to override the built-in OS check.
+  - Ex: `-simulate-os-version "14.4.1"`
+- To ease "Unsupported UI" testing, you can now pass `-simulate-hardware-id` as an argument to override the built-in hardware ID check.
+  - Ex: `-simulate-hardware-id "J516cAP"`
+
 ## [2.0.0] - 2024-07-18
 Requires macOS 12.0 and higher.
 
