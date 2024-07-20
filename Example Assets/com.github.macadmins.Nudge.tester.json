@@ -1,7 +1,7 @@
 {
     "optionalFeatures": {
         "customSOFAFeedURL": "https://sofafeed.macadmins.io/v1/macos_data_feed.json",
-        "_customSOFAFeedURL": "https://sofa.macadmins.io/v1/macos_data_feed.json",
+        "_customSOFAFeedURL": "https://sofafeed.macadmins.io/beta/v1/macos_data_feed.json",
         "utilizeSOFAFeed": true,
     },
     "osVersionRequirements": [
