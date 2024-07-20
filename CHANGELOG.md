@@ -9,7 +9,7 @@ Requires macOS 12.0 and higher.
 
 ### Changed
 - With a default of `false`, many admins do not set the `randomDelay`, resulting in an increase in SOFA queries every 30 minutes due to the default LaunchAgent. Moving forward, this will be defaulted to `true` and an organization must actively opt-out of this behavior.
-
+  - Fixes [607](https://github.com/macadmins/nudge/issues/607)
 ## [2.0.1] - 2024-07-19
 Requires macOS 12.0 and higher.
 
