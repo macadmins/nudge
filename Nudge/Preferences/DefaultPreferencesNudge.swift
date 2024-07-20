@@ -416,7 +416,7 @@ struct UserExperienceVariables {
     static var randomDelay: Bool {
         userExperienceProfile?["randomDelay"] as? Bool ??
         userExperienceJSON?.randomDelay ??
-        false
+        true
     }
 }
 
