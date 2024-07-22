@@ -31,7 +31,7 @@ jobs:
         p12-file-base64: ${{ secrets.PKG_CERTIFICATES_P12_MAOS }}
         p12-password: ${{ secrets.PKG_CERTIFICATES_P12_PASSWORD_MAOS }}
 
-    - name: Run build package script
+    - name: Run build script
       run: ./build_nudge.zsh
 
     - name: get environment variables
@@ -40,7 +40,7 @@ jobs:
          echo "NUDGE_VERSION=$(/bin/cat ./build_info.txt)" >> $GITHUB_ENV
          echo "NUDGE_MAIN_VERSION=$(/bin/cat ./build_info_main.txt)" >> $GITHUB_ENV
 
-    - name: Upload packages
+    - name: Upload zip archive
       uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
       with:
         name: packages
