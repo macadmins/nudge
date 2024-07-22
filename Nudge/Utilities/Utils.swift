@@ -1354,7 +1354,7 @@ struct UIUtilities {
 
     func postUpdateDeviceActions(userClicked: Bool, unSupportedUI: Bool) {
         if userClicked {
-            LogManager.notice(unSupportedUI ? "User clicked updateDevice" : "User clicked updateDevice (Replace My Device) via Unsupported UI workflow", logger: uiLog)
+            LogManager.notice(unSupportedUI ? "User clicked updateDevice (Replace My Device) via Unsupported UI workflow" : "User clicked updateDevice" , logger: uiLog)
             // Remove forced blur and reset window level
             if !nudgePrimaryState.backgroundBlur.isEmpty {
                 nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
@@ -1365,7 +1365,7 @@ struct UIUtilities {
                 NSApp.windows.first?.level = .normal
             }
         } else {
-            LogManager.notice(unSupportedUI ? "Synthetically clicked updateDevice due to allowedDeferral count" : "Synthetically clicked updateDevice via Unsupported UI due to allowedDeferral count", logger: uiLog)
+            LogManager.notice(unSupportedUI ? "Synthetically clicked updateDevice (Replace My Device) via Unsupported UI workflow due to allowedDeferral count" : "Synthetically clicked updateDevice due to allowedDeferral count" , logger: uiLog)
         }
     }
 
