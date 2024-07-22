@@ -223,6 +223,15 @@ extension MacOSDataFeed {
 
 class SOFA: NSObject, URLSessionDelegate {
     func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?, eTag: String?) {
+        if url.scheme == "file" {
+            do {
+                let data = try Data(contentsOf: url)
+                return (data, nil, nil, 200, nil)
+            } catch {
+                return (nil, nil, error, nil, nil)
+            }
+        }
+
         let semaphore = DispatchSemaphore(value: 0)
         let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
         var request = URLRequest(url: url)

@@ -366,6 +366,10 @@ struct CommandLineUtilities {
         return checkAndLogArgument("-bundle-mode-profile", logStateKey: &nudgeLogState.hasLoggedBundleMode)
     }
 
+    func customSOFAFeedURLOption() -> String? {
+        return valueForArgument("-custom-sofa-feed-url")
+    }
+
     func debugUIModeEnabled() -> Bool {
         return checkAndLogArgument("-debug-ui-mode", logStateKey: &nudgeLogState.afterFirstRun)
     }

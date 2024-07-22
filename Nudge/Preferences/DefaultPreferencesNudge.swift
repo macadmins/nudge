@@ -145,6 +145,7 @@ struct OptionalFeatureVariables {
     }
 
     static var customSOFAFeedURL: String {
+        CommandLineUtilities().customSOFAFeedURLOption() ??
         optionalFeaturesProfile?["customSOFAFeedURL"] as? String ??
         optionalFeaturesJSON?.customSOFAFeedURL ??
         "https://sofafeed.macadmins.io/v1/macos_data_feed.json"
