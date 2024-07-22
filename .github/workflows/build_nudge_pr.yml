@@ -47,6 +47,7 @@ jobs:
         path: outputs/
 
     - name: Clean up PR safety tag
+      if: always()
       id: clean_up_pr_safety_tag
       run: |
          /usr/bin/curl --silent --fail-with-body -X DELETE -H 'Accept: application/vnd.github.v3+json' -H 'Authorization: token ${{ github.token }}' 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels/safe-to-test'
