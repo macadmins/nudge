@@ -4,12 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3] - 2024-07-22
+Requires macOS 12.0 and higher.
+
+### Fixed
+- When a user clicked on the `updateDevice` button, the logs would incorrectly state the user was entering the "Unsupported UI" workflow.
+
+### Added
+- To ease SOFA testing, you can now pass `-custom-sofa-feed-url` as an argument to override the built-in preferences and/or custom profile/json.
+  - Ex: `-custom-sofa-feed-url "file:///Users/Shared/macos_data_feed.json"`
+
 ## [2.0.2] - 2024-07-20
 Requires macOS 12.0 and higher.
 
 ### Changed
 - With a default of `false`, many admins do not set the `randomDelay`, resulting in an increase in SOFA queries every 30 minutes due to the default LaunchAgent. Moving forward, this will be defaulted to `true` and an organization must actively opt-out of this behavior.
   - Fixes [607](https://github.com/macadmins/nudge/issues/607)
+
 ## [2.0.1] - 2024-07-19
 Requires macOS 12.0 and higher.
 
