@@ -2,6 +2,13 @@
 #
 # Build script for Nudge
 
+check_exit_code() {
+    if [ "$1" != "0" ]; then
+        echo "$2: $1" 1>&2
+        exit 1
+    fi
+}
+
 # Variables
 XCODE_PATH="/Applications/Xcode_15.4.app"
 APP_SIGNING_IDENTITY="Developer ID Application: Mac Admins Open Source (T4SK8ZXCXG)"
@@ -42,20 +49,12 @@ fi
 # Perform unit tests
 echo "Running Nudge unit tests"
 $XCODE_BUILD test -project "$TOOLSDIR/Nudge.xcodeproj" -scheme "Nudge - Debug" -destination 'platform=macos'
-XCBT_RESULT="$?"
-if [ "${XCBT_RESULT}" != "0" ]; then
-    echo "Error running xcodebuild: ${XCBT_RESULT}" 1>&2
-    exit 1
-fi
+check_exit_code "$?" "Error running xcodebuild unit tests"
 
 # build nudge
 echo "Building Nudge"
 $XCODE_BUILD -project "$TOOLSDIR/Nudge.xcodeproj" CODE_SIGN_IDENTITY=$APP_SIGNING_IDENTITY OTHER_CODE_SIGN_FLAGS="--timestamp"
-XCB_RESULT="$?"
-if [ "${XCB_RESULT}" != "0" ]; then
-    echo "Error running xcodebuild: ${XCB_RESULT}" 1>&2
-    exit 1
-fi
+check_exit_code "$?" "Error running xcodebuild"
 
 # Setup notary item
 $XCODE_NOTARY_PATH store-credentials --apple-id "opensource@macadmins.io" --team-id "T4SK8ZXCXG" --password "$2" nudge
@@ -101,11 +100,7 @@ if [ -d ${MP_BINDIR} ]; then
     /usr/bin/sudo /bin/rm -rf ${MP_BINDIR}
 fi
 /usr/bin/unzip ${MP_ZIP} -d ${MP_BINDIR}
-DL_RESULT="$?"
-if [ "${DL_RESULT}" != "0" ]; then
-    echo "Error downloading munki-pkg tool: ${DL_RESULT}" 1>&2
-    exit 1
-fi
+check_exit_code "$?" "Error downloading munki-pkg tool"
 
 # Create the json file for signed munkipkg Nudge pkg
 /bin/cat << SIGNED_JSONFILE > "$NUDGE_PKG_PATH/build-info.json"
@@ -128,15 +123,15 @@ SIGNED_JSONFILE
 # Create the signed pkg
 python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_PKG_PATH"
 PKG_RESULT="$?"
-if [ "${PKG_RESULT}" != "0" ]; then
-  echo "Could not sign package: ${PKG_RESULT}" 1>&2
-else
-  # Notarize nudge package
-  $XCODE_NOTARY_PATH submit "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
-  $XCODE_STAPLER_PATH staple "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
-  # Move the signed pkg
-  /bin/mv "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
-fi
+check_exit_code "$?" "Could not sign package: Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
+
+# Notarize nudge package
+$XCODE_NOTARY_PATH submit "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+check_exit_code "$?" "Could not notarize package: Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
+$XCODE_STAPLER_PATH staple "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
+check_exit_code "$?" "Could not staple package: Nudge-$AUTOMATED_NUDGE_BUILD.pkg"
+# Move the signed pkg
+/bin/mv "$NUDGE_PKG_PATH/build/Nudge-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
 
 # move the la to the payload folder
 echo "Moving LaunchAgent to payload folder"
@@ -172,16 +167,15 @@ SIGNED_JSONFILE
 
 # Create the signed pkg
 python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LA_PKG_PATH"
-PKG_RESULT="$?"
-if [ "${PKG_RESULT}" != "0" ]; then
-  echo "Could not sign package: ${PKG_RESULT}" 1>&2
-else
-  # Notarize launchagent package
-  $XCODE_NOTARY_PATH submit "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" --keychain-profile "nudge" --wait
-  $XCODE_STAPLER_PATH staple "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg"
-  # Move the signed pkg
-  /bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" "$OUTPUTSDIR"
-fi
+check_exit_code "$?" "Could not sign package: Nudge_LaunchAgent-1.0.1.pkg"
+
+# Notarize launchagent package
+$XCODE_NOTARY_PATH submit "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" --keychain-profile "nudge" --wait
+check_exit_code "$?" "Could not notarize package: Nudge_LaunchAgent-1.0.1.pkg"
+$XCODE_STAPLER_PATH staple "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg"
+check_exit_code "$?" "Could not staple package: Nudge_LaunchAgent-1.0.1.pkg"
+# Move the signed pkg
+/bin/mv "$NUDGE_LA_PKG_PATH/build/Nudge_LaunchAgent-1.0.1.pkg" "$OUTPUTSDIR"
 
 # move the ld to the payload folder
 echo "Moving LaunchDaemon to logging payload folder"
@@ -217,16 +211,15 @@ SIGNED_JSONFILE
 
 # Create the signed pkg
 python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$NUDGE_LD_PKG_PATH"
-PKG_RESULT="$?"
-if [ "${PKG_RESULT}" != "0" ]; then
-  echo "Could not sign package: ${PKG_RESULT}" 1>&2
-else
-  # Notarize logger package
-  $XCODE_NOTARY_PATH submit "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" --keychain-profile "nudge" --wait
-  $XCODE_STAPLER_PATH staple "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg"
-  # Move the signed pkg
-  /bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" "$OUTPUTSDIR"
-fi
+check_exit_code "$?" "Could not sign package: Nudge_Logger-1.0.1.pkg"
+
+# Notarize logger package
+$XCODE_NOTARY_PATH submit "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" --keychain-profile "nudge" --wait
+check_exit_code "$?" "Could not notarize package: Nudge_Logger-1.0.1.pkg"
+$XCODE_STAPLER_PATH staple "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg"
+check_exit_code "$?" "Could not staple package: Nudge_Logger-1.0.1.pkg"
+# Move the signed pkg
+/bin/mv "$NUDGE_LD_PKG_PATH/build/Nudge_Logger-1.0.1.pkg" "$OUTPUTSDIR"
 
 # Create the Essentials package
 echo "Moving Nudge.app to payload folder"
@@ -264,16 +257,15 @@ SIGNED_JSONFILE
 
 # Create the signed Nudge Essentials pkg
 python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$ESSENTIALS_PKG_PATH"
-PKG_RESULT="$?"
-if [ "${PKG_RESULT}" != "0" ]; then
-  echo "Could not sign package: ${PKG_RESULT}" 1>&2
-else
-  # Notarize Nudge Essentials package
-  $XCODE_NOTARY_PATH submit "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
-  $XCODE_STAPLER_PATH staple "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg"
-  # Move the Nudge Essentials signed/notarized pkg
-  /bin/mv "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
-fi
+check_exit_code "$?" "Could not sign package: Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg"
+
+# Notarize Nudge Essentials package
+$XCODE_NOTARY_PATH submit "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+check_exit_code "$?" "Could not notarize package: Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg"
+$XCODE_STAPLER_PATH staple "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg"
+check_exit_code "$?" "Could not staple package: Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg"
+# Move the Nudge Essentials signed/notarized pkg
+/bin/mv "$ESSENTIALS_PKG_PATH/build/Nudge_Essentials-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
 
 # Create the Suite package
 echo "Moving Nudge.app to payload folder"
@@ -314,13 +306,12 @@ SIGNED_JSONFILE
 
 # Create the signed Nudge Suite pkg
 python3 "${MP_BINDIR}/munki-pkg-${MP_SHA}/munkipkg" "$SUITE_PKG_PATH"
-PKG_RESULT="$?"
-if [ "${PKG_RESULT}" != "0" ]; then
-  echo "Could not sign package: ${PKG_RESULT}" 1>&2
-else
-  # Notarize Nudge Suite package
-  $XCODE_NOTARY_PATH submit "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
-  $XCODE_STAPLER_PATH staple "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg"
-  # Move the Nudge Suite signed/notarized pkg
-  /bin/mv "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
-fi
+check_exit_code "$?" "Could not sign package: Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg"
+
+# Notarize Nudge Suite package
+$XCODE_NOTARY_PATH submit "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg" --keychain-profile "nudge" --wait
+check_exit_code "$?" "Could not notarize package: Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg"
+$XCODE_STAPLER_PATH staple "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg"
+check_exit_code "$?" "Could not staple package: Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg"
+# Move the Nudge Suite signed/notarized pkg
+/bin/mv "$SUITE_PKG_PATH/build/Nudge_Suite-$AUTOMATED_NUDGE_BUILD.pkg" "$OUTPUTSDIR"
