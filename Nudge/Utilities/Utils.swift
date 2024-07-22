@@ -1350,7 +1350,7 @@ struct UIUtilities {
 
     func postUpdateDeviceActions(userClicked: Bool, unSupportedUI: Bool) {
         if userClicked {
-            LogManager.notice(unSupportedUI ? "User clicked updateDevice" : "User clicked updateDevice via Unsupported UI", logger: uiLog)
+            LogManager.notice(unSupportedUI ? "User clicked updateDevice" : "User clicked updateDevice (Replace My Device) via Unsupported UI workflow", logger: uiLog)
             // Remove forced blur and reset window level
             if !nudgePrimaryState.backgroundBlur.isEmpty {
                 nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
