@@ -658,7 +658,7 @@
                             },
                             "unsupportedURLs": {
                                 "description": "The unsupportedURL - per country localization.",
-                                "title": "aboutUpdateURLs",
+                                "title": "unsupportedURLs",
                                 "anyOf": [
                                     {
                                         "title": "Not Configured",
