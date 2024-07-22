@@ -378,6 +378,10 @@ struct CommandLineUtilities {
         return checkAndLogArgument("-demo-mode", logStateKey: &nudgeLogState.hasLoggedDemoMode)
     }
 
+    func disableRandomDelayArgumentPassed() -> Bool {
+        return arguments.contains("-disable-random-delay")
+    }
+
     func forceScreenShotIconModeEnabled() -> Bool {
         return checkAndLogArgument("-force-screenshot-icon", logStateKey: &nudgeLogState.hasLoggedScreenshotIconMode)
     }
