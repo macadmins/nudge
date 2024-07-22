@@ -73,7 +73,7 @@ class NudgeTests: XCTestCase {
         XCTAssertEqual(
             coerceStringToDate(dateString: "2022-02-01T00:00:00Z"),
             AppStateManager().gracePeriodLogic(
-                currentDate: coerceStringToDate(dateString: "2022-01-01T00:30:00Z"),
+                currentDate: coerceStringToDate(dateString: "2022-01-15T00:00:00Z"),
                 testFileDate: coerceStringToDate(dateString: "2022-01-01T00:00:00Z")
             )
         )
