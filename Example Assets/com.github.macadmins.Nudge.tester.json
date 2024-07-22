@@ -2,20 +2,17 @@
     "optionalFeatures": {
         "customSOFAFeedURL": "https://sofafeed.macadmins.io/v1/macos_data_feed.json",
         "_customSOFAFeedURL": "https://sofafeed.macadmins.io/beta/v1/macos_data_feed.json",
-        "utilizeSOFAFeed": true,
     },
     "osVersionRequirements": [
         {
             "aboutUpdateURL": "https://apple.com",
-            "requiredMinimumOSVersion": "14.5",
-            "requiredInstallationDate": "2025-01-01T00:00:00",
+            "requiredMinimumOSVersion": "latest",
             "unsupportedURL": "https://google.com"
         }
     ],
     "userExperience": {
         "elapsedRefreshCycle": 10,
         "initialRefreshCycle": 10,
-        "loadLaunchAgent": false,
         "nudgeRefreshCycle": 5,
         "randomDelay": false
     },

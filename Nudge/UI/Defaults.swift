@@ -97,7 +97,6 @@ class AppState: ObservableObject {
     @Published var deferViewIsPresented = false
     @Published var additionalInfoViewIsPresented = false
     @Published var differentiateWithoutColor = NSWorkspace.shared.accessibilityDisplayShouldDifferentiateWithoutColor
-    @Published var hasUpdatedDueToDracePeriodInstallDelay = false
 }
 
 class DNDConfig {
