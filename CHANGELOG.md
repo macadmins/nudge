@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.3] - 2024-07-22
 Requires macOS 12.0 and higher.
 
+### Changed
+- The command line argument `-disable-randomDelay` is now `-disable-random-delay`
+
 ### Fixed
 - When a user clicked on the `updateDevice` button, the logs would incorrectly state the user was entering the "Unsupported UI" workflow.
 - When running unit tests, Nudge no longer honors the randomDelay key or command line argument
@@ -24,9 +27,6 @@ Requires macOS 12.0 and higher.
 
 ## [2.0.1] - 2024-07-19
 Requires macOS 12.0 and higher.
-
-### Changed
-- The command line argument `-disable-randomDelay` is now `-disable-random-delay`
 
 ### Fixed
 - Some incorrect logic was applied to the `requiredInstallatonDate` when using the new `gracePeriodInstallDelay`
