@@ -912,7 +912,7 @@
                                     "type": "integer",
                                     "options": {
                                         "inputAttributes": {
-                                            "placeholder": "24"
+                                            "placeholder": "23"
                                         }
                                     }
                                 }

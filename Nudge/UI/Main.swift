@@ -237,11 +237,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
                         requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
-                        LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
-                    }
-                    if nudgePrimaryState.hasUpdatedDueToDracePeriodInstallDelay {
-                        requiredInstallationDate = requiredInstallationDate.addingTimeInterval(slaExtension)
-                        LogManager.notice("Extending requiredInstallationDate to \(requiredInstallationDate)", logger: sofaLog)
+                        LogManager.notice("Setting requiredInstallationDate via SOFA to \(requiredInstallationDate)", logger: sofaLog)
                     }
                     LogManager.notice("SOFA Matched OS Version: \(selectedOS!.productVersion)", logger: sofaLog)
                     LogManager.notice("SOFA Assets: \(selectedOS!.supportedDevices)", logger: sofaLog)
@@ -287,8 +283,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         checkForBadProfilePath()
         handleCommandLineArguments()
         applyRandomDelayIfNecessary()
-        applyGracePeriodLogic()
         sofaPreLaunchLogic()
+        applyGracePeriodLogic()
         applydelayNudgeEventLogic()
         updateNudgeState()
         handleSoftwareUpdateRequirements()

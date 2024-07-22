@@ -87,29 +87,33 @@ struct AppStateManager {
     }
 
     private func calculateNewRequiredInstallationDateIfNeeded(currentDate: Date, gracePeriodPathCreationDate: Date) -> Date {
+        let gracePeriodInstallDelay = UserExperienceVariables.gracePeriodInstallDelay
+        let gracePeriodLaunchDelay = UserExperienceVariables.gracePeriodLaunchDelay
+        let gracePeriodPath = UserExperienceVariables.gracePeriodPath
         let gracePeriodPathCreationTimeInHours = Int(currentDate.timeIntervalSince(gracePeriodPathCreationDate) / 3600)
-        let combinedGracePeriod = UserExperienceVariables.gracePeriodInstallDelay + UserExperienceVariables.gracePeriodLaunchDelay
+        let gracePeriodsDelay = gracePeriodInstallDelay + gracePeriodLaunchDelay
+        let originalRequiredInstallationDate = requiredInstallationDate
 
-        if currentDate > PrefsWrapper.requiredInstallationDate || combinedGracePeriod > DateManager().getNumberOfHoursRemaining(currentDate: currentDate) {
-            if UserExperienceVariables.gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
-                LogManager.info("Device within gracePeriodLaunchDelay, exiting Nudge", logger: uiLog)
-                nudgePrimaryState.shouldExit = true
-                return currentDate
-            } else {
-                LogManager.info("gracePeriodPath (\(UserExperienceVariables.gracePeriodPath)) outside of gracePeriodLaunchDelay (\(UserExperienceVariables.gracePeriodLaunchDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
-            }
-
-            if UserExperienceVariables.gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
-                requiredInstallationDate = gracePeriodPathCreationDate.addingTimeInterval(Double(combinedGracePeriod) * 3600)
-                LogManager.notice("Device permitted for gracePeriods - setting date to: \(requiredInstallationDate)", logger: uiLog)
-                nudgePrimaryState.hasUpdatedDueToDracePeriodInstallDelay = true
-                return requiredInstallationDate
-            }
+        // Bail Nudge if within gracePeriodLaunchDelay
+        if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
+            LogManager.info("gracePeriodPath (\(gracePeriodPath)) within gracePeriodLaunchDelay (\(gracePeriodLaunchDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
+            nudgePrimaryState.shouldExit = true
+            return currentDate
+        } else {
+            LogManager.info("gracePeriodPath (\(gracePeriodPath)) outside of gracePeriodLaunchDelay (\(gracePeriodLaunchDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
         }
 
+        if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
+            if currentDate > originalRequiredInstallationDate {
+                requiredInstallationDate = currentDate.addingTimeInterval(Double(gracePeriodsDelay) * 3600)
+                LogManager.info("Device permitted for gracePeriodInstallDelay - setting date from: \(originalRequiredInstallationDate) to: \(requiredInstallationDate)", logger: uiLog)
+                return requiredInstallationDate
+            }
+        } else {
+            LogManager.info("gracePeriodPath (\(gracePeriodPath)) outside of gracePeriodInstallDelay (\(gracePeriodInstallDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
+        }
         return PrefsWrapper.requiredInstallationDate
     }
-
 
     func exitNudge() {
         LogManager.notice("Nudge is terminating due to condition met", logger: uiLog)
@@ -118,13 +122,29 @@ struct AppStateManager {
     }
 
     func getCreationDateForPath(_ path: String, testFileDate: Date?) -> Date? {
-        let attributes = try? FileManager.default.attributesOfItem(atPath: path)
-        if attributes?[.size] as? Int == 0  && testFileDate == nil {
+        do {
+            let attributes = try FileManager.default.attributesOfItem(atPath: path)
+
+            // Check if the file size is 0
+            if let fileSize = attributes[.size] as? Int, fileSize == 0 {
+                // If file size is 0 and testFileDate is provided, use testFileDate
+                if let testDate = testFileDate {
+                    return testDate
+                } else {
+                    // Fallback to the creation date from the file attributes if testFileDate is nil
+                    return attributes[.creationDate] as? Date ?? DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
+                }
+            }
+
+            // Return the creation date from the file attributes if the file size is not 0
+            return attributes[.creationDate] as? Date ?? DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
+
+        } catch {
+            print("Error retrieving file attributes: \(error)")
             return DateManager().coerceStringToDate(dateString: "2020-08-06T00:00:00Z")
         }
-        let creationDate = attributes?[.creationDate] as? Date
-        return testFileDate ?? creationDate
     }
+
 
     func getModifiedDateForPath(_ path: String, testFileDate: Date?) -> Date? {
         let attributes = try? FileManager.default.attributesOfItem(atPath: path)
@@ -169,7 +189,8 @@ struct AppStateManager {
         return signingCertificateSummary
     }
 
-    func gracePeriodLogic(currentDate: Date = DateManager().getCurrentDate(), testFileDate: Date? = nil) -> Date {
+    func gracePeriodLogic(currentDate: Date? = nil, testFileDate: Date? = nil) -> Date {
+        let computedCurrentDate = currentDate == nil ? Date() : currentDate!
         guard UserExperienceVariables.allowGracePeriods || PrefsWrapper.allowGracePeriods,
               !CommandLineUtilities().demoModeEnabled() else {
             return PrefsWrapper.requiredInstallationDate
@@ -182,7 +203,7 @@ struct AppStateManager {
             return PrefsWrapper.requiredInstallationDate
         }
 
-        return calculateNewRequiredInstallationDateIfNeeded(currentDate: currentDate, gracePeriodPathCreationDate: gracePeriodPathCreationDate)
+        return calculateNewRequiredInstallationDateIfNeeded(currentDate: computedCurrentDate, gracePeriodPathCreationDate: gracePeriodPathCreationDate)
     }
 
     func delayNudgeEventLogic(currentDate: Date = DateManager().getCurrentDate(), testFileDate: Date? = nil) -> Date {
