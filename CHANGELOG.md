@@ -13,7 +13,7 @@ Requires macOS 12.0 and higher.
   - `gracePeriodLogic` is now computed _after_ the SOFA feed assessment
 - Logic introduced in v2.0.2 accidentally forced the `randomDelay` when using the `-demo-mode` argument. This is now removed.
 - `gracePeriodsPath` objects that were 0 bytes in size were ignored. This has been modified to allow these files
-  - Ex: Ann admin simply runs `touch` on a file.
+  - Ex: An admin simply runs `touch` on a file.
 - The JAMF JSON schema had an incorrect title value for `unsupportedURLs`
 - PRs sent to the Nudge repo will now have the tag `safe-to-test` removed after every CI/CD run, regardless of pass/fail status.
 - The PR build script has been fixed to re-upload zipped `Nudge.app` files for user testing
