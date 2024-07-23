@@ -173,7 +173,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func sofaPreLaunchLogic() {
-        // TODO: Add more logging to "unsupported devices" UI.
         if OptionalFeatureVariables.utilizeSOFAFeed {
             var selectedOS: OSInformation?
             var foundMatch = false
@@ -353,7 +352,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func applyRandomDelayIfNecessary() {
-        if UserExperienceVariables.randomDelay && !(CommandLineUtilities().disableRandomDelayArgumentPassed() || CommandLineUtilities().unitTestingEnabled()) {
+        if UserExperienceVariables.randomDelay && !(CommandLineUtilities().disableRandomDelayArgumentPassed() || CommandLineUtilities().unitTestingEnabled() || CommandLineUtilities().demoModeEnabled()) {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
 
