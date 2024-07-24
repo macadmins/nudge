@@ -553,10 +553,20 @@ struct DateManager {
         return formatter
     }()
 
-    func coerceDateToString(date: Date, formatterString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = formatterString
-        return formatter.string(from: date)
+    func coerceDateToString(date: Date, formatterString: String, locale: Locale? = nil) -> String {
+        if formatterString == "MM/dd/yyyy" {
+            // Use the specified locale or the current locale if none is provided
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .none
+            dateFormatter.locale = locale ?? Locale.current
+            return dateFormatter.string(from: date)
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = formatterString
+            formatter.locale = locale ?? Locale.current
+            return formatter.string(from: date)
+        }
     }
 
     func coerceStringToDate(dateString: String) -> Date {
