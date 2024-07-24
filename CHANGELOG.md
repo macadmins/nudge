@@ -12,6 +12,7 @@ Requires macOS 12.0 and higher.
   - **WARNNG BREAKING CHANGE** - This changes the SLA computation and will result in a different `requiredInstallationDate` than offered in Nudge v2.0 -> v2.01.
   - Ex: Device is on 14.3 and needing to go to 14.5.
     - While 14.4.1 -> 14.5 are not under active exploit, 14.4 contains fixes for 14.3 that were under active exploit.
+  - Addresses [610](https://github.com/macadmins/nudge/issues/610) and [613](https://github.com/macadmins/nudge/issues/613)
 
 ## [2.0.4] - 2024-07-23
 Requires macOS 12.0 and higher.
