@@ -16,6 +16,10 @@ Requires macOS 12.0 and higher.
 - When `showRequiredDate` is set to `True` and the admin is using the default values for `requiredInstallationDisplayFormat`, Nudge will attempt to understand the current locale and display the menu item appropriately.
   - Addresses [615](https://github.com/macadmins/nudge/issues/615)
 
+### Fixed
+- Several components in the Github Actions were triggering deprecation warnings. These have been addressed by updating to the latest version of these components
+  - Addresses [616](https://github.com/macadmins/nudge/issues/616)
+
 ## [2.0.4] - 2024-07-23
 Requires macOS 12.0 and higher.
 
