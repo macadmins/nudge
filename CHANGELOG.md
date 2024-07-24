@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.5] - 2024-07-24
+Requires macOS 12.0 and higher.
+
+### Changed
+- The `Actively Exploited` logic internally within Nudge and the UI on the left sidebar will show `True` if any previous updates missing on the device had active exploits.
+  - **WARNNG BREAKING CHANGE** - This changes the SLA computation and will result in a different `requiredInstallationDate` than offered in Nudge v2.0 -> v2.01.
+  - Ex: Device is on 14.3 and needing to go to 14.5.
+    - While 14.4.1 -> 14.5 are not under active exploit, 14.4 contains fixes for 14.3 that were under active exploit.
+
 ## [2.0.4] - 2024-07-23
 Requires macOS 12.0 and higher.
 
