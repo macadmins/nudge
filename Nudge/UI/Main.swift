@@ -279,22 +279,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
                         if OSVersionRequirementVariables.minorVersionRecalculationThreshold > 0 {
-                            let safeIndex = max(0, minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)) // Ensure the index is within bounds
-                            let targetVersion = minorVersions[safeIndex]
-                            var foundVersion = false
-                            LogManager.notice("minorVersionRecalculationThreshold is set - Targeting macOS \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
-                            for osVersion in macOSSOFAAssets {
-                                for securityRelease in osVersion.securityReleases {
-                                    if securityRelease.productVersion == targetVersion && VersionManager.versionLessThan(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
-                                        requiredInstallationDate = securityRelease.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
-                                        foundVersion = true
-                                        break
+                            if minorVersions.isEmpty {
+                                requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                            } else {
+                                let safeIndex = max(0, minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)) // Ensure the index is within bounds
+                                let targetVersion = minorVersions[safeIndex]
+                                var foundVersion = false
+                                LogManager.notice("minorVersionRecalculationThreshold is set - Targeting macOS \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
+                                for osVersion in macOSSOFAAssets {
+                                    for securityRelease in osVersion.securityReleases.reversed() {
+                                        if VersionManager.versionGreaterThanOrEqual(currentVersion: securityRelease.productVersion, newVersion: targetVersion) && VersionManager.versionLessThan(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
+                                            requiredInstallationDate = securityRelease.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                            foundVersion = true
+                                            break
+                                        }
                                     }
                                 }
-                            }
-                            if !foundVersion {
-                                LogManager.warning("Could not find requiredInstallationDate from target macOS \(targetVersion)", logger: sofaLog)
-                                requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                if !foundVersion {
+                                    LogManager.warning("Could not find requiredInstallationDate from target macOS \(targetVersion)", logger: sofaLog)
+                                    requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                }
                             }
                         } else {
                             requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
