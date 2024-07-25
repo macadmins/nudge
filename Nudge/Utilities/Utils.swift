@@ -894,6 +894,15 @@ struct LoggerUtilities {
         return PrefsWrapper.requiredMinimumOSVersion == "0.0"
     }
 
+    func printTimeInterval(_ interval: TimeInterval) -> String {
+        let days = Int(interval) / (24 * 3600)
+        let hours = (Int(interval) % (24 * 3600)) / 3600
+        let minutes = (Int(interval) % 3600) / 60
+        let seconds = Int(interval) % 60
+
+        return "\(days) days, \(hours) hours, \(minutes) minutes, \(seconds) seconds"
+    }
+
     private func updateDeferralCount(_ count: inout Int, resetCount: Bool, key: String) {
         if CommandLineUtilities().demoModeEnabled() {
             count = 0
