@@ -4,6 +4,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.5] - 2024-07-24
+Requires macOS 12.0 and higher.
+
+### Added
+- To artificially change the `requredInstallationDate` to honor a previous macOS minor version, set `minorVersionRecalculationThreshold` under `osVersionRequirement` in amount of minor versions.
+  - Ex: `minorVersionRecalculationThreshold` is set to 1 and SOFA feed has macOS 14.5 available
+    - macOS device is 14.0: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.2: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.3: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+      - This device's requiredInstallationDate is different than the others as there is no active exploit on 14.4.1
+    - macOS device is 14.5: Required OS: 14.5 - Fully updated
+  - Ex: `minorVersionRecalculationThreshold` is set to 2 and SOFA feed has macOS 14.5 available
+    - macOS device is 14.0: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
+    - macOS device is 14.1: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
+    - macOS device is 14.2: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
+    - macOS device is 14.3: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
+    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
+    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+    - macOS device is 14.5: Required OS: 14.5 - Fully updated
+  - Addresses [612](https://github.com/macadmins/nudge/issues/612)
+
+### Changed
+- The `Actively Exploited` logic internally within Nudge and the UI on the left sidebar will show `True` if any previous updates missing on the device had active exploits.
+  - **WARNNG BREAKING CHANGE** - This changes the SLA computation and will result in a different `requiredInstallationDate` than offered in Nudge v2.0 -> v2.01.
+  - Ex: Device is on 14.3 and needing to go to 14.5.
+    - While 14.4.1 -> 14.5 are not under active exploit, 14.4 contains fixes for 14.3 that were under active exploit.
+  - Addresses [610](https://github.com/macadmins/nudge/issues/610) and [613](https://github.com/macadmins/nudge/issues/613)
+- When `showRequiredDate` is set to `True` and the admin is using the default values for `requiredInstallationDisplayFormat`, Nudge will attempt to understand the current locale and display the menu item appropriately.
+  - Addresses [615](https://github.com/macadmins/nudge/issues/615)
+
+### Fixed
+- Several components in the Github Actions were triggering deprecation warnings. These have been addressed by updating to the latest version of these components
+  - Addresses [616](https://github.com/macadmins/nudge/issues/616)
+
 ## [2.0.4] - 2024-07-23
 Requires macOS 12.0 and higher.
 

@@ -178,6 +178,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             var foundMatch = false
             Globals.sofaAssets = NetworkFileManager().getSOFAAssets()
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
+                // Get current installed OS version
+                let currentInstalledVersion = GlobalVariables.currentOSVersion
+                let currentMajorVersion = VersionManager.getMajorVersion(from: currentInstalledVersion)
+
                 for osVersion in macOSSOFAAssets {
                     if PrefsWrapper.requiredMinimumOSVersion == "latest" {
                         selectedOS = osVersion.latest
@@ -204,24 +208,64 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             continue
                         }
                     }
-                    let activelyExploitedCVEs = selectedOS!.activelyExploitedCVEs.count > 0
+
+                    var totalActivelyExploitedCVEs = 0
+                    let selectedOSVersion = selectedOS!.productVersion
+                    var allVersions = [String]()
+
+                    // Collect all versions
+                    for osVersion in macOSSOFAAssets {
+                        allVersions.append(osVersion.latest.productVersion)
+                        for securityRelease in osVersion.securityReleases {
+                            allVersions.append(securityRelease.productVersion)
+                        }
+                    }
+
+                    // Sort versions
+                    allVersions.sort { VersionManager.versionLessThan(currentVersion: $0, newVersion: $1) }
+
+                    // Filter versions between current and selected OS version
+                    let filteredVersions = VersionManager().removeDuplicates(from: allVersions.filter {
+                        VersionManager.versionGreaterThanOrEqual(currentVersion: $0, newVersion: currentInstalledVersion) &&
+                        VersionManager.versionLessThanOrEqual(currentVersion: $0, newVersion: selectedOSVersion)
+                    })
+
+                    // Filter versions with the same major version as the current installed version
+                    let minorVersions = VersionManager().removeDuplicates(from: filteredVersions.filter { version in
+                        VersionManager.getMajorVersion(from: version) == currentMajorVersion
+                    })
+
+                    // Count actively exploited CVEs in the filtered versions
+                    LogManager.notice("Assessing macOS version range for active exploits: \(filteredVersions) ", logger: sofaLog)
+                    for osVersion in macOSSOFAAssets {
+                        if filteredVersions.contains(osVersion.latest.productVersion) {
+                            totalActivelyExploitedCVEs += osVersion.latest.activelyExploitedCVEs.count
+                        }
+                        for securityRelease in osVersion.securityReleases {
+                            if filteredVersions.contains(securityRelease.productVersion) {
+                                totalActivelyExploitedCVEs += securityRelease.activelyExploitedCVEs.count
+                            }
+                        }
+                    }
+                    let activelyExploitedCVEs = totalActivelyExploitedCVEs > 0
+
                     let presentCVEs = selectedOS!.cves.count > 0
                     let slaExtension: TimeInterval
                     switch (activelyExploitedCVEs, presentCVEs, AppStateManager().requireMajorUpgrade()) {
-                        case (false, true, true):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA * 86400)
-                        case (false, true, false):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMinorUpdateSLA * 86400)
-                        case (true, true, true):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
-                        case (true, true, false):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
-                        case (false, false, true):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardMajorUpgradeSLA * 86400)
-                        case (false, false, false):
-                            slaExtension = TimeInterval(OSVersionRequirementVariables.standardMinorUpdateSLA * 86400)
-                        default: // If we get here, something is wrong, use 90 days as a safety
-                            slaExtension = TimeInterval(90 * 86400)
+                    case (false, true, true):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA * 86400)
+                    case (false, true, false):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMinorUpdateSLA * 86400)
+                    case (true, true, true):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
+                    case (true, true, false):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
+                    case (false, false, true):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.standardMajorUpgradeSLA * 86400)
+                    case (false, false, false):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.standardMinorUpdateSLA * 86400)
+                    default: // If we get here, something is wrong, use 90 days as a safety
+                        slaExtension = TimeInterval(90 * 86400)
                     }
 
                     if OptionalFeatureVariables.disableNudgeForStandardInstalls && !presentCVEs {
@@ -235,7 +279,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
-                        requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                        if OSVersionRequirementVariables.minorVersionRecalculationThreshold > 0 {
+                            if minorVersions.isEmpty {
+                                requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                            } else {
+                                let safeIndex = max(0, minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)) // Ensure the index is within bounds
+                                let targetVersion = minorVersions[safeIndex]
+                                var foundVersion = false
+                                LogManager.notice("minorVersionRecalculationThreshold is set to \(OSVersionRequirementVariables.minorVersionRecalculationThreshold) - Current Version: \(currentInstalledVersion) - Targeting version \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
+                                for osVersion in macOSSOFAAssets {
+                                    for securityRelease in osVersion.securityReleases.reversed() {
+                                        if VersionManager.versionGreaterThanOrEqual(currentVersion: securityRelease.productVersion, newVersion: targetVersion) && VersionManager.versionLessThanOrEqual(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
+                                            requiredInstallationDate = securityRelease.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                            LogManager.notice("Found target macOS version \(targetVersion) - releaseDate is \(securityRelease.releaseDate!), slaExtension is \(LoggerUtilities().printTimeInterval(slaExtension))", logger: sofaLog)
+                                            foundVersion = true
+                                            break
+                                        }
+                                    }
+                                }
+                                if !foundVersion {
+                                    LogManager.warning("Could not find requiredInstallationDate from target macOS \(targetVersion)", logger: sofaLog)
+                                    requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                }
+                            }
+                        } else {
+                            requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                        }
                         LogManager.notice("Setting requiredInstallationDate via SOFA to \(requiredInstallationDate)", logger: sofaLog)
                     }
                     LogManager.notice("SOFA Matched OS Version: \(selectedOS!.productVersion)", logger: sofaLog)
@@ -252,7 +321,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                 supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }
                             )
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                            nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound // false
+                            nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
                         }
                     }
                     foundMatch = true

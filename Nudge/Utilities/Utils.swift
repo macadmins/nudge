@@ -553,10 +553,20 @@ struct DateManager {
         return formatter
     }()
 
-    func coerceDateToString(date: Date, formatterString: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = formatterString
-        return formatter.string(from: date)
+    func coerceDateToString(date: Date, formatterString: String, locale: Locale? = nil) -> String {
+        if formatterString == "MM/dd/yyyy" {
+            // Use the specified locale or the current locale if none is provided
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .none
+            dateFormatter.locale = locale ?? Locale.current
+            return dateFormatter.string(from: date)
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = formatterString
+            formatter.locale = locale ?? Locale.current
+            return formatter.string(from: date)
+        }
     }
 
     func coerceStringToDate(dateString: String) -> Date {
@@ -882,6 +892,15 @@ struct LoggerUtilities {
 
     private func requiredMinimumOSVersionNil() -> Bool {
         return PrefsWrapper.requiredMinimumOSVersion == "0.0"
+    }
+
+    func printTimeInterval(_ interval: TimeInterval) -> String {
+        let days = Int(interval) / (24 * 3600)
+        let hours = (Int(interval) % (24 * 3600)) / 3600
+        let minutes = (Int(interval) % 3600) / 60
+        let seconds = Int(interval) % 60
+
+        return "\(days) days, \(hours) hours, \(minutes) minutes, \(seconds) seconds"
     }
 
     private func updateDeferralCount(_ count: inout Int, resetCount: Bool, key: String) {
@@ -1482,6 +1501,10 @@ struct VersionManager {
         return majorVersion
     }
 
+    static func getMajorVersion(from version: String) -> Int {
+        return Int(version.split(separator: ".").first.map(String.init)!)!
+    }
+
     static func getMinorOSVersion() -> Int {
         var minorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
 //        if (CommandLineUtilities().simulateOSVersion() != nil) {
@@ -1504,6 +1527,12 @@ struct VersionManager {
 
     static func newNudgeEvent() -> Bool {
         versionGreaterThan(currentVersion: nudgePrimaryState.requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+    }
+
+    // Helper function to remove duplicates while preserving order
+    func removeDuplicates(from array: [String]) -> [String] {
+        var seen = Set<String>()
+        return array.filter { seen.insert($0).inserted }
     }
 
     // Adapted from https://stackoverflow.com/a/25453654

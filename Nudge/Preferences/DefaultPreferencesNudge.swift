@@ -233,6 +233,12 @@ struct OSVersionRequirementVariables {
         ""
     }
 
+    static var minorVersionRecalculationThreshold: Int {
+        osVersionRequirementsProfile?.minorVersionRecalculationThreshold ??
+        osVersionRequirementsJSON?.minorVersionRecalculationThreshold ??
+        0
+    }
+
     static var nonActivelyExploitedCVEsMajorUpgradeSLA: Int {
         osVersionRequirementsProfile?.nonActivelyExploitedCVEsMajorUpgradeSLA ??
         osVersionRequirementsJSON?.nonActivelyExploitedCVEsMajorUpgradeSLA ??
