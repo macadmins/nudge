@@ -155,6 +155,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if nudgePrimaryState.shouldExit {
             return .terminateNow
         } else {
+            if (CommandLineUtilities().simulateOSVersion() != nil) || (CommandLineUtilities().simulateHardwareID() != nil) {
+                LogManager.warning("Attempt to exit Nudge was allow due to simulation arguments.", logger: uiLog)
+                return .terminateNow
+            }
             // Log the attempt to exit the application if it should not exit yet
             LogManager.warning("Attempt to exit Nudge was prevented.", logger: uiLog)
             return .terminateCancel
@@ -534,6 +538,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func detectBannedShortcutKeys(with event: NSEvent) -> Bool {
+        if (CommandLineUtilities().simulateOSVersion() != nil) || (CommandLineUtilities().simulateHardwareID() != nil) { return false }
         guard NSApplication.shared.isActive else { return false }
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
                 // Disable CMD + H - Hides Nudge

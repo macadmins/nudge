@@ -44,6 +44,7 @@ Requires macOS 12.0 and higher.
   - Addresses [610](https://github.com/macadmins/nudge/issues/610) and [613](https://github.com/macadmins/nudge/issues/613)
 - When `showRequiredDate` is set to `True` and the admin is using the default values for `requiredInstallationDisplayFormat`, Nudge will attempt to understand the current locale and display the menu item appropriately.
   - Addresses [615](https://github.com/macadmins/nudge/issues/615)
+- Banned shortcut keys - including the ability to quit the application - are now allowed when passing `-simulate-os-version` or `-simulate-hardware-id`
 
 ### Fixed
 - Several components in the Github Actions were triggering deprecation warnings. These have been addressed by updating to the latest version of these components
