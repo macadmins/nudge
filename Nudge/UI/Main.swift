@@ -226,7 +226,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                     // Filter versions between current and selected OS version
                     let filteredVersions = VersionManager().removeDuplicates(from: allVersions.filter {
-                        VersionManager.versionGreaterThan(currentVersion: $0, newVersion: currentInstalledVersion) &&
+                        VersionManager.versionGreaterThanOrEqual(currentVersion: $0, newVersion: currentInstalledVersion) &&
                         VersionManager.versionLessThanOrEqual(currentVersion: $0, newVersion: selectedOSVersion)
                     })
 
@@ -236,6 +236,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     })
 
                     // Count actively exploited CVEs in the filtered versions
+                    LogManager.notice("Assessing macOS version range for active exploits: \(filteredVersions) ", logger: sofaLog)
                     for osVersion in macOSSOFAAssets {
                         if filteredVersions.contains(osVersion.latest.productVersion) {
                             totalActivelyExploitedCVEs += osVersion.latest.activelyExploitedCVEs.count
