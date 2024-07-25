@@ -508,6 +508,25 @@
                                     }
                                 ]
                             },
+                            "minorVersionRecalculationThreshold": {
+                                "description": "The amount of minor versions a device can be behind before the requiredInstallationDate is recalculated against a previous update. (Note: This key is only used with Nudge v2.0.5 and higher)",
+                                "anyOf": [
+                                    {
+                                        "title": "Not Configured",
+                                        "type": "null"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "default": 0,
+                                        "type": "integer",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "0"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
                             "nonActivelyExploitedCVEsMajorUpgradeSLA": {
                                 "description": "When a major upgrade is not under active exploit but contains CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [

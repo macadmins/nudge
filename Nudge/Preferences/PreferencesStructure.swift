@@ -151,6 +151,7 @@ struct OSVersionRequirement: Codable {
     var activelyExploitedCVEsMajorUpgradeSLA: Int?
     var activelyExploitedCVEsMinorUpdateSLA: Int?
     var majorUpgradeAppPath: String?
+    var minorVersionRecalculationThreshold: Int?
     var nonActivelyExploitedCVEsMajorUpgradeSLA: Int?
     var nonActivelyExploitedCVEsMinorUpdateSLA: Int?
     var requiredInstallationDate: Date?
@@ -170,6 +171,7 @@ extension OSVersionRequirement {
         self.activelyExploitedCVEsMajorUpgradeSLA = fromDictionary["activelyExploitedCVEsMajorUpgradeSLA"] as? Int
         self.activelyExploitedCVEsMinorUpdateSLA = fromDictionary["activelyExploitedCVEsMinorUpdateSLA"] as? Int
         self.majorUpgradeAppPath = fromDictionary["majorUpgradeAppPath"] as? String
+        self.minorVersionRecalculationThreshold = fromDictionary["minorVersionRecalculationThreshold"] as? Int
         self.nonActivelyExploitedCVEsMajorUpgradeSLA = fromDictionary["nonActivelyExploitedCVEsMajorUpgradeSLA"] as? Int
         self.nonActivelyExploitedCVEsMinorUpdateSLA = fromDictionary["nonActivelyExploitedCVEsMinorUpdateSLA"] as? Int
         self.requiredMinimumOSVersion = fromDictionary["requiredMinimumOSVersion"] as? String
@@ -248,6 +250,7 @@ extension OSVersionRequirement {
         activelyExploitedCVEsMajorUpgradeSLA: Int? = nil,
         activelyExploitedCVEsMinorUpdateSLA: Int? = nil,
         majorUpgradeAppPath: String? = nil,
+        minorVersionRecalculationThreshold: Int? = nil,
         nonActivelyExploitedCVEsMajorUpgradeSLA: Int? = nil,
         nonActivelyExploitedCVEsMinorUpdateSLA: Int? = nil,
         requiredInstallationDate: Date? = nil,
@@ -265,6 +268,7 @@ extension OSVersionRequirement {
             activelyExploitedCVEsMajorUpgradeSLA: activelyExploitedCVEsMajorUpgradeSLA ?? self.activelyExploitedCVEsMajorUpgradeSLA,
             activelyExploitedCVEsMinorUpdateSLA: activelyExploitedCVEsMinorUpdateSLA ?? self.activelyExploitedCVEsMinorUpdateSLA,
             majorUpgradeAppPath: majorUpgradeAppPath ?? self.majorUpgradeAppPath,
+            minorVersionRecalculationThreshold: minorVersionRecalculationThreshold ?? self.minorVersionRecalculationThreshold,
             nonActivelyExploitedCVEsMajorUpgradeSLA: nonActivelyExploitedCVEsMajorUpgradeSLA ?? self.nonActivelyExploitedCVEsMajorUpgradeSLA,
             nonActivelyExploitedCVEsMinorUpdateSLA: nonActivelyExploitedCVEsMinorUpdateSLA ?? self.nonActivelyExploitedCVEsMinorUpdateSLA,
             requiredInstallationDate: requiredInstallationDate ?? self.requiredInstallationDate,

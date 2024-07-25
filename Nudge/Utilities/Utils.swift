@@ -1492,6 +1492,10 @@ struct VersionManager {
         return majorVersion
     }
 
+    static func getMajorVersion(from version: String) -> Int {
+        return Int(version.split(separator: ".").first.map(String.init)!)!
+    }
+
     static func getMinorOSVersion() -> Int {
         var minorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
 //        if (CommandLineUtilities().simulateOSVersion() != nil) {
@@ -1514,6 +1518,12 @@ struct VersionManager {
 
     static func newNudgeEvent() -> Bool {
         versionGreaterThan(currentVersion: nudgePrimaryState.requiredMinimumOSVersion, newVersion: nudgePrimaryState.userRequiredMinimumOSVersion)
+    }
+
+    // Helper function to remove duplicates while preserving order
+    func removeDuplicates(from array: [String]) -> [String] {
+        var seen = Set<String>()
+        return array.filter { seen.insert($0).inserted }
     }
 
     // Adapted from https://stackoverflow.com/a/25453654

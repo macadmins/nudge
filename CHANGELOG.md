@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.5] - 2024-07-24
 Requires macOS 12.0 and higher.
 
+### Added
+- To artificially change the `requredInstallationDate` to honor a previous macOS minor version, set `minorVersionRecalculationThreshold` under `osVersionRequirement` in amount of minor versions.
+  - Ex: `minorVersionRecalculationThreshold` is set to 1 and SOFA feed has macOS 14.5 available
+    - macOS device is 14.3: Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+    - macOS device is 14.4: Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+    - macOS device is 14.4.1: Target macOS 14.5 requiredInstallationDate of 2024-06-03 00:00:00 +0000
+  - Addresses [612](https://github.com/macadmins/nudge/issues/612)
+
 ### Changed
 - The `Actively Exploited` logic internally within Nudge and the UI on the left sidebar will show `True` if any previous updates missing on the device had active exploits.
   - **WARNNG BREAKING CHANGE** - This changes the SLA computation and will result in a different `requiredInstallationDate` than offered in Nudge v2.0 -> v2.01.

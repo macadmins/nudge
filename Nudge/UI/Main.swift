@@ -180,6 +180,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if let macOSSOFAAssets = Globals.sofaAssets?.osVersions {
                 // Get current installed OS version
                 let currentInstalledVersion = GlobalVariables.currentOSVersion
+                let currentMajorVersion = VersionManager.getMajorVersion(from: currentInstalledVersion)
 
                 for osVersion in macOSSOFAAssets {
                     if PrefsWrapper.requiredMinimumOSVersion == "latest" {
@@ -224,10 +225,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     allVersions.sort { VersionManager.versionLessThan(currentVersion: $0, newVersion: $1) }
 
                     // Filter versions between current and selected OS version
-                    let filteredVersions = allVersions.filter {
+                    let filteredVersions = VersionManager().removeDuplicates(from: allVersions.filter {
                         VersionManager.versionGreaterThan(currentVersion: $0, newVersion: currentInstalledVersion) &&
                         VersionManager.versionLessThanOrEqual(currentVersion: $0, newVersion: selectedOSVersion)
-                    }
+                    })
+
+                    // Filter versions with the same major version as the current installed version
+                    let minorVersions = VersionManager().removeDuplicates(from: filteredVersions.filter { version in
+                        VersionManager.getMajorVersion(from: version) == currentMajorVersion
+                    })
 
                     // Count actively exploited CVEs in the filtered versions
                     for osVersion in macOSSOFAAssets {
@@ -272,7 +278,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
-                        requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                        if OSVersionRequirementVariables.minorVersionRecalculationThreshold > 0 {
+                            let safeIndex = max(0, minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)) // Ensure the index is within bounds
+                            let targetVersion = minorVersions[safeIndex]
+                            var foundVersion = false
+                            LogManager.notice("minorVersionRecalculationThreshold is set - Targeting macOS \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
+                            for osVersion in macOSSOFAAssets {
+                                for securityRelease in osVersion.securityReleases {
+                                    if securityRelease.productVersion == targetVersion && VersionManager.versionLessThan(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
+                                        requiredInstallationDate = securityRelease.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                        foundVersion = true
+                                        break
+                                    }
+                                }
+                            }
+                            if !foundVersion {
+                                requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                                LogManager.warning("Could not find requiredInstallationDate from target macOS \(targetVersion)", logger: sofaLog)
+                                LogManager.notice("Setting requiredInstallationDate via SOFA to \(requiredInstallationDate)", logger: sofaLog)
+                            }
+                        } else {
+                            requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
+                        }
                         LogManager.notice("Setting requiredInstallationDate via SOFA to \(requiredInstallationDate)", logger: sofaLog)
                     }
                     LogManager.notice("SOFA Matched OS Version: \(selectedOS!.productVersion)", logger: sofaLog)
