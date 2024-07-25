@@ -293,9 +293,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                 }
                             }
                             if !foundVersion {
-                                requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
                                 LogManager.warning("Could not find requiredInstallationDate from target macOS \(targetVersion)", logger: sofaLog)
-                                LogManager.notice("Setting requiredInstallationDate via SOFA to \(requiredInstallationDate)", logger: sofaLog)
+                                requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
                             }
                         } else {
                             requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
