@@ -61,6 +61,7 @@ class LogState {
     var hasLoggedRequireMajorUgprade = false
     var hasLoggedScreenshotIconMode = false
     var hasLoggedSimpleMode = false
+    var hasLoggedSimulatedDate = false
     var hasLoggedUnitTestingMode = false
 }
 
