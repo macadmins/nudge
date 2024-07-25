@@ -14,7 +14,7 @@ Requires macOS 12.0 and higher.
     - macOS device is 14.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
     - macOS device is 14.2: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
     - macOS device is 14.3: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
-    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000 (Note, this time is different than the others as there is no active exploiteds)
     - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.5 requiredInstallationDate of 2024-06-03 00:00:00 +0000
     - macOS device is 14.5: Required OS: 14.5 - Fully updated
   - Ex: `minorVersionRecalculationThreshold` is set to 2 and SOFA feed has macOS 14.5 available
