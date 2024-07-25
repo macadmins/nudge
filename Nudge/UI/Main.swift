@@ -289,7 +289,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                 LogManager.notice("minorVersionRecalculationThreshold is set to \(OSVersionRequirementVariables.minorVersionRecalculationThreshold) - Current Version: \(currentInstalledVersion) - Targeting version \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
                                 for osVersion in macOSSOFAAssets {
                                     for securityRelease in osVersion.securityReleases.reversed() {
-                                        if VersionManager.versionGreaterThanOrEqual(currentVersion: securityRelease.productVersion, newVersion: targetVersion) && VersionManager.versionLessThan(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
+                                        if VersionManager.versionGreaterThanOrEqual(currentVersion: securityRelease.productVersion, newVersion: targetVersion) && VersionManager.versionLessThanOrEqual(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
                                             requiredInstallationDate = securityRelease.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
                                             LogManager.notice("Found target macOS version \(targetVersion) - releaseDate is \(securityRelease.releaseDate!), slaExtension is \(LoggerUtilities().printTimeInterval(slaExtension))", logger: sofaLog)
                                             foundVersion = true
