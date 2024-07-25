@@ -156,7 +156,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return .terminateNow
         } else {
             if (CommandLineUtilities().simulateOSVersion() != nil) || (CommandLineUtilities().simulateHardwareID() != nil) {
-                LogManager.warning("Attempt to exit Nudge was allow due to simulation arguments.", logger: uiLog)
+                LogManager.warning("Attempt to exit Nudge was allowed due to simulation arguments.", logger: uiLog)
                 return .terminateNow
             }
             // Log the attempt to exit the application if it should not exit yet
