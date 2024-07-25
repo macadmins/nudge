@@ -15,7 +15,7 @@ Requires macOS 12.0 and higher.
     - macOS device is 14.2: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
     - macOS device is 14.3: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
     - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-08 00:00:00 +0000
-    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.5 requiredInstallationDate of 2024-06-03 00:00:00 +0000
       - This device's requiredInstallationDate is different than the others as there is no active exploit on 14.4.1
     - macOS device is 14.5: Required OS: 14.5 - Fully updated
   - Ex: `minorVersionRecalculationThreshold` is set to 2 and SOFA feed has macOS 14.5 available
@@ -23,10 +23,20 @@ Requires macOS 12.0 and higher.
     - macOS device is 14.1: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
     - macOS device is 14.2: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
     - macOS device is 14.3: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
-    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-03-21 00:00:00 +0000
-    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-04-15 00:00:00 +0000
+    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-06-03 00:00:00 +0000
+    - macOS device is 14.5: Required OS: 14.5 - Fully updated
+  - Ex: `minorVersionRecalculationThreshold` is set to 3 and SOFA feed has macOS 14.5 available
+    - macOS device is 14.0: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-02-22 00:00:00 +0000
+    - macOS device is 14.1: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-02-22 00:00:00 +0000
+    - macOS device is 14.2: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-02-22 00:00:00 +0000
+    - macOS device is 14.3: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-02-22 00:00:00 +0000
+    - macOS device is 14.4: Required OS: 14.5 - Target macOS 14.4 requiredInstallationDate of 2024-04-08 00:00:00 +0000
+    - macOS device is 14.4.1: Required OS: 14.5 - Target macOS 14.4.1 requiredInstallationDate of 2024-06-03 00:00:00 +0000
     - macOS device is 14.5: Required OS: 14.5 - Fully updated
   - Addresses [612](https://github.com/macadmins/nudge/issues/612)
+- To ease testing, you can now pass `-simulate-date` as an argument to override the built-in date check.
+  - Ex: `-simulate-date "2024-07-25T00:00:00Z"`
 
 ### Changed
 - The `Actively Exploited` logic internally within Nudge and the UI on the left sidebar will show `True` if any previous updates missing on the device had active exploits.
@@ -36,6 +46,7 @@ Requires macOS 12.0 and higher.
   - Addresses [610](https://github.com/macadmins/nudge/issues/610) and [613](https://github.com/macadmins/nudge/issues/613)
 - When `showRequiredDate` is set to `True` and the admin is using the default values for `requiredInstallationDisplayFormat`, Nudge will attempt to understand the current locale and display the menu item appropriately.
   - Addresses [615](https://github.com/macadmins/nudge/issues/615)
+- Banned shortcut keys - including the ability to quit the application - are now allowed when passing `-simulate-os-version` or `-simulate-hardware-id` or `-simulate-date`
 
 ### Fixed
 - Several components in the Github Actions were triggering deprecation warnings. These have been addressed by updating to the latest version of these components

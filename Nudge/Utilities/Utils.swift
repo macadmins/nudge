@@ -431,6 +431,10 @@ struct CommandLineUtilities {
         return argumentPassed
     }
 
+    func simulateDate() -> String? {
+        return valueForArgument("-simulate-date")
+    }
+
     func simulateHardwareID() -> String? {
         return valueForArgument("-simulate-hardware-id")
     }
@@ -592,11 +596,31 @@ struct DateManager {
     }
 
     func getCurrentDate() -> Date {
-        switch Calendar.current.identifier {
+        let dateFormatterISO8601 = ISO8601DateFormatter()
+
+        if (CommandLineUtilities().simulateDate() != nil) {
+            // Try to parse the provided ISO8601 string
+            if let date = dateFormatterISO8601.date(from: CommandLineUtilities().simulateDate()!) {
+                if !nudgeLogState.hasLoggedSimulatedDate {
+                    LogManager.notice("Simulated Date set via -simulated-date, returning \(CommandLineUtilities().simulateDate()!)", logger: uiLog)
+                    nudgeLogState.hasLoggedSimulatedDate = true
+                }
+                return date
+            } else {
+                if !nudgeLogState.hasLoggedSimulatedDate {
+                    LogManager.error("Failed to parse -simulated-date, returning current date.", logger: uiLog)
+                    nudgeLogState.hasLoggedSimulatedDate = true
+                }
+                return Date()
+            }
+        } else {
+            // If no string is provided, return the current date based on calendar
+            switch Calendar.current.identifier {
             case .buddhist, .japanese, .gregorian, .coptic, .ethiopicAmeteMihret, .hebrew, .iso8601, .indian, .islamic, .islamicCivil, .islamicTabular, .islamicUmmAlQura, .persian:
                 return dateFormatterISO8601.date(from: dateFormatterISO8601.string(from: Date())) ?? Date()
             default:
                 return Date()
+            }
         }
     }
 

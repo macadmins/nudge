@@ -155,6 +155,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if nudgePrimaryState.shouldExit {
             return .terminateNow
         } else {
+            if (CommandLineUtilities().simulateOSVersion() != nil) || (CommandLineUtilities().simulateHardwareID() != nil) || (CommandLineUtilities().simulateDate() != nil) {
+                LogManager.warning("Attempt to exit Nudge was allowed due to simulation arguments.", logger: uiLog)
+                return .terminateNow
+            }
             // Log the attempt to exit the application if it should not exit yet
             LogManager.warning("Attempt to exit Nudge was prevented.", logger: uiLog)
             return .terminateCancel
@@ -231,9 +235,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     })
 
                     // Filter versions with the same major version as the current installed version
-                    let minorVersions = VersionManager().removeDuplicates(from: filteredVersions.filter { version in
+                    var minorVersions = VersionManager().removeDuplicates(from: filteredVersions.filter { version in
                         VersionManager.getMajorVersion(from: version) == currentMajorVersion
                     })
+                    // Remove the current installed version from minorVersions
+                    minorVersions.removeAll { $0 == currentInstalledVersion }
 
                     // Count actively exploited CVEs in the filtered versions
                     LogManager.notice("Assessing macOS version range for active exploits: \(filteredVersions) ", logger: sofaLog)
@@ -283,13 +289,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             if minorVersions.isEmpty {
                                 requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
                             } else {
+                                LogManager.notice("Assessing macOS version range for recalculation: \(minorVersions)", logger: sofaLog)
                                 let safeIndex = max(0, minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)) // Ensure the index is within bounds
                                 let targetVersion = minorVersions[safeIndex]
                                 var foundVersion = false
                                 LogManager.notice("minorVersionRecalculationThreshold is set to \(OSVersionRequirementVariables.minorVersionRecalculationThreshold) - Current Version: \(currentInstalledVersion) - Targeting version \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
                                 for osVersion in macOSSOFAAssets {
-                                    for securityRelease in osVersion.securityReleases.reversed() {
-                                        if VersionManager.versionGreaterThanOrEqual(currentVersion: securityRelease.productVersion, newVersion: targetVersion) && VersionManager.versionLessThanOrEqual(currentVersion: currentInstalledVersion, newVersion: targetVersion) {
+                                    for securityRelease in osVersion.securityReleases {
+                                        if securityRelease.productVersion == targetVersion {
                                             requiredInstallationDate = securityRelease.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
                                             LogManager.notice("Found target macOS version \(targetVersion) - releaseDate is \(securityRelease.releaseDate!), slaExtension is \(LoggerUtilities().printTimeInterval(slaExtension))", logger: sofaLog)
                                             foundVersion = true
@@ -531,6 +538,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func detectBannedShortcutKeys(with event: NSEvent) -> Bool {
+        if (CommandLineUtilities().simulateOSVersion() != nil) || (CommandLineUtilities().simulateHardwareID() != nil) || (CommandLineUtilities().simulateDate() != nil) { return false }
         guard NSApplication.shared.isActive else { return false }
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
                 // Disable CMD + H - Hides Nudge
