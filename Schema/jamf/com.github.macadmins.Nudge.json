@@ -337,7 +337,7 @@
                                 {
                                     "title": "Configured",
                                     "type": "boolean",
-                                    "default": false
+                                    "default": true
                                 }
                             ]
                         }
