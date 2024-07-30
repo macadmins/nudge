@@ -5,6 +5,8 @@ Nudge is a multi-linguistic application, offering custom user deferrals, which s
 
 Nudge will only work on macOS Big Sur 11 and later and is a replacement for the original Nudge, which was written in Python 2/3. If you need to enforce macOS updates for earlier versions, it is recommended to use [nudge-python](https://github.com/macadmins/nudge-python).
 
+Nudge 2.0 enables fully automated updates, by default, by querying the [Simple Organized Feed for Apple Software Updates](https://sofa.macadmins.io/) (SOFA) for macOS releases.
+
 For more information about installation, deployment, and the user experience, please see the [wiki](https://github.com/macadmins/nudge/wiki).
 
 # Examples of the User Interface
