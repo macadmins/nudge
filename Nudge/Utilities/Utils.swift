@@ -710,12 +710,23 @@ struct DeviceManager {
     func getHardwareModel() -> String {
         getSysctlValue(for: "hw.model") ?? ""
     }
+    
+    func getVirtualMachineStatus() -> Bool {
+        if getSysctlValue(for: "kern.hv_vmm_present") == "1" {
+            return true
+        }
+        return false
+    }
 
     func getHardwareModelIDs() -> [String] {
-        let boardID = getIORegInfo(serviceTarget: "board-id") ?? "Unknown"
+        var boardID = getIORegInfo(serviceTarget: "board-id") ?? "Unknown"
         let bridgeID = getBridgeModelID()
         let hardwareModelID = getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
         let gestaltModelStringID = getKeyResultFromGestalt("HWModelStr")
+        
+        if getVirtualMachineStatus() && getCPUTypeString() == "Intel" {
+            boardID = "VMM-x86_64"
+        }
 
         LogManager.debug("Hardware Board ID: \(boardID)", logger: utilsLog)
         LogManager.debug("Hardware Bridge ID: \(bridgeID)", logger: utilsLog)
