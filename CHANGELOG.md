@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.6] - 2024-08-01
+Requires macOS 12.0 and higher.
+
+### Added
+
+### Changed
+
+### Fixed
+- The `unsupportedURL` key was not being honored when clicking on the Unsupported UI button
+  - Addresses [626](https://github.com/macadmins/nudge/issues/626)
+
 ## [2.0.5] - 2024-07-24
 Requires macOS 12.0 and higher.
 
