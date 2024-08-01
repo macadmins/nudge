@@ -761,7 +761,12 @@ struct DeviceManager {
         }
 
         guard let property = IORegistryEntryCreateCFProperty(service, serviceTarget as CFString, kCFAllocatorDefault, 0)?.takeRetainedValue() else {
-            LogManager.error("Failed to fetch \(serviceTarget) property.", logger: utilsLog)
+            if serviceTarget == "board-id" {
+                // This serviceTarget fails on lots of machines, putting it as a debug
+                LogManager.debug("Failed to fetch \(serviceTarget) property.", logger: utilsLog)
+            } else {
+                LogManager.error("Failed to fetch \(serviceTarget) property.", logger: utilsLog)
+            }
             return nil
         }
 
