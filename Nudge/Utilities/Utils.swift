@@ -561,7 +561,7 @@ struct DateManager {
 
     func coerceDateToString(date: Date, formatterString: String, locale: Locale? = nil) -> String {
         if formatterString == "MM/dd/yyyy" {
-            // Use the specified locale or the current locale if none is provided
+            // If using default, try to use the locale's values
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .short
             dateFormatter.timeStyle = .none
@@ -570,7 +570,7 @@ struct DateManager {
         } else {
             let formatter = DateFormatter()
             formatter.dateFormat = formatterString
-            formatter.locale = locale ?? Locale.current
+            print(formatter.string(from: date))
             return formatter.string(from: date)
         }
     }
