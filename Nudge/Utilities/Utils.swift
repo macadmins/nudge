@@ -570,7 +570,6 @@ struct DateManager {
         } else {
             let formatter = DateFormatter()
             formatter.dateFormat = formatterString
-            print(formatter.string(from: date))
             return formatter.string(from: date)
         }
     }
