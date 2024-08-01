@@ -134,6 +134,8 @@ Requires macOS 12.0 and higher.
 
 ### Changed
 - Now built on Swift 5.10, Xcode 15.4 and macOS 14
+- macOS 12.3 and higher uses new logic for "delta major upgrades"
+  - Admins are no longer required to use supplemental keys and hacks to get Nudge to open and enforce major upgrades
 - New Xcode Scheme `-bundle-mode-profile` to test profile logic
   - `-bundle-mode` has been renamed to `-bundle-mode-json`
 - You can now pass two formats of **strings** to `requiredInstallationDate`
