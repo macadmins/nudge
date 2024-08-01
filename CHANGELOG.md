@@ -8,8 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Requires macOS 12.0 and higher.
 
 ### Added
+- Device within the `nudgeMinorUpdateEventLaunchDelay` now show current and delayed date
+  - These logs also now show in the default Nudge logs when use the `logger` LaunchDaemon
+  - Addresses [625](https://github.com/macadmins/nudge/issues/625)
 
 ### Changed
+- Some logs have been changed from `info` to `error`, `warning` or `notice` to give admins more visibility into Nudge behaviors
 - The `board-id` property has been moved to a `debug` log event
   - Works around reports like [623](https://github.com/macadmins/nudge/issues/623)
 

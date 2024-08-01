@@ -19,9 +19,9 @@ import SystemConfiguration
 struct AppStateManager {
     func activateNudge() {
         if OptionalFeatureVariables.honorFocusModes {
-            LogManager.info("honorFocusModes is configured - checking focus status. Warning: This feature may be unstable.", logger: utilsLog)
+            LogManager.notice("honorFocusModes is configured - checking focus status. Warning: This feature may be unstable.", logger: utilsLog)
             if isFocusModeEnabled() {
-                LogManager.info("Device has focus modes set - bypassing activation event", logger: utilsLog)
+                LogManager.notice("Device has focus modes set - bypassing activation event", logger: utilsLog)
                 return
             }
         }
@@ -96,7 +96,7 @@ struct AppStateManager {
 
         // Bail Nudge if within gracePeriodLaunchDelay
         if gracePeriodLaunchDelay > gracePeriodPathCreationTimeInHours {
-            LogManager.info("gracePeriodPath (\(gracePeriodPath)) within gracePeriodLaunchDelay (\(gracePeriodLaunchDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
+            LogManager.notice("gracePeriodPath (\(gracePeriodPath)) within gracePeriodLaunchDelay (\(gracePeriodLaunchDelay)) - File age is \(gracePeriodPathCreationTimeInHours) hours", logger: uiLog)
             nudgePrimaryState.shouldExit = true
             return currentDate
         } else {
@@ -106,7 +106,7 @@ struct AppStateManager {
         if gracePeriodInstallDelay > gracePeriodPathCreationTimeInHours {
             if currentDate > originalRequiredInstallationDate {
                 requiredInstallationDate = currentDate.addingTimeInterval(Double(gracePeriodsDelay) * 3600)
-                LogManager.info("Device permitted for gracePeriodInstallDelay - setting date from: \(originalRequiredInstallationDate) to: \(requiredInstallationDate)", logger: uiLog)
+                LogManager.notice("Device permitted for gracePeriodInstallDelay - setting date from: \(originalRequiredInstallationDate) to: \(requiredInstallationDate)", logger: uiLog)
                 return requiredInstallationDate
             }
         } else {
