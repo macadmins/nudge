@@ -387,11 +387,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     center.add(request)
                     LogManager.info("Scheduled notification for terminated application \(applicationIdentifier)", logger: uiLog)
                 case .denied:
-                    LogManager.info("Notifications are denied; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
+                    LogManager.error("Notifications are denied; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
                 case .notDetermined:
-                    LogManager.info("Notification status not determined; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
+                    LogManager.warning("Notification status not determined; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
                 @unknown default:
-                    LogManager.info("Unknown notification status; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
+                    LogManager.warning("Unknown notification status; cannot schedule notification for \(applicationIdentifier)", logger: uiLog)
             }
         }
     }
@@ -783,7 +783,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             LogManager.error("Failed to terminate application: \(application.bundleIdentifier ?? "")", logger: utilsLog)
             return
         }
-        LogManager.info("Successfully terminated application: \(application.bundleIdentifier ?? "")", logger: utilsLog)
+        LogManager.notice("Successfully terminated application: \(application.bundleIdentifier ?? "")", logger: utilsLog)
     }
 
     private func terminateApplications(afterInitialLaunch: Bool = false) {
