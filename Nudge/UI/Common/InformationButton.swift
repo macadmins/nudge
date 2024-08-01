@@ -44,7 +44,7 @@ struct InformationButtonAsAction: View {
     
     var body: some View {
         Button(action: {
-            UIUtilities().openMoreInfo()
+            UIUtilities().openMoreInfoUnsupported()
             UIUtilities().postUpdateDeviceActions(userClicked: true, unSupportedUI: true)
         }) {
             Text(.init(UserInterfaceVariables.actionButtonTextUnsupported.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
