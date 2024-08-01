@@ -23,6 +23,8 @@ Requires macOS 12.0 and higher.
 - Intel Virtual Machines now have a forced `board-id` property that complies with Apple's own logic/SOFA.
   - Thanks to [Mykola Grymalyuk](https://github.com/khronokernel) for the [PR](https://github.com/macadmins/nudge/pull/622)
   - Addresses [621](https://github.com/macadmins/nudge/issues/621)
+- `requiredInstallationDisplayFormat` was no longer being honored on Nudge versions 2.0.1 through 2.0.5 due to a regression
+  - Addresses [627](https://github.com/macadmins/nudge/issues/627)
 
 ## [2.0.5] - 2024-07-24
 Requires macOS 12.0 and higher.
