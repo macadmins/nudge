@@ -214,9 +214,11 @@ struct AppStateManager {
             return PrefsWrapper.requiredInstallationDate
         }
 
-        if releaseDate.addingTimeInterval(TimeInterval(launchDelay * 86400)) > currentDate {
+        let potentialLaunchDelay = releaseDate.addingTimeInterval(TimeInterval(launchDelay * 86400))
+
+        if potentialLaunchDelay > currentDate {
             let eventType = isMajorUpgradeRequired ? "nudgeMajorUpgradeEventLaunchDelay" : "nudgeMinorUpdateEventLaunchDelay"
-            LogManager.info("Device within \(eventType)", logger: uiLog)
+            LogManager.notice("Device within \(eventType) - Current Date: \(currentDate), Respected Date: \(potentialLaunchDelay)", logger: uiLog)
             nudgePrimaryState.shouldExit = true
             return currentDate
         } else {
