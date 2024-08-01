@@ -711,11 +711,8 @@ struct DeviceManager {
         getSysctlValue(for: "hw.model") ?? ""
     }
     
-    func getVirtualMachineStatus() -> Bool {
-        if getSysctlValue(for: "kern.hv_vmm_present") == "1" {
-            return true
-        }
-        return false
+    func isVirtualMachine() -> Bool {
+        getSysctlValue(for: "kern.hv_vmm_present") == "1"
     }
 
     func getHardwareModelIDs() -> [String] {
@@ -724,7 +721,7 @@ struct DeviceManager {
         let hardwareModelID = getIORegInfo(serviceTarget: "target-sub-type") ?? "Unknown"
         let gestaltModelStringID = getKeyResultFromGestalt("HWModelStr")
         
-        if getVirtualMachineStatus() && getCPUTypeString() == "Intel" {
+        if isVirtualMachine() && getCPUTypeString() == "Intel" {
             boardID = "VMM-x86_64"
         }
 
