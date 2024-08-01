@@ -76,7 +76,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-simulate-os-version &quot;14.4.1&quot;"
+            argument = "-simulate-os-version &quot;14.5&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
