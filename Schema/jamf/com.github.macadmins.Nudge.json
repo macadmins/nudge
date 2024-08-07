@@ -239,7 +239,7 @@
                             ]
                         },
                         "disableNudgeForStandardInstalls": {
-                            "description": "When utilizing a SOFA feed and disableNudgeForStandardInstalls is true, Nudge will not enforce updates that do not contain any published CVEs. Defaults to false. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "description": "When utilizing a SOFA feed and disableNudgeForStandardInstalls is true, Nudge will only enforce updates with published CVEs. Defaults to false. (Note: This key is only used with Nudge v2.0 and higher)",
                             "anyOf": [
                                 {
                                     "type": "null",
