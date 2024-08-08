@@ -1283,7 +1283,7 @@ struct SubProcessUtilities {
 
 struct SMAppManager {
     private func handleLegacyLaunchAgent(passedThroughCLI: Bool, action: String) {
-        logOrPrint("Legacy Nudge LaunchAgent currently loaded. Please disable this agent before attempting to \(action) modern agent.", passedThroughCLI: passedThroughCLI, exitCode: 1)
+        logOrPrint("Legacy Nudge LaunchAgent currently loaded. Please disable this agent before attempting to \(action) modern agent.", error: false, passedThroughCLI: passedThroughCLI, exitCode: 1)
     }
 
     @available(macOS 13.0, *)
@@ -1299,29 +1299,34 @@ struct SMAppManager {
 
         switch appServiceStatus {
             case .enabled:
-                logOrPrint("Nudge LaunchAgent is currently registered and enabled", passedThroughCLI: passedThroughCLI, exitCode: 0)
+            logOrPrint("Nudge LaunchAgent is currently registered and enabled", error: false, passedThroughCLI: passedThroughCLI, exitCode: 0)
             default:
                 registerOrUnregister(appService: appService, passedThroughCLI: passedThroughCLI, action: "register")
         }
     }
 
-    private func logOrPrint(_ message: String, passedThroughCLI: Bool, exitCode: Int? = nil) {
+    private func logOrPrint(_ message: String, error: Bool, passedThroughCLI: Bool, exitCode: Int? = nil) {
         if passedThroughCLI {
             print(message)
             if let code = exitCode { exit(Int32(code)) }
         } else {
-            LogManager.notice("\(message)", logger: uiLog)
+            if error {
+                LogManager.error("\(message)", logger: uiLog)
+            } else {
+                LogManager.debug("\(message)", logger: uiLog)
+            }
+
         }
     }
 
     @available(macOS 13.0, *)
     private func registerOrUnregister(appService: SMAppService, passedThroughCLI: Bool, action: String) {
         do {
-            logOrPrint("\(action.capitalized)ing Nudge LaunchAgent", passedThroughCLI: passedThroughCLI)
+            logOrPrint("\(action.capitalized)ing Nudge LaunchAgent", error: false, passedThroughCLI: passedThroughCLI)
             try action == "register" ? appService.register() : appService.unregister()
-            logOrPrint("Successfully \(action)ed Nudge LaunchAgent", passedThroughCLI: passedThroughCLI, exitCode: 0)
+            logOrPrint("Successfully \(action)ed Nudge LaunchAgent", error: false, passedThroughCLI: passedThroughCLI, exitCode: 0)
         } catch {
-            logOrPrint("Failed to \(action) Nudge LaunchAgent", passedThroughCLI: passedThroughCLI, exitCode: 1)
+            logOrPrint("Failed to \(action) Nudge LaunchAgent", error: true, passedThroughCLI: passedThroughCLI, exitCode: 1)
         }
     }
 
@@ -1331,7 +1336,7 @@ struct SMAppManager {
 
         switch appServiceStatus {
             case .notFound, .notRegistered:
-                logOrPrint("Nudge LaunchAgent has never been registered or is not currently registered", passedThroughCLI: passedThroughCLI, exitCode: 0)
+            logOrPrint("Nudge LaunchAgent has never been registered or is not currently registered", error: false, passedThroughCLI: passedThroughCLI, exitCode: 0)
             default:
                 registerOrUnregister(appService: appService, passedThroughCLI: passedThroughCLI, action: "unregister")
         }
