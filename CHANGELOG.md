@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.7] - 2024-08-08
+Requires macOS 12.0 and higher.
+
+### Added
+- If using `utilizeSOFAFeed`, you can now set the `aboutUpdateURL` to `sofa`
+  - If a URL is found in the relevant `SecurityInfo` key for the corresponding update, this value will be used.
+  - If no URL is found, the aboutUpdateURL button will not be shown to the user
+  - [Feature Request 629](https://github.com/macadmins/nudge/issues/629)
+
+### Changed
+- The `SMAppService` logic logs have been moved to debug logs
+- When an updated Managed Preference is sent for `com.github.macadmins.Nudge`, if the values are different, [Nudge will exit](https://github.com/macadmins/nudge/commit/f13a697dd61400f7f0d73dc38226f7769ed8e4f4)
+  - This is a workaround for issue [602](https://github.com/macadmins/nudge/issues/602)
+  - The LaunchAgent will ensure the application is successfully restarted at a future time.
+
+### Fixed
+- The Jamf JSON schema file had an [item missing](https://github.com/macadmins/nudge/pull/632) and a [key incorrectly set](https://github.com/macadmins/nudge/pull/634)
+
 ## [2.0.6] - 2024-08-01
 Requires macOS 12.0 and higher.
 

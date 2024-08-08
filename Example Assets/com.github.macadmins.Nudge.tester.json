@@ -5,7 +5,7 @@
     },
     "osVersionRequirements": [
         {
-            "aboutUpdateURL": "https://apple.com",
+            "aboutUpdateURL": "sofa",
             "requiredMinimumOSVersion": "latest",
             "unsupportedURL": "https://google.com"
         }

@@ -20,9 +20,19 @@ struct InformationButton: View {
     
     private var informationButton: some View {
         guard OSVersionRequirementVariables.aboutUpdateURL != "" else { return AnyView(EmptyView()) }
+        var selectedURL = OSVersionRequirementVariables.aboutUpdateURL
+        if OSVersionRequirementVariables.aboutUpdateURL == "sofa" && OptionalFeatureVariables.utilizeSOFAFeed {
+            if nudgePrimaryState.sofaAboutUpdateURL.hasPrefix("https://") {
+                selectedURL = nudgePrimaryState.sofaAboutUpdateURL
+            } else {
+                return AnyView(EmptyView())
+            }
+        }
 
         return AnyView(
-            Button(action: UIUtilities().openMoreInfo) {
+            Button(action: {
+                UIUtilities().openMoreInfo(infoURL: selectedURL)
+            }) {
                 Text(.init(UserInterfaceVariables.informationButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))))
                     .foregroundColor(dynamicTextColor)
             }

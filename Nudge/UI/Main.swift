@@ -282,6 +282,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                     // Start setting UI fields
                     nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
+                    nudgePrimaryState.sofaAboutUpdateURL = selectedOS!.securityInfo
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
@@ -650,7 +651,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func handleSMAppService() {
         if #available(macOS 13, *) {
             let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.SMAppService.plist")
+            let mainAppServce = SMAppService.mainApp
             let appServiceStatus = appService.status
+            let mainAppServiceStatus = mainAppServce.status
+//            print("")
+//            print("com.github.macadmins.Nudge.SMAppService")
+//            print("notRegistered: \(appServiceStatus == SMAppService.Status.notRegistered)")
+//            print("enabled: \(appServiceStatus == SMAppService.Status.enabled)")
+//            print("requiresApproval: \(appServiceStatus == SMAppService.Status.requiresApproval)")
+//            print("notFound: \(appServiceStatus == SMAppService.Status.notFound)")
+//            print("")
+//            print("mainAppService")
+//            print("notRegistered: \(mainAppServiceStatus == SMAppService.Status.notRegistered)")
+//            print("enabled: \(mainAppServiceStatus == SMAppService.Status.enabled)")
+//            print("requiresApproval: \(mainAppServiceStatus == SMAppService.Status.requiresApproval)")
+//            print("notFound: \(mainAppServiceStatus == SMAppService.Status.notFound)")
+//            print("")
 
             if CommandLine.arguments.contains("--register") || UserExperienceVariables.loadLaunchAgent {
                 SMAppManager().loadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
@@ -724,8 +740,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Globals.nc.addObserver(
             forName: UserDefaults.didChangeNotification,
             object: nil,
-            queue: .main) { [weak self] _ in
-                Globals.configProfile = ConfigurationManager().getConfigurationAsProfile()
+            queue: .main) { _ in
+                if ConfigurationManager().getConfigurationAsProfile() == Globals.configProfile {
+                    LogManager.debug("MDM Profile has been re-installed or updated but configuration is identical, no need to quit Nudge.", logger: sofaLog)
+                } else {
+                    LogManager.info("MDM Profile has been re-installed or updated. Quitting Nudge to allow LaunchAgent to re-initalize with new settings.", logger: sofaLog)
+                    nudgePrimaryState.shouldExit = true
+                    exit(2)
+                }
             }
     }
 
