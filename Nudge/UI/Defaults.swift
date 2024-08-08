@@ -83,6 +83,7 @@ class AppState: ObservableObject {
     @Published var requireDualQuitButtons = false
     @Published var requiredMinimumOSVersion = OSVersionRequirementVariables.requiredMinimumOSVersion
     @Published var shouldExit = false
+    @Published var sofaAboutUpdateURL: String = ""
     @Published var timerCycle = 0
     @Published var userDeferrals = Globals.nudgeDefaults.object(forKey: "userDeferrals") as? Int ?? 0
     @Published var userQuitDeferrals = Globals.nudgeDefaults.object(forKey: "userQuitDeferrals") as? Int ?? 0

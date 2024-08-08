@@ -282,6 +282,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                     // Start setting UI fields
                     nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
+                    nudgePrimaryState.sofaAboutUpdateURL = selectedOS!.securityInfo
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {

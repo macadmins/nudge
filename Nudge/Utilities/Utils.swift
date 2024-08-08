@@ -1423,13 +1423,11 @@ struct UIUtilities {
         return shellCommands.contains(where: path.hasPrefix)
     }
 
-    func openMoreInfo() {
-        guard let url = URL(string: OSVersionRequirementVariables.aboutUpdateURL) else {
+    func openMoreInfo(infoURL: String) {
+        guard let url = URL(string: infoURL) else {
             return
         }
         LogManager.notice("User clicked moreInfo button", logger: uiLog)
-        // TODO: Flesh this out once we understand what to do when there isn't a url in SOFA feed
-        // if OSVersionRequirementVariables.aboutUpdateURL == "sofa" { NSWorkspace.shared.open(url) }
         NSWorkspace.shared.open(url)
     }
 
