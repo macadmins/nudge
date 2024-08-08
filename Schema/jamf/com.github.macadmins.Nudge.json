@@ -620,7 +620,7 @@
                                     }
                                 ]
                             },
-                            "standardMinorupdateSLA": {
+                            "standardMinorUpdateSLA": {
                                 "description": "When a minor update has no known CVEs, this is the amount of days a user has to install the update. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [
                                     {
