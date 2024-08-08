@@ -650,7 +650,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func handleSMAppService() {
         if #available(macOS 13, *) {
             let appService = SMAppService.agent(plistName: "com.github.macadmins.Nudge.SMAppService.plist")
+            let mainAppServce = SMAppService.mainApp
             let appServiceStatus = appService.status
+            let mainAppServiceStatus = mainAppServce.status
+//            print("")
+//            print("com.github.macadmins.Nudge.SMAppService")
+//            print("notRegistered: \(appServiceStatus == SMAppService.Status.notRegistered)")
+//            print("enabled: \(appServiceStatus == SMAppService.Status.enabled)")
+//            print("requiresApproval: \(appServiceStatus == SMAppService.Status.requiresApproval)")
+//            print("notFound: \(appServiceStatus == SMAppService.Status.notFound)")
+//            print("")
+//            print("mainAppService")
+//            print("notRegistered: \(mainAppServiceStatus == SMAppService.Status.notRegistered)")
+//            print("enabled: \(mainAppServiceStatus == SMAppService.Status.enabled)")
+//            print("requiresApproval: \(mainAppServiceStatus == SMAppService.Status.requiresApproval)")
+//            print("notFound: \(mainAppServiceStatus == SMAppService.Status.notFound)")
+//            print("")
 
             if CommandLine.arguments.contains("--register") || UserExperienceVariables.loadLaunchAgent {
                 SMAppManager().loadSMAppLaunchAgent(appService: appService, appServiceStatus: appServiceStatus)
