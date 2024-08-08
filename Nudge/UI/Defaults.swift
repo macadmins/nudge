@@ -23,7 +23,7 @@ struct Globals {
     static let snc = NSWorkspace.shared.notificationCenter
     // Preferences
     static let configJSON = ConfigurationManager().getConfigurationAsJSON()
-    static var configProfile = ConfigurationManager().getConfigurationAsProfile()
+    static let configProfile = ConfigurationManager().getConfigurationAsProfile()
     static let nudgeDefaults = UserDefaults.standard
     static let nudgeJSONPreferences = NetworkFileManager().getNudgeJSONPreferences()
     // Device Properties

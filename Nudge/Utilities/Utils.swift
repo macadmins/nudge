@@ -1310,7 +1310,7 @@ struct SMAppManager {
             print(message)
             if let code = exitCode { exit(Int32(code)) }
         } else {
-            LogManager.info("\(message)", logger: uiLog)
+            LogManager.notice("\(message)", logger: uiLog)
         }
     }
 

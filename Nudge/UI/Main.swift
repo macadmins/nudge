@@ -739,8 +739,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Globals.nc.addObserver(
             forName: UserDefaults.didChangeNotification,
             object: nil,
-            queue: .main) { [weak self] _ in
-                Globals.configProfile = ConfigurationManager().getConfigurationAsProfile()
+            queue: .main) { _ in
+                if ConfigurationManager().getConfigurationAsProfile() == Globals.configProfile {
+                    LogManager.debug("MDM Profile has been re-installed or updated but configuration is identical, no need to quit Nudge.", logger: sofaLog)
+                } else {
+                    LogManager.info("MDM Profile has been re-installed or updated. Quitting Nudge to allow LaunchAgent to re-initalize with new settings.", logger: sofaLog)
+                    nudgePrimaryState.shouldExit = true
+                    exit(2)
+                }
             }
     }
 
