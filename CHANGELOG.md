@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.8] - 2024-08-16
+Requires macOS 12.0 and higher.
+
+### Changed
+- Japenese Localization
+  - Thanks to [enpipi](https://github.com/enpipi) for the changes!
+  - [637](https://github.com/macadmins/nudge/issues/637)
+- The `Debug` schema no longer honors `randomDelay`
+
+### Fixed
+- The left side of Nudge is no longer cut off when using more "verbose" languages
+  - [640](https://github.com/macadmins/nudge/issues/640)
+- The left side of Nudge now has proper localization for the values `True` and `False`
+
 ## [2.0.7] - 2024-08-08
 Requires macOS 12.0 and higher.
 
