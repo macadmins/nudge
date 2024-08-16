@@ -257,11 +257,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                     let presentCVEs = selectedOS!.cves.count > 0
                     let slaExtension: TimeInterval
+                    // Start setting UI fields
+                    nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
+                    nudgePrimaryState.sofaAboutUpdateURL = selectedOS!.securityInfo
+                    nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     switch (activelyExploitedCVEs, presentCVEs, AppStateManager().requireMajorUpgrade()) {
                     case (false, true, true):
                         slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (false, true, false):
                         slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMinorUpdateSLA * 86400)
+                    case (true, false, true): // The selected major upgrade does not have CVEs, but the old OS does
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (true, true, true):
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (true, true, false):
@@ -271,6 +277,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     case (false, false, false):
                         slaExtension = TimeInterval(OSVersionRequirementVariables.standardMinorUpdateSLA * 86400)
                     default: // If we get here, something is wrong, use 90 days as a safety
+                        LogManager.warning("SLA Extension logic failed, using 90 days as a safety", logger: sofaLog)
                         slaExtension = TimeInterval(90 * 86400)
                     }
 
@@ -280,10 +287,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     }
                     LogManager.notice("SOFA Actively Exploited CVEs: \(activelyExploitedCVEs)", logger: sofaLog)
 
-                    // Start setting UI fields
-                    nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
-                    nudgePrimaryState.sofaAboutUpdateURL = selectedOS!.securityInfo
-                    nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
                         if OSVersionRequirementVariables.minorVersionRecalculationThreshold > 0 {
