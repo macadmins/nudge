@@ -82,20 +82,22 @@ struct InfoRow: View {
         HStack {
             Text(label.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .fontWeight(boldText ? .bold : .regular)
+                .lineLimit(2)
             Spacer()
             if isHighlighted {
-                Text(value)
+                Text(value.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                     .fontWeight(.bold)
                     .minimumScaleFactor(0.01)
+                    .lineLimit(1)
             } else {
-                Text(value)
+                Text(value.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                     .foregroundColor(colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark)
                     .fontWeight(boldText ? .bold : .regular)
                     .minimumScaleFactor(0.01)
+                    .lineLimit(1)
             }
         }
-        .lineLimit(1)
     }
 }
 
