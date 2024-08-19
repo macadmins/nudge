@@ -270,6 +270,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (true, true, true):
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
+                    case (true, false, false):
+                        slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
                     case (true, true, false):
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
                     case (false, false, true):
