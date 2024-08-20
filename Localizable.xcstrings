@@ -330,7 +330,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Ihr Gerät ist nicht mehr in der Lage, wichtige Sicherheitsupdates zu empfangen**"
+            "value" : "**Dein Mac ist nicht mehr in der Lage, wichtige Sicherheitsupdates zu erhalten**"
           }
         },
         "en" : {
@@ -438,7 +438,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Dein Gerät wird während dieses Updates neu gestartet**"
+            "value" : "**Dein Mac wird während des Updates neu gestartet**"
           }
         },
         "en" : {
@@ -546,7 +546,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um sicherzustellen, dass die IT Ihr Gerät ordnungsgemäß schützen kann, ist ein vollständig aktuelles Gerät erforderlich.\n\nWenn Sie kein Ersatzgerät erhalten, verlieren Sie den Zugriff auf einige Dinge, die Sie für Ihre täglichen Aufgaben benötigen.\n\nFür weitere Informationen hierzu klicken Sie bitte auf die Schaltfläche **Gerät ersetzen**."
+            "value" : "Um sicherzustellen, dass die IT dein Mac ordnungsgemäß schützen kann, ist ein aktueller Mac erforderlich.\n\nWenn Du kein Ersatzgerät erhalten hast, verlierst Du ggf. den Zugriff, die Du für deine täglichen Aufgaben benötigst.\n\nFür weitere Informationen hierzu klicke bitte auf die Schaltfläche **Mac ersetzen**."
           }
         },
         "en" : {
@@ -654,7 +654,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein vollständig aktualisiertes Gerät ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Gerät effektiv schützen kann.\n\nWenn du dein Gerät nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Gerät Aktualisieren** und befolge die angegebenen Schritte."
+            "value" : "Ein vollständig aktualisierter Mac ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Mac effektiv schützen kann.\n\nWenn du dein Mac nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Mac aktualisieren** und befolge die angegebenen Schritte."
           }
         },
         "en" : {
@@ -870,7 +870,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Progamm beendet"
+            "value" : "Programm beendet"
           }
         },
         "en" : {
@@ -1518,7 +1518,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktuelle Betriebssystemversion:"
+            "value" : "Aktuelle macOS Version:"
           }
         },
         "en" : {
@@ -2045,7 +2045,7 @@
         }
       }
     },
-    "False" : {
+    "Actively Exploited CVEs" : {
       "comment" : "Actively Exploited CVEs",
       "extractionState" : "manual",
       "localizations" : {
@@ -2058,7 +2058,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falsch"
+            "value" : "Aktiv ausgenutzte CVEs"
           }
         },
         "en" : {
@@ -2274,7 +2274,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ich verstehe"
+            "value" : "Akzeptieren"
           }
         },
         "en" : {
@@ -2922,7 +2922,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte aktualisiere dein Gerät, um dieses Programm zu verwenden."
+            "value" : "Bitte aktualisiere dein Mac, um dieses Programm zu verwenden."
           }
         },
         "en" : {
@@ -3030,7 +3030,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte arbeiten Sie mit Ihrem lokalen IT-Team zusammen, um ein Ersatzgerät zu erhalten"
+            "value" : "Bitte kontaktiere dein IT-Team, um ein Ersatzgerät zu erhalten"
           }
         },
         "en" : {
@@ -3138,7 +3138,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ersetzen Sie Ihr Gerät"
+            "value" : "Ersetze Dein Gerät"
           }
         },
         "en" : {
@@ -3246,7 +3246,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erforderliches Datum:"
+            "value" : "Stichtag:"
           }
         },
         "en" : {
@@ -3354,7 +3354,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erforderliche Betriebssystemversion:"
+            "value" : "Erforderliche macOS Version:"
           }
         },
         "en" : {
@@ -3678,7 +3678,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gerät Aktualisieren"
+            "value" : "Gerät aktualisieren"
           }
         },
         "en" : {
