@@ -546,7 +546,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um sicherzustellen, dass die IT dein Mac ordnungsgemäß schützen kann, ist ein aktueller Mac erforderlich.\n\nWenn Du kein Ersatzgerät erhalten hast, verlierst Du ggf. den Zugriff, die Du für deine täglichen Aufgaben benötigst.\n\nFür weitere Informationen hierzu klicke bitte auf die Schaltfläche **Mac ersetzen**."
+            "value" : "Um sicherzustellen, dass die IT deinen Mac ordnungsgemäß schützen kann, ist ein aktueller Mac erforderlich.\n\nWenn Du kein Ersatzgerät erhalten hast, verlierst Du ggf. den Zugriff, die Du für deine täglichen Aufgaben benötigst.\n\nFür weitere Informationen hierzu klicke bitte auf die Schaltfläche **Mac ersetzen**."
           }
         },
         "en" : {
@@ -654,7 +654,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein vollständig aktualisierter Mac ist erforderlich, um sicherzustellen, dass die IT-Abteilung dein Mac effektiv schützen kann.\n\nWenn du dein Mac nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Mac aktualisieren** und befolge die angegebenen Schritte."
+            "value" : "Ein vollständig aktualisierter Mac ist erforderlich, um sicherzustellen, dass die IT-Abteilung deinen Mac effektiv schützen kann.\n\nWenn du dein Mac nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Mac aktualisieren** und befolge die angegebenen Schritte."
           }
         },
         "en" : {
@@ -2922,7 +2922,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte aktualisiere dein Mac, um dieses Programm zu verwenden."
+            "value" : "Bitte aktualisiere deinen Mac, um dieses Programm zu verwenden."
           }
         },
         "en" : {
