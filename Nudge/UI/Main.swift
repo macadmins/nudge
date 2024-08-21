@@ -263,20 +263,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
                     switch (activelyExploitedCVEs, presentCVEs, AppStateManager().requireMajorUpgrade()) {
                     case (false, true, true):
+                        LogManager.notice("Non Actively Exploited Major Upgrade detected. Using nonActivelyExploitedCVEsMajorUpgradeSLA value: \(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (false, true, false):
+                        LogManager.notice("Non Actively Exploited Minor Update detected. Using nonActivelyExploitedCVEsMinorUpdateSLA value: \(OSVersionRequirementVariables.nonActivelyExploitedCVEsMinorUpdateSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.nonActivelyExploitedCVEsMinorUpdateSLA * 86400)
                     case (true, false, true): // The selected major upgrade does not have CVEs, but the old OS does
+                        LogManager.notice("Actively Exploited Major Upgrade detected. Using activelyExploitedCVEsMajorUpgradeSLA value: \(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (true, true, true):
+                        LogManager.notice("Actively Exploited Major Upgrade detected. Using activelyExploitedCVEsMajorUpgradeSLA value: \(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMajorUpgradeSLA * 86400)
                     case (true, false, false):
+                        LogManager.notice("Actively Exploited Minor Update detected. Using activelyExploitedCVEsMinorUpdateSLA value: \(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
                     case (true, true, false):
+                        LogManager.notice("Actively Exploited Minor Update detected. Using activelyExploitedCVEsMinorUpdateSLA value: \(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.activelyExploitedCVEsMinorUpdateSLA * 86400)
                     case (false, false, true):
+                        LogManager.notice("Standard Major Upgrade detected. Using standardMajorUpgradeSLA value: \(OSVersionRequirementVariables.standardMajorUpgradeSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.standardMajorUpgradeSLA * 86400)
                     case (false, false, false):
+                        LogManager.notice("Standard Minor Update detected. Using standardMinorUpdateSLA value: \(OSVersionRequirementVariables.standardMinorUpdateSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.standardMinorUpdateSLA * 86400)
                     default: // If we get here, something is wrong, use 90 days as a safety
                         LogManager.warning("SLA Extension logic failed, using 90 days as a safety", logger: sofaLog)
