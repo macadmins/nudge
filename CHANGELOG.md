@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.11] - 2024-08-22
+Requires macOS 12.0 and higher.
+
+### Changed
+- German localization improvements
+  - Thanks to [northalpha](https://github.com/northalpha) [Mirko Steinbrecher](https://github.com/AirBookMac) and for the changes!
+  - [648](https://github.com/macadmins/nudge/pull/648)
+- SOFA SLA Logging improvements
+  - Thanks to [Eric Holtam](https://github.com/poundbangbash) for the changes!
+  - [647](https://github.com/macadmins/nudge/pull/647)
+
 ## [2.0.10] - 2024-08-19
 Requires macOS 12.0 and higher.
 
