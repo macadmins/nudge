@@ -654,7 +654,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein vollständig aktualisierter Mac ist erforderlich, um sicherzustellen, dass die IT-Abteilung deinen Mac effektiv schützen kann.\n\nWenn du deinen Mac nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **macOS aktualisieren** und befolge die angegebenen Schritte."
+            "value" : "Ein vollständig aktualisiertes macOS ist erforderlich, um sicherzustellen, dass die IT-Abteilung deinen Mac effektiv schützen kann.\n\nWenn du deinen macOS nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine tägliche Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **macOS aktualisieren** und befolge die angegebenen Schritte."
           }
         },
         "en" : {
