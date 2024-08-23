@@ -654,7 +654,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein vollständig aktualisierter Mac ist erforderlich, um sicherzustellen, dass die IT-Abteilung deinen Mac effektiv schützen kann.\n\nWenn du dein Mac nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Mac aktualisieren** und befolge die angegebenen Schritte."
+            "value" : "Ein vollständig aktualisierter Mac ist erforderlich, um sicherzustellen, dass die IT-Abteilung deinen Mac effektiv schützen kann.\n\nWenn du deinen Mac nicht aktualisierst, verlierst du möglicherweise den Zugriff auf einige Werkzeuge, die du für deine täglichen Aufgaben benötigst.\n\nUm das Update zu starten, klicke auf die Schaltfläche **Mac aktualisieren** und befolge die angegebenen Schritte."
           }
         },
         "en" : {
@@ -3138,7 +3138,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ersetze Dein Gerät"
+            "value" : "Mac ersetzen"
           }
         },
         "en" : {
@@ -3678,7 +3678,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gerät aktualisieren"
+            "value" : "MacOS aktualisieren"
           }
         },
         "en" : {
@@ -4110,7 +4110,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dein Gerät benötigt ein Sicherheitsupdate"
+            "value" : "Dein Mac benötigt ein Sicherheitsupdate"
           }
         },
         "en" : {
@@ -4218,7 +4218,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dein Gerät benötigt ein Sicherheitsupdate (Demo-Modus)"
+            "value" : "Dein Mac benötigt ein Sicherheitsupdate (Demo-Modus)"
           }
         },
         "en" : {
