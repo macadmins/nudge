@@ -1219,7 +1219,7 @@ struct NetworkFileManager {
     }
 
     func redownloadAndReprocessSOFA(url: URL) -> MacOSDataFeed? {
-        let sofaData = SOFA().URLSync(url: url)
+        let sofaData = SOFA().URLSync(url: url, clearCache: true)
         if let responseCode = sofaData.responseCode, responseCode == 200 {
             let fileManager = FileManager.default
             let appSupportDirectory = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
@@ -1233,10 +1233,13 @@ struct NetworkFileManager {
                         try data.write(to: sofaPath)
                     }
                     let assetInfo = try MacOSDataFeed(data: data)
+                    Globals.nudgeDefaults.set(sofaData.eTag, forKey: "LastEtag")
                     return assetInfo
                 } else {
                     LogManager.error("Failed to fetch sofa JSON: No data received.", logger: sofaLog)
-                    return redownloadAndReprocessSOFA(url: url)
+                    LogManager.error("Could not fetch SOFA feed", logger: sofaLog)
+                    nudgePrimaryState.shouldExit = true
+                    exit(1)
                 }
             } catch {
                 LogManager.error("Failed to decode sofa JSON after redownload: \(error.localizedDescription)", logger: sofaLog)

@@ -222,7 +222,7 @@ extension MacOSDataFeed {
 }
 
 class SOFA: NSObject, URLSessionDelegate {
-    func URLSync(url: URL, maxRetries: Int = 3) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?, eTag: String?) {
+    func URLSync(url: URL, maxRetries: Int = 3, clearCache: Bool = false) -> (data: Data?, response: URLResponse?, error: Error?, responseCode: Int?, eTag: String?) {
         if url.scheme == "file" {
             do {
                 let data = try Data(contentsOf: url)
@@ -233,10 +233,14 @@ class SOFA: NSObject, URLSessionDelegate {
         }
 
         let semaphore = DispatchSemaphore(value: 0)
-        let lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
+        var lastEtag = Globals.nudgeDefaults.string(forKey: "LastEtag") ?? ""
         var request = URLRequest(url: url)
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .useProtocolCachePolicy
+        if clearCache {
+            URLCache.shared.removeAllCachedResponses()
+            lastEtag = ""
+        }
         let session = URLSession(configuration: config, delegate: self, delegateQueue: nil)
 
         request.addValue("\(Globals.bundleID)/\(VersionManager.getNudgeVersion())", forHTTPHeaderField: "User-Agent")
