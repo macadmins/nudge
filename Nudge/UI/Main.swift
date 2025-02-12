@@ -214,6 +214,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     }
 
                     var totalActivelyExploitedCVEs = 0
+                    var totalCVEs = 0
                     let selectedOSVersion = selectedOS!.productVersion
                     var allVersions = [String]()
 
@@ -246,16 +247,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     for osVersion in macOSSOFAAssets {
                         if filteredVersions.contains(osVersion.latest.productVersion) {
                             totalActivelyExploitedCVEs += osVersion.latest.activelyExploitedCVEs.count
+                            totalCVEs += osVersion.latest.uniqueCVEsCount
                         }
                         for securityRelease in osVersion.securityReleases {
                             if filteredVersions.contains(securityRelease.productVersion) {
                                 totalActivelyExploitedCVEs += securityRelease.activelyExploitedCVEs.count
+                                totalCVEs += securityRelease.uniqueCVEsCount
                             }
                         }
                     }
                     let activelyExploitedCVEs = totalActivelyExploitedCVEs > 0
 
-                    let presentCVEs = selectedOS!.cves.count > 0
+                    let presentCVEs = totalCVEs > 0
                     let slaExtension: TimeInterval
                     // Start setting UI fields
                     nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
