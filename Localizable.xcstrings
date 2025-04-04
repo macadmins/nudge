@@ -2094,7 +2094,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "偽"
+            "value" : "False"
           }
         },
         "ko" : {
@@ -3606,7 +3606,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "真実"
+            "value" : "True"
           }
         },
         "ko" : {
