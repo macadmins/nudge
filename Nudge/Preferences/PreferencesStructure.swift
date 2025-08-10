@@ -505,27 +505,47 @@ extension UserInterface {
         singleQuitButton: Bool? = nil,
         updateElements: [UpdateElement]? = nil
     ) -> UserInterface {
+        let actionButtonPath = actionButtonPath ?? self.actionButtonPath
+        let applicationTerminatedNotificationImagePath = applicationTerminatedNotificationImagePath ?? self.applicationTerminatedNotificationImagePath
+        let fallbackLanguage = fallbackLanguage ?? self.fallbackLanguage
+        let forceFallbackLanguage = forceFallbackLanguage ?? self.forceFallbackLanguage
+        let forceScreenShotIcon = forceScreenShotIcon ?? self.forceScreenShotIcon
+        let iconDarkPath = iconDarkPath ?? self.iconDarkPath
+        let iconLightPath = iconLightPath ?? self.iconLightPath
+        let requiredInstallationDisplayFormat = requiredInstallationDisplayFormat ?? self.requiredInstallationDisplayFormat
+        let screenShotDarkPath = screenShotDarkPath ?? self.screenShotDarkPath
+        let screenShotLightPath = screenShotLightPath ?? self.screenShotLightPath
+        let showActivelyExploitedCVEs = showActivelyExploitedCVEs ?? self.showActivelyExploitedCVEs
+        let showDeferralCount = showDeferralCount ?? self.showDeferralCount
+        let showDaysRemainingToUpdate = showDaysRemainingToUpdate ?? self.showDaysRemainingToUpdate
+        let showRequiredDate = showRequiredDate ?? self.showRequiredDate
+        let simpleMode = simpleMode ?? self.simpleMode
+        let simpleModeOptions = simpleModeOptions ?? self.simpleModeOptions
+        let singleQuitButton = singleQuitButton ?? self.singleQuitButton
+        let updateElements = updateElements ?? self.updateElements
+
         return UserInterface(
-            actionButtonPath: actionButtonPath ?? self.actionButtonPath,
-            applicationTerminatedNotificationImagePath: applicationTerminatedNotificationImagePath ?? self.applicationTerminatedNotificationImagePath,
-            fallbackLanguage: fallbackLanguage ?? self.fallbackLanguage,
-            forceFallbackLanguage: forceFallbackLanguage ?? self.forceFallbackLanguage,
-            forceScreenShotIcon: forceScreenShotIcon ?? self.forceScreenShotIcon,
-            iconDarkPath: iconDarkPath ?? self.iconDarkPath,
-            iconLightPath: iconLightPath ?? self.iconLightPath,
-            requiredInstallationDisplayFormat: requiredInstallationDisplayFormat ?? self.requiredInstallationDisplayFormat,
-            screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
-            screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
-            showActivelyExploitedCVEs: showActivelyExploitedCVEs ?? self.showActivelyExploitedCVEs,
-            showDeferralCount: showDeferralCount ?? self.showDeferralCount,
-            showDaysRemainingToUpdate: showDaysRemainingToUpdate ?? self.showDaysRemainingToUpdate,
-            showRequiredDate: showRequiredDate ?? self.showRequiredDate,
-            simpleMode: simpleMode ?? self.simpleMode,
-            simpleModeOptions: simpleModeOptions ?? self.simpleModeOptions,
-            singleQuitButton: singleQuitButton ?? self.singleQuitButton,
-            updateElements: updateElements ?? self.updateElements
+            actionButtonPath: actionButtonPath,
+            applicationTerminatedNotificationImagePath: applicationTerminatedNotificationImagePath,
+            fallbackLanguage: fallbackLanguage,
+            forceFallbackLanguage: forceFallbackLanguage,
+            forceScreenShotIcon: forceScreenShotIcon,
+            iconDarkPath: iconDarkPath,
+            iconLightPath: iconLightPath,
+            requiredInstallationDisplayFormat: requiredInstallationDisplayFormat,
+            screenShotDarkPath: screenShotDarkPath,
+            screenShotLightPath: screenShotLightPath,
+            showActivelyExploitedCVEs: showActivelyExploitedCVEs,
+            showDeferralCount: showDeferralCount,
+            showDaysRemainingToUpdate: showDaysRemainingToUpdate,
+            showRequiredDate: showRequiredDate,
+            singleQuitButton: singleQuitButton,
+            simpleMode: simpleMode,
+            simpleModeOptions: simpleModeOptions,
+            updateElements: updateElements
         )
     }
+
 }
 
 // MARK: - UpdateElement
