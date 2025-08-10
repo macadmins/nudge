@@ -75,6 +75,10 @@
         "screenShotLightPath": "/somewhere/screenShotLight.png",
         "showDeferralCount": true,
         "simpleMode": false,
+        "simpleModeOptions": {
+            "showRequiredDate": true,
+            "showRequiredOSVersion": true
+        },
         "singleQuitButton": false,
         "updateElements": [
             {

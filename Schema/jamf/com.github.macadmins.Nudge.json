@@ -1451,6 +1451,40 @@
                                 }
                             ]
                         },
+                        "simpleModeOptions": {
+                            "description": "Configuration options for the simplified user experience.",
+                            "type": "object",
+                            "properties": {
+                                "showRequiredDate": {
+                                    "description": "When enabled, Nudge will show the requiredInstallationDate when using simpleMode.",
+                                    "anyOf": [
+                                        {
+                                            "title": "Not Configured",
+                                            "type": "null"
+                                        },
+                                        {
+                                            "title": "Configured",
+                                            "default": false,
+                                            "type": "boolean"
+                                        }
+                                    ]
+                                },
+                                "showRequiredOSVersion": {
+                                    "description": "When enabled, Nudge will show the requiredMinimumOSVersion when using simpleMode.",
+                                    "anyOf": [
+                                        {
+                                            "title": "Not Configured",
+                                            "type": "null"
+                                        },
+                                        {
+                                            "title": "Configured",
+                                            "default": false,
+                                            "type": "boolean"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
                         "singleQuitButton": {
                             "description": "Only display one quit button regardless of proximity to the due date.",
                             "anyOf": [

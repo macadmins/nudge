@@ -458,8 +458,13 @@ struct UserInterface: Codable {
     var actionButtonPath, applicationTerminatedNotificationImagePath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, requiredInstallationDisplayFormat, screenShotDarkPath, screenShotLightPath: String?
-    var showActivelyExploitedCVEs, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, simpleMode, singleQuitButton: Bool?
+    var showActivelyExploitedCVEs, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, singleQuitButton: Bool?
+    var simpleMode: Bool?
+    var simpleModeOptions: SimpleModeOptions?
     var updateElements: [UpdateElement]?
+}
+struct SimpleModeOptions: Codable {
+    var showRequiredDate, showRequiredOSVersion: Bool?
 }
 
 // MARK: UserInterface convenience initializers and mutators
@@ -496,6 +501,7 @@ extension UserInterface {
         showDaysRemainingToUpdate: Bool? = nil,
         showRequiredDate: Bool? = nil,
         simpleMode: Bool? = nil,
+        simpleModeOptions: SimpleModeOptions? = nil,
         singleQuitButton: Bool? = nil,
         updateElements: [UpdateElement]? = nil
     ) -> UserInterface {
@@ -515,6 +521,7 @@ extension UserInterface {
             showDaysRemainingToUpdate: showDaysRemainingToUpdate ?? self.showDaysRemainingToUpdate,
             showRequiredDate: showRequiredDate ?? self.showRequiredDate,
             simpleMode: simpleMode ?? self.simpleMode,
+            simpleModeOptions: simpleModeOptions ?? self.simpleModeOptions,
             singleQuitButton: singleQuitButton ?? self.singleQuitButton,
             updateElements: updateElements ?? self.updateElements
         )

@@ -391,6 +391,5 @@ func getMainHeaderUnsupported() -> String {
 
 func simpleMode() -> Bool {
     return CommandLineUtilities().simpleModeEnabled() ||
-    UserInterfaceVariables.userInterfaceProfile?["simpleMode"] as? Bool ??
-    Globals.nudgeJSONPreferences?.userInterface?.simpleMode ?? false
+    UserInterfaceVariables.simpleModeEnabled
 }

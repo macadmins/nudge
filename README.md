@@ -11,6 +11,7 @@ For more information about installation, deployment, and the user experience, pl
 
 # Examples of the User Interface
 ## simpleMode
+SimpleMode offers a streamlined experience and can optionally display the required OS version and due date. Enable simple mode with the top-level `simpleMode` key and configure the `simpleModeOptions` dictionary with `showRequiredOSVersion` and `showRequiredDate` keys to control this behavior.
 ### English
 #### Light
 <img src="/assets/simple_mode/demo_simple_light_1.png" width=75% height=75%>

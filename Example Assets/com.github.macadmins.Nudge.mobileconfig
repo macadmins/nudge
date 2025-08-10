@@ -157,8 +157,17 @@
                     <string>/somewhere/screenShotLight.png</string>
                     <key>showDeferralCount</key>
                     <true/>
+                    <key>showRequiredDate</key>
+                    <true/>
                     <key>simpleMode</key>
                     <false/>
+                    <key>simpleModeOptions</key>
+                    <dict>
+                        <key>showRequiredDate</key>
+                        <true/>
+                        <key>showRequiredOSVersion</key>
+                        <true/>
+                    </dict>
                     <key>singleQuitButton</key>
                     <false/>
                     <key>updateElements</key>

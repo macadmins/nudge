@@ -22,6 +22,12 @@
         "screenShotDarkPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true",
         "screenShotLightPath": "https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true",
         "applicationTerminatedNotificationImagePath": "/Library/Application Support/Nudge/logoLight.png",
+        "showRequiredDate": true,
+        "simpleMode": false,
+        "simpleModeOptions": {
+            "showRequiredDate": true,
+            "showRequiredOSVersion": true
+        },
         "updateElements": [
             {
                 "_language": "en",

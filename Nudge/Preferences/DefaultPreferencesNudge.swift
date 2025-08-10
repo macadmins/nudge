@@ -626,6 +626,31 @@ struct UserInterfaceVariables {
         false
     }
 
+    static var simpleModeEnabled: Bool {
+        if let simpleMode = userInterfaceProfile?["simpleMode"] as? Bool {
+            return simpleMode
+        }
+        return userInterfaceJSON?.simpleMode ?? false
+    }
+
+    static var simpleModeShowRequiredDate: Bool {
+        guard simpleModeEnabled else { return false }
+        if let options = userInterfaceProfile?["simpleModeOptions"] as? [String: Any],
+           let value = options["showRequiredDate"] as? Bool {
+            return value
+        }
+        return userInterfaceJSON?.simpleModeOptions?.showRequiredDate ?? false
+    }
+
+    static var simpleModeShowRequiredOSVersion: Bool {
+        guard simpleModeEnabled else { return false }
+        if let options = userInterfaceProfile?["simpleModeOptions"] as? [String: Any],
+           let value = options["showRequiredOSVersion"] as? Bool {
+            return value
+        }
+        return userInterfaceJSON?.simpleModeOptions?.showRequiredOSVersion ?? false
+    }
+
     static var singleQuitButton: Bool {
         userInterfaceProfile?["singleQuitButton"] as? Bool ??
         userInterfaceJSON?.singleQuitButton ??

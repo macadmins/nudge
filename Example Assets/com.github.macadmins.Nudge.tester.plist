@@ -59,14 +59,23 @@
 		<string>https://github.com/macadmins/nudge/blob/main/assets/NudgeIconInverted.png?raw=true</string>
 		<key>iconLightPath</key>
 		<string>https://github.com/macadmins/nudge/blob/main/assets/NudgeIcon.png?raw=true</string>
-		<key>screenShotDarkPath</key>
-		<string>https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true</string>
-		<key>screenShotLightPath</key>
-		<string>https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true</string>
-		<key>simpleMode</key>
-		<false/>
-		<key>updateElements</key>
-		<array>
+                <key>screenShotDarkPath</key>
+                <string>https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true</string>
+                <key>screenShotLightPath</key>
+                <string>https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true</string>
+                <key>showRequiredDate</key>
+                <true/>
+                <key>simpleMode</key>
+                <false/>
+                <key>simpleModeOptions</key>
+                <dict>
+                        <key>showRequiredDate</key>
+                        <true/>
+                        <key>showRequiredOSVersion</key>
+                        <true/>
+                </dict>
+                <key>updateElements</key>
+                <array>
 			<dict>
 				<key>_language</key>
 				<string>en</string>
