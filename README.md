@@ -1,5 +1,9 @@
 <img src="/assets/NudgeIcon.png" width=10% height=10%>
 
+> [!WARNING]
+> This is a fork. If you dont like AI this one is not for you.
+
+
 # Nudge (macadmin's Slack [#nudge](https://macadmins.slack.com/archives/CDUU7DJQ2))
 Nudge is a multi-linguistic application, offering custom user deferrals, which strongly encourages macOS updates. Written in Swift and SwiftUI.
 
