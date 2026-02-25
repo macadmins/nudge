@@ -66,6 +66,7 @@ struct UIConstants {
 
 class AppState: ObservableObject {
     @Published var activelyExploitedCVEs = false
+    @Published var activelyExploitedCVEsCount = 0
     @Published var afterFirstStateChange = false
     @Published var allowButtons = true
     @Published var daysRemaining = DateManager().getNumberOfDaysBetween()
