@@ -41,7 +41,15 @@ struct StandardModeLeftSide: View {
                 InfoRow(label: "Required Date:", value: DateManager().coerceDateToString(date: requiredInstallationDate, formatterString: UserInterfaceVariables.requiredInstallationDisplayFormat))
             }
             if OptionalFeatureVariables.utilizeSOFAFeed && UserInterfaceVariables.showActivelyExploitedCVEs {
-                InfoRow(label: "Actively Exploited CVEs:", value: String(appState.activelyExploitedCVEs).capitalized, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
+                switch UserInterfaceVariables.activelyExploitedOutput {
+                case "YorN", "yorn":
+                    let resultTempText = String(appState.activelyExploitedCVEs ? "Yes" : "No").localized(desiredLanguage: getDesiredLanguage(locale: appState.locale))
+                    InfoRow(label: UserInterfaceVariables.activelyExploitedText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), value: resultTempText.capitalized, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
+                case "Count", "count":
+                    InfoRow(label: UserInterfaceVariables.activelyExploitedText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), value: String(appState.activelyExploitedCVEsCount), isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
+                default:
+                    InfoRow(label: UserInterfaceVariables.activelyExploitedText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), value: String(appState.activelyExploitedCVEs).capitalized, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
+                }
             }
             InfoRow(label: "Current OS Version:", value: GlobalVariables.currentOSVersion)
             if UserInterfaceVariables.showDaysRemainingToUpdate {
