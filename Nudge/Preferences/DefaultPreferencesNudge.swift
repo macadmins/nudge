@@ -445,6 +445,18 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsJSON?.actionButtonTextUnsupported ??
         "Replace Your Device"
     }
+
+    static var activelyExploitedOutput: String {
+        userInterfaceUpdateElementsProfile?["activelyExploitedOutput"] as? String ??
+        userInterfaceUpdateElementsJSON?.activelyExploitedOutput ??
+        "TorF"
+    }
+    
+    static var activelyExploitedText: String {
+        userInterfaceUpdateElementsProfile?["activelyExploitedText"] as? String ??
+        userInterfaceUpdateElementsJSON?.activelyExploitedText ??
+        "Actively Exploited CVEs:"
+    }
     
     static var applicationTerminatedNotificationImagePath: String {
         userInterfaceProfile?["applicationTerminatedNotificationImagePath"] as? String ??
