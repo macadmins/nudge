@@ -1534,6 +1534,43 @@
                                                     }
                                                 ]
                                             },
+                                            "activelyExploitedOutput": {
+                                                "description": "Modifies the output format of the Actively Exploited CVEs field. Use TorF for True/False, YorN for Yes/No, use Count for actual count of CVEs. Lowercase is accepted, any other values will result in default of True/False (Note: This key is only used with Nudge v2.2 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "TorF",
+                                                            "YorN",
+                                                            "Count"
+                                                          ],
+                                                          "default": "TorF"
+                                                    }
+                                                ]
+                                            },
+                                            "ActivelyExploitedText": {
+                                                "description": "Modifies the label for Actively Exploited CVEs (if enabled). Length of text may cause label to span more than one line. (Note: This key is only used with Nudge v2.2 and higher)",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "null",
+                                                        "title": "Not Configured"
+                                                    },
+                                                    {
+                                                        "title": "Configured",
+                                                        "type": "string",
+                                                        "options": {
+                                                            "inputAttributes": {
+                                                                "placeholder": "Actively Exploited CVEs:"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
                                             "applicationTerminatedTitleText": {
                                                 "description": "Modifies the terminated application notification title. (Note: This key is only used with Nudge v2.0 and higher)",
                                                 "anyOf": [
