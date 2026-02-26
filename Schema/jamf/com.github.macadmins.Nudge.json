@@ -1553,7 +1553,7 @@
                                                     }
                                                 ]
                                             },
-                                            "ActivelyExploitedText": {
+                                            "activelyExploitedText": {
                                                 "description": "Modifies the label for Actively Exploited CVEs (if enabled). Length of text may cause label to span more than one line. (Note: This key is only used with Nudge v2.2 and higher)",
                                                 "anyOf": [
                                                     {
