@@ -6,6 +6,7 @@
         "acceptableScreenSharingUsage": false,
         "aggressiveUserExperience": true,
         "aggressiveUserFullScreenExperience": true,
+        "allowMovableWindowDuringAggressiveUserExperience": false,
         "asynchronousSoftwareUpdate": true,
         "attemptToBlockApplicationLaunches": false,
         "attemptToFetchMajorUpgrade": true,

@@ -35,6 +35,8 @@
                     <true/>
                     <key>aggressiveUserFullScreenExperience</key>
                     <true/>
+                    <key>allowMovableWindowDuringAggressiveUserExperience</key>
+                    <false/>
                     <key>asynchronousSoftwareUpdate</key>
                     <true/>
                     <key>attemptToBlockApplicationLaunches</key>

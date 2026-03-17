@@ -17,6 +17,8 @@
 		<true/>
 		<key>acceptableScreenSharingUsage</key>
 		<true/>
+		<key>allowMovableWindowDuringAggressiveUserExperience</key>
+		<false/>
 		<key>attemptToBlockApplicationLaunches</key>
 		<true/>
 		<key>blockedApplicationBundleIDs</key>

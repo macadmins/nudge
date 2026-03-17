@@ -142,6 +142,20 @@
                                 }
                             ]
                         },
+                        "allowMovableWindowDuringAggressiveUserExperience": {
+                            "description": "When enabled, allows the Nudge window to be movable during aggressive user experience mode (after the required installation date). When disabled (default), window movability is controlled solely by the allowMovableWindow setting in userExperience. This provides flexibility to allow users to move the window out of the way during critical update enforcement periods. (Note: This key is only used with Nudge v2.1 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": false,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
                         "asynchronousSoftwareUpdate": {
                             "description": "When disabled, Nudge will wait for Software Update to finish downloading (if any) updates before showing the UI.",
                             "anyOf": [
@@ -1425,6 +1439,20 @@
                         },
                         "showRequiredDate": {
                             "description": "When enabled, Nudge will also show the requiredInstallationDate as string formatted date. (Note: This key is only used with Nudge v2.0 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": false,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
+                        "showRequiredOSVersion": {
+                            "description": "When enabled, Nudge will show the requiredMinimumOSVersion on the user interface. (Note: This key is only used with Nudge v2.0 and higher)",
                             "anyOf": [
                                 {
                                     "title": "Not Configured",
