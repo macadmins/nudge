@@ -16,6 +16,72 @@ import ServiceManagement
 import SwiftUI
 import SystemConfiguration
 
+struct BlurManager {
+    /// Applies background blur to all screens and ensures the main window stays on top
+    func applyBackgroundBlur(to window: NSWindow) {
+        // load the blur background and send it to the back if we are past the required install date
+        if nudgePrimaryState.backgroundBlur.isEmpty {
+            LogManager.info("Enabling blurred background", logger: uiLog)
+            // Use NSScreen.screens to get current screen configuration
+            NSScreen.screens.forEach { screen in
+                loopedScreen = screen
+                let blurWindowController = BackgroundBlurWindowController()
+                blurWindowController.loadWindow()
+                blurWindowController.showWindow(nil)
+                nudgePrimaryState.backgroundBlur.append(blurWindowController)
+            }
+            window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
+        } else {
+            LogManager.info("Background blur currently set", logger: uiLog)
+        }
+    }
+    
+    /// Removes all background blur windows and resets window level to normal
+    func removeBackgroundBlur(resetWindowLevel: Bool = true) {
+        guard !nudgePrimaryState.backgroundBlur.isEmpty else {
+            LogManager.debug("No background blur to remove", logger: uiLog)
+            return
+        }
+        
+        LogManager.info("Removing background blur", logger: uiLog)
+        nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
+            blurWindowController.close()
+        }
+        nudgePrimaryState.backgroundBlur.removeAll()
+        
+        if resetWindowLevel {
+            NSApp.windows.first?.level = .normal
+        }
+    }
+    
+    /// Reapplies background blur for screen configuration changes
+    /// This is useful when screens are connected/disconnected
+    func reapplyBackgroundBlur() {
+        guard let mainWindow = NSApp.windows.first else {
+            LogManager.error("No main window found for blur reapplication", logger: uiLog)
+            return
+        }
+        
+        // Only reapply if blur was previously active
+        guard !nudgePrimaryState.backgroundBlur.isEmpty else {
+            LogManager.debug("No background blur to reapply", logger: uiLog)
+            return
+        }
+        
+        LogManager.info("Reapplying background blur for new screen configuration", logger: uiLog)
+        
+        // Remove existing blur without resetting window level (we want to keep it elevated)
+        removeBackgroundBlur(resetWindowLevel: false)
+        
+        // Reapply blur with current screen configuration
+        applyBackgroundBlur(to: mainWindow)
+        
+        // Ensure main window stays on top and visible
+        mainWindow.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+}
+
 struct AppStateManager {
     func activateNudge() {
         if OptionalFeatureVariables.honorFocusModes {
@@ -45,7 +111,7 @@ struct AppStateManager {
             UIUtilities().centerNudge()
             NSApp.activate(ignoringOtherApps: true)
             mainWindow.makeKeyAndOrderFront(nil)
-            applyBackgroundBlur(to: mainWindow)
+            BlurManager().applyBackgroundBlur(to: mainWindow)
             return
         }
 
@@ -67,27 +133,6 @@ struct AppStateManager {
 
     func allowCustomDeferral() -> Bool {
         return isDeferralAllowed(threshold: UserExperienceVariables.approachingWindowTime, logMessage: "Device allowCustomDeferralButton")
-    }
-
-    private func applyBackgroundBlur(to window: NSWindow) {
-        // Figure out all the screens upon Nudge launching
-        UIConstants.screens.forEach { screen in
-            loopedScreen = screen
-        }
-        // load the blur background and send it to the back if we are past the required install date
-        if nudgePrimaryState.backgroundBlur.isEmpty {
-            LogManager.info("Enabling blurred background", logger: uiLog)
-            UIConstants.screens.forEach { screen in
-                let blurWindowController = BackgroundBlurWindowController()
-                blurWindowController.loadWindow()
-                blurWindowController.showWindow(nil)
-                loopedScreen = screen
-                nudgePrimaryState.backgroundBlur.append(blurWindowController)
-            }
-            window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.maximumWindow) + 1))
-        } else {
-            LogManager.info("Background blur currently set", logger: uiLog)
-        }
     }
 
     private func calculateNewRequiredInstallationDateIfNeeded(currentDate: Date, gracePeriodPathCreationDate: Date) -> Date {
@@ -1519,14 +1564,7 @@ struct UIUtilities {
         if userClicked {
             LogManager.notice(unsupportedUI ? "User clicked updateDevice (Replace My Device) via Unsupported UI workflow" : "User clicked updateDevice" , logger: uiLog)
             // Remove forced blur and reset window level
-            if !nudgePrimaryState.backgroundBlur.isEmpty {
-                nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
-                    uiLog.notice("\("Attempting to remove forced blur", privacy: .public)")
-                    blurWindowController.close()
-                    nudgePrimaryState.backgroundBlur.removeAll()
-                }
-                NSApp.windows.first?.level = .normal
-            }
+            BlurManager().removeBackgroundBlur()
         } else {
             LogManager.notice(unsupportedUI ? "Synthetically clicked updateDevice (Replace My Device) via Unsupported UI workflow due to allowedDeferral count" : "Synthetically clicked updateDevice due to allowedDeferral count" , logger: uiLog)
         }

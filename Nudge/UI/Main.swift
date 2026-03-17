@@ -431,6 +431,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func screenParametersChanged(_ notification: Notification) {
         if UserExperienceVariables.allowMovableWindow { return }
         LogManager.info("Screen parameters changed - Notification Center", logger: utilsLog)
+        
+        // If in aggressive mode with background blur, we need to reapply the blur for the new screen configuration
+        if DateManager().pastRequiredInstallationDate() && OptionalFeatureVariables.aggressiveUserFullScreenExperience && !nudgePrimaryState.backgroundBlur.isEmpty {
+            LogManager.info("Screen configuration changed while in aggressive mode - reapplying background blur", logger: utilsLog)
+            BlurManager().reapplyBackgroundBlur()
+        }
+        
         UIUtilities().centerNudge()
     }
 
@@ -439,7 +446,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         LogManager.info("Display has changed profiles - Notification Center", logger: utilsLog)
         UIUtilities().centerNudge()
     }
-
     @objc func spacesStateChanged(_ notification: Notification) {
         if UserExperienceVariables.allowMovableWindow { return }
         UIUtilities().centerNudge()
