@@ -33,7 +33,11 @@ struct AppStateManager {
         LoggerUtilities().logUserDeferrals()
 
         // When the window is allowed to be moved, all of the other controls no longer force centering, so we need to force centering when re-activating.
-        if UserExperienceVariables.allowMovableWindow {
+        // Check both the explicit allowMovableWindow setting and the allowMovableWindowDuringAggressiveUserExperience behavior (only when in aggressive mode)
+        let inAggressiveMode = DateManager().pastRequiredInstallationDate()
+        let windowIsMovable = UserExperienceVariables.allowMovableWindow || (OptionalFeatureVariables.allowMovableWindowDuringAggressiveUserExperience && inAggressiveMode)
+        
+        if windowIsMovable {
             UIUtilities().centerNudge()
         }
 

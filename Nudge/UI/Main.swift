@@ -85,7 +85,18 @@ struct ContentView: View {
         window?.standardWindowButton(.miniaturizeButton)?.isHidden = true
         window?.standardWindowButton(.zoomButton)?.isHidden = true
         window?.center()
-        window?.isMovable = UserExperienceVariables.allowMovableWindow
+        
+        // Determine if window should be movable based on allowMovableWindowDuringAggressiveUserExperience and aggressive mode status
+        let shouldBeMovable: Bool
+        if OptionalFeatureVariables.allowMovableWindowDuringAggressiveUserExperience && DateManager().pastRequiredInstallationDate() {
+            // Allow moving during aggressive mode (past required date) if explicitly enabled
+            shouldBeMovable = true
+        } else {
+            // Standard behavior: respect allowMovableWindow setting
+            shouldBeMovable = UserExperienceVariables.allowMovableWindow
+        }
+        window?.isMovable = shouldBeMovable
+        
         window?.collectionBehavior = [.fullScreenAuxiliary]
         window?.delegate = UIConstants.windowDelegate
     }

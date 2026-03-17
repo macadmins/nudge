@@ -113,6 +113,12 @@ struct OptionalFeatureVariables {
         optionalFeaturesJSON?.aggressiveUserFullScreenExperience ??
         true
     }
+    
+    static var allowMovableWindowDuringAggressiveUserExperience: Bool {
+        optionalFeaturesProfile?["allowMovableWindowDuringAggressiveUserExperience"] as? Bool ??
+        optionalFeaturesJSON?.allowMovableWindowDuringAggressiveUserExperience ??
+        false
+    }
 
     static var asynchronousSoftwareUpdate: Bool {
         optionalFeaturesProfile?["asynchronousSoftwareUpdate"] as? Bool ??
