@@ -303,11 +303,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         slaExtension = TimeInterval(90 * 86400)
                     }
 
-                    if OptionalFeatureVariables.disableNudgeForStandardInstalls && !presentCVEs {
-                        LogManager.notice("No known CVEs for \(selectedOS!.productVersion) and disableNudgeForStandardInstalls is set to true", logger: sofaLog)
+                    // Check if we should disable Nudge for standard installs
+                    // Exit only if:
+                    // 1. disableNudgeForStandardInstalls is enabled
+                    // 2. Target OS has no CVEs
+                    // 3. No actively exploited CVEs exist in intermediate versions (respects minorVersionRecalculationThreshold)
+                    if OptionalFeatureVariables.disableNudgeForStandardInstalls && !presentCVEs && !activelyExploitedCVEs {
+                        LogManager.notice("No known CVEs for \(selectedOS!.productVersion), no actively exploited CVEs in intermediate versions, and disableNudgeForStandardInstalls is set to true", logger: sofaLog)
                         AppStateManager().exitNudge()
                     }
-                    LogManager.notice("SOFA Actively Exploited CVEs: \(activelyExploitedCVEs)", logger: sofaLog)
+                    LogManager.notice("SOFA Actively Exploited CVEs (across version range): \(activelyExploitedCVEs)", logger: sofaLog)
 
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {

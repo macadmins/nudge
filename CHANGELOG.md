@@ -16,6 +16,7 @@ Requires macOS 12.0 and higher.
   - Addresses [669](https://github.com/macadmins/nudge/issues/669)
 - `unsupportedActionButtonPath` can now be used. If this is not set, the `unsupportedURL` key will be used.
  - Addresses both the FR and bug reported in [660](https://github.com/macadmins/nudge/issues/660)
+
 ### Changed
  - Swedish translation for Required Date is more culturally appropriate
   - Thanks to [HowardGMac](https://github.com/macadmins/nudge/pull/668)
@@ -37,6 +38,8 @@ Requires macOS 12.0 and higher.
   - Addresses [682](https://github.com/macadmins/nudge/issues/682)
 - Use versionGreaterThanOrEqual instead of versionGreaterThan for filtering CVEs
   - Addresses [666](https://github.com/macadmins/nudge/issues/666)
+- Evalutes active exploits and not just present CVEs when using `disableNudgeForStandardInstalls`
+  - Addresses [650](https://github.com/macadmins/nudge/issues/650)
 
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
