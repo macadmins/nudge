@@ -353,11 +353,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                 supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }
                             )
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                            let majorRequiredVersion = VersionManager.getMajorRequiredNudgeOSVersion()
-                            let currentMajorVersion = VersionManager.getMajorOSVersion()
-                            if !deviceMatchFound && (majorRequiredVersion == currentMajorVersion) {
-                                LogManager.warning("Assessed Model ID not found in SOFA Entry, but device is already running required major OS version. Disregarding unsupported UI.", logger: sofaLog)
-                                nudgePrimaryState.deviceSupportedByOSVersion = true
+                            
+                            if !deviceMatchFound {
+                                // Device not found in SOFA supportedDevices list
+                                let majorRequiredVersion = VersionManager.getMajorRequiredNudgeOSVersion()
+                                let currentMajorVersion = VersionManager.getMajorOSVersion()
+                                let currentOSVersion = GlobalVariables.currentOSVersion
+                                let requiredOSVersion = selectedOS!.productVersion
+                                let isMajorUpgrade = majorRequiredVersion != currentMajorVersion
+                                
+                                // Check if device is already fully updated (current >= required)
+                                if VersionManager.versionGreaterThanOrEqual(currentVersion: currentOSVersion, newVersion: requiredOSVersion) {
+                                    LogManager.error("Assessed Model ID not found in SOFA Entry, but device is already at or above required version (\(currentOSVersion) >= \(requiredOSVersion)). SOFA feed may be incomplete. Exiting.", logger: sofaLog)
+                                    nudgePrimaryState.shouldExit = true
+                                    exit(0)
+                                }
+                                
+                                // For minor updates within the same major version, trust that the device can update
+                                // Only show unsupported UI for major version upgrades where hardware compatibility truly matters
+                                if !isMajorUpgrade {
+                                    LogManager.warning("Assessed Model ID not found in SOFA Entry, but this is a minor update within same major version (\(currentMajorVersion)). SOFA feed may be incomplete. Disregarding unsupported UI and allowing update to proceed.", logger: sofaLog)
+                                    nudgePrimaryState.deviceSupportedByOSVersion = true
+                                } else {
+                                    LogManager.warning("Assessed Model ID not found in SOFA Entry and this requires a major version upgrade (\(currentMajorVersion) → \(majorRequiredVersion)). Displaying unsupported UI as device may genuinely not support this major version. If this is incorrect, the SOFA feed may be incomplete.", logger: sofaLog)
+                                    nudgePrimaryState.deviceSupportedByOSVersion = false
+                                }
                             } else {
                                 nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
                             }

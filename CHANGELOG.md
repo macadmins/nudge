@@ -19,6 +19,11 @@ Requires macOS 12.0 and higher.
 - Enforce `en_US_POSIX` to attempt to fix [693](https://github.com/macadmins/nudge/issues/693)
 - Move to a unified blur manager
   - Potentially addresses [687](https://github.com/macadmins/nudge/issues/687) and [659](https://github.com/macadmins/nudge/issues/659)
+- Do not enforce Nudge if using SOFA feed, `latest-minor` or `latest-supported` and SOFA feed does not contain the currently used hardware.
+  - Works around [697](https://github.com/macadmins/nudge/issues/697)
+- Do not enforce Nudge if using SOFA feed and SOFA feed does not contain currently used hardware for major/minor updates
+  - Fixes [676](https://github.com/macadmins/nudge/issues/676) and inferred issues
+  - Major upgrades may still potentially report unsupported UI and is likely a SOFA feed bug.
 
 ### Fixed
 - If SOFA feed or gdmf returns improper data and the device is currently running the required major OS version, do not show unsupported UI.
