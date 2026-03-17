@@ -143,12 +143,15 @@ struct QuitButtons: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        QuitButtons()
-            .environmentObject(nudgePrimaryState)
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("QuitButtons (\(id))")
-    }
+#Preview("QuitButtons (en)") {
+    QuitButtons()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "en"))
+}
+
+#Preview("QuitButtons (es)") {
+    QuitButtons()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "es"))
 }
 #endif

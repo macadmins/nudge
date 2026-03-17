@@ -103,12 +103,15 @@ struct InfoRow: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        StandardModeLeftSide()
-            .environmentObject(nudgePrimaryState)
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("LeftSide (\(id))")
-    }
+#Preview("LeftSide (en)") {
+    StandardModeLeftSide()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "en"))
+}
+
+#Preview("LeftSide (es)") {
+    StandardModeLeftSide()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "es"))
 }
 #endif

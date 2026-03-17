@@ -157,12 +157,15 @@ struct StandardModeRightSide: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        StandardModeRightSide()
-            .environmentObject(nudgePrimaryState)
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("RightSide (\(id))")
-    }
+#Preview("RightSide (en)") {
+    StandardModeRightSide()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "en"))
+}
+
+#Preview("RightSide (es)") {
+    StandardModeRightSide()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "es"))
 }
 #endif

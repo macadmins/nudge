@@ -131,13 +131,21 @@ struct SimpleMode: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        SimpleMode()
-            .environmentObject(nudgePrimaryState)
-            .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("SimpleMode (\(id))")
+struct SimpleMode_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            SimpleMode()
+                .environmentObject(nudgePrimaryState)
+                .environment(\.locale, .init(identifier: "en"))
+                .previewDisplayName("SimpleMode (en)")
+                .frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
+            
+            SimpleMode()
+                .environmentObject(nudgePrimaryState)
+                .environment(\.locale, .init(identifier: "es"))
+                .previewDisplayName("SimpleMode (es)")
+                .frame(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight)
+        }
     }
 }
 #endif

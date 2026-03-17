@@ -298,9 +298,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     case (false, false, false):
                         LogManager.notice("Standard Minor Update detected. Using standardMinorUpdateSLA value: \(OSVersionRequirementVariables.standardMinorUpdateSLA)", logger: sofaLog)
                         slaExtension = TimeInterval(OSVersionRequirementVariables.standardMinorUpdateSLA * 86400)
-                    default: // If we get here, something is wrong, use 90 days as a safety
-                        LogManager.warning("SLA Extension logic failed, using 90 days as a safety", logger: sofaLog)
-                        slaExtension = TimeInterval(90 * 86400)
                     }
 
                     // Check if we should disable Nudge for standard installs

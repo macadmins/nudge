@@ -33,9 +33,8 @@ struct AdditionalInfoButton: View {
 }
 
 #if DEBUG
-#Preview {
+#Preview("AdditionalInfoButton") {
     AdditionalInfoButton()
         .environmentObject(nudgePrimaryState)
-        .previewDisplayName("AdditionalInfoButton")
 }
 #endif

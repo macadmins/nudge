@@ -51,12 +51,15 @@ struct DeviceInfo: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        DeviceInfo()
-            .environmentObject(nudgePrimaryState)
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("DeviceInfo (\(id))")
-    }
+#Preview("DeviceInfo (en)") {
+    DeviceInfo()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "en"))
+}
+
+#Preview("DeviceInfo (es)") {
+    DeviceInfo()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "es"))
 }
 #endif

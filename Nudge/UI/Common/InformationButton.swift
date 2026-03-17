@@ -63,12 +63,15 @@ struct InformationButtonAsAction: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        InformationButton()
-            .environmentObject(nudgePrimaryState)
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("InformationButton (\(id))")
-    }
+#Preview("InformationButton (en)") {
+    InformationButton()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "en"))
+}
+
+#Preview("InformationButton (es)") {
+    InformationButton()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "es"))
 }
 #endif

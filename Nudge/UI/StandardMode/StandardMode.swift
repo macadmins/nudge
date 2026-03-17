@@ -45,13 +45,21 @@ struct StandardMode: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        StandardMode()
-            .environmentObject(nudgePrimaryState)
-            .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("StandardMode (\(id))")
+struct StandardMode_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            StandardMode()
+                .environmentObject(nudgePrimaryState)
+                .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
+                .previewDisplayName("StandardMode (en)")
+                .environment(\.locale, .init(identifier: "en"))
+            
+            StandardMode()
+                .environmentObject(nudgePrimaryState)
+                .previewLayout(.fixed(width: uiConstants.declaredWindowWidth, height: uiConstants.declaredWindowHeight))
+                .previewDisplayName("StandardMode (es)")
+                .environment(\.locale, .init(identifier: "es"))
+        }
     }
 }
 #endif

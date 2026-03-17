@@ -75,12 +75,15 @@ struct ScreenShotZoom: View {
 }
 
 #if DEBUG
-#Preview {
-    ForEach(["en", "es"], id: \.self) { id in
-        ScreenShotZoom()
-            .environmentObject(nudgePrimaryState)
-            .environment(\.locale, .init(identifier: id))
-            .previewDisplayName("ScreenShotZoom (\(id))")
-    }
+#Preview("ScreenShotZoom (en)") {
+    ScreenShotZoom()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "en"))
+}
+
+#Preview("ScreenShotZoom (es)") {
+    ScreenShotZoom()
+        .environmentObject(nudgePrimaryState)
+        .environment(\.locale, .init(identifier: "es"))
 }
 #endif

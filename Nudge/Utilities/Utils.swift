@@ -1746,7 +1746,7 @@ struct VersionManager {
     }
 
     static func getMinorOSVersion() -> Int {
-        var minorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
+        let minorOSVersion = ProcessInfo().operatingSystemVersion.minorVersion
 //        if (CommandLineUtilities().simulateOSVersion() != nil) {
 //            let components = CommandLineUtilities().simulateOSVersion()!.split(separator: ".")
 //            if components.count > 1 {

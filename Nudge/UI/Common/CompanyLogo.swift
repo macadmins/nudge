@@ -86,9 +86,8 @@ struct CompanyLogo: View {
 }
 
 #if DEBUG
-#Preview {
+#Preview("CompanyLogo") {
     CompanyLogo()
         .environmentObject(nudgePrimaryState)
-        .previewDisplayName("CompanyLogo")
 }
 #endif
