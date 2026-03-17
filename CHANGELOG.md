@@ -14,7 +14,8 @@ Requires macOS 12.0 and higher.
   - Addresses [671](https://github.com/macadmins/nudge/issues/671)
 - `activelyExploitedCVEsLabel` and `showActivelyExploitedCVEsAsCount` have now been implemented
   - Addresses [669](https://github.com/macadmins/nudge/issues/669)
-
+- `unsupportedActionButtonPath` can now be used. If this is not set, the `unsupportedURL` key will be used.
+ - Addresses both the FR and bug reported in [660](https://github.com/macadmins/nudge/issues/660)
 ### Changed
  - Swedish translation for Required Date is more culturally appropriate
   - Thanks to [HowardGMac](https://github.com/macadmins/nudge/pull/668)

@@ -277,6 +277,12 @@ struct OSVersionRequirementVariables {
         28
     }
 
+    static var unsupportedActionButtonPath: String {
+        osVersionRequirementsProfile?.unsupportedActionButtonPath ??
+        osVersionRequirementsJSON?.unsupportedActionButtonPath ??
+        ""
+    }
+
     static var unsupportedURL: String {
         getUnsupportedURL(OSVerReq: osVersionRequirementsProfile) ??
         getUnsupportedURL(OSVerReq: osVersionRequirementsJSON) ??

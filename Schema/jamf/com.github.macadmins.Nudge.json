@@ -685,6 +685,24 @@
                                     }
                                 ]
                             },
+                            "unsupportedActionButtonPath": {
+                                "description": "A path to a URI, application, or script for the action button when using the unsupported device UI. Supports web URLs (https://), custom URL schemes (jamfselfservice://), application paths (/Applications/App.app), or shell scripts (/usr/local/bin/script.sh). If not configured, the button will open unsupportedURL instead. (Note: This key is only used with Nudge v2.1 and higher)",
+                                "anyOf": [
+                                    {
+                                        "type": "null",
+                                        "title": "Not Configured"
+                                    },
+                                    {
+                                        "title": "Configured",
+                                        "type": "string",
+                                        "options": {
+                                            "inputAttributes": {
+                                                "placeholder": "jamfselfservice://content?entity=<content_type>&id=<content_id>&action=execute"
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
                             "unsupportedURL": {
                                 "description": "A single URL, enabling the More Info button URL path when using the unsupported UI. While this accepts a string, it must be a valid URL (http://, https://, file://). Note: If this value is passed with aboutUpdateURLs, the aboutUpdateURLs key will be ignored. (Note: This key is only used with Nudge v2.0 and higher)",
                                 "anyOf": [

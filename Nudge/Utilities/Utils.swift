@@ -1616,6 +1616,43 @@ struct UIUtilities {
         }
     }
 
+    func updateDeviceUnsupported(userClicked: Bool = true) {
+        let unsupportedActionButtonPath = OSVersionRequirementVariables.unsupportedActionButtonPath
+        
+        // If no custom path is configured, just open the unsupportedURL
+        if unsupportedActionButtonPath.isEmpty {
+            openMoreInfoUnsupported()
+            postUpdateDeviceActions(userClicked: userClicked, unsupportedUI: true)
+            return
+        }
+        
+        // Handle custom path - similar logic to updateDevice()
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = true
+        
+        if let url = UIUtilities().createCorrectURLType(from: unsupportedActionButtonPath) {
+            let openAction = {
+                if url.isFileURL {
+                    NSWorkspace.shared.openApplication(at: url, configuration: configuration)
+                } else {
+                    NSWorkspace.shared.open(url)
+                }
+            }
+            
+            // Execute the action immediately or with a delay based on user interaction
+            if userClicked {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: openAction)
+            } else {
+                openAction()
+            }
+        } else {
+            // If the path doesn't look like a URL or app path, try executing it as a shell command
+            executeShellCommand(command: unsupportedActionButtonPath, userClicked: userClicked)
+        }
+        
+        postUpdateDeviceActions(userClicked: userClicked, unsupportedUI: true)
+    }
+
     func setDeferralTime(deferralTime: Date) {
         guard !CommandLineUtilities().demoModeEnabled() else { return }
         Globals.nudgeDefaults.set(deferralTime, forKey: "deferRunUntil")

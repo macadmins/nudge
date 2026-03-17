@@ -161,6 +161,7 @@ struct OSVersionRequirement: Codable {
     var standardMajorUpgradeSLA: Int?
     var standardMinorUpdateSLA: Int?
     var targetedOSVersionsRule: String?
+    var unsupportedActionButtonPath: String?
     var unsupportedURL: String?
     var unsupportedURLs: [UnsupportedURL]?
 }
@@ -180,6 +181,7 @@ extension OSVersionRequirement {
         self.standardMajorUpgradeSLA = fromDictionary["standardMajorUpgradeSLA"] as? Int
         self.standardMinorUpdateSLA = fromDictionary["standardMinorUpdateSLA"] as? Int
         self.targetedOSVersionsRule = fromDictionary["targetedOSVersionsRule"] as? String
+        self.unsupportedActionButtonPath = fromDictionary["unsupportedActionButtonPath"] as? String
         self.unsupportedURL = fromDictionary["unsupportedURL"] as? String
 
         // Handling AboutUpdateURLs and UnsupportedURLs
