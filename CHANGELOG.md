@@ -22,6 +22,8 @@ Requires macOS 12.0 and higher.
   - Addresses [679](https://github.com/macadmins/nudge/issues/679)
 - Refresh SOFA cache when requiredMinimumOSVersion is greater than current on-disk latest version
   - Addresses [682](https://github.com/macadmins/nudge/issues/682)
+- Use versionGreaterThanOrEqual instead of versionGreaterThan for filtering CVEs
+  - Addresses [666](https://github.com/macadmins/nudge/issues/666)
 
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
