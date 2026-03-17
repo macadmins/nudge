@@ -17,9 +17,52 @@ import SwiftUI
 import SystemConfiguration
 
 struct BlurManager {
+    /// Maximum number of attempts to force window to active space before giving up
+    private static let maxSpaceSwitchAttempts = 3
+    
     /// Applies background blur to all screens and ensures the main window stays on top
+    /// - Parameter window: The main Nudge window to elevate above blurvb
     func applyBackgroundBlur(to window: NSWindow) {
-        // load the blur background and send it to the back if we are past the required install date
+        // Check if we're in a full-screen space and the window might not be visible
+        // This handles the case where user is in full-screen app on a different space
+        if NSWorkspace.shared.isActiveSpaceFullScreen() && !window.isVisible {
+            // Check retry counter to prevent infinite loops
+            let currentAttempts = nudgePrimaryState.blurSpaceSwitchAttempts
+            
+            if currentAttempts < BlurManager.maxSpaceSwitchAttempts {
+                LogManager.info("Window not visible on active full-screen space (attempt \(currentAttempts + 1)/\(BlurManager.maxSpaceSwitchAttempts)) - forcing space switch", logger: uiLog)
+                
+                // Increment retry counter
+                nudgePrimaryState.blurSpaceSwitchAttempts += 1
+                
+                // Force window to front regardless of space constraints
+                // This will trigger a space switch if needed
+                NSApp.activate(ignoringOtherApps: true)
+                window.orderFrontRegardless()
+                
+                // Return early - let the run loop spin to complete space switch
+                // The refresh cycle will call activateNudge() again, which will retry this method
+                // On the next invocation, the window should be on the active space
+                return
+            } else {
+                LogManager.warning("Failed to switch to window space after \(BlurManager.maxSpaceSwitchAttempts) attempts - applying blur anyway", logger: uiLog)
+                // Reset counter for next time
+                nudgePrimaryState.blurSpaceSwitchAttempts = 0
+            }
+        }
+        
+        // If we get here, either:
+        // 1. Window is visible and on the active space
+        // 2. Not in a full-screen space
+        // 3. Exceeded retry attempts (fail-safe)
+        
+        // Reset retry counter on successful application
+        if nudgePrimaryState.blurSpaceSwitchAttempts > 0 {
+            LogManager.info("Window now visible on active space after \(nudgePrimaryState.blurSpaceSwitchAttempts) attempt(s)", logger: uiLog)
+            nudgePrimaryState.blurSpaceSwitchAttempts = 0
+        }
+        
+        // Only apply blur once to avoid duplicate windows
         if nudgePrimaryState.backgroundBlur.isEmpty {
             LogManager.info("Enabling blurred background", logger: uiLog)
             // Use NSScreen.screens to get current screen configuration
@@ -52,6 +95,9 @@ struct BlurManager {
         if resetWindowLevel {
             NSApp.windows.first?.level = .normal
         }
+        
+        // Reset retry counter when blur is removed
+        nudgePrimaryState.blurSpaceSwitchAttempts = 0
     }
     
     /// Reapplies background blur for screen configuration changes
