@@ -1409,6 +1409,39 @@
                                 }
                             ]
                         },
+                        "activelyExploitedCVEsLabel": {
+                            "description": "Customizes the label text for the Actively Exploited CVEs field in the left sidebar. This allows admins to use more user-friendly terminology instead of technical jargon. (Note: This key is only used with Nudge v2.1 and higher)",
+                            "anyOf": [
+                                {
+                                    "type": "null",
+                                    "title": "Not Configured"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "type": "string",
+                                    "default": "Actively Exploited CVEs:",
+                                    "options": {
+                                        "inputAttributes": {
+                                            "placeholder": "Known Exploits Fixed:"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "showActivelyExploitedCVEsAsCount": {
+                            "description": "When enabled, Nudge will display the actual count of actively exploited CVEs instead of True/False. This provides more specific information to users about the security updates. (Note: This key is only used with Nudge v2.1 and higher)",
+                            "anyOf": [
+                                {
+                                    "title": "Not Configured",
+                                    "type": "null"
+                                },
+                                {
+                                    "title": "Configured",
+                                    "default": false,
+                                    "type": "boolean"
+                                }
+                            ]
+                        },
                         "showDeferralCount": {
                             "description": "Enables or disables the deferral count of the current Nudge event.",
                             "anyOf": [
