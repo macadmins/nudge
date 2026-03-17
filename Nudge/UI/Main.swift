@@ -422,6 +422,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         applydelayNudgeEventLogic()
         updateNudgeState()
         handleSoftwareUpdateRequirements()
+        checkIfFullyUpdatedBeforeLaunch()
+    }
+    
+    private func checkIfFullyUpdatedBeforeLaunch() {
+        guard !CommandLineUtilities().demoModeEnabled(),
+              !CommandLineUtilities().unitTestingEnabled() else {
+            return
+        }
+        
+        if VersionManager.fullyUpdated() {
+            LogManager.notice("Device is fully updated", logger: uiLog)
+            if !uiConstants.isPreview {
+                AppStateManager().exitNudge()
+            }
+        } else if !OptionalFeatureVariables.enforceMinorUpdates && !AppStateManager().requireMajorUpgrade() {
+            LogManager.warning("Device requires a minor update but enforceMinorUpdates is false", logger: uiLog)
+            AppStateManager().exitNudge()
+        }
     }
 
     func applicationWillResignActive(_ notification: Notification) {

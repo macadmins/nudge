@@ -37,7 +37,6 @@ func initialLaunchLogic() {
     processNudgeEvent()
     updateDualQuitButtonRequirement()
     checkDeferralDate()
-    handleUpdateStatus()
 }
 
 private func checkDeferralDate() {
