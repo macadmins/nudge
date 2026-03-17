@@ -11,6 +11,10 @@ Requires macOS 12.0 and higher.
 - `showRequiredOSVersion` is a new key, defaulted to `False`. This currently has no impact to standardMode
 - simpleMode now honors `showRequiredOSVersion` and `showRequiredDate` allowing you to give slightly more information to the user while keeping a minimal UI
 
+### Changed
+ - Swedish translation for Required Date is more culturally appropriate
+  - Thanks to [HowardGMac](https://github.com/macadmins/nudge/pull/668)
+
 ### Fixed
 - If SOFA feed or gdmf returns improper data and the device is currently running the required major OS version, do not show unsupported UI.
   - Thanks to [MagerValp](https://github.com/macadmins/nudge/pull/662)
