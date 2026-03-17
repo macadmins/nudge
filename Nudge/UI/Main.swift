@@ -342,7 +342,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                 supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }
                             )
                             LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
-                            nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
+                            let majorRequiredVersion = VersionManager.getMajorRequiredNudgeOSVersion()
+                            let currentMajorVersion = VersionManager.getMajorOSVersion()
+                            if !deviceMatchFound && (majorRequiredVersion == currentMajorVersion) {
+                                LogManager.warning("Assessed Model ID not found in SOFA Entry, but device is already running required major OS version. Disregarding unsupported UI.", logger: sofaLog)
+                                nudgePrimaryState.deviceSupportedByOSVersion = true
+                            } else {
+                                nudgePrimaryState.deviceSupportedByOSVersion = deviceMatchFound
+                            }
                         }
                     }
                     foundMatch = true
