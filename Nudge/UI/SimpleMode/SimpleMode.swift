@@ -33,6 +33,14 @@ struct SimpleMode: View {
             Text(appState.deviceSupportedByOSVersion ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .font(.title)
             
+            if UserInterfaceVariables.showRequiredOSVersion {
+                requiredOSVersionView
+            }
+
+            if UserInterfaceVariables.showRequiredDate {
+                requiredDateView
+            }
+            
             remainingTimeView
 
             if UserInterfaceVariables.showDeferralCount {
@@ -81,6 +89,26 @@ struct SimpleMode: View {
             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .font(.title2)
             Text(String(appState.userDeferrals))
+                .foregroundColor(infoTextColor)
+                .font(.title2)
+        }
+    }
+
+    private var requiredDateView: some View {
+        HStack {
+            Text("Required Date:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .font(.title2)
+            Text(DateManager().coerceDateToString(date: requiredInstallationDate, formatterString: UserInterfaceVariables.requiredInstallationDisplayFormat))
+                .foregroundColor(infoTextColor)
+                .font(.title2)
+        }
+    }
+
+    private var requiredOSVersionView: some View {
+        HStack {
+            Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .font(.title2)
+            Text(String(appState.requiredMinimumOSVersion))
                 .foregroundColor(infoTextColor)
                 .font(.title2)
         }
