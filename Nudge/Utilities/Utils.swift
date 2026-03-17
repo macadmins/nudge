@@ -515,14 +515,28 @@ struct ConfigurationManager {
                 return Data()
             }
         } else {
-            nudgeProfileConfig["optionalFeatures"] = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures")
-            nudgeProfileConfig["osVersionRequirements"] = Globals.nudgeDefaults.array(forKey: "osVersionRequirements")
-            nudgeProfileConfig["userExperience"] = Globals.nudgeDefaults.dictionary(forKey: "userExperience")
-            nudgeProfileConfig["userInterface"] = Globals.nudgeDefaults.dictionary(forKey: "userInterface")
+            // Only add keys that actually exist in UserDefaults
+            if let optionalFeatures = Globals.nudgeDefaults.dictionary(forKey: "optionalFeatures") {
+                nudgeProfileConfig["optionalFeatures"] = optionalFeatures
+            }
+            if let osVersionRequirements = Globals.nudgeDefaults.array(forKey: "osVersionRequirements") {
+                nudgeProfileConfig["osVersionRequirements"] = osVersionRequirements
+            }
+            if let userExperience = Globals.nudgeDefaults.dictionary(forKey: "userExperience") {
+                nudgeProfileConfig["userExperience"] = userExperience
+            }
+            if let userInterface = Globals.nudgeDefaults.dictionary(forKey: "userInterface") {
+                nudgeProfileConfig["userInterface"] = userInterface
+            }
         }
 
-        guard !nudgeProfileConfig.isEmpty,
-              let plistData = try? PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0),
+        // If no profile configuration exists (e.g., using JSON instead of MDM profile), return empty data silently
+        guard !nudgeProfileConfig.isEmpty else {
+            LogManager.debug("No MDM profile configuration found - this is expected when using JSON configuration", logger: utilsLog)
+            return Data()
+        }
+        
+        guard let plistData = try? PropertyListSerialization.data(fromPropertyList: nudgeProfileConfig, format: .xml, options: 0),
               let xmlPlistData = try? XMLDocument(data: plistData, options: .nodePreserveAll) else {
             LogManager.error("Failed to serialize profile configuration", logger: uiLog)
             return Data()
