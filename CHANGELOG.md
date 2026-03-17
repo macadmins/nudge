@@ -20,6 +20,8 @@ Requires macOS 12.0 and higher.
   - Thanks to [MagerValp](https://github.com/macadmins/nudge/pull/662)
 - Added more safety to MDM profile deployments, reducing the chances of "Failed to serialize profile configuration"
   - Addresses [679](https://github.com/macadmins/nudge/issues/679)
+- 
+  - Addresses [682](https://github.com/macadmins/nudge/issues/682)
 
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.

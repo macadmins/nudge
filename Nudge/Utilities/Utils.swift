@@ -1068,6 +1068,51 @@ struct NetworkFileManager {
         return nil
     }
 
+    private func shouldForceSOFARefresh(cachedFeed: MacOSDataFeed) -> Bool {
+        // Skip special keywords that don't represent version numbers
+        let requiredVersion = PrefsWrapper.requiredMinimumOSVersion
+        if ["latest", "latest-minor", "latest-supported"].contains(requiredVersion) {
+            return false
+        }
+        
+        // Find the highest version available in the cached feed
+        var highestVersion = ""
+        for osVersion in cachedFeed.osVersions {
+            let latestVersion = osVersion.latest.productVersion
+            if highestVersion.isEmpty || VersionManager.versionGreaterThan(currentVersion: latestVersion, newVersion: highestVersion) {
+                highestVersion = latestVersion
+            }
+            
+            for securityRelease in osVersion.securityReleases {
+                let releaseVersion = securityRelease.productVersion
+                if VersionManager.versionGreaterThan(currentVersion: releaseVersion, newVersion: highestVersion) {
+                    highestVersion = releaseVersion
+                }
+            }
+        }
+        
+        // If requiredVersion is greater than highest cached version, we need to refresh
+        if !highestVersion.isEmpty && VersionManager.versionGreaterThan(currentVersion: requiredVersion, newVersion: highestVersion) {
+            // Check if we've already attempted a sync for this version to avoid repeated syncs for misconfigured versions
+            let syncedVersionsKey = "SOFASyncedVersions"
+            var syncedVersions = Globals.nudgeDefaults.stringArray(forKey: syncedVersionsKey) ?? []
+            
+            if syncedVersions.contains(requiredVersion) {
+                LogManager.notice("Out-of-cycle SOFA sync already attempted for requiredMinimumOSVersion \(requiredVersion) - skipping to avoid repeated syncs for potentially misconfigured version", logger: sofaLog)
+                return false
+            }
+            
+            // Mark this version as synced
+            syncedVersions.append(requiredVersion)
+            Globals.nudgeDefaults.set(syncedVersions, forKey: syncedVersionsKey)
+            
+            LogManager.notice("requiredMinimumOSVersion (\(requiredVersion)) is greater than highest cached version (\(highestVersion))", logger: sofaLog)
+            return true
+        }
+        
+        return false
+    }
+    
     func getSOFAAssets() -> MacOSDataFeed? {
         if !OptionalFeatureVariables.utilizeSOFAFeed {
             return nil
@@ -1099,7 +1144,16 @@ struct NetworkFileManager {
                 do {
                     let sofaData = try Data(contentsOf: sofaPath)
                     let assetInfo = try MacOSDataFeed(data: sofaData)
-                    return assetInfo
+                    
+                    // Check if we need to force a refresh due to new requiredMinimumOSVersion
+                    if shouldForceSOFARefresh(cachedFeed: assetInfo) {
+                        LogManager.notice("Detected requiredMinimumOSVersion newer than cached SOFA feed - forcing out-of-cycle refresh", logger: sofaLog)
+                        // Clear the ETag to ensure we get fresh data even if the upstream hasn't changed
+                        Globals.nudgeDefaults.removeObject(forKey: "LastEtag")
+                        // Fall through to download new data
+                    } else {
+                        return assetInfo
+                    }
                 } catch {
                     LogManager.error("Failed to decode previously cached local sofa JSON: \(error.localizedDescription)", logger: sofaLog)
                     LogManager.error("Failed to decode sofa JSON: \(error)", logger: sofaLog)
@@ -1456,9 +1510,9 @@ struct UIUtilities {
         NSWorkspace.shared.open(url)
     }
 
-    func postUpdateDeviceActions(userClicked: Bool, unSupportedUI: Bool) {
+    func postUpdateDeviceActions(userClicked: Bool, unsupportedUI: Bool) {
         if userClicked {
-            LogManager.notice(unSupportedUI ? "User clicked updateDevice (Replace My Device) via Unsupported UI workflow" : "User clicked updateDevice" , logger: uiLog)
+            LogManager.notice(unsupportedUI ? "User clicked updateDevice (Replace My Device) via Unsupported UI workflow" : "User clicked updateDevice" , logger: uiLog)
             // Remove forced blur and reset window level
             if !nudgePrimaryState.backgroundBlur.isEmpty {
                 nudgePrimaryState.backgroundBlur.forEach { blurWindowController in
@@ -1469,7 +1523,7 @@ struct UIUtilities {
                 NSApp.windows.first?.level = .normal
             }
         } else {
-            LogManager.notice(unSupportedUI ? "Synthetically clicked updateDevice (Replace My Device) via Unsupported UI workflow due to allowedDeferral count" : "Synthetically clicked updateDevice due to allowedDeferral count" , logger: uiLog)
+            LogManager.notice(unsupportedUI ? "Synthetically clicked updateDevice (Replace My Device) via Unsupported UI workflow due to allowedDeferral count" : "Synthetically clicked updateDevice due to allowedDeferral count" , logger: uiLog)
         }
     }
 
@@ -1510,7 +1564,7 @@ struct UIUtilities {
             }
         }
 
-        postUpdateDeviceActions(userClicked: userClicked, unSupportedUI: false)
+        postUpdateDeviceActions(userClicked: userClicked, unsupportedUI: false)
     }
 
     func userInitiatedExit() {
