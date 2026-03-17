@@ -368,9 +368,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 if !foundMatch {
                     // If no matching product version found or the device is not supported, return false
-                    LogManager.notice("Could not find requiredMinimumOSVersion \(nudgePrimaryState.requiredMinimumOSVersion) in SOFA feed", logger: sofaLog)
+                    LogManager.error("Could not find requiredMinimumOSVersion \(nudgePrimaryState.requiredMinimumOSVersion) in SOFA feed", logger: sofaLog)
                     if PrefsWrapper.requiredMinimumOSVersion == "latest-minor" {
-                        LogManager.notice("Device is likely running a newer version of macOS than in the production SOFA feed, exiting", logger: sofaLog)
+                        LogManager.error("Device is likely running a newer version of macOS than in the production SOFA feed or major version mismatch. Current OS: \(GlobalVariables.currentOSVersion). Exiting.", logger: sofaLog)
+                        nudgePrimaryState.shouldExit = true
+                        exit(1)
+                    } else if PrefsWrapper.requiredMinimumOSVersion == "latest-supported" {
+                        LogManager.error("Could not find supported OS version for this hardware model in SOFA feed. Hardware IDs: \(Globals.hardwareModelIDs). Current OS: \(GlobalVariables.currentOSVersion). Device may already be on latest supported version or hardware is too new for current SOFA feed data. Exiting.", logger: sofaLog)
                         nudgePrimaryState.shouldExit = true
                         exit(1)
                     }
