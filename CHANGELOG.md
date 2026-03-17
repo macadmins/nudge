@@ -16,6 +16,7 @@ Requires macOS 12.0 and higher.
 ### Changed
  - Swedish translation for Required Date is more culturally appropriate
   - Thanks to [HowardGMac](https://github.com/macadmins/nudge/pull/668)
+- Enforce `en_US_POSIX` to attempt to fix [693](https://github.com/macadmins/nudge/issues/693)
 
 ### Fixed
 - If SOFA feed or gdmf returns improper data and the device is currently running the required major OS version, do not show unsupported UI.
