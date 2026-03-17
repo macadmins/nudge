@@ -63,6 +63,10 @@
 		<string>https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_dark_1_icon.png?raw=true</string>
 		<key>screenShotLightPath</key>
 		<string>https://github.com/macadmins/nudge/blob/main/assets/standard_mode/demo_light_1_icon.png?raw=true</string>
+		<key>showRequiredDate</key>
+		<true/>
+		<key>showRequiredOSVersion</key>
+		<true/>
 		<key>simpleMode</key>
 		<false/>
 		<key>updateElements</key>

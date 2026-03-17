@@ -74,6 +74,8 @@
         "screenShotDarkPath": "/somewhere/screenShotDark.png",
         "screenShotLightPath": "/somewhere/screenShotLight.png",
         "showDeferralCount": true,
+        "showRequiredDate": true,
+        "showRequiredOSVersion": true,
         "simpleMode": false,
         "singleQuitButton": false,
         "updateElements": [

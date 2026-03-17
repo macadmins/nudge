@@ -625,6 +625,12 @@ struct UserInterfaceVariables {
         userInterfaceJSON?.showRequiredDate ??
         false
     }
+    
+    static var showRequiredOSVersion: Bool {
+        userInterfaceProfile?["showRequiredOSVersion"] as? Bool ??
+        userInterfaceJSON?.showRequiredOSVersion ??
+        false
+    }
 
     static var singleQuitButton: Bool {
         userInterfaceProfile?["singleQuitButton"] as? Bool ??

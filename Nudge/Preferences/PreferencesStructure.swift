@@ -458,7 +458,7 @@ struct UserInterface: Codable {
     var actionButtonPath, applicationTerminatedNotificationImagePath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, requiredInstallationDisplayFormat, screenShotDarkPath, screenShotLightPath: String?
-    var showActivelyExploitedCVEs, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, simpleMode, singleQuitButton: Bool?
+    var showActivelyExploitedCVEs, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, showRequiredOSVersion, simpleMode, singleQuitButton: Bool?
     var updateElements: [UpdateElement]?
 }
 
@@ -495,6 +495,7 @@ extension UserInterface {
         showDeferralCount: Bool? = nil,
         showDaysRemainingToUpdate: Bool? = nil,
         showRequiredDate: Bool? = nil,
+        showRequiredOSVersion: Bool? = nil,
         simpleMode: Bool? = nil,
         singleQuitButton: Bool? = nil,
         updateElements: [UpdateElement]? = nil
@@ -514,6 +515,7 @@ extension UserInterface {
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             showDaysRemainingToUpdate: showDaysRemainingToUpdate ?? self.showDaysRemainingToUpdate,
             showRequiredDate: showRequiredDate ?? self.showRequiredDate,
+            showRequiredOSVersion: showRequiredOSVersion ?? self.showRequiredOSVersion,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.singleQuitButton,
             updateElements: updateElements ?? self.updateElements
