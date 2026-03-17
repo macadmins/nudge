@@ -41,7 +41,8 @@ struct StandardModeLeftSide: View {
                 InfoRow(label: "Required Date:", value: DateManager().coerceDateToString(date: requiredInstallationDate, formatterString: UserInterfaceVariables.requiredInstallationDisplayFormat))
             }
             if OptionalFeatureVariables.utilizeSOFAFeed && UserInterfaceVariables.showActivelyExploitedCVEs {
-                InfoRow(label: "Actively Exploited CVEs:", value: String(appState.activelyExploitedCVEs).capitalized, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
+                let displayValue = UserInterfaceVariables.showActivelyExploitedCVEsAsCount ? String(appState.activelyExploitedCVEsCount) : String(appState.activelyExploitedCVEs).capitalized
+                InfoRow(label: UserInterfaceVariables.activelyExploitedCVEsLabel, value: displayValue, isHighlighted: appState.activelyExploitedCVEs ? true : false, boldText: appState.activelyExploitedCVEs)
             }
             InfoRow(label: "Current OS Version:", value: GlobalVariables.currentOSVersion)
             if UserInterfaceVariables.showDaysRemainingToUpdate {

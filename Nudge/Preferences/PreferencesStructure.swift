@@ -460,7 +460,8 @@ struct UserInterface: Codable {
     var actionButtonPath, applicationTerminatedNotificationImagePath, fallbackLanguage: String?
     var forceFallbackLanguage, forceScreenShotIcon: Bool?
     var iconDarkPath, iconLightPath, requiredInstallationDisplayFormat, screenShotDarkPath, screenShotLightPath: String?
-    var showActivelyExploitedCVEs, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, showRequiredOSVersion, simpleMode, singleQuitButton: Bool?
+    var showActivelyExploitedCVEs, showActivelyExploitedCVEsAsCount, showDeferralCount, showDaysRemainingToUpdate, showRequiredDate, showRequiredOSVersion, simpleMode, singleQuitButton: Bool?
+    var activelyExploitedCVEsLabel: String?
     var updateElements: [UpdateElement]?
 }
 
@@ -494,12 +495,14 @@ extension UserInterface {
         screenShotDarkPath: String? = nil,
         screenShotLightPath: String? = nil,
         showActivelyExploitedCVEs: Bool? = nil,
+        showActivelyExploitedCVEsAsCount: Bool? = nil,
         showDeferralCount: Bool? = nil,
         showDaysRemainingToUpdate: Bool? = nil,
         showRequiredDate: Bool? = nil,
         showRequiredOSVersion: Bool? = nil,
         simpleMode: Bool? = nil,
         singleQuitButton: Bool? = nil,
+        activelyExploitedCVEsLabel: String? = nil,
         updateElements: [UpdateElement]? = nil
     ) -> UserInterface {
         return UserInterface(
@@ -514,12 +517,14 @@ extension UserInterface {
             screenShotDarkPath: screenShotDarkPath ?? self.screenShotDarkPath,
             screenShotLightPath: screenShotLightPath ?? self.screenShotLightPath,
             showActivelyExploitedCVEs: showActivelyExploitedCVEs ?? self.showActivelyExploitedCVEs,
+            showActivelyExploitedCVEsAsCount: showActivelyExploitedCVEsAsCount ?? self.showActivelyExploitedCVEsAsCount,
             showDeferralCount: showDeferralCount ?? self.showDeferralCount,
             showDaysRemainingToUpdate: showDaysRemainingToUpdate ?? self.showDaysRemainingToUpdate,
             showRequiredDate: showRequiredDate ?? self.showRequiredDate,
             showRequiredOSVersion: showRequiredOSVersion ?? self.showRequiredOSVersion,
             simpleMode: simpleMode ?? self.simpleMode,
             singleQuitButton: singleQuitButton ?? self.singleQuitButton,
+            activelyExploitedCVEsLabel: activelyExploitedCVEsLabel ?? self.activelyExploitedCVEsLabel,
             updateElements: updateElements ?? self.updateElements
         )
     }

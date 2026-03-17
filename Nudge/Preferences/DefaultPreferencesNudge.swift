@@ -614,6 +614,18 @@ struct UserInterfaceVariables {
         true
     }
 
+    static var activelyExploitedCVEsLabel: String {
+        userInterfaceProfile?["activelyExploitedCVEsLabel"] as? String ??
+        userInterfaceJSON?.activelyExploitedCVEsLabel ??
+        "Actively Exploited CVEs:"
+    }
+
+    static var showActivelyExploitedCVEsAsCount: Bool {
+        userInterfaceProfile?["showActivelyExploitedCVEsAsCount"] as? Bool ??
+        userInterfaceJSON?.showActivelyExploitedCVEsAsCount ??
+        false
+    }
+
     static var showDeferralCount: Bool {
         userInterfaceProfile?["showDeferralCount"] as? Bool ??
         userInterfaceJSON?.showDeferralCount ??

@@ -272,6 +272,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
                     nudgePrimaryState.sofaAboutUpdateURL = selectedOS!.securityInfo
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
+                    nudgePrimaryState.activelyExploitedCVEsCount = totalActivelyExploitedCVEs
                     switch (activelyExploitedCVEs, presentCVEs, AppStateManager().requireMajorUpgrade()) {
                     case (false, true, true):
                         LogManager.notice("Non Actively Exploited Major Upgrade detected. Using nonActivelyExploitedCVEsMajorUpgradeSLA value: \(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA)", logger: sofaLog)
