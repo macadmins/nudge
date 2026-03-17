@@ -12,6 +12,8 @@ Requires macOS 12.0 and higher.
 - simpleMode now honors `showRequiredOSVersion` and `showRequiredDate` allowing you to give slightly more information to the user while keeping a minimal UI
 - `allow​Movable​Window​During​Aggressive​User​Experience` key is added
   - Addresses [671](https://github.com/macadmins/nudge/issues/671)
+- `activelyExploitedCVEsLabel` and `showActivelyExploitedCVEsAsCount` have now been implemented
+  - Addresses [669](https://github.com/macadmins/nudge/issues/669)
 
 ### Changed
  - Swedish translation for Required Date is more culturally appropriate
