@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.13] - 2026-03-20
+Requires macOS 12.0 and higher.
+
+### Added
+- `showRequiredOSVersion` is a new key, defaulted to `False`. This currently has no impact to standardMode
+- simpleMode now honors `showRequiredOSVersion` and `showRequiredDate` allowing you to give slightly more information to the user while keeping a minimal UI
+
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
 
