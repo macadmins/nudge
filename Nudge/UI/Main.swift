@@ -230,7 +230,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
                     // Filter versions between current and selected OS version
                     let filteredVersions = VersionManager().removeDuplicates(from: allVersions.filter {
-                        VersionManager.versionGreaterThanOrEqual(currentVersion: $0, newVersion: currentInstalledVersion) &&
+                        VersionManager.versionGreaterThan(currentVersion: $0, newVersion: currentInstalledVersion) &&
                         VersionManager.versionLessThanOrEqual(currentVersion: $0, newVersion: selectedOSVersion)
                     })
 
