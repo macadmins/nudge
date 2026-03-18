@@ -252,14 +252,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     // Remove the current installed version from minorVersions
                     minorVersions.removeAll { $0 == currentInstalledVersion }
 
-                    // Count actively exploited CVEs in the filtered versions
-                    LogManager.notice("Assessing macOS version range for active exploits: \(filteredVersions) ", logger: sofaLog)
+                    // Determine which versions to check for CVEs based on whether we're staying within the same major version
+                    let versionsToCheck: [String]
+                    if VersionManager.getMajorVersion(from: selectedOSVersion) == currentMajorVersion {
+                        // If the selected OS is in the same major version, only check CVEs within that major version
+                        versionsToCheck = minorVersions
+                        LogManager.notice("Assessing macOS version range for active exploits (same major version): \(versionsToCheck) ", logger: sofaLog)
+                    } else {
+                        // If the selected OS is a major upgrade, check all versions up to the selected OS
+                        versionsToCheck = filteredVersions
+                        LogManager.notice("Assessing macOS version range for active exploits (cross major version): \(versionsToCheck) ", logger: sofaLog)
+                    }
+
+                    // Count actively exploited CVEs in the appropriate filtered versions
                     for osVersion in macOSSOFAAssets {
-                        if filteredVersions.contains(osVersion.latest.productVersion) {
+                        if versionsToCheck.contains(osVersion.latest.productVersion) {
                             totalActivelyExploitedCVEs += osVersion.latest.activelyExploitedCVEs.count
                         }
                         for securityRelease in osVersion.securityReleases {
-                            if filteredVersions.contains(securityRelease.productVersion) {
+                            if versionsToCheck.contains(securityRelease.productVersion) {
                                 totalActivelyExploitedCVEs += securityRelease.activelyExploitedCVEs.count
                             }
                         }
