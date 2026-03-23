@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.13] - 2026-03-23
+Requires macOS 12.0 and higher.
+
+### Added
+- Ukrainian (uk) localization support
+  - Added Ukrainian `updateElements` entries to example JSON and mobileconfig files
+  - Added Ukrainian `aboutUpdateURL` pointing to Apple's Ukrainian support page
+  - [Pull Request](https://github.com/macadmins/nudge/pull/650)
+
+### Fixed
+- `showDaysRemainingToUpdate` was ignored in SimpleMode — remaining time row is now correctly hidden when the setting is disabled
+- SimpleMode now renders `requiredOSVersionView` and `requiredDateView` consistently with StandardMode
+
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
 
