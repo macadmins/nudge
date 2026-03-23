@@ -79,6 +79,12 @@
                                 <key>aboutUpdateURL</key>
                                 <string>https://support.apple.com/de-de/HT211896</string>
                             </dict>
+                            <dict>
+                                <key>_language</key>
+                                <string>uk</string>
+                                <key>aboutUpdateURL</key>
+                                <string>https://support.apple.com/uk-ua/HT211896</string>
+                            </dict>
                         </array>
                         <key>actionButtonPath</key>
                         <string>munki://updates</string>
@@ -289,6 +295,36 @@
                             <string>Eine freundliche Erinnerung von Ihrem IT-Team</string>
                             <key>screenShotAltText</key>
                             <string>Hier klicken, um den Screenshot zu vergrößern</string>
+                        </dict>
+                        <dict>
+                            <key>_language</key>
+                            <string>uk</string>
+                            <key>actionButtonText</key>
+                            <string>Оновити пристрій</string>
+                            <key>informationButtonText</key>
+                            <string>Більше інформації</string>
+                            <key>mainContentHeader</key>
+                            <string>Ваш пристрій буде перезавантажено під час цього оновлення</string>
+                            <key>mainContentNote</key>
+                            <string>Важливі нотатки</string>
+                            <key>mainContentSubHeader</key>
+                            <string>Оновленню потрібно приблизно 30 хвилин</string>
+                            <key>mainContentText</key>
+                            <string>Потрібен повністю оновлений пристрій щоб бути впевненим що IT зможе його надійно захистити.
+
+                                Якщо ви не оновите пристрій, ви можете втратити доступ до деяких речей, необхідних для виконання повсякденних завдань.
+
+                                Щоб почати оновлення, просто клацніть кнопку Оновити пристрій та виконайте запропоновані кроки.</string>
+                            <key>mainHeader</key>
+                            <string>Вашому пристрою потрібно оновлення безпеки</string>
+                            <key>primaryQuitButtonText</key>
+                            <string>Пізніше</string>
+                            <key>secondaryQuitButtonText</key>
+                            <string>Мені зрозуміло</string>
+                            <key>subHeader</key>
+                            <string>Дружнє нагадування від вашої IT-команди</string>
+                            <key>screenShotAltText</key>
+                            <string>Натисніть щоб наблизити скріншот</string>
                         </dict>
                     </array>
                 </dict>

@@ -32,6 +32,10 @@
                 {
                     "_language": "de",
                     "aboutUpdateURL": "https://support.apple.com/de-de/HT211896"
+                },
+                {
+                    "_language": "uk",
+                    "aboutUpdateURL": "https://support.apple.com/uk-ua/HT211896"
                 }
             ],
             "actionButtonPath": "munki://updates",
@@ -136,6 +140,20 @@
                 "secondaryQuitButtonText": "Ich verstehe",
                 "subHeader": "Eine freundliche Erinnerung von Ihrem IT-Team",
                 "screenShotAltText": "Hier klicken, um den Screenshot zu vergrößern"
+            },
+            {
+                "_language": "uk",
+                "actionButtonText": "Оновити пристрій",
+                "informationButtonText": "Більше інформації",
+                "mainContentHeader": "Ваш пристрій буде перезавантажено під час цього оновлення",
+                "mainContentNote": "Важливі нотатки",
+                "mainContentSubHeader": "Оновленню потрібно приблизно 30 хвилин",
+                "mainContentText": "Потрібен повністю оновлений пристрій щоб бути впевненим що IT зможе його надійно захистити.\n\nЯкщо ви не оновите пристрій, ви можете втратити доступ до деяких речей, необхідних для виконання повсякденних завдань.\n\nЩоб почати оновлення, просто клацніть кнопку **Оновити пристрій** та виконайте запропоновані кроки.",
+                "mainHeader": "Вашому пристрою потрібно оновлення безпеки",
+                "primaryQuitButtonText": "Пізніше",
+                "secondaryQuitButtonText": "Мені зрозуміло",
+                "subHeader": "Дружнє нагадування від вашої IT-команди",
+                "screenShotAltText": "Натисніть щоб наблизити скріншот"
             }
         ]
     }
