@@ -48,7 +48,7 @@ fi
 
 # Perform unit tests
 echo "Running Nudge unit tests"
-$XCODE_BUILD test -project "$TOOLSDIR/Nudge.xcodeproj" -scheme "Nudge - Debug" -destination 'platform=macOS,name=Any Mac'
+$XCODE_BUILD test -project "$TOOLSDIR/Nudge.xcodeproj" -scheme "Nudge - Debug" -destination 'platform=macOS,name=My Mac'
 check_exit_code "$?" "Error running xcodebuild unit tests"
 
 # build nudge
