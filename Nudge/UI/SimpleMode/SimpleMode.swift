@@ -33,7 +33,9 @@ struct SimpleMode: View {
             Text(appState.deviceSupportedByOSVersion ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .font(.title)
             
-            remainingTimeView
+            if UserInterfaceVariables.showDaysRemainingToUpdate {
+                remainingTimeView
+            }
 
             if UserInterfaceVariables.showDeferralCount {
                 deferralCountView
