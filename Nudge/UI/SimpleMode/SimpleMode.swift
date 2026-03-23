@@ -16,23 +16,31 @@ struct SimpleMode: View {
     var body: some View {
         VStack {
             AdditionalInfoButton().padding(3) // (?) button
-            
+
             mainContent
                 .frame(alignment: .center)
-            
+
             bottomButtons
         }
     }
-    
+
     private var mainContent: some View {
         VStack(alignment: .center, spacing: 10) {
             Spacer()
             CompanyLogo()
             Spacer()
-            
+
             Text(appState.deviceSupportedByOSVersion ? getMainHeader().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)) : getMainHeaderUnsupported().localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
                 .font(.title)
-            
+
+            if UserInterfaceVariables.showRequiredOSVersion {
+                requiredOSVersionView
+            }
+
+            if UserInterfaceVariables.showRequiredDate {
+                requiredDateView
+            }
+
             if UserInterfaceVariables.showDaysRemainingToUpdate {
                 remainingTimeView
             }
@@ -56,7 +64,7 @@ struct SimpleMode: View {
             Spacer()
         }
     }
-    
+
     private var remainingTimeView: some View {
         HStack(spacing: 3.5) {
             if (appState.daysRemaining > 0 && !CommandLineUtilities().demoModeEnabled()) || CommandLineUtilities().demoModeEnabled() {
@@ -73,11 +81,11 @@ struct SimpleMode: View {
                 Text(String(appState.daysRemaining))
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                     .fontWeight(.bold)
-                
+
             }
         }
     }
-    
+
     private var deferralCountView: some View {
         HStack {
             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
@@ -87,18 +95,38 @@ struct SimpleMode: View {
                 .font(.title2)
         }
     }
-    
+
+    private var requiredDateView: some View {
+        HStack {
+            Text("Required Date:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .font(.title2)
+            Text(DateManager().coerceDateToString(date: requiredInstallationDate, formatterString: UserInterfaceVariables.requiredInstallationDisplayFormat))
+                .foregroundColor(infoTextColor)
+                .font(.title2)
+        }
+    }
+
+    private var requiredOSVersionView: some View {
+        HStack {
+            Text("Required OS Version:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+                .font(.title2)
+            Text(String(appState.requiredMinimumOSVersion))
+                .foregroundColor(infoTextColor)
+                .font(.title2)
+        }
+    }
+
     private var bottomButtons: some View {
         HStack {
             InformationButton()
-            
+
             if appState.allowButtons || CommandLineUtilities().demoModeEnabled() {
                 QuitButtons()
             }
         }
         .padding([.bottom, .leading, .trailing], UIConstants.contentWidthPadding)
     }
-    
+
     private var infoTextColor: Color {
         colorScheme == .light ? .accessibleSecondaryLight : .accessibleSecondaryDark
     }
