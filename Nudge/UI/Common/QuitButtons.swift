@@ -74,12 +74,6 @@ struct QuitButtons: View {
             if AppStateManager().allow24HourDeferral() {
                 deferralButton(title: UserInterfaceVariables.oneDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: { deferAction(by: Intervals.dayTimeInterval) })
             }
-            if AppStateManager().allow7DayDeferral() {
-                deferralButton(title: UserInterfaceVariables.sevenDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: { deferAction(by: Intervals.sevenDayTimeInterval) })
-            }
-            if AppStateManager().allow14DayDeferral() {
-                deferralButton(title: UserInterfaceVariables.fourteenDayDeferralButtonText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)), action: { deferAction(by: Intervals.fourteenDayTimeInterval) })
-            }
             if AppStateManager().allowCustomDeferral() {
                 customDeferralButton
             }

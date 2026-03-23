@@ -35,8 +35,6 @@ struct Globals {
 struct Intervals {
     static let dayTimeInterval: CGFloat = 86400
     static let hourTimeInterval: CGFloat = 3600
-    static let sevenDayTimeInterval: CGFloat = 86400 * 7
-    static let fourteenDayTimeInterval: CGFloat = 86400 * 14
     // Setup the main refresh timer that controls the child refresh logic
     static let nudgeRefreshCycleTimer = Timer.publish(every: Double(UserExperienceVariables.nudgeRefreshCycle), on: .main, in: .common).autoconnect()
 }

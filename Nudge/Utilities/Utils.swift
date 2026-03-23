@@ -61,14 +61,6 @@ struct AppStateManager {
         return isDeferralAllowed(threshold: UserExperienceVariables.imminentWindowTime, logMessage: "Device allow24HourDeferralButton")
     }
 
-    func allow7DayDeferral() -> Bool {
-        return isDeferralAllowed(threshold: 7 * 24, logMessage: "Device allow7DayDeferralButton")
-    }
-
-    func allow14DayDeferral() -> Bool {
-        return isDeferralAllowed(threshold: 14 * 24, logMessage: "Device allow14DayDeferralButton")
-    }
-
     func allowCustomDeferral() -> Bool {
         return isDeferralAllowed(threshold: UserExperienceVariables.approachingWindowTime, logMessage: "Device allowCustomDeferralButton")
     }

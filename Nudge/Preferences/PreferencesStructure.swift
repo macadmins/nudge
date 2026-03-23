@@ -526,11 +526,11 @@ struct UpdateElement: Codable {
     var language, actionButtonText, actionButtonTextUnsupported, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText: String?
     var informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported: String?
     var mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported: String?
-    var oneDayDeferralButtonText, oneHourDeferralButtonText, sevenDayDeferralButtonText, fourteenDayDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported: String?
+    var oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported: String?
 
     enum CodingKeys: String, CodingKey {
         case language = "_language"
-        case actionButtonText, actionButtonTextUnsupported, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, sevenDayDeferralButtonText, fourteenDayDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported
+        case actionButtonText, actionButtonTextUnsupported, applicationTerminatedTitleText, applicationTerminatedBodyText, customDeferralButtonText, customDeferralDropdownText, informationButtonText, mainContentHeader, mainContentHeaderUnsupported, mainContentNote, mainContentNoteUnsupported, mainContentSubHeader, mainContentSubHeaderUnsupported, mainContentText, mainContentTextUnsupported, mainHeader, mainHeaderUnsupported, oneDayDeferralButtonText, oneHourDeferralButtonText, primaryQuitButtonText, screenShotAltText, secondaryQuitButtonText, subHeader, subHeaderUnsupported
     }
 }
 
@@ -573,8 +573,6 @@ extension UpdateElement {
         mainHeaderUnsupported: String? = nil,
         oneDayDeferralButtonText: String? = nil,
         oneHourDeferralButtonText: String? = nil,
-        sevenDayDeferralButtonText: String? = nil,
-        fourteenDayDeferralButtonText: String? = nil,
         primaryQuitButtonText: String? = nil,
         screenShotAltText: String? = nil,
         secondaryQuitButtonText: String? = nil,
@@ -602,8 +600,6 @@ extension UpdateElement {
             mainHeaderUnsupported: mainHeaderUnsupported ?? self.mainHeaderUnsupported,
             oneDayDeferralButtonText: oneDayDeferralButtonText ?? self.oneDayDeferralButtonText,
             oneHourDeferralButtonText: oneHourDeferralButtonText ?? self.oneHourDeferralButtonText,
-            sevenDayDeferralButtonText: sevenDayDeferralButtonText ?? self.sevenDayDeferralButtonText,
-            fourteenDayDeferralButtonText: fourteenDayDeferralButtonText ?? self.fourteenDayDeferralButtonText,
             primaryQuitButtonText: primaryQuitButtonText ?? self.primaryQuitButtonText,
             screenShotAltText: screenShotAltText ?? self.screenShotAltText,
             secondaryQuitButtonText: secondaryQuitButtonText ?? self.secondaryQuitButtonText,

@@ -559,23 +559,11 @@ struct UserInterfaceVariables {
         userInterfaceUpdateElementsJSON?.oneDayDeferralButtonText ??
         "One Day"
     }
-
+    
     static var oneHourDeferralButtonText: String {
         userInterfaceUpdateElementsProfile?["oneHourDeferralButtonText"] as? String ??
         userInterfaceUpdateElementsJSON?.oneHourDeferralButtonText ??
         "One Hour"
-    }
-
-    static var sevenDayDeferralButtonText: String {
-        userInterfaceUpdateElementsProfile?["sevenDayDeferralButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.sevenDayDeferralButtonText ??
-        "Seven Days"
-    }
-
-    static var fourteenDayDeferralButtonText: String {
-        userInterfaceUpdateElementsProfile?["fourteenDayDeferralButtonText"] as? String ??
-        userInterfaceUpdateElementsJSON?.fourteenDayDeferralButtonText ??
-        "Fourteen Days"
     }
 
     static var primaryQuitButtonText: String {
