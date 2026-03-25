@@ -1220,6 +1220,25 @@ struct NetworkFileManager {
         let sofaPath = appDirectory.appendingPathComponent(sofaFile)
         var sofaJSONExists = fileManager.fileExists(atPath: sofaPath.path)
 
+        // Invalidate cached SOFA JSON when a new version of Nudge is running
+        let currentNudgeVersion = VersionManager.getNudgeVersion()
+        let lastNudgeVersionKey = "lastLaunchedNudgeVersion"
+        let lastNudgeVersion = Globals.nudgeDefaults.string(forKey: lastNudgeVersionKey)
+        if lastNudgeVersion == nil || lastNudgeVersion != currentNudgeVersion {
+            LogManager.notice("New Nudge version detected (previous: \(lastNudgeVersion ?? "none"), current: \(currentNudgeVersion)) - invalidating cached SOFA feed", logger: sofaLog)
+            Globals.nudgeDefaults.set(currentNudgeVersion, forKey: lastNudgeVersionKey)
+            Globals.nudgeDefaults.removeObject(forKey: "LastEtag")
+            if sofaJSONExists {
+                do {
+                    try fileManager.removeItem(atPath: sofaPath.path)
+                    sofaJSONExists = false
+                    LogManager.notice("Removed cached SOFA JSON due to new Nudge version", logger: sofaLog)
+                } catch {
+                    LogManager.error("Error removing cached SOFA JSON on version change: \(error.localizedDescription)", logger: sofaLog)
+                }
+            }
+        }
+
         // Force delete if bad
         if sofaJSONExists {
             if isFileEmpty(atPath: sofaPath.path) {
@@ -1394,6 +1413,8 @@ struct NetworkFileManager {
             do {
                 if let data = sofaData.data {
                     if fileManager.fileExists(atPath: appDirectory.path) {
+                            try fileManager.removeItem(atPath: sofaPath.path)
+                        }
                         try data.write(to: sofaPath)
                     }
                     let assetInfo = try MacOSDataFeed(data: data)
