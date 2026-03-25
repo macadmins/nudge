@@ -43,6 +43,7 @@ Requires macOS 12.0 and higher.
 - Evalutes active exploits and not just present CVEs when using `disableNudgeForStandardInstalls`
   - Addresses [650](https://github.com/macadmins/nudge/issues/650)
 - Evaluation of `minorVersionRecalculationThreshold` should properly asses when there are smaller update windows
+- `latest-supported` correctly handles minor to minor updates
 
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
