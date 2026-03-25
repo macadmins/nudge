@@ -29,6 +29,7 @@ Requires macOS 12.0 and higher.
   - Fixes [676](https://github.com/macadmins/nudge/issues/676) and inferred issues
   - Major upgrades may still potentially report unsupported UI and is likely a SOFA feed bug.
 - When a newer version of Nudge is launched, the SOFA feed is invalidated.
+- The SOFA json cache is no longer modified, but instead recreated during invalidation.
 
 ### Fixed
 - If SOFA feed or gdmf returns improper data and the device is currently running the required major OS version, do not show unsupported UI.

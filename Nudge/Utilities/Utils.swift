@@ -1308,6 +1308,9 @@ struct NetworkFileManager {
                     do {
                         if let data = sofaData.data {
                             if fileManager.fileExists(atPath: appDirectory.path) {
+                                if fileManager.fileExists(atPath: sofaPath.path) {
+                                    try fileManager.removeItem(atPath: sofaPath.path)
+                                }
                                 try data.write(to: sofaPath)
                             }
                             let assetInfo = try MacOSDataFeed(data: data)
@@ -1413,6 +1416,7 @@ struct NetworkFileManager {
             do {
                 if let data = sofaData.data {
                     if fileManager.fileExists(atPath: appDirectory.path) {
+                        if fileManager.fileExists(atPath: sofaPath.path) {
                             try fileManager.removeItem(atPath: sofaPath.path)
                         }
                         try data.write(to: sofaPath)
