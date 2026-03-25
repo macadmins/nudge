@@ -325,11 +325,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {
                         if OSVersionRequirementVariables.minorVersionRecalculationThreshold > 0 {
-                            if minorVersions.isEmpty {
+                            if minorVersions.isEmpty || minorVersions.count <= OSVersionRequirementVariables.minorVersionRecalculationThreshold {
+                                // Not enough intermediate versions to look back through — use the target version's release date directly
+                                if !minorVersions.isEmpty {
+                                    LogManager.notice("Assessing macOS version range for recalculation: \(minorVersions) - fewer versions (\(minorVersions.count)) than threshold (\(OSVersionRequirementVariables.minorVersionRecalculationThreshold)), using target version release date", logger: sofaLog)
+                                }
                                 requiredInstallationDate = selectedOS!.releaseDate?.addingTimeInterval(slaExtension) ?? DateManager().getCurrentDate().addingTimeInterval(TimeInterval(90 * 86400))
                             } else {
                                 LogManager.notice("Assessing macOS version range for recalculation: \(minorVersions)", logger: sofaLog)
-                                let safeIndex = max(0, minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)) // Ensure the index is within bounds
+                                let safeIndex = minorVersions.count - (OSVersionRequirementVariables.minorVersionRecalculationThreshold + 1)
                                 let targetVersion = minorVersions[safeIndex]
                                 var foundVersion = false
                                 LogManager.notice("minorVersionRecalculationThreshold is set to \(OSVersionRequirementVariables.minorVersionRecalculationThreshold) - Current Version: \(currentInstalledVersion) - Targeting version \(targetVersion) requiredInstallationDate via SOFA", logger: sofaLog)
