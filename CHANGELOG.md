@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.13] - 2026-03-27
+## [2.1.0] - 2026-03-27
 Requires macOS 12.0 and higher.
 
 ### Added
@@ -42,6 +42,7 @@ Requires macOS 12.0 and higher.
   - Addresses [666](https://github.com/macadmins/nudge/issues/666)
 - Evalutes active exploits and not just present CVEs when using `disableNudgeForStandardInstalls`
   - Addresses [650](https://github.com/macadmins/nudge/issues/650)
+- Evaluation of `minorVersionRecalculationThreshold` should properly asses when there are smaller update windows
 
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
