@@ -788,7 +788,7 @@ struct DeviceManager {
         let (output, error, exitCode) = SubProcessUtilities().runProcess(launchPath: "/usr/libexec/remotectl", arguments: ["get-property", "localbridge", "HWModel"])
 
         if exitCode != 0 {
-            LogManager.error("Error assessing DeviceID: \(error)", logger: softwareupdateDeviceLog)
+            LogManager.debug("Bridge DeviceID not available: \(error)", logger: softwareupdateDeviceLog)
             return ""
         } else {
             LogManager.info("SoftwareUpdateDeviceID: \(output)", logger: softwareupdateDeviceLog)

@@ -371,11 +371,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                             LogManager.warning("Sofa Assets list is empty, disregarding unsupported UI.", logger: sofaLog)
                             nudgePrimaryState.deviceSupportedByOSVersion = true
                         } else {
-                            LogManager.notice("Assessed Model IDs: \(Globals.hardwareModelIDs)", logger: sofaLog)
                             let deviceMatchFound = selectedOS!.supportedDevices.contains(where: {
                                 supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }
                             )
-                            LogManager.notice("Assessed Model ID found in SOFA Entry: \(deviceMatchFound)", logger: sofaLog)
+                            if deviceMatchFound {
+                                let matchedID = Globals.hardwareModelIDs.first(where: { id in selectedOS!.supportedDevices.contains { $0.uppercased() == id.uppercased() } }) ?? ""
+                                LogManager.notice("Assessed Model ID \(matchedID) found in SOFA Entry", logger: sofaLog)
+                            } else {
+                                LogManager.notice("Assessed Model IDs \(Globals.hardwareModelIDs) not found in SOFA Entry", logger: sofaLog)
+                            }
                             
                             if !deviceMatchFound {
                                 // Device not found in SOFA supportedDevices list
