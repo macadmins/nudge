@@ -208,8 +208,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         }
                     } else if PrefsWrapper.requiredMinimumOSVersion == "latest-supported" {
                         if OptionalFeatureVariables.attemptToCheckForSupportedDevice {
-                            selectedOS = osVersion.securityReleases.first
-                            if !selectedOS!.supportedDevices.contains(where: { supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }) {
+                            selectedOS = osVersion.latest
+                            // If the device is already running this major version, it is by definition supported.
+                            // Only consult the SOFA supportedDevices list when evaluating a potential upgrade.
+                            let sofaMajorVersion = Int(osVersion.osVersion.split(separator: " ").last ?? "0") ?? 0
+                            let isCurrentMajorVersion = VersionManager.getMajorOSVersion() == sofaMajorVersion
+                            if !isCurrentMajorVersion && !selectedOS!.supportedDevices.isEmpty &&
+                                !selectedOS!.supportedDevices.contains(where: { supportedDevice in Globals.hardwareModelIDs.contains { $0.uppercased() == supportedDevice.uppercased() } }) {
                                 continue
                             }
                         } else {
