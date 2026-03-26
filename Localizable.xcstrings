@@ -162,7 +162,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**En påminnelse fra IT**"
+            "value" : "**En vennlig påminnelse fra ditt lokale IT-team**"
           }
         },
         "nl" : {
@@ -174,7 +174,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Przypomnienie IT**"
+            "value" : "**Przyjazne przypomnienie od lokalnego zespołu IT**"
           }
         },
         "pt" : {
@@ -186,13 +186,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Напоминание от команды IT**"
+            "value" : "**Дружеское напоминание от вашей локальной IT-команды**"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**En påminnelse från IT**"
+            "value" : "**En vänlig påminnelse från ditt lokala IT-team**"
           }
         },
         "uk" : {
@@ -258,7 +258,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**重要**"
+            "value" : "**重要事項**"
           }
         },
         "ko" : {
@@ -402,7 +402,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Ваше устройство больше не может получать критические обновления безопасности.**"
+            "value" : "**Ваше устройство больше не может получать критические обновления безопасности**"
           }
         },
         "sv" : {
@@ -486,7 +486,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**Du vil bli spurt om å starte på nytt underveis i oppdateringen**"
+            "value" : "**Enheten din vil starte på nytt under denne oppdateringen**"
           }
         },
         "nl" : {
@@ -528,7 +528,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**在更新过程中，你的Mac将会重新启动。**"
+            "value" : "**在更新过程中，您的设备将会重新启动**"
           }
         }
       }
@@ -582,7 +582,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "端末の交換が必要です。\n\n端末を交換しないと、業務で利用する機能の一部が使えなくなくなる可能性があります。\n\n詳細は、[**端末を交換**] ボタンをクリックしてください。"
+            "value" : "ITチームがお使いの端末を適切に保護できるよう、端末を最新の状態に保つことが必要です。\n\n端末を交換しない場合、日常業務に必要な一部の機能が利用できなくなります。\n\n詳細については、**端末を交換** ボタンをクリックしてください。"
           }
         },
         "ko" : {
@@ -612,7 +612,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um dispositivo totalmente atualizado para garantir que a TI possa proteger seu dispositivo com precisão.\n\nSe você não adquirir um dispositivo substituto, perderá o acesso a alguns itens necessários para suas tarefas diárias.\n\nPara obter mais informações sobre isso, clique no botão **Substitua seu dispositivo**."
+            "value" : "Um dispositivo totalmente atualizado é necessário para garantir que a TI possa proteger seu dispositivo com precisão.\n\nSe você não adquirir um dispositivo substituto, perderá o acesso a alguns itens necessários para suas tarefas diárias.\n\nPara obter mais informações sobre isso, clique no botão **Substitua seu dispositivo**."
           }
         },
         "ru" : {
@@ -636,7 +636,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "需要完全更新的设备才能确保 IT 能够准确保护您的设备。\n\n如果您没有获得替换设备，您将无法访问日常任务所需的某些物品。\n\n有关详细信息，请单击\"**更换您的设备**\"按钮。"
+            "value" : "需要完全更新的设备才能确保 IT 能够准确保护您的设备。\n\n如果您没有获得替换设备，您将无法访问日常任务所需的某些物品。\n\n有关详细信息，请单击 **更换您的设备** 按钮。"
           }
         }
       }
@@ -677,8 +677,8 @@
         },
         "hi" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "पुरी तरह अपडेटेड उपकरण आवश्यक है IT  द्वारा आपके उपकरण को सुरक्षित रखने के लिए \n\n यदि उपकरण को अपडेट नही किया तो आप अपने कुछ मूल्यवान नित्य उपयोगी वस्तुएँ खो सकते हैं जो दैन दिन उपयोग के लिए आवश्यक होते है \n\n अपडेट करने के लिए केवल अपडेट बटन दबाये  और निर्देशों का पालन करें।"
+            "state" : "translated",
+            "value" : "IT द्वारा आपके डिवाइस की सटीक सुरक्षा सुनिश्चित करने के लिए एक पूरी तरह अपडेट किया हुआ डिवाइस आवश्यक है।\n\nयदि आप अपना डिवाइस अपडेट नहीं करते, तो आप अपने दिन-प्रतिदिन के कार्यों के लिए आवश्यक कुछ चीज़ों तक पहुँच खो सकते हैं।\n\nअपडेट शुरू करने के लिए, बस **उपकरण को अपडेट करें** बटन पर क्लिक करें और दिए गए चरणों का पालन करें।"
           }
         },
         "it" : {
@@ -689,8 +689,8 @@
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "端末のアップデートが必要です。\n\nアップデートしない場合、業務に必要な一部の機能が使えなくなくなる可能性があります。\n\nアップデートを開始するには [**端末をアップデート**] をクリックし、指示に従ってください。"
+            "state" : "translated",
+            "value" : "ITチームがお使いの端末を適切に保護できるよう、端末を最新の状態に保つことが必要です。\n\nアップデートを行わない場合、日常業務に必要な一部の機能が使用できなくなる可能性があります。\n\nアップデートを開始するには、**端末をアップデート** ボタンをクリックし、指示に従ってください。"
           }
         },
         "ko" : {
@@ -725,8 +725,8 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Обновления нужны, чтобы IT-команда могла защитить Mac и данные.\n\nЕсли вы не обновите устройство, есть риск потерять доступ к важным для работы сервисам.\n\nЧтобы начать обновление, просто нажмите кнопку установки."
+            "state" : "translated",
+            "value" : "Полностью обновлённое устройство необходимо для того, чтобы IT-команда могла надлежащим образом защитить ваше устройство.\n\nЕсли вы не обновите устройство, вы можете потерять доступ к некоторым инструментам, необходимым для выполнения повседневных задач.\n\nЧтобы начать обновление, нажмите кнопку **Обновить устройство** и следуйте предложенным шагам."
           }
         },
         "sv" : {
@@ -744,7 +744,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更新至最新的软件以确保 IT 可以精准的保护设备安全。\n\n如未及时完成更新，您将会无法访问日常工作所需的网页或程序。\n \n立刻更新，请点击\"**更新设备**\"并根据提供的步骤完成更新。"
+            "value" : "更新至最新的软件以确保 IT 可以精准的保护设备安全。\n\n如未及时完成更新，您将会无法访问日常工作所需的网页或程序。\n\n立刻更新，请点击 **更新设备** 并根据提供的步骤完成更新。"
           }
         }
       }
@@ -756,7 +756,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falsk"
+            "value" : "Aktivt udnyttede CVE'er"
           }
         },
         "de" : {
@@ -768,91 +768,91 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "False"
+            "value" : "Actively Exploited CVEs"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falso"
+            "value" : "CVEs activamente explotados"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faux"
+            "value" : "CVEs activement exploités"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "असत्य"
+            "value" : "सक्रिय रूप से शोषित CVEs"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falso"
+            "value" : "CVE attivamente sfruttati"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "偽"
+            "value" : "積極的に悪用されているCVE"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "거짓"
+            "value" : "적극적으로 악용된 CVE"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usann"
+            "value" : "Aktivt utnyttede CVE-er"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Onwaar"
+            "value" : "Actief misbruikte CVE's"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fałsz"
+            "value" : "Aktywnie eksploatowane CVE"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falso"
+            "value" : "CVEs ativamente explorados"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ложь"
+            "value" : "Активно эксплуатируемые CVE"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falskt"
+            "value" : "Aktivt utnyttjade CVE:er"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Брехня"
+            "value" : "Активно використовувані CVE"
           }
         },
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "假"
+            "value" : "正在被积极利用的CVE"
           }
         }
       }
@@ -942,13 +942,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Информация об устройстве"
+            "value" : "Дополнительная информация об устройстве"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utökad information"
+            "value" : "Ytterligare enhetsinformation"
           }
         },
         "uk" : {
@@ -990,7 +990,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aplicación abortada"
+            "value" : "Aplicación terminada"
           }
         },
         "fr" : {
@@ -1008,7 +1008,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application terminata"
+            "value" : "Applicazione terminata"
           }
         },
         "ja" : {
@@ -1152,7 +1152,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Arquitetura::"
+            "value" : "Arquitetura:"
           }
         },
         "ru" : {
@@ -1242,7 +1242,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Klikk for mer informasjon"
+            "value" : "Klikk for mer informasjon om enheten"
           }
         },
         "nl" : {
@@ -1266,13 +1266,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Нажмите для информации об устройстве"
+            "value" : "Нажмите для получения дополнительной информации об устройстве"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Klicka för mer information"
+            "value" : "Klicka för mer information om enheten"
           }
         },
         "uk" : {
@@ -1362,7 +1362,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kliknij aby uzyskać więcej informacji na temat uaktualnienia"
+            "value" : "Kliknij, aby uzyskać więcej informacji na temat aktualizacji zabezpieczeń"
           }
         },
         "pt" : {
@@ -1386,7 +1386,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Більше інформації про оновлення безпеки"
+            "value" : "Натисніть для отримання додаткової інформації про оновлення безпеки"
           }
         },
         "zh" : {
@@ -1422,7 +1422,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Click para cerrar"
+            "value" : "Haga clic para cerrar"
           }
         },
         "fr" : {
@@ -1752,7 +1752,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personnaliser"
+            "value" : "Personnalisé"
           }
         },
         "hi" : {
@@ -1788,7 +1788,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personaliseren"
+            "value" : "Aangepast"
           }
         },
         "pl" : {
@@ -1818,7 +1818,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Кастомне"
+            "value" : "Власне"
           }
         },
         "zh" : {
@@ -1860,7 +1860,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jours restants :"
+            "value" : "Jours restants pour la mise à jour :"
           }
         },
         "hi" : {
@@ -1914,13 +1914,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Осталось дней:"
+            "value" : "Осталось дней до обновления:"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kvarstående dagar:"
+            "value" : "Kvarstående dagar för uppdatering:"
           }
         },
         "uk" : {
@@ -1932,7 +1932,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "剩余天数更新:"
+            "value" : "距更新剩余天数:"
           }
         }
       }
@@ -2112,7 +2112,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aantal keren genegeerd:"
+            "value" : "Aantal uitgestelde keren:"
           }
         },
         "pl" : {
@@ -2153,6 +2153,114 @@
         }
       }
     },
+    "False" : {
+      "comment" : "Boolean",
+      "extractionState" : "manual",
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falsk"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falsch"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "False"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falso"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faux"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "असत्य"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "偽"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "거짓"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usann"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onwaar"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fałsz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falso"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ложь"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falskt"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хибно"
+          }
+        },
+        "zh" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "假"
+          }
+        }
+      }
+    },
     "Hours Remaining To Update:" : {
       "comment" : "Hours Remaining To Update:",
       "extractionState" : "manual",
@@ -2184,7 +2292,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heures restantes :"
+            "value" : "Heures restantes pour la mise à jour :"
           }
         },
         "hi" : {
@@ -2238,13 +2346,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Осталось Часов:"
+            "value" : "Осталось часов до обновления:"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kvarstående timmar:"
+            "value" : "Kvarstående timmar för uppdatering:"
           }
         },
         "uk" : {
@@ -2256,7 +2364,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "剩餘時間更新:"
+            "value" : "距更新剩余小时数:"
           }
         }
       }
@@ -2298,7 +2406,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "में समज़ गया"
+            "value" : "मैं समझ गया"
           }
         },
         "it" : {
@@ -2364,7 +2472,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我同意"
+            "value" : "我明白"
           }
         }
       }
@@ -2580,7 +2688,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我同意"
+            "value" : "稍后"
           }
         }
       }
@@ -2760,7 +2868,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Op een dag"
+            "value" : "Één dag"
           }
         },
         "pl" : {
@@ -3102,7 +3210,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Свяжитесь с местной ИТ-отделом, чтобы получить устройство на замену."
+            "value" : "Пожалуйста, обратитесь к местному ИТ-отделу для получения устройства на замену."
           }
         },
         "sv" : {
@@ -3294,7 +3402,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Krevd Dato:"
+            "value" : "Påkrevd dato:"
           }
         },
         "nl" : {
@@ -3558,7 +3666,7 @@
       }
     },
     "True" : {
-      "comment" : "Actively Exploited CVEs",
+      "comment" : "Boolean",
       "extractionState" : "manual",
       "localizations" : {
         "da" : {
@@ -3750,7 +3858,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Установить"
+            "value" : "Обновить устройство"
           }
         },
         "sv" : {
@@ -3876,7 +3984,7 @@
         "zh" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "这大约会花费30分钟。"
+            "value" : "更新大约需要30分钟才能完成"
           }
         }
       }
@@ -4134,7 +4242,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "आपके के उपकरण  को सिक्यरिटी अप्डेट की अवशक्ता है"
+            "value" : "आपके डिवाइस को सुरक्षा अपडेट की आवश्यकता है"
           }
         },
         "it" : {
@@ -4170,7 +4278,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Twoje urządzenie wymaga aktualizacji systemu macOS"
+            "value" : "Twoje urządzenie wymaga aktualizacji zabezpieczeń"
           }
         },
         "pt" : {
@@ -4242,7 +4350,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "आपके के उपकरण  को सिक्यरिटी अप्डेट की अवशता है ( डेमो मोड़)"
+            "value" : "आपके डिवाइस को सुरक्षा अपडेट की आवश्यकता है (डेमो मोड)"
           }
         },
         "it" : {
@@ -4278,7 +4386,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Twoje urządzenie wymaga aktualizacji systemu macOS (Tryb Demo)"
+            "value" : "Twoje urządzenie wymaga aktualizacji zabezpieczeń (Tryb Demo)"
           }
         },
         "pt" : {
