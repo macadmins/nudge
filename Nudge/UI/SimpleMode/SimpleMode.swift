@@ -16,10 +16,10 @@ struct SimpleMode: View {
     var body: some View {
         VStack {
             AdditionalInfoButton().padding(3) // (?) button
-            
+
             mainContent
                 .frame(alignment: .center)
-            
+
             bottomButtons
         }
     }
@@ -41,7 +41,9 @@ struct SimpleMode: View {
                 requiredDateView
             }
             
-            remainingTimeView
+            if UserInterfaceVariables.showDaysRemainingToUpdate {
+                remainingTimeView
+            }
 
             if UserInterfaceVariables.showDeferralCount {
                 deferralCountView
@@ -62,7 +64,7 @@ struct SimpleMode: View {
             Spacer()
         }
     }
-    
+
     private var remainingTimeView: some View {
         HStack(spacing: 3.5) {
             if (appState.daysRemaining > 0 && !CommandLineUtilities().demoModeEnabled()) || CommandLineUtilities().demoModeEnabled() {
@@ -79,11 +81,11 @@ struct SimpleMode: View {
                 Text(String(appState.daysRemaining))
                     .foregroundColor(appState.differentiateWithoutColor ? .accessibleRed : .red)
                     .fontWeight(.bold)
-                
+
             }
         }
     }
-    
+
     private var deferralCountView: some View {
         HStack {
             Text("Deferred Count:".localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
