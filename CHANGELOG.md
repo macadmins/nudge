@@ -18,6 +18,7 @@ Requires macOS 12.0 and higher.
  - Addresses both the FR and bug reported in [660](https://github.com/macadmins/nudge/issues/660)
 
 ### Changed
+- Built on Xcode 26.3 and macOS 26
  - Swedish translation for Required Date is more culturally appropriate
   - Thanks to [HowardGMac](https://github.com/macadmins/nudge/pull/668)
 - Enforce `en_US_POSIX` to attempt to fix [693](https://github.com/macadmins/nudge/issues/693)
