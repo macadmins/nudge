@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0] - 2026-03-27
+## [2.1.0] - 2026-03-26
 Requires macOS 12.0 and higher.
 
 ### Added
 - `showRequiredOSVersion` is a new key, defaulted to `False`. This currently has no impact to standardMode
-- simpleMode now honors `showRequiredOSVersion` and `showRequiredDate` allowing you to give slightly more information to the user while keeping a minimal UI
+- simpleMode now honors `showDaysRemainingToUpdate`, `showRequiredOSVersion` and `showRequiredDate` allowing you to give slightly more information to the user while keeping a minimal UI
 - `allow​Movable​Window​During​Aggressive​User​Experience` key is added
   - Addresses [671](https://github.com/macadmins/nudge/issues/671)
 - `activelyExploitedCVEsLabel` and `showActivelyExploitedCVEsAsCount` have now been implemented
@@ -44,6 +44,8 @@ Requires macOS 12.0 and higher.
   - Addresses [650](https://github.com/macadmins/nudge/issues/650)
 - Evaluation of `minorVersionRecalculationThreshold` should properly asses when there are smaller update windows
 - `latest-supported` correctly handles minor to minor updates
+- Ukrainain localization is now complete - `Important Notes` key
+  - Thanks to [Victor Girilovsky(https://github.com/girilovsky)
 
 ## [2.0.12] - 2024-09-18
 Requires macOS 12.0 and higher.
