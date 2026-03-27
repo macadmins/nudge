@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-03-27
+Requires macOS 12.0 and higher.
+
+### Fixed
+- Fixed timing launching of Nudge windows in macOS 26 and likely other Operating Systems due to race conditions
+  - Addressess [701](https://github.com/macadmins/nudge/issues/701)
+
 ## [2.1.0] - 2026-03-26
 Requires macOS 12.0 and higher.
 
