@@ -37,7 +37,11 @@ struct BlurManager {
                 
                 // Force window to front regardless of space constraints
                 // This will trigger a space switch if needed
-                NSApp.activate(ignoringOtherApps: true)
+                if #available(macOS 14, *) {
+                    NSApp.activate()
+                } else {
+                    NSApp.activate(ignoringOtherApps: true)
+                }
                 window.orderFrontRegardless()
                 
                 // Return early - let the run loop spin to complete space switch
@@ -124,7 +128,11 @@ struct BlurManager {
         
         // Ensure main window stays on top and visible
         mainWindow.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        if #available(macOS 14, *) {
+            NSApp.activate()
+        } else {
+            NSApp.activate(ignoringOtherApps: true)
+        }
     }
 }
 
@@ -155,7 +163,11 @@ struct AppStateManager {
 
         if DateManager().pastRequiredInstallationDate() && OptionalFeatureVariables.aggressiveUserFullScreenExperience {
             UIUtilities().centerNudge()
-            NSApp.activate(ignoringOtherApps: true)
+            if #available(macOS 14, *) {
+                NSApp.activate()
+            } else {
+                NSApp.activate(ignoringOtherApps: true)
+            }
             mainWindow.makeKeyAndOrderFront(nil)
             BlurManager().applyBackgroundBlur(to: mainWindow)
             return
@@ -164,7 +176,11 @@ struct AppStateManager {
         if NSWorkspace.shared.isActiveSpaceFullScreen() && !nudgePrimaryState.afterFirstStateChange {
             LogManager.notice("Bypassing activation due to full screen bugs in macOS", logger: uiLog)
         } else {
-            NSApp.activate(ignoringOtherApps: true)
+            if #available(macOS 14, *) {
+                NSApp.activate()
+            } else {
+                NSApp.activate(ignoringOtherApps: true)
+            }
             mainWindow.makeKeyAndOrderFront(nil)
         }
     }
@@ -526,6 +542,10 @@ struct CommandLineUtilities {
             LogManager.debug("-version argument passed", logger: uiLog)
         }
         return argumentPassed
+    }
+
+    func jsonURL() -> String? {
+        return valueForArgument("-json-url")
     }
 
     func simulateDate() -> String? {
@@ -1362,7 +1382,13 @@ struct NetworkFileManager {
     }
 
     func getJSONUrl() -> String {
-        Globals.nudgeDefaults.string(forKey: "json-url") ?? "file:///Library/Preferences/com.github.macadmins.Nudge.json" // For Greg Neagle
+        // Prefer the value parsed directly from CommandLine.arguments to avoid NSArgumentDomain
+        // misparse: UserDefaults treats flag-only args (e.g. -disable-random-delay) as keys and
+        // consumes the next token as their value, which corrupts the json-url when argument order
+        // places a boolean flag before -json-url.
+        CommandLineUtilities().jsonURL() ??
+        Globals.nudgeDefaults.string(forKey: "json-url") ?? // For Greg Neagle
+        "file:///Library/Preferences/com.github.macadmins.Nudge.json"
     }
 
     func getNudgeJSONPreferences() -> NudgePreferences? {

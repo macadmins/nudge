@@ -17,7 +17,7 @@ struct Main: App {
     @StateObject var appState = nudgePrimaryState
 
     var body: some Scene {
-        WindowGroup {
+        return WindowGroup {
             mainContentView
         }
         .windowResizabilityContentSize()
@@ -59,7 +59,7 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
 
     var body: some View {
-        contentView
+        return contentView
             .background(HostingWindowFinder(callback: configureWindow))
             .edgesIgnoringSafeArea(.all)
             .onAppear {
@@ -154,6 +154,54 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         handleKeyboardEvents()
         handleApplicationLaunchesIfNeeded()
         checkFullScreenStateOnFirstLaunch()
+        // On macOS 26, SwiftUI's WindowGroup can silently fail to create its window if
+        // objectWillChange fires on an ObservableObject while WindowGroup is still in the
+        // middle of its internal initialization (e.g. sofaPreLaunchLogic mutating
+        // nudgePrimaryState during applicationWillFinishLaunching). When this happens,
+        // WindowGroup never calls its content closure and NSApp.windows remains empty.
+        // This is most reliably triggered when no run loop spinning occurs before the
+        // state mutations — for example, when -disable-random-delay is the first argument
+        // and the random delay (which would have spun the run loop) is skipped entirely.
+        // Since we cannot control WindowGroup's internal state machine, we detect the
+        // failure here and fall back to creating the window directly via NSHostingController.
+        if NSApp.windows.isEmpty {
+            recoverMissingWindow()
+        }
+    }
+
+    private func recoverMissingWindow() {
+        let contentView: AnyView
+        if CommandLineUtilities().debugUIModeEnabled() {
+            contentView = AnyView(
+                VSplitView {
+                    ForEach([true, false], id: \.self) { forceSimpleMode in
+                        ContentView(forceSimpleMode: forceSimpleMode)
+                            .environmentObject(nudgePrimaryState)
+                            .standardFrame
+                    }
+                }
+                .frame(height: uiConstants.declaredWindowHeight * 2)
+            )
+        } else {
+            contentView = AnyView(
+                ContentView()
+                    .environmentObject(nudgePrimaryState)
+                    .standardFrame
+            )
+        }
+        let hostingController = NSHostingController(rootView: contentView)
+        let window = NSWindow(contentViewController: hostingController)
+        window.styleMask = [.borderless, .fullSizeContentView]
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.isMovable = UserExperienceVariables.allowMovableWindow
+        window.collectionBehavior = [.fullScreenAuxiliary]
+        window.delegate = UIConstants.windowDelegate
+        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+        window.standardWindowButton(.zoomButton)?.isHidden = true
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationDidResignActive(_ notification: Notification) {

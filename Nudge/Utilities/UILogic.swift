@@ -153,7 +153,8 @@ private func isMajorUpgradeAppBackup(_ runningApplication: NSRunningApplication)
 private func isRefreshTimerPassedThreshold() -> Bool {
     let currentTime = DateManager().getCurrentDate().timeIntervalSince1970
     let timeSinceLastRefresh = currentTime - nudgePrimaryState.lastRefreshTime.timeIntervalSince1970
-    if nudgeLogState.afterFirstLaunch && Double(ConfigurationManager().getTimerController()) > timeSinceLastRefresh {
+    let timerController = Double(ConfigurationManager().getTimerController())
+    if nudgeLogState.afterFirstLaunch && timeSinceLastRefresh > 0 && timerController > timeSinceLastRefresh {
         LogManager.info("Ignoring Nudge activation - Device is currently within current timer range", logger: uiLog)
         return true
     }
