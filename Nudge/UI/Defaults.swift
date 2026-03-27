@@ -80,7 +80,7 @@ class AppState: ObservableObject {
     @Published var hasRenderedApplicationTerminatedNotificationImagePath = false
     @Published var hoursRemaining = DateManager().getNumberOfHoursRemaining()
     @Published var secondsRemaining = DateManager().getNumberOfSecondsRemaining()
-    @Published var lastRefreshTime = DateManager().getFormattedDate()
+    @Published var lastRefreshTime = DateManager().getFormattedDate(date: DateManager().getCurrentDate())
     @Published var requireDualQuitButtons = false
     @Published var requiredMinimumOSVersion = OSVersionRequirementVariables.requiredMinimumOSVersion
     @Published var shouldExit = false
