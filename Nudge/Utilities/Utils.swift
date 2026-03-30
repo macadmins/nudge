@@ -1033,6 +1033,62 @@ struct ImageManager {
     }
 }
 
+// Loads a remote https:// image once via URLSession and caches the result in @State.
+// AsyncImage cancels in-flight downloads whenever its parent view re-evaluates (e.g.
+// on the nudge refresh timer), causing Code=-999 "cancelled" errors. By loading into
+// @State the result survives re-renders for the lifetime of the containing view.
+struct CachedAsyncImage: View {
+    let url: String
+    let maxHeight: CGFloat?
+    let width: CGFloat?
+    let height: CGFloat?
+
+    @State private var image: NSImage? = nil
+    @State private var failed = false
+
+    init(url: String, maxHeight: CGFloat? = nil, width: CGFloat? = nil, height: CGFloat? = nil) {
+        self.url = url
+        self.maxHeight = maxHeight
+        self.width = width
+        self.height = height
+    }
+
+    var body: some View {
+        Group {
+            if let image {
+                Image(nsImage: image)
+                    .customResizable(width: width, height: height, maxHeight: maxHeight)
+            } else if failed {
+                Image(systemName: "questionmark.square.dashed")
+                    .customResizable(width: width, height: height, maxHeight: maxHeight)
+                    .customFontWeight(fontWeight: .ultraLight)
+                    .opacity(0.05)
+            } else {
+                Image(systemName: "square.dashed")
+                    .customResizable(width: width, height: height, maxHeight: maxHeight)
+                    .customFontWeight(fontWeight: .ultraLight)
+                    .opacity(0.05)
+            }
+        }
+        .task(id: url) {
+            // Reset state when URL changes (e.g. switching between dark/light mode paths)
+            image = nil
+            failed = false
+            guard let parsedURL = URL(string: url) else { failed = true; return }
+            do {
+                let (data, _) = try await URLSession.shared.data(from: parsedURL)
+                if let loaded = NSImage(data: data) {
+                    image = loaded
+                } else {
+                    failed = true
+                }
+            } catch {
+                failed = true
+            }
+        }
+    }
+}
+
 struct LoggerUtilities {
     func logRequiredMinimumOSVersion() {
         if !requiredMinimumOSVersionNil() {

@@ -123,6 +123,21 @@ struct StandardModeRightSide: View {
 
     private var screenshotButton: some View {
         Button(action: { appState.screenShotZoomViewIsPresented = true }) {
+            screenshotImage
+        }
+        .buttonStyle(.plain)
+        .help(UserInterfaceVariables.screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
+        .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
+            ScreenShotZoom()
+        }
+        .onHoverEffect()
+    }
+
+    @ViewBuilder
+    private var screenshotImage: some View {
+        if screenShotPath.starts(with: "https://") || screenShotPath.starts(with: "http://") {
+            CachedAsyncImage(url: screenShotPath, maxHeight: UIConstants.screenshotMaxHeight)
+        } else {
             AsyncImage(url: UIUtilities().createCorrectURLType(from: screenShotPath)) { phase in
                 switch phase {
                     case .empty:
@@ -143,12 +158,6 @@ struct StandardModeRightSide: View {
                 }
             }
         }
-        .buttonStyle(.plain)
-        .help(UserInterfaceVariables.screenShotAltText.localized(desiredLanguage: getDesiredLanguage(locale: appState.locale)))
-        .sheet(isPresented: $appState.screenShotZoomViewIsPresented) {
-            ScreenShotZoom()
-        }
-        .onHoverEffect()
     }
 
     private func shouldShowScreenshot() -> Bool {

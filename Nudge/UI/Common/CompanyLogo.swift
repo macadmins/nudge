@@ -28,24 +28,28 @@ struct CompanyLogo: View {
         }
     }
 
+    @ViewBuilder
     private var companyImage: some View {
-        AsyncImage(url: UIUtilities().createCorrectURLType(from: companyLogoPath)) { phase in
-            switch phase {
-                case .empty:
-                    Image(systemName: "square.dashed")
-                        .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
-                        .customFontWeight(fontWeight: .ultraLight)
-                        .opacity(0.05)
-                case .failure:
-                    Image(systemName: "questionmark.square.dashed")
-                        .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
-                        .customFontWeight(fontWeight: .ultraLight)
-                        .opacity(0.05)
-                case .success(let image):
-                    image
-                        .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
-                @unknown default:
-                    EmptyView()
+        if companyLogoPath.starts(with: "https://") || companyLogoPath.starts(with: "http://") {
+            CachedAsyncImage(url: companyLogoPath, width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+        } else {
+            AsyncImage(url: UIUtilities().createCorrectURLType(from: companyLogoPath)) { phase in
+                switch phase {
+                    case .empty:
+                        Image(systemName: "square.dashed")
+                            .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+                            .customFontWeight(fontWeight: .ultraLight)
+                            .opacity(0.05)
+                    case .failure:
+                        Image(systemName: "questionmark.square.dashed")
+                            .customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+                            .customFontWeight(fontWeight: .ultraLight)
+                            .opacity(0.05)
+                    case .success(let image):
+                        image.customResizable(width: uiConstants.logoWidth, height: uiConstants.logoHeight)
+                    @unknown default:
+                        EmptyView()
+                }
             }
         }
     }

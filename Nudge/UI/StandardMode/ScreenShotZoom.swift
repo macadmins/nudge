@@ -51,24 +51,28 @@ struct ScreenShotZoom: View {
         }
     }
 
+    @ViewBuilder
     private var screenShotImage: some View {
-        AsyncImage(url: UIUtilities().createCorrectURLType(from: screenShotPath)) { phase in
-            switch phase {
-                case .empty:
-                    Image(systemName: "square.dashed")
-                        .customResizable(maxHeight: 675)
-                        .customFontWeight(fontWeight: .ultraLight)
-                        .opacity(0.05)
-                case .failure:
-                    Image(systemName: "questionmark.square.dashed")
-                        .customResizable(maxHeight: 675)
-                        .customFontWeight(fontWeight: .ultraLight)
-                        .opacity(0.05)
-                case .success(let image):
-                    image
-                        .customResizable()
-                @unknown default:
-                    EmptyView()
+        if screenShotPath.starts(with: "https://") || screenShotPath.starts(with: "http://") {
+            CachedAsyncImage(url: screenShotPath)
+        } else {
+            AsyncImage(url: UIUtilities().createCorrectURLType(from: screenShotPath)) { phase in
+                switch phase {
+                    case .empty:
+                        Image(systemName: "square.dashed")
+                            .customResizable(maxHeight: 675)
+                            .customFontWeight(fontWeight: .ultraLight)
+                            .opacity(0.05)
+                    case .failure:
+                        Image(systemName: "questionmark.square.dashed")
+                            .customResizable(maxHeight: 675)
+                            .customFontWeight(fontWeight: .ultraLight)
+                            .opacity(0.05)
+                    case .success(let image):
+                        image.customResizable()
+                    @unknown default:
+                        EmptyView()
+                }
             }
         }
     }
