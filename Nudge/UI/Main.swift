@@ -277,7 +277,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         }
                     }
 
-                    var totalActivelyExploitedCVEs = 0
                     let selectedOSVersion = selectedOS!.productVersion
                     var allVersions = [String]()
 
@@ -318,15 +317,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     }
 
                     // Count CVEs in the appropriate filtered versions
+                    // Actively exploited CVEs are counted once each: the newest release appears both as
+                    // `Latest` and in `SecurityReleases`, and a CVE can be listed against several releases.
+                    let totalActivelyExploitedCVEs = macOSSOFAAssets.activelyExploitedCVEs(inVersions: versionsToCheck).count
                     var totalAnyCVEsInRange = 0
                     for osVersion in macOSSOFAAssets {
                         if versionsToCheck.contains(osVersion.latest.productVersion) {
-                            totalActivelyExploitedCVEs += osVersion.latest.activelyExploitedCVEs.count
                             totalAnyCVEsInRange += osVersion.latest.cves.count
                         }
                         for securityRelease in osVersion.securityReleases {
                             if versionsToCheck.contains(securityRelease.productVersion) {
-                                totalActivelyExploitedCVEs += securityRelease.activelyExploitedCVEs.count
                                 totalAnyCVEsInRange += securityRelease.cves.count
                             }
                         }
