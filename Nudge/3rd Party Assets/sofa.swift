@@ -39,6 +39,24 @@ struct SofaOSVersion: Codable {
     }
 }
 
+extension Array where Element == SofaOSVersion {
+    /// Unique actively exploited CVE IDs fixed by the given product versions.
+    /// SOFA lists the newest release of each OS both as `Latest` and as the first `SecurityReleases`
+    /// entry, and the same CVE can be listed against more than one release, so IDs are de-duplicated.
+    func activelyExploitedCVEs(inVersions versions: [String]) -> Set<String> {
+        var cves = Set<String>()
+        for osVersion in self {
+            if versions.contains(osVersion.latest.productVersion) {
+                cves.formUnion(osVersion.latest.activelyExploitedCVEs)
+            }
+            for securityRelease in osVersion.securityReleases where versions.contains(securityRelease.productVersion) {
+                cves.formUnion(securityRelease.activelyExploitedCVEs)
+            }
+        }
+        return cves
+    }
+}
+
 protocol OSInformation {
     var productVersion: String { get }
     var build: String { get }
