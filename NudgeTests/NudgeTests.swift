@@ -302,3 +302,69 @@ class GracePeriodPolicyTests: XCTestCase {
         XCTAssertEqual(launch(age: 0), eventDeadline)
     }
 }
+
+class DisplayManagerTests: XCTestCase {
+    private let builtIn: CGDirectDisplayID = 1
+    private let external: CGDirectDisplayID = 2
+    private let builtInOnly = CGRect(x: 0, y: 0, width: 1496, height: 967)
+    private let externalOnly = CGRect(x: 0, y: 0, width: 2560, height: 1440)
+    private let externalRightOfBuiltIn = CGRect(x: 1496, y: 0, width: 2560, height: 1440)
+
+    private func configuration(_ displays: [(id: CGDirectDisplayID, bounds: CGRect)]) -> DisplayManager.Configuration {
+        DisplayManager.Configuration(displays: displays)
+    }
+
+    func testUnchangedDisplaysDoNotRestart() {
+        XCTAssertEqual(configuration([(builtIn, builtInOnly)]), configuration([(builtIn, builtInOnly)]))
+    }
+
+    func testDisplayReportingOrderDoesNotRestart() {
+        XCTAssertEqual(
+            configuration([(builtIn, builtInOnly), (external, externalRightOfBuiltIn)]),
+            configuration([(external, externalRightOfBuiltIn), (builtIn, builtInOnly)])
+        )
+    }
+
+    func testDockingWithLidClosedRestarts() {
+        // Launched undocked on the built-in display, woke docked with only the external display.
+        XCTAssertNotEqual(configuration([(builtIn, builtInOnly)]), configuration([(external, externalOnly)]))
+    }
+
+    func testAddedDisplayRestarts() {
+        XCTAssertNotEqual(
+            configuration([(builtIn, builtInOnly)]),
+            configuration([(builtIn, builtInOnly), (external, externalRightOfBuiltIn)])
+        )
+    }
+
+    func testRemovedDisplayRestarts() {
+        XCTAssertNotEqual(
+            configuration([(builtIn, builtInOnly), (external, externalRightOfBuiltIn)]),
+            configuration([(builtIn, builtInOnly)])
+        )
+    }
+
+    func testResolutionChangeRestarts() {
+        XCTAssertNotEqual(
+            configuration([(external, externalOnly)]),
+            configuration([(external, CGRect(x: 0, y: 0, width: 1600, height: 900))])
+        )
+    }
+
+    func testArrangementChangeRestarts() {
+        XCTAssertNotEqual(
+            configuration([(builtIn, builtInOnly), (external, externalRightOfBuiltIn)]),
+            configuration([(builtIn, builtInOnly), (external, CGRect(x: -2560, y: 0, width: 2560, height: 1440))])
+        )
+    }
+
+    func testRelaunchArgumentsAppendDisableRandomDelay() {
+        let arguments = ["/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge", "-json-url", "https://example.com/nudge.json"]
+        XCTAssertEqual(DisplayManager().relaunchArguments(from: arguments), arguments + ["-disable-random-delay"])
+    }
+
+    func testRelaunchArgumentsDoNotDuplicateDisableRandomDelay() {
+        let arguments = ["/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge", "-disable-random-delay", "-json-url", "https://example.com/nudge.json"]
+        XCTAssertEqual(DisplayManager().relaunchArguments(from: arguments), arguments)
+    }
+}

@@ -1108,6 +1108,38 @@ struct DeviceManager {
     }
 }
 
+struct DisplayManager {
+    /// The active displays and their bounds, compared before and after the random delay. Sorted so a
+    /// different reporting order from CoreGraphics is not mistaken for a configuration change.
+    struct Configuration: Equatable {
+        let displays: [String]
+
+        init(displays: [(id: CGDirectDisplayID, bounds: CGRect)]) {
+            self.displays = displays
+                .map { "\($0.id):\($0.bounds.origin.x),\($0.bounds.origin.y),\($0.bounds.width),\($0.bounds.height)" }
+                .sorted()
+        }
+    }
+
+    func activeConfiguration() -> Configuration {
+        var displayCount: UInt32 = 0
+        guard CGGetActiveDisplayList(0, nil, &displayCount) == .success, displayCount > 0 else {
+            return Configuration(displays: [])
+        }
+        var displays = [CGDirectDisplayID](repeating: 0, count: Int(displayCount))
+        guard CGGetActiveDisplayList(displayCount, &displays, &displayCount) == .success else {
+            return Configuration(displays: [])
+        }
+        return Configuration(displays: displays.prefix(Int(displayCount)).map { (id: $0, bounds: CGDisplayBounds($0)) })
+    }
+
+    /// Arguments for restarting Nudge after the random delay: the original arguments with
+    /// `-disable-random-delay` appended once, so the restarted process does not wait again.
+    func relaunchArguments(from arguments: [String]) -> [String] {
+        arguments.contains("-disable-random-delay") ? arguments : arguments + ["-disable-random-delay"]
+    }
+}
+
 struct ImageManager {
     private func createErrorImage() -> NSImage {
         let errorImageConfig = NSImage.SymbolConfiguration(pointSize: 200, weight: .regular)
