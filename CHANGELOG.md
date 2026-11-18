@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- The actively exploited CVE count (`showActivelyExploitedCVEsAsCount`) counted the newest release twice, because SOFA lists it both as `Latest` and as the first `SecurityReleases` entry, and counted a CVE once per release that lists it. It now counts unique CVE IDs. Whether a release counts as actively exploited, and so which SLA applies, is unchanged.
+
 ## [2.1.4] - 2026-09-08
 Requires macOS 12.0 and higher.
 

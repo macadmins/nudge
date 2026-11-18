@@ -31,6 +31,10 @@ struct SofaOSVersion: Codable {
     let securityReleases: [SecurityRelease]
     let supportedModels: [SupportedModel]
 
+    var releases: [OSInformation] {
+        [latest as OSInformation] + securityReleases
+    }
+
     enum CodingKeys: String, CodingKey {
         case osVersion = "OSVersion"
         case latest = "Latest"
@@ -48,6 +52,19 @@ protocol OSInformation {
     var cves: [String: Bool] { get }
     var activelyExploitedCVEs: [String] { get }
     var uniqueCVEsCount: Int { get }
+}
+
+extension Sequence where Element == OSInformation {
+    func cves(inVersions versions: Set<String>) -> (activelyExploited: Set<String>, hasCVEs: Bool) {
+        var activelyExploited = Set<String>()
+        var hasCVEs = false
+        for release in self where versions.contains(release.productVersion) {
+            // Latest and SecurityReleases can overlap, and multiple releases can fix the same CVE.
+            activelyExploited.formUnion(release.activelyExploitedCVEs)
+            hasCVEs = hasCVEs || !release.cves.isEmpty
+        }
+        return (activelyExploited, hasCVEs)
+    }
 }
 
 struct LatestOS: Codable {
