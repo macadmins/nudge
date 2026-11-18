@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - The actively exploited CVE count (`showActivelyExploitedCVEsAsCount`) counted the newest release twice, because SOFA lists it both as `Latest` and as the first `SecurityReleases` entry, and counted a CVE once per release that lists it. It now counts unique CVE IDs. Whether a release counts as actively exploited, and so which SLA applies, is unchanged.
+- Fixed a window positioning issue when displays changed during the random startup delay, such as when docking a sleeping Mac. Nudge now restarts once at the end of the delay so its window opens centered on the current display. [#712](https://github.com/macadmins/nudge/issues/712)
 
 ## [2.1.4] - 2026-09-08
 Requires macOS 12.0 and higher.

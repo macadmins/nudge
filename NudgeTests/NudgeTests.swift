@@ -67,6 +67,63 @@ class NudgeTests: XCTestCase {
 
 }
 
+class DisplayConfigurationTests: XCTestCase {
+    private let builtIn: CGDirectDisplayID = 1
+    private let external: CGDirectDisplayID = 2
+    private let builtInOnly = CGRect(x: 0, y: 0, width: 1496, height: 967)
+    private let externalOnly = CGRect(x: 0, y: 0, width: 2560, height: 1440)
+    private let externalRightOfBuiltIn = CGRect(x: 1496, y: 0, width: 2560, height: 1440)
+
+    func testUnchangedDisplaysDoNotRestart() {
+        let displays = [builtIn: builtInOnly, external: externalRightOfBuiltIn]
+        let reordered = [external: externalRightOfBuiltIn, builtIn: builtInOnly]
+        XCTAssertFalse(UIUtilities.displayConfigurationChanged(from: displays, to: reordered))
+    }
+
+    func testUnreadableConfigurationDoesNotRestart() {
+        let displays = [builtIn: builtInOnly]
+        XCTAssertFalse(UIUtilities.displayConfigurationChanged(from: nil, to: displays))
+        XCTAssertFalse(UIUtilities.displayConfigurationChanged(from: displays, to: nil))
+    }
+
+    func testDockingWithLidClosedRestarts() {
+        XCTAssertTrue(UIUtilities.displayConfigurationChanged(from: [builtIn: builtInOnly], to: [external: externalOnly]))
+    }
+
+    func testAddingAndRemovingDisplaysRestarts() {
+        let single = [builtIn: builtInOnly]
+        let dual = [builtIn: builtInOnly, external: externalRightOfBuiltIn]
+        XCTAssertTrue(UIUtilities.displayConfigurationChanged(from: single, to: dual))
+        XCTAssertTrue(UIUtilities.displayConfigurationChanged(from: dual, to: single))
+        XCTAssertTrue(UIUtilities.displayConfigurationChanged(from: [:], to: single))
+    }
+
+    func testResolutionChangeRestarts() {
+        let resized = CGRect(x: 0, y: 0, width: 1600, height: 900)
+        XCTAssertTrue(UIUtilities.displayConfigurationChanged(from: [external: externalOnly], to: [external: resized]))
+    }
+
+    func testArrangementChangeRestarts() {
+        let externalLeft = CGRect(x: -2560, y: 0, width: 2560, height: 1440)
+        XCTAssertTrue(UIUtilities.displayConfigurationChanged(
+            from: [builtIn: builtInOnly, external: externalRightOfBuiltIn],
+            to: [builtIn: builtInOnly, external: externalLeft]
+        ))
+    }
+}
+
+class RelaunchArgumentTests: XCTestCase {
+    func testRelaunchArgumentsAppendDisableRandomDelay() {
+        let arguments = ["/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge", "-json-url", "https://example.com/nudge.json"]
+        XCTAssertEqual(CommandLineUtilities(arguments: arguments).argumentsWithoutRandomDelay, arguments + ["-disable-random-delay"])
+    }
+
+    func testRelaunchArgumentsDoNotDuplicateDisableRandomDelay() {
+        let arguments = ["/Applications/Utilities/Nudge.app/Contents/MacOS/Nudge", "-disable-random-delay", "-json-url", "https://example.com/nudge.json"]
+        XCTAssertEqual(CommandLineUtilities(arguments: arguments).argumentsWithoutRandomDelay, arguments)
+    }
+}
+
 // Each test owns its preference suite and restores all shared app configuration.
 class GracePeriodPolicyTests: XCTestCase {
     private var savedOverrides: [String: Any]?

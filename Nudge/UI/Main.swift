@@ -566,6 +566,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if UserExperienceVariables.randomDelay && !(CommandLineUtilities().disableRandomDelayArgumentPassed() || CommandLineUtilities().unitTestingEnabled() || CommandLineUtilities().demoModeEnabled()) {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
+            let displaysBeforeDelay = UIUtilities.activeDisplayConfiguration()
 
             let delayDate = Date().addingTimeInterval(TimeInterval(delaySeconds))
             while Date() < delayDate {
@@ -573,7 +574,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
 
             LogManager.notice("Finished delay", logger: uiLog)
+
+            // AppKit can retain a disconnected screen across sleep and reject later window moves.
+            if UIUtilities.displayConfigurationChanged(from: displaysBeforeDelay, to: UIUtilities.activeDisplayConfiguration()) {
+                relaunchWithoutRandomDelay()
+            }
         }
+    }
+
+    private func relaunchWithoutRandomDelay() {
+        guard let executablePath = Bundle.main.executablePath else {
+            LogManager.error("Cannot find the Nudge executable - continuing without restart", logger: uiLog)
+            return
+        }
+        let arguments = CommandLineUtilities().argumentsWithoutRandomDelay
+        LogManager.notice("Display configuration changed during the random delay - restarting Nudge with current screen information", logger: uiLog)
+        // execv replaces the process image and keeps the process ID, so launchd keeps tracking the LaunchAgent job.
+        var cArguments: [UnsafeMutablePointer<CChar>?] = arguments.map { strdup($0) }
+        defer { cArguments.forEach { free($0) } }
+        guard !cArguments.contains(nil) else {
+            LogManager.error("Could not copy restart arguments - continuing without restart", logger: uiLog)
+            return
+        }
+        cArguments.append(nil)
+        execv(executablePath, &cArguments)
+        // execv only returns on failure; carry on with the current process.
+        LogManager.error("Restarting Nudge failed (errno \(errno)) - continuing without restart", logger: uiLog)
     }
 
     private func applydelayNudgeEventLogic() {

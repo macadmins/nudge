@@ -614,7 +614,16 @@ struct CameraUtilities {
 import Foundation
 
 struct CommandLineUtilities {
-    let arguments: [String] = CommandLine.arguments
+    private static let disableRandomDelayArgument = "-disable-random-delay"
+    let arguments: [String]
+
+    init(arguments: [String] = CommandLine.arguments) {
+        self.arguments = arguments
+    }
+
+    var argumentsWithoutRandomDelay: [String] {
+        disableRandomDelayArgumentPassed() ? arguments : arguments + [Self.disableRandomDelayArgument]
+    }
 
     // Existing argument checks
     func bundleModeJSONEnabled() -> Bool {
@@ -638,7 +647,7 @@ struct CommandLineUtilities {
     }
 
     func disableRandomDelayArgumentPassed() -> Bool {
-        return arguments.contains("-disable-random-delay")
+        return arguments.contains(Self.disableRandomDelayArgument)
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
@@ -1738,6 +1747,34 @@ struct SMAppManager {
 }
 
 struct UIUtilities {
+    typealias DisplayConfiguration = [CGDirectDisplayID: CGRect]
+
+    // AppKit's screen list can be stale until launch completes. Query CoreGraphics directly.
+    static func activeDisplayConfiguration() -> DisplayConfiguration? {
+        var ids = [CGDirectDisplayID](repeating: 0, count: 8)
+        var count: UInt32 = 0
+        while true {
+            let capacity = ids.count
+            guard CGGetActiveDisplayList(UInt32(capacity), &ids, &count) == .success else { return nil }
+            if count < capacity { break }
+            // A full buffer may have truncated the list.
+            ids = [CGDirectDisplayID](repeating: 0, count: capacity * 2)
+        }
+
+        var configuration = DisplayConfiguration()
+        for id in ids.prefix(Int(count)) {
+            let bounds = CGDisplayBounds(id)
+            guard !bounds.isEmpty else { return nil } // The display disappeared while sampling.
+            configuration[id] = bounds
+        }
+        return configuration
+    }
+
+    static func displayConfigurationChanged(from previous: DisplayConfiguration?, to current: DisplayConfiguration?) -> Bool {
+        guard let previous, let current else { return false }
+        return previous != current
+    }
+
     func centerNudge() {
         NSApp.windows.first?.center()
     }
