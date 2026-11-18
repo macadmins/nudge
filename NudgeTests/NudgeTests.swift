@@ -302,3 +302,47 @@ class GracePeriodPolicyTests: XCTestCase {
         XCTAssertEqual(launch(age: 0), eventDeadline)
     }
 }
+
+class ActivelyExploitedCVECountTests: XCTestCase {
+    private func latest(_ version: String, _ exploited: [String]) -> LatestOS {
+        LatestOS(productVersion: version, build: "", releaseDate: nil, expirationDate: Date(), supportedDevices: [],
+                 securityInfo: "", cves: Dictionary(uniqueKeysWithValues: exploited.map { ($0, true) }),
+                 activelyExploitedCVEs: exploited, uniqueCVEsCount: exploited.count)
+    }
+
+    private func release(_ version: String, _ exploited: [String], otherCVEs: [String] = []) -> SecurityRelease {
+        let cves = Dictionary(uniqueKeysWithValues: exploited.map { ($0, true) } + otherCVEs.map { ($0, false) })
+        return SecurityRelease(updateName: "macOS \(version)", productVersion: version, releaseDate: nil, securityInfo: "",
+                               supportedDevices: [], cves: cves,
+                               activelyExploitedCVEs: exploited, uniqueCVEsCount: cves.count, daysSincePreviousRelease: 0)
+    }
+
+    // SOFA shape: the newest release is both `Latest` and the first `SecurityReleases` entry.
+    private lazy var releases: [OSInformation] =
+        SofaOSVersion(osVersion: "Tahoe 26",
+                      latest: latest("26.7.2", ["CVE-A", "CVE-B"]),
+                      securityReleases: [release("26.7.2", ["CVE-B", "CVE-D"]),
+                                         release("26.7.1", ["CVE-B", "CVE-C"]),
+                                         release("26.7", [], otherCVEs: ["CVE-E"])],
+                      supportedModels: []).releases
+
+    func testNewestReleaseCountedOnce() {
+        XCTAssertEqual(releases.cves(inVersions: ["26.7.2"]).activelyExploited, ["CVE-A", "CVE-B", "CVE-D"])
+    }
+
+    func testCVEListedAgainstSeveralReleasesCountedOnce() {
+        XCTAssertEqual(releases.cves(inVersions: ["26.7.1", "26.7.2"]).activelyExploited, ["CVE-A", "CVE-B", "CVE-C", "CVE-D"])
+    }
+
+    func testEmptyRangeHasNoCVEs() {
+        let summary = releases.cves(inVersions: [])
+        XCTAssertTrue(summary.activelyExploited.isEmpty)
+        XCTAssertFalse(summary.hasCVEs)
+    }
+
+    func testIntermediateReleaseWithOnlyNonExploitedCVEs() {
+        let summary = releases.cves(inVersions: ["26.7"])
+        XCTAssertTrue(summary.activelyExploited.isEmpty)
+        XCTAssertTrue(summary.hasCVEs)
+    }
+}
