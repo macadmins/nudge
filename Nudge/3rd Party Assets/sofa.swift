@@ -31,29 +31,15 @@ struct SofaOSVersion: Codable {
     let securityReleases: [SecurityRelease]
     let supportedModels: [SupportedModel]
 
+    var releases: [OSInformation] {
+        [latest as OSInformation] + securityReleases
+    }
+
     enum CodingKeys: String, CodingKey {
         case osVersion = "OSVersion"
         case latest = "Latest"
         case securityReleases = "SecurityReleases"
         case supportedModels = "SupportedModels"
-    }
-}
-
-extension Array where Element == SofaOSVersion {
-    /// Unique actively exploited CVE IDs fixed by the given product versions.
-    /// SOFA lists the newest release of each OS both as `Latest` and as the first `SecurityReleases`
-    /// entry, and the same CVE can be listed against more than one release, so IDs are de-duplicated.
-    func activelyExploitedCVEs(inVersions versions: [String]) -> Set<String> {
-        var cves = Set<String>()
-        for osVersion in self {
-            if versions.contains(osVersion.latest.productVersion) {
-                cves.formUnion(osVersion.latest.activelyExploitedCVEs)
-            }
-            for securityRelease in osVersion.securityReleases where versions.contains(securityRelease.productVersion) {
-                cves.formUnion(securityRelease.activelyExploitedCVEs)
-            }
-        }
-        return cves
     }
 }
 
@@ -66,6 +52,19 @@ protocol OSInformation {
     var cves: [String: Bool] { get }
     var activelyExploitedCVEs: [String] { get }
     var uniqueCVEsCount: Int { get }
+}
+
+extension Sequence where Element == OSInformation {
+    func cves(inVersions versions: Set<String>) -> (activelyExploited: Set<String>, hasCVEs: Bool) {
+        var activelyExploited = Set<String>()
+        var hasCVEs = false
+        for release in self where versions.contains(release.productVersion) {
+            // Latest and SecurityReleases can overlap, and multiple releases can fix the same CVE.
+            activelyExploited.formUnion(release.activelyExploitedCVEs)
+            hasCVEs = hasCVEs || !release.cves.isEmpty
+        }
+        return (activelyExploited, hasCVEs)
+    }
 }
 
 struct LatestOS: Codable {

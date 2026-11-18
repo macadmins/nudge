@@ -278,18 +278,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     }
 
                     let selectedOSVersion = selectedOS!.productVersion
-                    var allVersions = [String]()
-
-                    // Collect all versions
-                    for osVersion in macOSSOFAAssets {
-                        allVersions.append(osVersion.latest.productVersion)
-                        for securityRelease in osVersion.securityReleases {
-                            allVersions.append(securityRelease.productVersion)
-                        }
+                    let releases = macOSSOFAAssets.flatMap(\.releases)
+                    let allVersions = releases.map(\.productVersion).sorted {
+                        VersionManager.versionLessThan(currentVersion: $0, newVersion: $1)
                     }
-
-                    // Sort versions
-                    allVersions.sort { VersionManager.versionLessThan(currentVersion: $0, newVersion: $1) }
 
                     // Filter versions between current and selected OS version
                     let filteredVersions = VersionManager().removeDuplicates(from: allVersions.filter {
@@ -316,23 +308,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         LogManager.notice("Assessing macOS version range for active exploits (cross major version): \(versionsToCheck) ", logger: sofaLog)
                     }
 
-                    // Count CVEs in the appropriate filtered versions
-                    // Actively exploited CVEs are counted once each: the newest release appears both as
-                    // `Latest` and in `SecurityReleases`, and a CVE can be listed against several releases.
-                    let totalActivelyExploitedCVEs = macOSSOFAAssets.activelyExploitedCVEs(inVersions: versionsToCheck).count
-                    var totalAnyCVEsInRange = 0
-                    for osVersion in macOSSOFAAssets {
-                        if versionsToCheck.contains(osVersion.latest.productVersion) {
-                            totalAnyCVEsInRange += osVersion.latest.cves.count
-                        }
-                        for securityRelease in osVersion.securityReleases {
-                            if versionsToCheck.contains(securityRelease.productVersion) {
-                                totalAnyCVEsInRange += securityRelease.cves.count
-                            }
-                        }
-                    }
-                    let activelyExploitedCVEs = totalActivelyExploitedCVEs > 0
-                    let anyCVEsInRange = totalAnyCVEsInRange > 0
+                    let cvesInRange = releases.cves(inVersions: Set(versionsToCheck))
+                    let activelyExploitedCVEs = !cvesInRange.activelyExploited.isEmpty
 
                     let presentCVEs = selectedOS!.cves.count > 0
                     let slaExtension: TimeInterval
@@ -340,7 +317,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     nudgePrimaryState.requiredMinimumOSVersion = selectedOS!.productVersion
                     nudgePrimaryState.sofaAboutUpdateURL = selectedOS!.securityInfo
                     nudgePrimaryState.activelyExploitedCVEs = activelyExploitedCVEs
-                    nudgePrimaryState.activelyExploitedCVEsCount = totalActivelyExploitedCVEs
+                    nudgePrimaryState.activelyExploitedCVEsCount = cvesInRange.activelyExploited.count
                     switch (activelyExploitedCVEs, presentCVEs, AppStateManager().requireMajorUpgrade()) {
                     case (false, true, true):
                         LogManager.notice("Non Actively Exploited Major Upgrade detected. Using nonActivelyExploitedCVEsMajorUpgradeSLA value: \(OSVersionRequirementVariables.nonActivelyExploitedCVEsMajorUpgradeSLA)", logger: sofaLog)
@@ -372,11 +349,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     // Exit only if:
                     // 1. disableNudgeForStandardInstalls is enabled
                     // 2. No CVEs exist anywhere in the update path (including non-actively exploited CVEs in intermediate versions)
-                    if OptionalFeatureVariables.disableNudgeForStandardInstalls && !anyCVEsInRange {
+                    if OptionalFeatureVariables.disableNudgeForStandardInstalls && !cvesInRange.hasCVEs {
                         LogManager.notice("No known CVEs in version range up to \(selectedOS!.productVersion), and disableNudgeForStandardInstalls is set to true", logger: sofaLog)
                         AppStateManager().exitNudge()
                     }
-                    LogManager.notice("SOFA Actively Exploited CVEs (across version range): \(activelyExploitedCVEs)", logger: sofaLog)
+                    LogManager.notice("SOFA Actively Exploited CVEs (across version range): \(activelyExploitedCVEs) (count: \(cvesInRange.activelyExploited.count))", logger: sofaLog)
 
                     releaseDate = selectedOS!.releaseDate ?? Date()
                     if requiredInstallationDate == Date(timeIntervalSince1970: 0) {

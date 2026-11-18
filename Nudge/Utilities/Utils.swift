@@ -1375,15 +1375,10 @@ struct NetworkFileManager {
         // Find the highest version available in the cached feed
         var highestVersion = ""
         for osVersion in cachedFeed.osVersions {
-            let latestVersion = osVersion.latest.productVersion
-            if highestVersion.isEmpty || VersionManager.versionGreaterThan(currentVersion: latestVersion, newVersion: highestVersion) {
-                highestVersion = latestVersion
-            }
-            
-            for securityRelease in osVersion.securityReleases {
-                let releaseVersion = securityRelease.productVersion
-                if VersionManager.versionGreaterThan(currentVersion: releaseVersion, newVersion: highestVersion) {
-                    highestVersion = releaseVersion
+            for release in osVersion.releases {
+                let version = release.productVersion
+                if highestVersion.isEmpty || VersionManager.versionGreaterThan(currentVersion: version, newVersion: highestVersion) {
+                    highestVersion = version
                 }
             }
         }

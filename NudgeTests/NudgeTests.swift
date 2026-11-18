@@ -310,32 +310,39 @@ class ActivelyExploitedCVECountTests: XCTestCase {
                  activelyExploitedCVEs: exploited, uniqueCVEsCount: exploited.count)
     }
 
-    private func release(_ version: String, _ exploited: [String]) -> SecurityRelease {
-        SecurityRelease(updateName: "macOS \(version)", productVersion: version, releaseDate: nil, securityInfo: "",
-                        supportedDevices: [], cves: Dictionary(uniqueKeysWithValues: exploited.map { ($0, true) }),
-                        activelyExploitedCVEs: exploited, uniqueCVEsCount: exploited.count, daysSincePreviousRelease: 0)
+    private func release(_ version: String, _ exploited: [String], otherCVEs: [String] = []) -> SecurityRelease {
+        let cves = Dictionary(uniqueKeysWithValues: exploited.map { ($0, true) } + otherCVEs.map { ($0, false) })
+        return SecurityRelease(updateName: "macOS \(version)", productVersion: version, releaseDate: nil, securityInfo: "",
+                               supportedDevices: [], cves: cves,
+                               activelyExploitedCVEs: exploited, uniqueCVEsCount: cves.count, daysSincePreviousRelease: 0)
     }
 
     // SOFA shape: the newest release is both `Latest` and the first `SecurityReleases` entry.
-    private lazy var feed: [SofaOSVersion] = [
+    private lazy var releases: [OSInformation] =
         SofaOSVersion(osVersion: "Tahoe 26",
                       latest: latest("26.7.2", ["CVE-A", "CVE-B"]),
-                      securityReleases: [release("26.7.2", ["CVE-A", "CVE-B"]),
+                      securityReleases: [release("26.7.2", ["CVE-B", "CVE-D"]),
                                          release("26.7.1", ["CVE-B", "CVE-C"]),
-                                         release("26.7", [])],
-                      supportedModels: [])
-    ]
+                                         release("26.7", [], otherCVEs: ["CVE-E"])],
+                      supportedModels: []).releases
 
     func testNewestReleaseCountedOnce() {
-        XCTAssertEqual(feed.activelyExploitedCVEs(inVersions: ["26.7.2"]), ["CVE-A", "CVE-B"])
+        XCTAssertEqual(releases.cves(inVersions: ["26.7.2"]).activelyExploited, ["CVE-A", "CVE-B", "CVE-D"])
     }
 
     func testCVEListedAgainstSeveralReleasesCountedOnce() {
-        XCTAssertEqual(feed.activelyExploitedCVEs(inVersions: ["26.7.1", "26.7.2"]).count, 3)
+        XCTAssertEqual(releases.cves(inVersions: ["26.7.1", "26.7.2"]).activelyExploited, ["CVE-A", "CVE-B", "CVE-C", "CVE-D"])
     }
 
-    func testVersionsOutsideRangeIgnored() {
-        XCTAssertEqual(feed.activelyExploitedCVEs(inVersions: ["26.7"]), [])
-        XCTAssertEqual(feed.activelyExploitedCVEs(inVersions: []), [])
+    func testEmptyRangeHasNoCVEs() {
+        let summary = releases.cves(inVersions: [])
+        XCTAssertTrue(summary.activelyExploited.isEmpty)
+        XCTAssertFalse(summary.hasCVEs)
+    }
+
+    func testIntermediateReleaseWithOnlyNonExploitedCVEs() {
+        let summary = releases.cves(inVersions: ["26.7"])
+        XCTAssertTrue(summary.activelyExploited.isEmpty)
+        XCTAssertTrue(summary.hasCVEs)
     }
 }
