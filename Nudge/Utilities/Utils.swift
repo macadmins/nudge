@@ -614,7 +614,16 @@ struct CameraUtilities {
 import Foundation
 
 struct CommandLineUtilities {
-    let arguments: [String] = CommandLine.arguments
+    private static let disableRandomDelayArgument = "-disable-random-delay"
+    let arguments: [String]
+
+    init(arguments: [String] = CommandLine.arguments) {
+        self.arguments = arguments
+    }
+
+    var argumentsWithoutRandomDelay: [String] {
+        disableRandomDelayArgumentPassed() ? arguments : arguments + [Self.disableRandomDelayArgument]
+    }
 
     // Existing argument checks
     func bundleModeJSONEnabled() -> Bool {
@@ -638,7 +647,7 @@ struct CommandLineUtilities {
     }
 
     func disableRandomDelayArgumentPassed() -> Bool {
-        return arguments.contains("-disable-random-delay")
+        return arguments.contains(Self.disableRandomDelayArgument)
     }
 
     func forceScreenShotIconModeEnabled() -> Bool {
@@ -1105,38 +1114,6 @@ struct DeviceManager {
         let username = SCDynamicStoreCopyConsoleUser(nil, &uid, &gid) as String? ?? ""
         LogManager.debug("System console username: \(username)", logger: utilsLog)
         return username
-    }
-}
-
-struct DisplayManager {
-    /// The active displays and their bounds, compared before and after the random delay. Sorted so a
-    /// different reporting order from CoreGraphics is not mistaken for a configuration change.
-    struct Configuration: Equatable {
-        let displays: [String]
-
-        init(displays: [(id: CGDirectDisplayID, bounds: CGRect)]) {
-            self.displays = displays
-                .map { "\($0.id):\($0.bounds.origin.x),\($0.bounds.origin.y),\($0.bounds.width),\($0.bounds.height)" }
-                .sorted()
-        }
-    }
-
-    func activeConfiguration() -> Configuration {
-        var displayCount: UInt32 = 0
-        guard CGGetActiveDisplayList(0, nil, &displayCount) == .success, displayCount > 0 else {
-            return Configuration(displays: [])
-        }
-        var displays = [CGDirectDisplayID](repeating: 0, count: Int(displayCount))
-        guard CGGetActiveDisplayList(displayCount, &displays, &displayCount) == .success else {
-            return Configuration(displays: [])
-        }
-        return Configuration(displays: displays.prefix(Int(displayCount)).map { (id: $0, bounds: CGDisplayBounds($0)) })
-    }
-
-    /// Arguments for restarting Nudge after the random delay: the original arguments with
-    /// `-disable-random-delay` appended once, so the restarted process does not wait again.
-    func relaunchArguments(from arguments: [String]) -> [String] {
-        arguments.contains("-disable-random-delay") ? arguments : arguments + ["-disable-random-delay"]
     }
 }
 
@@ -1775,6 +1752,34 @@ struct SMAppManager {
 }
 
 struct UIUtilities {
+    typealias DisplayConfiguration = [CGDirectDisplayID: CGRect]
+
+    // AppKit's screen list can be stale until launch completes. Query CoreGraphics directly.
+    static func activeDisplayConfiguration() -> DisplayConfiguration? {
+        var ids = [CGDirectDisplayID](repeating: 0, count: 8)
+        var count: UInt32 = 0
+        while true {
+            let capacity = ids.count
+            guard CGGetActiveDisplayList(UInt32(capacity), &ids, &count) == .success else { return nil }
+            if count < capacity { break }
+            // A full buffer may have truncated the list.
+            ids = [CGDirectDisplayID](repeating: 0, count: capacity * 2)
+        }
+
+        var configuration = DisplayConfiguration()
+        for id in ids.prefix(Int(count)) {
+            let bounds = CGDisplayBounds(id)
+            guard !bounds.isEmpty else { return nil } // The display disappeared while sampling.
+            configuration[id] = bounds
+        }
+        return configuration
+    }
+
+    static func displayConfigurationChanged(from previous: DisplayConfiguration?, to current: DisplayConfiguration?) -> Bool {
+        guard let previous, let current else { return false }
+        return previous != current
+    }
+
     func centerNudge() {
         NSApp.windows.first?.center()
     }

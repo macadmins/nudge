@@ -589,7 +589,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if UserExperienceVariables.randomDelay && !(CommandLineUtilities().disableRandomDelayArgumentPassed() || CommandLineUtilities().unitTestingEnabled() || CommandLineUtilities().demoModeEnabled()) {
             let delaySeconds = Int.random(in: 1...UserExperienceVariables.maxRandomDelayInSeconds)
             LogManager.notice("Delaying initial run (in seconds) by: \(delaySeconds)", logger: uiLog)
-            let displaysBeforeDelay = DisplayManager().activeConfiguration()
+            let displaysBeforeDelay = UIUtilities.activeDisplayConfiguration()
 
             let delayDate = Date().addingTimeInterval(TimeInterval(delaySeconds))
             while Date() < delayDate {
@@ -598,29 +598,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             LogManager.notice("Finished delay", logger: uiLog)
 
-            // If the Mac sleeps during the delay and wakes with different displays (for example
-            // undocked at launch and docked at wake), AppKit can still hold the screen list from
-            // before the delay when the window is created. The window is then placed for a display
-            // that no longer exists: it opens off center, partly under the menu bar, and macOS
-            // rejects later moves ("invalid display identifier"). Restart with current screen
-            // information instead of creating the window from the stale list.
-            if DisplayManager().activeConfiguration() != displaysBeforeDelay {
+            // AppKit can retain a disconnected screen across sleep and reject later window moves.
+            if UIUtilities.displayConfigurationChanged(from: displaysBeforeDelay, to: UIUtilities.activeDisplayConfiguration()) {
                 relaunchWithoutRandomDelay()
             }
         }
     }
 
     private func relaunchWithoutRandomDelay() {
-        guard let executablePath = Bundle.main.executablePath else { return }
-        let arguments = DisplayManager().relaunchArguments(from: CommandLine.arguments)
+        guard let executablePath = Bundle.main.executablePath else {
+            LogManager.error("Cannot find the Nudge executable - continuing without restart", logger: uiLog)
+            return
+        }
+        let arguments = CommandLineUtilities().argumentsWithoutRandomDelay
         LogManager.notice("Display configuration changed during the random delay - restarting Nudge with current screen information", logger: uiLog)
         // execv replaces the process image and keeps the process ID, so launchd keeps tracking the LaunchAgent job.
         var cArguments: [UnsafeMutablePointer<CChar>?] = arguments.map { strdup($0) }
+        defer { cArguments.forEach { free($0) } }
+        guard !cArguments.contains(nil) else {
+            LogManager.error("Could not copy restart arguments - continuing without restart", logger: uiLog)
+            return
+        }
         cArguments.append(nil)
         execv(executablePath, &cArguments)
         // execv only returns on failure; carry on with the current process.
         LogManager.error("Restarting Nudge failed (errno \(errno)) - continuing without restart", logger: uiLog)
-        cArguments.forEach { free($0) }
     }
 
     private func applydelayNudgeEventLogic() {
